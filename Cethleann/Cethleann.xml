@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cethleann</name>
+    </assembly>
+    <members>
+        <member name="T:Cethleann.DATA0">
+            <summary>
+            DATA0 is a list of information for which to read DATA1 with.
+            </summary>
+        </member>
+        <member name="P:Cethleann.DATA0.Entries">
+            <summary>
+            lsof <seealso cref="T:Cethleann.Structure.DATA0Entry"/>
+            </summary>
+        </member>
+        <member name="M:Cethleann.DATA0.#ctor(System.String)">
+            <summary>
+            Reads a DATA0 file list from a path
+            </summary>
+            <param name="path">File path to read</param>
+        </member>
+        <member name="M:Cethleann.DATA0.#ctor(System.IO.Stream,System.Boolean)">
+            <summary>
+            Reads a DATA0 file list from a stream
+            </summary>
+            <param name="stream">Binary Read-capable Stream of DATA0</param>
+            <param name="leaveOpen">If true, won't dispose <paramref name="stream"/></param>
+        </member>
+        <member name="M:Cethleann.DATA0.ReadEntry(System.IO.Stream,System.Int32)">
+            <summary>
+            Reads a file index from DATA1
+            </summary>
+            <param name="DATA1">Binary Read-capable Stream of DATA1</param>
+            <param name="index">Entry Index to read</param>
+            <returns>memory stream of uncompressed bytes</returns>
+        </member>
+        <member name="M:Cethleann.DATA0.ReadEntry(System.IO.Stream,Cethleann.Structure.DATA0Entry)">
+            <summary>
+            Reads a file entry from DATA1
+            </summary>
+            <param name="DATA1">Binary Read-capable Stream of DATA1</param>
+            <param name="entry">Entry to read</param>
+            <returns>memory stream of uncompressed bytes</returns>
+        </member>
+        <member name="T:Cethleann.Structure.DATA0Entry">
+            <summary>
+            An entry in DATA0
+            </summary>
+        </member>
+        <member name="P:Cethleann.Structure.DATA0Entry.Offset">
+            <summary>
+            Offset in DATA1
+            </summary>
+        </member>
+        <member name="P:Cethleann.Structure.DATA0Entry.UncompressedSize">
+            <summary>
+            Uncompressed (read: bytes to expect from decompression) size of this file.
+            </summary>
+        </member>
+        <member name="P:Cethleann.Structure.DATA0Entry.CompressedSize">
+            <summary>
+            Compressed (read: bytes to read in this file) size of this file.
+            </summary>
+        </member>
+        <member name="P:Cethleann.Structure.DATA0Entry.IsCompressed">
+            <summary>
+            True if the file is compressed with ZLIB
+            </summary>
+        </member>
+        <member name="T:Cethleann.Structure.DATA1CompressionInfo">
+            <summary>
+            Info regarding compression for a file in DATA1
+            </summary>
+        </member>
+        <member name="P:Cethleann.Structure.DATA1CompressionInfo.Unknown">
+            <summary>
+            Always 0x10000, I assumed ChunkSize but it doesn't match up.
+            </summary>
+        </member>
+        <member name="P:Cethleann.Structure.DATA1CompressionInfo.ChunkCount">
+            <summary>
+            Number of chunks
+            </summary>
+        </member>
+        <member name="P:Cethleann.Structure.DATA1CompressionInfo.Size">
+            <summary>
+            Compressed (read: bytes to read in this file) size of this file.
+            Don't know why this exist, maybe anonymous file pointers?
+            </summary>
+        </member>
+    </members>
+</doc>
