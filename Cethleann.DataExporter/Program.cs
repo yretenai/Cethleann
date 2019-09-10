@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Cethleann.DataTable;
+using Cethleann.Structure.DataTableRecord;
+using System;
 using System.IO;
 using System.Linq;
 
@@ -11,6 +13,12 @@ namespace Cethleann.DataExporter
             var romfs = args.Last();
             var DATA0 = new DATA0(@$"{romfs}\DATA0.bin");
             using var DATA1 = File.OpenRead(@$"{romfs}\DATA1.bin");
+
+            var text = new DataTableRoot(DATA0.ReadEntry(DATA1, 0));
+            var dh = new DataTableRoot(DATA0.ReadEntry(DATA1, 12));
+            var dhChar = (dh.Tables.ElementAt(0) as BinaryDataTable).Cast<CharacterInfo>();
+
+            return;
             var i = 0;
 
             if (!Directory.Exists(@$"{romfs}\ex\uncompressed")) Directory.CreateDirectory(@$"{romfs}\ex\uncompressed");

@@ -82,7 +82,7 @@ namespace Cethleann
             if (!entry.IsCompressed)
             {
                 DATA1.Read(buffer);
-                return new MemoryStream(buffer.ToArray());
+                return new MemoryStream(buffer.ToArray()) { Position = 0 };
             }
 
             Span<byte> zBuffer = stackalloc byte[12];
@@ -122,6 +122,7 @@ namespace Cethleann
                     DATA1.Position = entry.Offset + (long)(Math.Ceiling((double)(DATA1.Position - entry.Offset) / 0x80) * 0x80);
                 }
             }
+            ms.Position = 0;
             return ms;
         }
     }
