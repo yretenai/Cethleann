@@ -68,6 +68,58 @@ namespace Cethleann
             return ReadEntry(DATA1, Entries[index]);
         }
 
+        private static readonly uint[] dataTypes = Enum.GetValues(typeof(DataType)).Cast<uint>().ToArray();
+
+        /// <summary>
+        /// Guesses the format based on the magic value.
+        /// </summary>
+        /// <param name="data">data to test</param>
+        /// <returns>data type, null if magic isn't known</returns>
+        public static unsafe DataType? GuessType(Stream data)
+        {
+            Span<byte> buffer = stackalloc byte[4];
+            data.Read(buffer);
+            data.Position -= 4;
+            return GuessType(buffer);
+        }
+
+        /// <summary>
+        /// Guesses the format based on the magic value.
+        /// </summary>
+        /// <param name="buffer">data to test</param>
+        /// <returns>data type, null if magic isn't known</returns>
+        public static DataType? GuessType(Span<byte> buffer)
+        {
+            var magic = MemoryMarshal.Read<uint>(buffer);
+            if (dataTypes.Contains(magic)) return (DataType)magic;
+            return null;
+        }
+
+        /// <summary>
+        /// Guesses if the stream is a DataTable
+        /// </summary>
+        /// <param name="data">data to test</param>
+        /// <returns>true if the header is predictable</returns>
+        public static unsafe bool GuessDataTable(Stream data)
+        {
+            Span<byte> buffer = stackalloc byte[8];
+            data.Read(buffer);
+            data.Position -= 8;
+            return GuessDataTable(buffer);
+        }
+
+        /// <summary>
+        /// Guesses if the stream is a DataTable
+        /// </summary>
+        /// <param name="buffer">data to test</param>
+        /// <returns>true if the header is predictable</returns>
+        public static bool GuessDataTable(Span<byte> buffer)
+        {
+            var count = MemoryMarshal.Read<uint>(buffer);
+            var firstOffset = MemoryMarshal.Read<uint>(buffer.Slice(4));
+            return firstOffset == 4 + count * 8;
+        }
+
         /// <summary>
         /// Reads a file entry from DATA1
         /// </summary>

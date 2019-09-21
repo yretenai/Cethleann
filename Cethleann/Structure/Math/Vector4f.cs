@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Runtime.InteropServices;
 
 namespace Cethleann.Structure.Math
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     [StructLayout(LayoutKind.Sequential, Pack = 4, Size = 0x10)]
     public struct Vector4f
     {
@@ -13,4 +11,5 @@ namespace Cethleann.Structure.Math
         public float Z { get; set; }
         public float W { get; set; }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

@@ -17,4 +17,8 @@
     <DocumentationFile>Cethleann.xml</DocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Structure\Art\" />
+  </ItemGroup>
+
 </Project>

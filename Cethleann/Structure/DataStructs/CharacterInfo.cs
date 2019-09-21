@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-namespace Cethleann.Structure.DataTableRecord
+namespace Cethleann.Structure.DataStructs
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 0x4C)]
     public struct CharacterInfo
