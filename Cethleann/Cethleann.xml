@@ -35,34 +35,6 @@
             <param name="index">Entry Index to read</param>
             <returns>memory stream of uncompressed bytes</returns>
         </member>
-        <member name="M:Cethleann.DATA0.GuessType(System.IO.Stream)">
-            <summary>
-            Guesses the format based on the magic value.
-            </summary>
-            <param name="data">data to test</param>
-            <returns>data type, null if magic isn't known</returns>
-        </member>
-        <member name="M:Cethleann.DATA0.GuessType(System.Span{System.Byte})">
-            <summary>
-            Guesses the format based on the magic value.
-            </summary>
-            <param name="buffer">data to test</param>
-            <returns>data type, null if magic isn't known</returns>
-        </member>
-        <member name="M:Cethleann.DATA0.GuessDataTable(System.IO.Stream)">
-            <summary>
-            Guesses if the stream is a DataTable
-            </summary>
-            <param name="data">data to test</param>
-            <returns>true if the header is predictable</returns>
-        </member>
-        <member name="M:Cethleann.DATA0.GuessDataTable(System.Span{System.Byte})">
-            <summary>
-            Guesses if the stream is a DataTable
-            </summary>
-            <param name="buffer">data to test</param>
-            <returns>true if the header is predictable</returns>
-        </member>
         <member name="M:Cethleann.DATA0.ReadEntry(System.IO.Stream,Cethleann.Structure.DATA0Entry)">
             <summary>
             Reads a file entry from DATA1
@@ -70,6 +42,34 @@
             <param name="DATA1">Binary Read-capable Stream of DATA1</param>
             <param name="entry">Entry to read</param>
             <returns>memory stream of uncompressed bytes</returns>
+        </member>
+        <member name="M:Cethleann.DATA0Helper.GuessType(System.IO.Stream)">
+            <summary>
+            Guesses the format based on the magic value.
+            </summary>
+            <param name="data">data to test</param>
+            <returns>data type, null if magic isn't known</returns>
+        </member>
+        <member name="M:Cethleann.DATA0Helper.GuessType(System.Span{System.Byte})">
+            <summary>
+            Guesses the format based on the magic value.
+            </summary>
+            <param name="buffer">data to test</param>
+            <returns>data type, null if magic isn't known</returns>
+        </member>
+        <member name="M:Cethleann.DATA0Helper.GuessDataTable(System.IO.Stream)">
+            <summary>
+            Guesses if the stream is a DataTable
+            </summary>
+            <param name="data">data to test</param>
+            <returns>true if the header is predictable</returns>
+        </member>
+        <member name="M:Cethleann.DATA0Helper.GuessDataTable(System.Span{System.Byte})">
+            <summary>
+            Guesses if the stream is a DataTable
+            </summary>
+            <param name="buffer">data to test</param>
+            <returns>true if the header is predictable</returns>
         </member>
         <member name="T:Cethleann.DataTables.DataTable">
             <summary>
@@ -81,12 +81,6 @@
             <summary>
             Lsof Entries found in the table
             </summary>
-        </member>
-        <member name="M:Cethleann.DataTables.DataTable.#ctor(System.IO.Stream)">
-            <summary>
-            Initialize with a binary stream.
-            </summary>
-            <param name="stream"></param>
         </member>
         <member name="M:Cethleann.DataTables.DataTable.#ctor(System.Span{System.Byte})">
             <summary>
@@ -155,6 +149,11 @@
         <member name="F:Cethleann.DataType.WEBM">
             <summary>
             WebM Video Container
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.XL_19">
+            <summary>
+            teXt Localization, version 19.
             </summary>
         </member>
         <member name="T:Cethleann.Structure.DATA0Entry">

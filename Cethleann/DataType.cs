@@ -32,6 +32,10 @@
         /// <summary>
         /// WebM Video Container
         /// </summary>
-        WEBM = 0xA3DF451A
+        WEBM = 0xA3DF451A,
+        /// <summary>
+        /// teXt Localization, version 19.
+        /// </summary>
+        XL_19 = 0x00134C58
     }
 }

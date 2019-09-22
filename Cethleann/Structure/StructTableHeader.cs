@@ -2,9 +2,8 @@
 
 namespace Cethleann.Structure
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     [StructLayout(LayoutKind.Sequential, Pack = 4, Size = 0x40)]
-    public struct StructTableHeader
+    internal struct StructTableHeader
     {
         public int Magic { get; set; }
         public int Count { get; set; }
@@ -23,5 +22,4 @@ namespace Cethleann.Structure
         public int UnknownC { get; set; }
         public int UnknownD { get; set; }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

@@ -1,7 +1,6 @@
 ﻿using Cethleann.Structure;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -62,62 +61,10 @@ namespace Cethleann
         /// <param name="DATA1">Binary Read-capable Stream of DATA1</param>
         /// <param name="index">Entry Index to read</param>
         /// <returns>memory stream of uncompressed bytes</returns>
-        public MemoryStream ReadEntry(Stream DATA1, int index)
+        public Memory<byte> ReadEntry(Stream DATA1, int index)
         {
             if (index < 0 || index > Entries.Count) throw new IndexOutOfRangeException($"Index {index} does not exist!");
             return ReadEntry(DATA1, Entries[index]);
-        }
-
-        private static readonly uint[] dataTypes = Enum.GetValues(typeof(DataType)).Cast<uint>().ToArray();
-
-        /// <summary>
-        /// Guesses the format based on the magic value.
-        /// </summary>
-        /// <param name="data">data to test</param>
-        /// <returns>data type, null if magic isn't known</returns>
-        public static unsafe DataType? GuessType(Stream data)
-        {
-            Span<byte> buffer = stackalloc byte[4];
-            data.Read(buffer);
-            data.Position -= 4;
-            return GuessType(buffer);
-        }
-
-        /// <summary>
-        /// Guesses the format based on the magic value.
-        /// </summary>
-        /// <param name="buffer">data to test</param>
-        /// <returns>data type, null if magic isn't known</returns>
-        public static DataType? GuessType(Span<byte> buffer)
-        {
-            var magic = MemoryMarshal.Read<uint>(buffer);
-            if (dataTypes.Contains(magic)) return (DataType)magic;
-            return null;
-        }
-
-        /// <summary>
-        /// Guesses if the stream is a DataTable
-        /// </summary>
-        /// <param name="data">data to test</param>
-        /// <returns>true if the header is predictable</returns>
-        public static unsafe bool GuessDataTable(Stream data)
-        {
-            Span<byte> buffer = stackalloc byte[8];
-            data.Read(buffer);
-            data.Position -= 8;
-            return GuessDataTable(buffer);
-        }
-
-        /// <summary>
-        /// Guesses if the stream is a DataTable
-        /// </summary>
-        /// <param name="buffer">data to test</param>
-        /// <returns>true if the header is predictable</returns>
-        public static bool GuessDataTable(Span<byte> buffer)
-        {
-            var count = MemoryMarshal.Read<uint>(buffer);
-            var firstOffset = MemoryMarshal.Read<uint>(buffer.Slice(4));
-            return firstOffset == 4 + count * 8;
         }
 
         /// <summary>
@@ -126,28 +73,25 @@ namespace Cethleann
         /// <param name="DATA1">Binary Read-capable Stream of DATA1</param>
         /// <param name="entry">Entry to read</param>
         /// <returns>memory stream of uncompressed bytes</returns>
-        public unsafe MemoryStream ReadEntry(Stream DATA1, DATA0Entry entry)
+        public unsafe Memory<byte> ReadEntry(Stream DATA1, DATA0Entry entry)
         {
             if (!DATA1.CanRead) throw new InvalidOperationException("Cannot read from stream!");
             DATA1.Position = entry.Offset;
-            var buffer = new Span<byte>(new byte[entry.UncompressedSize]);
+            var buffer = new Memory<byte>(new byte[entry.UncompressedSize]);
             if (!entry.IsCompressed)
             {
-                DATA1.Read(buffer);
-                return new MemoryStream(buffer.ToArray()) { Position = 0 };
+                DATA1.Read(buffer.Span);
+                return buffer;
             }
 
             Span<byte> zBuffer = stackalloc byte[12];
             DATA1.Read(zBuffer);
             var compInfo = MemoryMarshal.Read<DATA1CompressionInfo>(zBuffer);
-#if DEBUG_ASSERTIONS
-            Debug.Assert(compInfo.Unknown != -1, "Unknown is -1");
-#endif
+            Helper.Assert(compInfo.Unknown != -1, "Unknown is -1");
             var chunkSizeBuffer = new Span<byte>(new byte[4 * compInfo.ChunkCount]);
             DATA1.Read(chunkSizeBuffer);
             var chunkSizes = MemoryMarshal.Cast<byte, int>(chunkSizeBuffer);
-
-            var ms = new MemoryStream() { Position = 0 };
+            var cursor = 0;
             DATA1.Position = entry.Offset + (long)(Math.Ceiling((double)(DATA1.Position - entry.Offset) / 0x80) * 0x80);
             for (var i = 0; i < compInfo.ChunkCount; ++i)
             {
@@ -155,11 +99,12 @@ namespace Cethleann
                 {
                     var chunkSize = chunkSizes[i];
                     Span<byte> tmp;
-                    if (chunkSize + ms.Length == entry.UncompressedSize)
+                    if (chunkSize + cursor == entry.UncompressedSize)
                     {
                         tmp = new Span<byte>(new byte[chunkSize]);
                         DATA1.Read(tmp);
-                        ms.Write(tmp);
+                        tmp.CopyTo(buffer.Span.Slice(cursor));
+                        cursor += tmp.Length;
                         continue;
                     }
 
@@ -167,15 +112,14 @@ namespace Cethleann
                     DATA1.Read(tmp);
                     using var zMs = new MemoryStream(tmp.ToArray()) { Position = 6 };
                     using var zDs = new DeflateStream(zMs, CompressionMode.Decompress);
-                    zDs.CopyTo(ms);
+                    cursor += zDs.Read(buffer.Span.Slice(cursor));
                 }
                 finally
                 {
                     DATA1.Position = entry.Offset + (long)(Math.Ceiling((double)(DATA1.Position - entry.Offset) / 0x80) * 0x80);
                 }
             }
-            ms.Position = 0;
-            return ms;
+            return buffer;
         }
     }
 }
