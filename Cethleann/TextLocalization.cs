@@ -6,13 +6,23 @@ using System.Text;
 
 namespace Cethleann
 {
+    /// <summary>
+    /// Text Localization files are used to collect text data.
+    /// </summary>
     public class TextLocalization
     {
+        /// <summary>
+        /// List of string entries in this text blob
+        /// </summary>
         public IEnumerable<string> Entries { get; set; }
 
+        /// <summary>
+        /// Initialize with a span buffer
+        /// </summary>
+        /// <param name="buffer"></param>
         public TextLocalization(Span<byte> buffer)
         {
-            if (DATA0Helper.GuessType(buffer) != DataType.XL_19) throw new InvalidOperationException("Not an XL 19 stream");
+            if (DATA0Helper.GetDataType(buffer) != DataType.XL_19) throw new InvalidOperationException("Not an XL 19 stream");
             var header = MemoryMarshal.Read<TextLocalizationHeader>(buffer);
 
             Helper.Assert(header.Size == 0x14);
@@ -23,7 +33,7 @@ namespace Cethleann
             {
                 var pin = buffer.Slice(header.Size + header.Width * i, header.Width);
                 var offset = MemoryMarshal.Read<int>(pin);
-                var size = 1;
+                int size;
                 if (i < header.Count - 1)
                 {
                     var peekPin = buffer.Slice(header.Size + header.Width * (i + 1), header.Width);

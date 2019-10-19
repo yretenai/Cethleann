@@ -3,26 +3,19 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <Platforms>x64</Platforms>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject>pfstool.Program</StartupObject>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefineConstants>TRACE;DEBUG;DEBUG_ASSERTIONS</DefineConstants>
-    <DocumentationFile>Cethleann.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefineConstants>TRACE;DEBUG_ASSERTIONS</DefineConstants>
-    <DocumentationFile>Cethleann.xml</DocumentationFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Structure\Art\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\DragonLib\DragonLib.csproj" />
-  </ItemGroup>
 
 </Project>

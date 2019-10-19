@@ -43,33 +43,75 @@
             <param name="entry">Entry to read</param>
             <returns>memory stream of uncompressed bytes</returns>
         </member>
-        <member name="M:Cethleann.DATA0Helper.GuessType(System.IO.Stream)">
+        <member name="T:Cethleann.DATA0Helper">
             <summary>
-            Guesses the format based on the magic value.
+            Series of helper for FETH.
             </summary>
-            <param name="data">data to test</param>
-            <returns>data type, null if magic isn't known</returns>
         </member>
-        <member name="M:Cethleann.DATA0Helper.GuessType(System.Span{System.Byte})">
+        <member name="M:Cethleann.DATA0Helper.GetExtension(Cethleann.DataType)">
             <summary>
-            Guesses the format based on the magic value.
+            Returns determined string extension for this magic.
             </summary>
-            <param name="buffer">data to test</param>
-            <returns>data type, null if magic isn't known</returns>
+            <param name="magic"></param>
+            <returns></returns>
         </member>
-        <member name="M:Cethleann.DATA0Helper.GuessDataTable(System.IO.Stream)">
+        <member name="M:Cethleann.DATA0Helper.IsKnown(Cethleann.DataType)">
+            <summary>
+            True if the magic values are known
+            </summary>
+            <param name="magic"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.DATA0Helper.IsKnown(System.Span{System.Byte})">
+            <summary>
+            True if the magic values are known
+            </summary>
+            <param name="span"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.DATA0Helper.Matches(System.Span{System.Byte},Cethleann.DataType)">
+            <summary>
+            True if the magic value matches the first 4 bytes of the span.
+            </summary>
+            <param name="span"></param>
+            <param name="magic"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.DATA0Helper.Matches(Cethleann.DataType,System.Span{System.Byte})">
+            <summary>
+            True if the magic value matches the first 4 bytes of the span.
+            </summary>
+            <param name="magic"></param>
+            <param name="span"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.DATA0Helper.GetDataType(System.Span{System.Byte})">
+            <summary>
+            Gets <seealso cref="T:Cethleann.DataType"/> from a Span.
+            </summary>
+            <param name="span"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.DATA0Helper.IsDataTable(System.Span{System.Byte})">
             <summary>
             Guesses if the stream is a DataTable
-            </summary>
-            <param name="data">data to test</param>
-            <returns>true if the header is predictable</returns>
-        </member>
-        <member name="M:Cethleann.DATA0Helper.GuessDataTable(System.Span{System.Byte})">
-            <summary>
-            Guesses if the stream is a DataTable
-            </summary>
+            </summary>H:\Datamining\FireEmblemTH\Cethleann\DragonLib\DataTypeHelper.cs
             <param name="buffer">data to test</param>
             <returns>true if the header is predictable</returns>
+        </member>
+        <member name="M:Cethleann.DATA0Helper.GetTextLocalizationsRoot(Cethleann.DataTables.DataTable)">
+            <summary>
+            Gets two dimensional text localizations from a data table.
+            </summary>
+            <param name="table"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.DATA0Helper.GetTextLocalizations(Cethleann.DataTables.DataTable)">
+            <summary>
+            Gets Text Localizations from table entries.
+            </summary>
+            <param name="table"></param>
+            <returns></returns>
         </member>
         <member name="T:Cethleann.DataTables.DataTable">
             <summary>
@@ -201,6 +243,22 @@
             Compressed (read: bytes to read in this file) size of this file.
             Don't know why this exist, maybe anonymous file pointers?
             </summary>
+        </member>
+        <member name="T:Cethleann.TextLocalization">
+            <summary>
+            Text Localization files are used to collect text data.
+            </summary>
+        </member>
+        <member name="P:Cethleann.TextLocalization.Entries">
+            <summary>
+            List of string entries in this text blob
+            </summary>
+        </member>
+        <member name="M:Cethleann.TextLocalization.#ctor(System.Span{System.Byte})">
+            <summary>
+            Initialize with a span buffer
+            </summary>
+            <param name="buffer"></param>
         </member>
     </members>
 </doc>

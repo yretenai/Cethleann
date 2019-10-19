@@ -1,4 +1,5 @@
 ﻿using Cethleann.DataTables;
+using DragonLib;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,61 +8,97 @@ using System.Runtime.InteropServices;
 
 namespace Cethleann
 {
+    /// <summary>
+    /// Series of helper for FETH.
+    /// </summary>
     public static class DATA0Helper
     {
-        private static readonly uint[] dataTypes = Enum.GetValues(typeof(DataType)).Cast<uint>().ToArray();
-
-        /// <summary>
-        /// Guesses the format based on the magic value.
-        /// </summary>
-        /// <param name="data">data to test</param>
-        /// <returns>data type, null if magic isn't known</returns>
-        public static unsafe DataType? GuessType(Stream data)
+        static DATA0Helper()
         {
-            Span<byte> buffer = stackalloc byte[4];
-            data.Read(buffer);
-            data.Position -= 4;
-            return GuessType(buffer);
+            DataTypeHelper.Preload<DataType>();
         }
 
         /// <summary>
-        /// Guesses the format based on the magic value.
+        /// Returns determined string extension for this magic.
         /// </summary>
-        /// <param name="buffer">data to test</param>
-        /// <returns>data type, null if magic isn't known</returns>
-        public static DataType? GuessType(Span<byte> buffer)
+        /// <param name="magic"></param>
+        /// <returns></returns>
+        public static string GetExtension(this DataType magic)
         {
-            var magic = MemoryMarshal.Read<uint>(buffer);
-            if (dataTypes.Contains(magic)) return (DataType)magic;
-            return null;
+            return DataTypeHelper.GetExtension(magic);
+        }
+
+        /// <summary>
+        /// True if the magic values are known
+        /// </summary>
+        /// <param name="magic"></param>
+        /// <returns></returns>
+        public static bool IsKnown(this DataType magic)
+        {
+            return DataTypeHelper.IsKnown<DataType>(magic);
+        }
+
+        /// <summary>
+        /// True if the magic values are known
+        /// </summary>
+        /// <param name="span"></param>
+        /// <returns></returns>
+        public static bool IsKnown(this Span<byte> span)
+        {
+            return span.GetDataType().IsKnown();
+        }
+
+        /// <summary>
+        /// True if the magic value matches the first 4 bytes of the span.
+        /// </summary>
+        /// <param name="span"></param>
+        /// <param name="magic"></param>
+        /// <returns></returns>
+        public static bool Matches(this Span<byte> span, DataType magic)
+        {
+            return DataTypeHelper.Matches(span, (int)magic);
+        }
+
+        /// <summary>
+        /// True if the magic value matches the first 4 bytes of the span.
+        /// </summary>
+        /// <param name="magic"></param>
+        /// <param name="span"></param>
+        /// <returns></returns>
+        public static bool Matches(this DataType magic, Span<byte> span)
+        {
+            return DataTypeHelper.Matches(span, (int)magic);
+        }
+
+        /// <summary>
+        /// Gets <seealso cref="DataType"/> from a Span.
+        /// </summary>
+        /// <param name="span"></param>
+        /// <returns></returns>
+        public static DataType GetDataType(this Span<byte> span)
+        {
+            return DataTypeHelper.GetMagicValue<DataType>(span);
         }
 
         /// <summary>
         /// Guesses if the stream is a DataTable
-        /// </summary>
-        /// <param name="data">data to test</param>
-        /// <returns>true if the header is predictable</returns>
-        public static unsafe bool GuessDataTable(Stream data)
-        {
-            Span<byte> buffer = stackalloc byte[8];
-            data.Read(buffer);
-            data.Position -= 8;
-            return GuessDataTable(buffer);
-        }
-
-        /// <summary>
-        /// Guesses if the stream is a DataTable
-        /// </summary>
+        /// </summary>H:\Datamining\FireEmblemTH\Cethleann\DragonLib\DataTypeHelper.cs
         /// <param name="buffer">data to test</param>
         /// <returns>true if the header is predictable</returns>
-        public static bool GuessDataTable(Span<byte> buffer)
+        public static bool IsDataTable(this Span<byte> buffer)
         {
+            if (buffer.Length < 8) return false;
             var count = MemoryMarshal.Read<uint>(buffer);
             var firstOffset = MemoryMarshal.Read<uint>(buffer.Slice(4));
             return firstOffset == 4 + count * 8;
         }
 
-        public static TextLocalization[][] GetTextLocalizationsRoot(DataTable table)
+        /// <summary>
+        /// Gets two dimensional text localizations from a data table.
+        /// </summary>
+        /// <param name="table"></param>
+        /// <returns></returns>
+        public static TextLocalization[][] GetTextLocalizationsRoot(this DataTable table)
         {
             var locs = new List<TextLocalization[]>();
             foreach(var entry in table.Entries)
@@ -72,7 +109,12 @@ namespace Cethleann
             return locs.ToArray();
         }
 
-        public static TextLocalization[] GetTextLocalizations(DataTable table)
+        /// <summary>
+        /// Gets Text Localizations from table entries.
+        /// </summary>
+        /// <param name="table"></param>
+        /// <returns></returns>
+        public static TextLocalization[] GetTextLocalizations(this DataTable table)
         {
             var locs = new List<TextLocalization>();
             foreach (var entry in table.Entries)
