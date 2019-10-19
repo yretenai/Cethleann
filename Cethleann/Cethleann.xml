@@ -198,6 +198,40 @@
             teXt Localization, version 19.
             </summary>
         </member>
+        <member name="T:Cethleann.G1.G1Texture">
+            <summary>
+            G1Texture is the main texture format
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1Texture.Textures">
+            <summary>
+            List of textures found in this bundle
+            </summary>
+        </member>
+        <member name="M:Cethleann.G1.G1Texture.#ctor(System.Span{System.Byte})">
+            <summary>
+            Parse G1 from the provided data buffer
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:Cethleann.G1.G1Texture.UnpackWHM(Cethleann.Structure.Art.TextureDataHeader)">
+            <summary>
+            Unpacks Width, Height, Mip Count, and DXGI Format from a G1T data header.
+            </summary>
+            <param name="header"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Cethleann.Structure.Art.TextureDataHeader.MipCount">
+            <summary>
+            SHR 4
+            </summary>
+        </member>
+        <member name="P:Cethleann.Structure.Art.TextureDataHeader.PackedDimensions">
+            <summary>
+            2 POW value AND 0xF = width
+            2 POW value SHR 0x4 = height
+            </summary>
+        </member>
         <member name="T:Cethleann.Structure.DATA0Entry">
             <summary>
             An entry in DATA0

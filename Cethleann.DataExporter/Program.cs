@@ -1,5 +1,7 @@
 ﻿using Cethleann.DataTables;
+using Cethleann.G1;
 using Cethleann.Structure.DataStructs;
+using DragonLib.DXGI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,13 +17,22 @@ namespace Cethleann.DataExporter
             var DATA0 = new DATA0(@$"{romfs}\DATA0.bin");
             using var DATA1 = File.OpenRead(@$"{romfs}\DATA1.bin");
 
+            var bundle = new DataTable(DATA0.ReadEntry(DATA1, 0xE34).Span);
+            var texture = new G1Texture(bundle.Entries.ElementAt(1).Span);
+            var i = 0;
+            if (!Directory.Exists(@$"{romfs}\ex\tex")) Directory.CreateDirectory(@$"{romfs}\ex\tex");
+            foreach (var (usage, header, extra, blob) in texture.Textures)
+            {
+                var (width, height, mips, format) = G1Texture.UnpackWHM(header);
+                File.WriteAllBytes($@"{romfs}\ex\tex\{i++:X16}.dds", DXGI.BuildDDS(format, mips, width, height, blob.Span).ToArray());
+            }
             var text = new DataTable(DATA0.ReadEntry(DATA1, 0).Span);
             var dh = new DataTable(DATA0.ReadEntry(DATA1, 12).Span);
             var dhChar = new StructTable(dh.Entries.ElementAt(0).Span).Cast<CharacterInfo>();
             var textCh = DATA0Helper.GetTextLocalizationsRoot(text);
             // ExtractTables(romfs, DATA0, DATA1, 0);
-            ExtractAll(romfs, DATA0, DATA1);
-            File.WriteAllText($@"{romfs}\ex\magic.txt", string.Join('\n', MagicValues.Select(x => x.ToString("X"))));
+            // ExtractAll(romfs, DATA0, DATA1);
+            // File.WriteAllText($@"{romfs}\ex\magic.txt", string.Join('\n', MagicValues.Select(x => x.ToString("X"))));
             return;
         }
 
