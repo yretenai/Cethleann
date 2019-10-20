@@ -2,18 +2,30 @@
 using DragonLib;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Cethleann
 {
     /// <summary>
     /// Series of helper for FETH.
     /// </summary>
-    public static class DATA0Helper
+    public static class Extensions
     {
-        static DATA0Helper()
+        static Extensions()
         {
             DataTypeHelper.Preload<DataType>();
+        }
+
+        /// <summary>
+        /// Converts a version tag to a number.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static int ToVersion(this int value)
+        {
+            return int.Parse(Encoding.ASCII.GetString(BitConverter.GetBytes(value).Reverse().ToArray()));
         }
 
         /// <summary>

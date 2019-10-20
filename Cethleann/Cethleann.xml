@@ -43,76 +43,6 @@
             <param name="entry">Entry to read</param>
             <returns>memory stream of uncompressed bytes</returns>
         </member>
-        <member name="T:Cethleann.DATA0Helper">
-            <summary>
-            Series of helper for FETH.
-            </summary>
-        </member>
-        <member name="M:Cethleann.DATA0Helper.GetExtension(Cethleann.DataType)">
-            <summary>
-            Returns determined string extension for this magic.
-            </summary>
-            <param name="magic"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Cethleann.DATA0Helper.IsKnown(Cethleann.DataType)">
-            <summary>
-            True if the magic values are known
-            </summary>
-            <param name="magic"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Cethleann.DATA0Helper.IsKnown(System.Span{System.Byte})">
-            <summary>
-            True if the magic values are known
-            </summary>
-            <param name="span"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Cethleann.DATA0Helper.Matches(System.Span{System.Byte},Cethleann.DataType)">
-            <summary>
-            True if the magic value matches the first 4 bytes of the span.
-            </summary>
-            <param name="span"></param>
-            <param name="magic"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Cethleann.DATA0Helper.Matches(Cethleann.DataType,System.Span{System.Byte})">
-            <summary>
-            True if the magic value matches the first 4 bytes of the span.
-            </summary>
-            <param name="magic"></param>
-            <param name="span"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Cethleann.DATA0Helper.GetDataType(System.Span{System.Byte})">
-            <summary>
-            Gets <seealso cref="T:Cethleann.DataType"/> from a Span.
-            </summary>
-            <param name="span"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Cethleann.DATA0Helper.IsDataTable(System.Span{System.Byte})">
-            <summary>
-            Guesses if the stream is a DataTable
-            </summary>H:\Datamining\FireEmblemTH\Cethleann\DragonLib\DataTypeHelper.cs
-            <param name="buffer">data to test</param>
-            <returns>true if the header is predictable</returns>
-        </member>
-        <member name="M:Cethleann.DATA0Helper.GetTextLocalizationsRoot(Cethleann.DataTables.DataTable)">
-            <summary>
-            Gets two dimensional text localizations from a data table.
-            </summary>
-            <param name="table"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Cethleann.DATA0Helper.GetTextLocalizations(Cethleann.DataTables.DataTable)">
-            <summary>
-            Gets Text Localizations from table entries.
-            </summary>
-            <param name="table"></param>
-            <returns></returns>
-        </member>
         <member name="T:Cethleann.DataTables.DataTable">
             <summary>
             Main blob bundle of the game.
@@ -173,11 +103,6 @@
             S-Package?
             </summary>
         </member>
-        <member name="F:Cethleann.DataType.GT">
-            <summary>
-            Koei Texture
-            </summary>
-        </member>
         <member name="F:Cethleann.DataType.KTSR">
             <summary>
             Koei Tecmo Sound Resource
@@ -193,28 +118,141 @@
             WebM Video Container
             </summary>
         </member>
-        <member name="F:Cethleann.DataType.XL_19">
+        <member name="F:Cethleann.DataType.TextLocalization19">
             <summary>
             teXt Localization, version 19.
             </summary>
         </member>
-        <member name="T:Cethleann.G1.G1Texture">
+        <member name="F:Cethleann.DataType.TextureGroup">
+            <summary>
+            Koei Texture Group
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.Model">
+            <summary>
+            Koei Model Base
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.ModelSkeleton">
+            <summary>
+            Koei Model Skeleton
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.ModelF">
+            <summary>
+            Koei Model F?
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.ModelGeomtry">
+            <summary>
+            Koei Model Geometry
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.ModelMaterial">
+            <summary>
+            Koei Model Material
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.ModelExtra">
+            <summary>
+            Koei Model ExtraData.
+            </summary>
+        </member>
+        <member name="T:Cethleann.Extensions">
+            <summary>
+            Series of helper for FETH.
+            </summary>
+        </member>
+        <member name="M:Cethleann.Extensions.ToVersion(System.Int32)">
+            <summary>
+            Converts a version tag to a number.
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Extensions.GetExtension(Cethleann.DataType)">
+            <summary>
+            Returns determined string extension for this magic.
+            </summary>
+            <param name="magic"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Extensions.IsKnown(Cethleann.DataType)">
+            <summary>
+            True if the magic values are known
+            </summary>
+            <param name="magic"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Extensions.IsKnown(System.Span{System.Byte})">
+            <summary>
+            True if the magic values are known
+            </summary>
+            <param name="span"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Extensions.Matches(System.Span{System.Byte},Cethleann.DataType)">
+            <summary>
+            True if the magic value matches the first 4 bytes of the span.
+            </summary>
+            <param name="span"></param>
+            <param name="magic"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Extensions.Matches(Cethleann.DataType,System.Span{System.Byte})">
+            <summary>
+            True if the magic value matches the first 4 bytes of the span.
+            </summary>
+            <param name="magic"></param>
+            <param name="span"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Extensions.GetDataType(System.Span{System.Byte})">
+            <summary>
+            Gets <seealso cref="T:Cethleann.DataType"/> from a Span.
+            </summary>
+            <param name="span"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Extensions.IsDataTable(System.Span{System.Byte})">
+            <summary>
+            Guesses if the stream is a DataTable
+            </summary>H:\Datamining\FireEmblemTH\Cethleann\DragonLib\DataTypeHelper.cs
+            <param name="buffer">data to test</param>
+            <returns>true if the header is predictable</returns>
+        </member>
+        <member name="M:Cethleann.Extensions.GetTextLocalizationsRoot(Cethleann.DataTables.DataTable)">
+            <summary>
+            Gets two dimensional text localizations from a data table.
+            </summary>
+            <param name="table"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Extensions.GetTextLocalizations(Cethleann.DataTables.DataTable)">
+            <summary>
+            Gets Text Localizations from table entries.
+            </summary>
+            <param name="table"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.G1.G1TextureGroup">
             <summary>
             G1Texture is the main texture format
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1Texture.Textures">
+        <member name="P:Cethleann.G1.G1TextureGroup.Textures">
             <summary>
             List of textures found in this bundle
             </summary>
         </member>
-        <member name="M:Cethleann.G1.G1Texture.#ctor(System.Span{System.Byte})">
+        <member name="M:Cethleann.G1.G1TextureGroup.#ctor(System.Span{System.Byte},System.Boolean)">
             <summary>
             Parse G1 from the provided data buffer
             </summary>
             <param name="data"></param>
+            <param name="ignoreVersion"></param>
         </member>
-        <member name="M:Cethleann.G1.G1Texture.UnpackWHM(Cethleann.Structure.Art.TextureDataHeader)">
+        <member name="M:Cethleann.G1.G1TextureGroup.UnpackWHM(Cethleann.Structure.Art.TextureDataHeader)">
             <summary>
             Unpacks Width, Height, Mip Count, and DXGI Format from a G1T data header.
             </summary>

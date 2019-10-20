@@ -9,24 +9,28 @@ namespace Cethleann.G1
     /// <summary>
     /// G1Texture is the main texture format
     /// </summary>
-    public class G1Texture
+    public class G1TextureGroup
     {
         /// <summary>
         /// List of textures found in this bundle
         /// </summary>
         public List<(TextureUsage usage, TextureDataHeader header, TextureExtraDataHeader? extra, Memory<byte> blob)> Textures { get; } = new List<(TextureUsage, TextureDataHeader, TextureExtraDataHeader?, Memory<byte>)>();
 
+        private readonly static int SupportedVersion = 60;
+
         /// <summary>
         /// Parse G1 from the provided data buffer
         /// </summary>
         /// <param name="data"></param>
-        public G1Texture(Span<byte> data)
+        /// <param name="ignoreVersion"></param>
+        public G1TextureGroup(Span<byte> data, bool ignoreVersion = false)
         {
-            if (!data.Matches(DataType.GT)) throw new InvalidOperationException("Not an G1T stream");
-
-            var header = MemoryMarshal.Read<TextureHeader>(data);
+            if (!data.Matches(DataType.TextureGroup)) throw new InvalidOperationException("Not an G1T stream");
+            var sectionHeader = MemoryMarshal.Read<ResourceSectionHeader>(data);
+            if (!ignoreVersion && sectionHeader.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1T version {sectionHeader.Version.ToVersion()} is not supported!");
+            var header = MemoryMarshal.Read<TextureGroupHeader>(data.Slice(0xC));
             var blobSize = 4 * header.EntrySize;
-            var usage = MemoryMarshal.Cast<byte, TextureUsage>(data.Slice(0x1C, blobSize));
+            var usage = MemoryMarshal.Cast<byte, TextureUsage>(data.Slice(0x28, blobSize));
             var offsets = MemoryMarshal.Cast<byte, int>(data.Slice(header.TableOffset, blobSize));
             
             for(var i = 0; i < header.EntrySize; i++)

@@ -22,7 +22,7 @@ namespace Cethleann
         /// <param name="buffer"></param>
         public TextLocalization(Span<byte> buffer)
         {
-            if (!buffer.Matches(DataType.XL_19)) throw new InvalidOperationException("Not an XL 19 stream");
+            if (!buffer.Matches(DataType.TextLocalization19)) throw new InvalidOperationException("Not an XL 19 stream");
             var header = MemoryMarshal.Read<TextLocalizationHeader>(buffer);
 
             Helper.Assert(header.Size == 0x14);
