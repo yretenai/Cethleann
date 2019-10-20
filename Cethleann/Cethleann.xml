@@ -108,9 +108,44 @@
             Koei Tecmo Sound Resource
             </summary>
         </member>
+        <member name="F:Cethleann.DataType.KTSC">
+            <summary>
+            Koei Tecmo Sound Container
+            </summary>
+        </member>
         <member name="F:Cethleann.DataType.SCEN">
             <summary>
             Scene
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.SPK3">
+            <summary>
+            Shader Pack?
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.SWGQ">
+            <summary>
+            Shader Pack?
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.River">
+            <summary>
+            River?
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.RIGB">
+            <summary>
+            Rig B?
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.DATD">
+            <summary>
+            DATD
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.LCD0">
+            <summary>
+            LCD 0
             </summary>
         </member>
         <member name="F:Cethleann.DataType.WEBM">
@@ -161,6 +196,32 @@
         <member name="F:Cethleann.DataType.Animation">
             <summary>
             Koei Animation
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.ModelGroup">
+            <summary>
+            Koei Model Group.
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.EffectManager">
+            <summary>
+            ASSUMPTION
+            Koei Effect Manager
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.Effect">
+            <summary>
+            Koei Effect
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.OLS">
+            <summary>
+            Koei ?
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.PostFX">
+            <summary>
+            Koei PostFX Shader Bundle
             </summary>
         </member>
         <member name="T:Cethleann.Extensions">

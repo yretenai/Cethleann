@@ -37,7 +37,7 @@ namespace Cethleann.DataExporter
             var textCh = text.GetTextLocalizationsRoot();
             // ExtractTables(romfs, DATA0, DATA1, 0);
             // ExtractAll(romfs, DATA0, DATA1);
-            // File.WriteAllText($@"{romfs}\ex\magic.txt", string.Join('\n', MagicValues.Select(x => x.ToString("X"))));
+            // File.WriteAllText($@"{romfs}\ex\magic.txt", string.Join('\n', MagicValues.Select(x => x.ToFourCC() + " " + x.GetExtension())));
             return;
         }
 

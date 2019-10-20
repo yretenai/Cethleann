@@ -25,7 +25,7 @@ namespace Cethleann
         /// <returns></returns>
         public static string ToFourCC(this int value)
         {
-            return Encoding.ASCII.GetString(BitConverter.GetBytes(value));
+            return string.Join("", BitConverter.GetBytes(value).Select(x => (x >= 48 && x <= 122) ? ((char)x).ToString() : @$"\x{x:X2}"));
         }
 
         /// <summary>
