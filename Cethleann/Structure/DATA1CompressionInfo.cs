@@ -9,7 +9,7 @@ namespace Cethleann.Structure
     public struct DATA1CompressionInfo
     {
         /// <summary>
-        /// Always 0x10000, I assumed ChunkSize but it doesn't match up.
+        /// Always 0x0001_0000, I assumed ChunkSize but it doesn't match up.
         /// </summary>
         public int Unknown { get; set; }
         /// <summary>

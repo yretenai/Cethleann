@@ -19,6 +19,7 @@ namespace Cethleann.DataExporter
             using var DATA1 = File.OpenRead(@$"{romfs}\DATA1.bin");
 
             var bundle = new DataTable(DATA0.ReadEntry(DATA1, 0xE34).Span);
+            var model = new G1Model(bundle.Entries.ElementAt(0).Span);
             var texture = new G1TextureGroup(bundle.Entries.ElementAt(1).Span);
             var i = 0;
             if (!Directory.Exists(@$"{romfs}\ex\tex")) Directory.CreateDirectory(@$"{romfs}\ex\tex");

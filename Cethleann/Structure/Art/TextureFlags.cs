@@ -6,7 +6,7 @@ namespace Cethleann.Structure.Art
     [Flags]
     public enum TextureFlags : uint
     {
-        ExtraData = 0x10000000
+        ExtraData = 0x1000_0000
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

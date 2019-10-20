@@ -7,7 +7,8 @@ using System.Runtime.InteropServices;
 namespace Cethleann.G1
 {
     /// <summary>
-    /// G1Texture is the main texture format
+    /// G1TextureGroup is a bundle of textures.
+    /// This is how all textures are encoded.
     /// </summary>
     public class G1TextureGroup : IG1Section
     {
@@ -23,7 +24,7 @@ namespace Cethleann.G1
         public ResourceSectionHeader Section { get; }
 
         /// <summary>
-        /// Parse G1 from the provided data buffer
+        /// Parse G1T from the provided data buffer
         /// </summary>
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>

@@ -143,14 +143,14 @@
             Koei Model F?
             </summary>
         </member>
-        <member name="F:Cethleann.DataType.ModelGeomtry">
+        <member name="F:Cethleann.DataType.ModelGeometry">
             <summary>
             Koei Model Geometry
             </summary>
         </member>
-        <member name="F:Cethleann.DataType.ModelMaterial">
+        <member name="F:Cethleann.DataType.ModelMatrix">
             <summary>
-            Koei Model Material
+            Koei Model Matrices
             </summary>
         </member>
         <member name="F:Cethleann.DataType.ModelExtra">
@@ -158,10 +158,29 @@
             Koei Model ExtraData.
             </summary>
         </member>
+        <member name="F:Cethleann.DataType.Animation">
+            <summary>
+            Koei Animation
+            </summary>
+        </member>
         <member name="T:Cethleann.Extensions">
             <summary>
             Series of helper for FETH.
             </summary>
+        </member>
+        <member name="M:Cethleann.Extensions.ToFourCC(System.Int32)">
+            <summary>
+            Converts an integer to a FourCC
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Extensions.ToFourCC(Cethleann.DataType)">
+            <summary>
+            Converts a DataType to a FourCC
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
         </member>
         <member name="M:Cethleann.Extensions.ToVersion(System.Int32)">
             <summary>
@@ -235,11 +254,30 @@
             <param name="table"></param>
             <returns></returns>
         </member>
+        <member name="T:Cethleann.G1.G1Model">
+            <summary>
+            G1Model is the main model format
+            </summary>
+        </member>
         <member name="P:Cethleann.G1.G1Model.SupportedVersion">
             <inheritdoc/>
         </member>
         <member name="P:Cethleann.G1.G1Model.Section">
             <inheritdoc/>
+        </member>
+        <member name="P:Cethleann.G1.G1Model.Sections">
+            <summary>
+            Sections found in this model.
+            Look for <seealso cref="T:Cethleann.G1.G1ModelSection.G1MG"/> for Geometry.
+            Look for <seealso cref="T:Cethleann.G1.G1ModelSection.G1MS"/> for Skeleton.
+            </summary>
+        </member>
+        <member name="M:Cethleann.G1.G1Model.#ctor(System.Span{System.Byte},System.Boolean)">
+            <summary>
+            Parse G1M from the provided data buffer
+            </summary>
+            <param name="data"></param>
+            <param name="ignoreVersion"></param>
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MExtra">
             <summary>
@@ -252,6 +290,13 @@
         <member name="P:Cethleann.G1.G1ModelSection.G1MExtra.Section">
             <inheritdoc/>
         </member>
+        <member name="M:Cethleann.G1.G1ModelSection.G1MExtra.#ctor(System.Span{System.Byte},System.Boolean)">
+            <summary>
+            Extra data found in G1M models.
+            </summary>
+            <param name="data"></param>
+            <param name="ignoreVersion"></param>
+        </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MF">
             <summary>
             F Section of G1M models
@@ -262,6 +307,14 @@
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MF.Section">
             <inheritdoc/>
+        </member>
+        <member name="M:Cethleann.G1.G1ModelSection.G1MF.#ctor(System.Span{System.Byte},System.Boolean)">
+            <summary>
+            Model F Data
+            Pay Respects.
+            </summary>
+            <param name="data"></param>
+            <param name="ignoreVersion"></param>
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MG">
             <summary>
@@ -274,9 +327,16 @@
         <member name="P:Cethleann.G1.G1ModelSection.G1MG.Section">
             <inheritdoc/>
         </member>
+        <member name="M:Cethleann.G1.G1ModelSection.G1MG.#ctor(System.Span{System.Byte},System.Boolean)">
+            <summary>
+            Model Geometry
+            </summary>
+            <param name="data"></param>
+            <param name="ignoreVersion"></param>
+        </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MM">
             <summary>
-            Material Section of G1M models
+            Matrix Section of G1M models
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MM.SupportedVersion">
@@ -284,6 +344,19 @@
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MM.Section">
             <inheritdoc/>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MM.Matrices">
+            <summary>
+            List of matrices found in the file. 
+            They're all weird.
+            </summary>
+        </member>
+        <member name="M:Cethleann.G1.G1ModelSection.G1MM.#ctor(System.Span{System.Byte},System.Boolean)">
+            <summary>
+            Model Matrix Data
+            </summary>
+            <param name="data"></param>
+            <param name="ignoreVersion"></param>
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MS">
             <summary>
@@ -296,9 +369,47 @@
         <member name="P:Cethleann.G1.G1ModelSection.G1MS.Section">
             <inheritdoc/>
         </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MS.BoneIndices">
+            <summary>
+            Bone Remap Index
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MS.BoneIndicesFiltered">
+            <summary>
+            BoneIndices but without -1
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MS.Bones">
+            <summary>
+            lsof bones
+            </summary>
+        </member>
+        <member name="M:Cethleann.G1.G1ModelSection.G1MS.#ctor(System.Span{System.Byte},System.Boolean)">
+            <summary>
+            Model Skeleton Data.
+            </summary>
+            <param name="data"></param>
+            <param name="ignoreVersion"></param>
+        </member>
+        <member name="M:Cethleann.G1.G1ModelSection.G1MS.AtIndex(System.Int32)">
+            <summary>
+            Returns the remapped bone at the specified index.
+            If the index is not remapped, returns null.
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.G1.G1ModelSection.G1MS.AtFilteredIndex(System.Int32)">
+            <summary>
+            Returns the remapped bone at the specified index.
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
         <member name="T:Cethleann.G1.G1TextureGroup">
             <summary>
-            G1Texture is the main texture format
+            G1TextureGroup is a bundle of textures.
+            This is how all textures are encoded.
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1TextureGroup.Textures">
@@ -314,7 +425,7 @@
         </member>
         <member name="M:Cethleann.G1.G1TextureGroup.#ctor(System.Span{System.Byte},System.Boolean)">
             <summary>
-            Parse G1 from the provided data buffer
+            Parse G1T from the provided data buffer
             </summary>
             <param name="data"></param>
             <param name="ignoreVersion"></param>
@@ -384,7 +495,7 @@
         </member>
         <member name="P:Cethleann.Structure.DATA1CompressionInfo.Unknown">
             <summary>
-            Always 0x10000, I assumed ChunkSize but it doesn't match up.
+            Always 0x0001_0000, I assumed ChunkSize but it doesn't match up.
             </summary>
         </member>
         <member name="P:Cethleann.Structure.DATA1CompressionInfo.ChunkCount">

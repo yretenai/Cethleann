@@ -19,13 +19,33 @@ namespace Cethleann
         }
 
         /// <summary>
+        /// Converts an integer to a FourCC
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string ToFourCC(this int value)
+        {
+            return Encoding.ASCII.GetString(BitConverter.GetBytes(value));
+        }
+
+        /// <summary>
+        /// Converts a DataType to a FourCC
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string ToFourCC(this DataType value)
+        {
+            return ((int)value).ToFourCC();
+        }
+
+        /// <summary>
         /// Converts a version tag to a number.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
         public static int ToVersion(this int value)
         {
-            return int.Parse(Encoding.ASCII.GetString(BitConverter.GetBytes(value).Reverse().ToArray()));
+            return int.Parse(value.ToFourCC().Reverse().ToArray());
         }
 
         /// <summary>
