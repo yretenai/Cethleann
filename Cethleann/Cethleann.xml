@@ -235,6 +235,67 @@
             <param name="table"></param>
             <returns></returns>
         </member>
+        <member name="P:Cethleann.G1.G1Model.SupportedVersion">
+            <inheritdoc/>
+        </member>
+        <member name="P:Cethleann.G1.G1Model.Section">
+            <inheritdoc/>
+        </member>
+        <member name="T:Cethleann.G1.G1ModelSection.G1MExtra">
+            <summary>
+            Extra Section of G1M models
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MExtra.SupportedVersion">
+            <inheritdoc/>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MExtra.Section">
+            <inheritdoc/>
+        </member>
+        <member name="T:Cethleann.G1.G1ModelSection.G1MF">
+            <summary>
+            F Section of G1M models
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MF.SupportedVersion">
+            <inheritdoc/>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MF.Section">
+            <inheritdoc/>
+        </member>
+        <member name="T:Cethleann.G1.G1ModelSection.G1MG">
+            <summary>
+            Geometry Section of G1M models
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MG.SupportedVersion">
+            <inheritdoc/>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MG.Section">
+            <inheritdoc/>
+        </member>
+        <member name="T:Cethleann.G1.G1ModelSection.G1MM">
+            <summary>
+            Material Section of G1M models
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MM.SupportedVersion">
+            <inheritdoc/>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MM.Section">
+            <inheritdoc/>
+        </member>
+        <member name="T:Cethleann.G1.G1ModelSection.G1MS">
+            <summary>
+            Skeleton Section of G1M models
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MS.SupportedVersion">
+            <inheritdoc/>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MS.Section">
+            <inheritdoc/>
+        </member>
         <member name="T:Cethleann.G1.G1TextureGroup">
             <summary>
             G1Texture is the main texture format
@@ -244,6 +305,12 @@
             <summary>
             List of textures found in this bundle
             </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1TextureGroup.SupportedVersion">
+            <inheritdoc/>
+        </member>
+        <member name="P:Cethleann.G1.G1TextureGroup.Section">
+            <inheritdoc/>
         </member>
         <member name="M:Cethleann.G1.G1TextureGroup.#ctor(System.Span{System.Byte},System.Boolean)">
             <summary>
@@ -258,6 +325,21 @@
             </summary>
             <param name="header"></param>
             <returns></returns>
+        </member>
+        <member name="T:Cethleann.G1.IG1Section">
+            <summary>
+            Boiler interface for G1 Sections.
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.IG1Section.SupportedVersion">
+            <summary>
+            Version implemented by this class
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.IG1Section.Section">
+            <summary>
+            Section header for this section
+            </summary>
         </member>
         <member name="P:Cethleann.Structure.Art.TextureDataHeader.MipCount">
             <summary>
