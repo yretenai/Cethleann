@@ -1,4 +1,5 @@
 ﻿using Cethleann.Structure;
+using DragonLib;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -15,7 +16,7 @@ namespace Cethleann.DataTables
         /// Lsof Entries found in the table
         /// </summary>
         public IEnumerable<Memory<byte>> Entries;
-        
+
         /// <summary>
         /// Initialize with a span.
         /// </summary>
@@ -23,7 +24,7 @@ namespace Cethleann.DataTables
         public DataTable(Span<byte> buffer)
         {
             var count = MemoryMarshal.Read<int>(buffer);
-            var tableInfo = MemoryMarshal.Cast<byte, DataTableRecord>(buffer.Slice(4, 8 * count));
+            var tableInfo = MemoryMarshal.Cast<byte, DataTableRecord>(buffer.Slice(sizeof(int), SizeHelper.SizeOf<DataTableRecord>() * count));
             var entries = new List<Memory<byte>>();
             foreach (var info in tableInfo)
             {

@@ -1,4 +1,6 @@
-﻿using Cethleann.Structure.Art;
+﻿using Cethleann.Structure.Resource;
+using Cethleann.Structure.Resource.Texture;
+using DragonLib;
 using DragonLib.DXGI;
 using System;
 using System.Collections.Generic;
@@ -30,26 +32,34 @@ namespace Cethleann.G1
         /// <param name="ignoreVersion"></param>
         public G1TextureGroup(Span<byte> data, bool ignoreVersion = false)
         {
-            if (!data.Matches(DataType.TextureGroup)) throw new InvalidOperationException("Not an G1T stream");
-            Section = MemoryMarshal.Read<ResourceSectionHeader>(data);
-            if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1T version {Section.Version.ToVersion()} is not supported!");
-            var header = MemoryMarshal.Read<TextureGroupHeader>(data.Slice(0xC));
-            var blobSize = 4 * header.EntrySize;
-            var usage = MemoryMarshal.Cast<byte, TextureUsage>(data.Slice(0x28, blobSize));
-            var offsets = MemoryMarshal.Cast<byte, int>(data.Slice(header.TableOffset, blobSize));
-            
-            for(var i = 0; i < header.EntrySize; i++)
+            if (!data.Matches(DataType.TextureGroup))
             {
-                var imageData = data.Slice(header.TableOffset + offsets[i]);
-                var dataHeader = MemoryMarshal.Read<TextureDataHeader>(imageData);
-                var offset = 8;
+                throw new InvalidOperationException("Not an G1T stream");
+            }
+
+            Section = MemoryMarshal.Read<ResourceSectionHeader>(data);
+            if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion)
+            {
+                throw new NotSupportedException($"G1T version {Section.Version.ToVersion()} is not supported!");
+            }
+
+            TextureGroupHeader header = MemoryMarshal.Read<TextureGroupHeader>(data.Slice(SizeHelper.SizeOf<ResourceSectionHeader>()));
+            int blobSize = sizeof(int) * header.EntrySize;
+            Span<TextureUsage> usage = MemoryMarshal.Cast<byte, TextureUsage>(data.Slice(SizeHelper.SizeOf<ResourceSectionHeader>() + SizeHelper.SizeOf<TextureGroupHeader>(), blobSize));
+            Span<int> offsets = MemoryMarshal.Cast<byte, int>(data.Slice(header.TableOffset, blobSize));
+
+            for (int i = 0; i < header.EntrySize; i++)
+            {
+                Span<byte> imageData = data.Slice(header.TableOffset + offsets[i]);
+                TextureDataHeader dataHeader = MemoryMarshal.Read<TextureDataHeader>(imageData);
+                int offset = SizeHelper.SizeOf<TextureDataHeader>();
                 TextureExtraDataHeader? extra = null;
-                if(dataHeader.Flags.HasFlag(TextureFlags.ExtraData))
+                if (dataHeader.Flags.HasFlag(TextureFlags.ExtraData))
                 {
                     extra = MemoryMarshal.Read<TextureExtraDataHeader>(imageData.Slice(offset));
-                    offset += 0xC;
+                    offset += SizeHelper.SizeOf<TextureExtraDataHeader>();
                 }
-                var (width, height, mips, _) = UnpackWHM(dataHeader);
+                (int width, int height, int mips, DXGIPixelFormat _) = UnpackWHM(dataHeader);
                 int size;
                 switch (dataHeader.Type)
                 {
@@ -66,13 +76,13 @@ namespace Cethleann.G1
                     default:
                         throw new InvalidOperationException($"Format {dataHeader.Type:X} is unknown!");
                 }
-                var localSize = size;
-                for(var j = 1; j < mips; j++)
+                int localSize = size;
+                for (int j = 1; j < mips; j++)
                 {
                     localSize /= 4;
                     size += localSize;
                 }
-                var block = imageData.Slice(offset, size);
+                Span<byte> block = imageData.Slice(offset, size);
                 Textures.Add((usage[i], dataHeader, extra, new Memory<byte>(block.ToArray())));
             }
         }
@@ -84,10 +94,10 @@ namespace Cethleann.G1
         /// <returns></returns>
         public static (int width, int height, int mips, DXGIPixelFormat format) UnpackWHM(TextureDataHeader header)
         {
-            var width = (int)Math.Pow(2, header.PackedDimensions & 0xF);
-            var height = (int)Math.Pow(2, header.PackedDimensions >> 4);
-            var mips = header.MipCount >> 4;
-            var format = DXGIPixelFormat.R8G8B8A8_UNORM;
+            int width = (int)Math.Pow(2, header.PackedDimensions & 0xF);
+            int height = (int)Math.Pow(2, header.PackedDimensions >> 4);
+            int mips = header.MipCount >> 4;
+            DXGIPixelFormat format = DXGIPixelFormat.R8G8B8A8_UNORM;
             switch (header.Type)
             {
                 case TextureType.R8G8B8A8:

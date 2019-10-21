@@ -1,4 +1,5 @@
 ﻿using Cethleann.Structure;
+using DragonLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,10 @@ namespace Cethleann.DataTables
         public StructTable(Span<byte> buffer)
         {
             var header = MemoryMarshal.Read<StructTableHeader>(buffer);
-            for (int i = 0; i < header.Count; ++i) Entries.Add(buffer.Slice(0x40 + i * header.Size, header.Size).ToArray());
+            for (var i = 0; i < header.Count; ++i)
+            {
+                Entries.Add(buffer.Slice(SizeHelper.SizeOf<StructTableHeader>() + i * header.Size, header.Size).ToArray());
+            }
         }
 
         /// <summary>
@@ -31,9 +35,6 @@ namespace Cethleann.DataTables
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public List<T> Cast<T>() where T : struct
-        {
-            return Entries.Select(x => MemoryMarshal.Read<T>(x.Span)).ToList();
-        }
+        public List<T> Cast<T>() where T : struct => Entries.Select(x => MemoryMarshal.Read<T>(x.Span)).ToList();
     }
 }

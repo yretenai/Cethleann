@@ -229,18 +229,20 @@
             Series of helper for FETH.
             </summary>
         </member>
-        <member name="M:Cethleann.Extensions.ToFourCC(System.Int32)">
+        <member name="M:Cethleann.Extensions.ToFourCC(System.Int32,System.Boolean)">
             <summary>
             Converts an integer to a FourCC
             </summary>
             <param name="value"></param>
+            <param name="onlyAlphaNum"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.Extensions.ToFourCC(Cethleann.DataType)">
+        <member name="M:Cethleann.Extensions.ToFourCC(Cethleann.DataType,System.Boolean)">
             <summary>
             Converts a DataType to a FourCC
             </summary>
             <param name="value"></param>
+            <param name="onlyAlphaNum"></param>
             <returns></returns>
         </member>
         <member name="M:Cethleann.Extensions.ToVersion(System.Int32)">
@@ -351,12 +353,13 @@
         <member name="P:Cethleann.G1.G1ModelSection.G1MExtra.Section">
             <inheritdoc/>
         </member>
-        <member name="M:Cethleann.G1.G1ModelSection.G1MExtra.#ctor(System.Span{System.Byte},System.Boolean)">
+        <member name="M:Cethleann.G1.G1ModelSection.G1MExtra.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
             <summary>
             Extra data found in G1M models.
             </summary>
             <param name="data"></param>
             <param name="ignoreVersion"></param>
+            <param name="sectionHeader"></param>
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MF">
             <summary>
@@ -369,13 +372,14 @@
         <member name="P:Cethleann.G1.G1ModelSection.G1MF.Section">
             <inheritdoc/>
         </member>
-        <member name="M:Cethleann.G1.G1ModelSection.G1MF.#ctor(System.Span{System.Byte},System.Boolean)">
+        <member name="M:Cethleann.G1.G1ModelSection.G1MF.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
             <summary>
             Model F Data
             Pay Respects.
             </summary>
             <param name="data"></param>
             <param name="ignoreVersion"></param>
+            <param name="sectionHeader"></param>
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MG">
             <summary>
@@ -388,12 +392,13 @@
         <member name="P:Cethleann.G1.G1ModelSection.G1MG.Section">
             <inheritdoc/>
         </member>
-        <member name="M:Cethleann.G1.G1ModelSection.G1MG.#ctor(System.Span{System.Byte},System.Boolean)">
+        <member name="M:Cethleann.G1.G1ModelSection.G1MG.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
             <summary>
             Model Geometry
             </summary>
             <param name="data"></param>
             <param name="ignoreVersion"></param>
+            <param name="sectionHeader"></param>
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MM">
             <summary>
@@ -412,12 +417,13 @@
             They're all weird.
             </summary>
         </member>
-        <member name="M:Cethleann.G1.G1ModelSection.G1MM.#ctor(System.Span{System.Byte},System.Boolean)">
+        <member name="M:Cethleann.G1.G1ModelSection.G1MM.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
             <summary>
             Model Matrix Data
             </summary>
             <param name="data"></param>
             <param name="ignoreVersion"></param>
+            <param name="sectionHeader"></param>
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MS">
             <summary>
@@ -445,12 +451,13 @@
             lsof bones
             </summary>
         </member>
-        <member name="M:Cethleann.G1.G1ModelSection.G1MS.#ctor(System.Span{System.Byte},System.Boolean)">
+        <member name="M:Cethleann.G1.G1ModelSection.G1MS.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
             <summary>
             Model Skeleton Data.
             </summary>
             <param name="data"></param>
             <param name="ignoreVersion"></param>
+            <param name="sectionHeader"></param>
         </member>
         <member name="M:Cethleann.G1.G1ModelSection.G1MS.AtIndex(System.Int32)">
             <summary>
@@ -491,7 +498,7 @@
             <param name="data"></param>
             <param name="ignoreVersion"></param>
         </member>
-        <member name="M:Cethleann.G1.G1TextureGroup.UnpackWHM(Cethleann.Structure.Art.TextureDataHeader)">
+        <member name="M:Cethleann.G1.G1TextureGroup.UnpackWHM(Cethleann.Structure.Resource.Texture.TextureDataHeader)">
             <summary>
             Unpacks Width, Height, Mip Count, and DXGI Format from a G1T data header.
             </summary>
@@ -511,17 +518,6 @@
         <member name="P:Cethleann.G1.IG1Section.Section">
             <summary>
             Section header for this section
-            </summary>
-        </member>
-        <member name="P:Cethleann.Structure.Art.TextureDataHeader.MipCount">
-            <summary>
-            SHR 4
-            </summary>
-        </member>
-        <member name="P:Cethleann.Structure.Art.TextureDataHeader.PackedDimensions">
-            <summary>
-            2 POW value AND 0xF = width
-            2 POW value SHR 0x4 = height
             </summary>
         </member>
         <member name="T:Cethleann.Structure.DATA0Entry">
@@ -568,6 +564,17 @@
             <summary>
             Compressed (read: bytes to read in this file) size of this file.
             Don't know why this exist, maybe anonymous file pointers?
+            </summary>
+        </member>
+        <member name="P:Cethleann.Structure.Resource.Texture.TextureDataHeader.MipCount">
+            <summary>
+            SHR 4
+            </summary>
+        </member>
+        <member name="P:Cethleann.Structure.Resource.Texture.TextureDataHeader.PackedDimensions">
+            <summary>
+            2 POW value AND 0xF = width
+            2 POW value SHR 0x4 = height
             </summary>
         </member>
         <member name="T:Cethleann.TextLocalization">

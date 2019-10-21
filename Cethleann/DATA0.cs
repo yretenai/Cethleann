@@ -35,7 +35,11 @@ namespace Cethleann
         {
             try
             {
-                if (!stream.CanRead) throw new InvalidOperationException("Cannot read from stream!");
+                if (!stream.CanRead)
+                {
+                    throw new InvalidOperationException("Cannot read from stream!");
+                }
+
                 Span<byte> buffer = stackalloc byte[32];
                 var entries = new DATA0Entry[stream.Length / 32];
                 var i = 0;
@@ -63,7 +67,11 @@ namespace Cethleann
         /// <returns>memory stream of uncompressed bytes</returns>
         public Memory<byte> ReadEntry(Stream DATA1, int index)
         {
-            if (index < 0 || index > Entries.Count) throw new IndexOutOfRangeException($"Index {index} does not exist!");
+            if (index < 0 || index > Entries.Count)
+            {
+                throw new IndexOutOfRangeException($"Index {index} does not exist!");
+            }
+
             return ReadEntry(DATA1, Entries[index]);
         }
 
@@ -75,7 +83,11 @@ namespace Cethleann
         /// <returns>memory stream of uncompressed bytes</returns>
         public unsafe Memory<byte> ReadEntry(Stream DATA1, DATA0Entry entry)
         {
-            if (!DATA1.CanRead) throw new InvalidOperationException("Cannot read from stream!");
+            if (!DATA1.CanRead)
+            {
+                throw new InvalidOperationException("Cannot read from stream!");
+            }
+
             DATA1.Position = entry.Offset;
             var buffer = new Memory<byte>(new byte[entry.UncompressedSize]);
             if (!entry.IsCompressed)

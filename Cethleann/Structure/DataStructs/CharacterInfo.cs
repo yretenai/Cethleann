@@ -1,13 +1,10 @@
-﻿using Cethleann.Structure.Math;
-using System.Runtime.InteropServices;
+﻿using DragonLib;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace Cethleann.Structure.DataStructs
-{
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 0x4C)]
-    public struct CharacterInfo
+{    public struct CharacterInfo
     {
-        public Vector4f Unknown_X0 { get; set; } // Color? Or something?
+        public Vector Unknown_X0 { get; set; } // Color? Or something?
 
         public short Unknown_X10 { get; set; } // always -1?
 

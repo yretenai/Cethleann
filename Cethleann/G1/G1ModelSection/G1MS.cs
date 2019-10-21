@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Cethleann.Structure.Resource;
+using Cethleann.Structure.Resource.Model;
+using DragonLib;
+using System;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Cethleann.Structure.Art;
 
 namespace Cethleann.G1.G1ModelSection
 {
@@ -36,17 +38,25 @@ namespace Cethleann.G1.G1ModelSection
         /// </summary>
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
-        public G1MS(Span<byte> data, bool ignoreVersion = false)
+        /// <param name="sectionHeader"></param>
+        public G1MS(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (!data.Matches(DataType.ModelSkeleton)) throw new InvalidOperationException("Not an G1MS stream");
-            Section = MemoryMarshal.Read<ResourceSectionHeader>(data);
-            if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MS version {Section.Version.ToVersion()} is not supported!");
+            if (sectionHeader.Magic != DataType.ModelSkeleton)
+            {
+                throw new InvalidOperationException("Not an G1MS stream");
+            }
 
-            var header = MemoryMarshal.Read<ModelSkeletonHeader>(data.Slice(0xC));
+            Section = sectionHeader;
+            if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion)
+            {
+                throw new NotSupportedException($"G1MS version {Section.Version.ToVersion()} is not supported!");
+            }
+
+            var header = MemoryMarshal.Read<ModelSkeletonHeader>(data);
             Helper.Assert(header.SkeletonCount == 1, "SkeletonCount == 1");
-            BoneIndices = MemoryMarshal.Cast<byte, short>(data.Slice(0x1C, header.BoneTableCount * 2)).ToArray();
+            BoneIndices = MemoryMarshal.Cast<byte, short>(data.Slice(SizeHelper.SizeOf<ModelSkeletonHeader>(), header.BoneTableCount * 2)).ToArray();
             BoneIndicesFiltered = BoneIndices.Where(x => x != -1).ToArray();
-            Bones = MemoryMarshal.Cast<byte, ModelSkeletonBone>(data.Slice(header.DataOffset, header.BoneCount * 0x30)).ToArray();
+            Bones = MemoryMarshal.Cast<byte, ModelSkeletonBone>(data.Slice(header.DataOffset - SizeHelper.SizeOf<ResourceSectionHeader>(), header.BoneCount * SizeHelper.SizeOf<ModelSkeletonBone>())).ToArray();
         }
 
         /// <summary>
@@ -58,7 +68,11 @@ namespace Cethleann.G1.G1ModelSection
         public ModelSkeletonBone? AtIndex(int i)
         {
             var index = BoneIndices[i];
-            if (index == -1) return null;
+            if (index == -1)
+            {
+                return null;
+            }
+
             return Bones[index];
         }
 
@@ -67,9 +81,6 @@ namespace Cethleann.G1.G1ModelSection
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public ModelSkeletonBone AtFilteredIndex(int i)
-        {
-            return Bones[BoneIndices[i]];
-        }
+        public ModelSkeletonBone AtFilteredIndex(int i) => Bones[BoneIndices[i]];
     }
 }

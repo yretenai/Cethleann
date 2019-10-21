@@ -10,19 +10,23 @@ using System.Linq;
 
 namespace Cethleann.DataExporter
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var romfs = args.Last();
             var DATA0 = new DATA0(@$"{romfs}\DATA0.bin");
             using var DATA1 = File.OpenRead(@$"{romfs}\DATA1.bin");
 
             var bundle = new DataTable(DATA0.ReadEntry(DATA1, 0xE34).Span);
-            var model = new G1Model(bundle.Entries.ElementAt(0).Span);
+            // var model = new G1Model(bundle.Entries.ElementAt(0).Span);
             var texture = new G1TextureGroup(bundle.Entries.ElementAt(1).Span);
             var i = 0;
-            if (!Directory.Exists(@$"{romfs}\ex\tex")) Directory.CreateDirectory(@$"{romfs}\ex\tex");
+            if (!Directory.Exists(@$"{romfs}\ex\tex"))
+            {
+                Directory.CreateDirectory(@$"{romfs}\ex\tex");
+            }
+
             foreach (var (usage, header, extra, blob) in texture.Textures)
             {
                 var (width, height, mips, format) = G1TextureGroup.UnpackWHM(header);
@@ -36,17 +40,21 @@ namespace Cethleann.DataExporter
             var dhChar = new StructTable(dh.Entries.ElementAt(0).Span).Cast<CharacterInfo>();
             var textCh = text.GetTextLocalizationsRoot();
             // ExtractTables(romfs, DATA0, DATA1, 0);
-            // ExtractAll(romfs, DATA0, DATA1);
+            ExtractAll(romfs, DATA0, DATA1);
             // File.WriteAllText($@"{romfs}\ex\magic.txt", string.Join('\n', MagicValues.Select(x => x.ToFourCC() + " " + x.GetExtension())));
             return;
         }
 
 #pragma warning disable IDE0051 // Remove unused private members
-        static void ExtractTables(string romfs, DATA0 DATA0, Stream DATA1, int index)
+        private static void ExtractTables(string romfs, DATA0 DATA0, Stream DATA1, int index)
         {
             var i = 0;
             var table = new DataTable(DATA0.ReadEntry(DATA1, index).Span);
-            if (!Directory.Exists($@"{romfs}\ex\table\{index:X16}")) Directory.CreateDirectory($@"{romfs}\ex\table\{index:X16}");
+            if (!Directory.Exists($@"{romfs}\ex\table\{index:X16}"))
+            {
+                Directory.CreateDirectory($@"{romfs}\ex\table\{index:X16}");
+            }
+
             foreach (var entry in table.Entries)
             {
                 File.WriteAllBytes($@"{romfs}\ex\table\{index:X16}\{i++:X16}.bin", entry.ToArray());
@@ -54,14 +62,21 @@ namespace Cethleann.DataExporter
             }
         }
 
-        static HashSet<DataType> MagicValues { get; set; } = new HashSet<DataType>();
+        private static HashSet<DataType> MagicValues { get; set; } = new HashSet<DataType>();
 
-        static void ExtractAll(string romfs, DATA0 DATA0, Stream DATA1)
+        private static void ExtractAll(string romfs, DATA0 DATA0, Stream DATA1)
         {
             var i = 0;
 
-            if (!Directory.Exists(@$"{romfs}\ex\uncompressed")) Directory.CreateDirectory(@$"{romfs}\ex\uncompressed");
-            if (!Directory.Exists(@$"{romfs}\ex\compressed")) Directory.CreateDirectory(@$"{romfs}\ex\compressed");
+            if (!Directory.Exists(@$"{romfs}\ex\uncompressed"))
+            {
+                Directory.CreateDirectory(@$"{romfs}\ex\uncompressed");
+            }
+
+            if (!Directory.Exists(@$"{romfs}\ex\compressed"))
+            {
+                Directory.CreateDirectory(@$"{romfs}\ex\compressed");
+            }
 
             foreach (var entry in DATA0.Entries)
             {
@@ -110,7 +125,10 @@ namespace Cethleann.DataExporter
                     }
                     if (!datablob.Span.IsKnown() && datablob.Span.IsDataTable())
                     {
-                        if (TryExtractDataTable(blobBase, datablob)) continue;
+                        if (TryExtractDataTable(blobBase, datablob))
+                        {
+                            continue;
+                        }
                     }
                     MagicValues.Add(datablob.Span.GetDataType());
                     File.WriteAllBytes(@$"{blobBase}.{ext}", datablob.ToArray());
@@ -119,7 +137,11 @@ namespace Cethleann.DataExporter
             catch (Exception e)
             {
                 Console.WriteLine(@$"Failed unpacking DataTable, {e.Message}!");
-                if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
+                if (Directory.Exists(pathBase))
+                {
+                    Directory.Delete(pathBase, true);
+                }
+
                 return false;
             }
             return true;

@@ -1,9 +1,5 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Cethleann.Structure
-{
-    [StructLayout(LayoutKind.Sequential, Pack = 4, Size = 0x40)]
-    internal struct StructTableHeader
+﻿namespace Cethleann.Structure
+{    internal struct StructTableHeader
     {
         public int Magic { get; set; }
         public int Count { get; set; }

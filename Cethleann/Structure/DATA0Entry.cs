@@ -1,12 +1,8 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Cethleann.Structure
+﻿namespace Cethleann.Structure
 {
     /// <summary>
     /// An entry in DATA0
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 32)]
-    public struct DATA0Entry
+    /// </summary>    public struct DATA0Entry
     {
         /// <summary>
         /// Offset in DATA1

@@ -1,12 +1,12 @@
-﻿using System;
-
-namespace Cethleann.Structure.Art
+﻿namespace Cethleann.Structure.Resource.Texture
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    [Flags]
-    public enum TextureFlags : uint
+    public enum TextureType : byte
     {
-        ExtraData = 0x1000_0000
+        R8G8B8A8 = 0x1,
+        B8G8R8A8 = 0x2,
+        BC1 = 0x59,
+        BC5 = 0x5B
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

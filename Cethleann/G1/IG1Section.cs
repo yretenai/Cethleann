@@ -1,4 +1,4 @@
-﻿using Cethleann.Structure.Art;
+﻿using Cethleann.Structure.Resource;
 
 namespace Cethleann.G1
 {

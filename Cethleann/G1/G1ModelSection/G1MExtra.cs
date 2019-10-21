@@ -1,6 +1,5 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Cethleann.Structure.Art;
+﻿using Cethleann.Structure.Resource;
+using System;
 
 namespace Cethleann.G1.G1ModelSection
 {
@@ -20,11 +19,19 @@ namespace Cethleann.G1.G1ModelSection
         /// </summary>
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
-        public G1MExtra(Span<byte> data, bool ignoreVersion = false)
+        /// <param name="sectionHeader"></param>
+        public G1MExtra(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (!data.Matches(DataType.ModelExtra)) throw new InvalidOperationException("Not an EXTR stream");
-            Section = MemoryMarshal.Read<ResourceSectionHeader>(data);
-            if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"EXTR version {Section.Version.ToVersion()} is not supported!");
+            if (sectionHeader.Magic != DataType.ModelExtra)
+            {
+                throw new InvalidOperationException("Not an EXTR stream");
+            }
+
+            Section = sectionHeader;
+            if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion)
+            {
+                throw new NotSupportedException($"EXTR version {Section.Version.ToVersion()} is not supported!");
+            }
         }
     }
 }

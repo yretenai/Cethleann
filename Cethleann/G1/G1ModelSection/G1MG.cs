@@ -1,6 +1,10 @@
-﻿using System;
+﻿using Cethleann.G1.G1ModelSection.G1MGSection;
+using Cethleann.Structure.Resource;
+using Cethleann.Structure.Resource.Model;
+using DragonLib;
+using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Cethleann.Structure.Art;
 
 namespace Cethleann.G1.G1ModelSection
 {
@@ -15,16 +19,53 @@ namespace Cethleann.G1.G1ModelSection
         /// <inheritdoc/>
         public ResourceSectionHeader Section { get; }
 
+        public ModelGeometryHeader Header { get; }
+
+        public List<IG1MGSection> SubSections { get; set; } = new List<IG1MGSection>();
+
         /// <summary>
         /// Model Geometry
         /// </summary>
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
-        public G1MG(Span<byte> data, bool ignoreVersion = false)
+        /// <param name="sectionHeader"></param>
+        public G1MG(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (!data.Matches(DataType.ModelGeometry)) throw new InvalidOperationException("Not an G1MG stream");
-            Section = MemoryMarshal.Read<ResourceSectionHeader>(data);
-            if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MG version {Section.Version.ToVersion()} is not supported!");
+            if (sectionHeader.Magic != DataType.ModelGeometry)
+            {
+                throw new InvalidOperationException("Not an G1MG stream");
+            }
+
+            Section = sectionHeader;
+            if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion)
+            {
+                throw new NotSupportedException($"G1MG version {Section.Version.ToVersion()} is not supported!");
+            }
+
+            Header = MemoryMarshal.Read<ModelGeometryHeader>(data);
+            Helper.Assert(Header.ModelType.ToFourCC(true) == "NX_", "ModelType == NX_");
+
+            var offset = SizeHelper.SizeOf<ModelGeometryHeader>();
+            while (offset < data.Length)
+            {
+                var subSectionHeader = MemoryMarshal.Read<ModelGeometrySection>(data.Slice(offset));
+                var block = data.Slice(offset + SizeHelper.SizeOf<ModelGeometrySection>(), subSectionHeader.Size - SizeHelper.SizeOf<ModelGeometrySection>());
+                offset += subSectionHeader.Size;
+                switch (subSectionHeader.Magic)
+                {
+                    case ModelGeometryType.Lattice:
+                        SubSections.Add(new G1MGLattice(block, subSectionHeader));
+                        break;
+                    case ModelGeometryType.Material:
+                        SubSections.Add(new G1MGMaterial(block, subSectionHeader));
+                        break;
+                    case ModelGeometryType.ShaderParam:
+                        SubSections.Add(new G1MGShaderParam(block, subSectionHeader));
+                        break;
+                    default:
+                        throw new NotSupportedException($"Can't handle G1MG section {subSectionHeader.Magic:F}");
+                }
+            }
         }
     }
 }

@@ -1,12 +1,8 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Cethleann.Structure
+﻿namespace Cethleann.Structure
 {
     /// <summary>
     /// Info regarding compression for a file in DATA1
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, Size = 12)]
-    public struct DATA1CompressionInfo
+    /// </summary>    public struct DATA1CompressionInfo
     {
         /// <summary>
         /// Always 0x0001_0000, I assumed ChunkSize but it doesn't match up.

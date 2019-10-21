@@ -22,7 +22,11 @@ namespace Cethleann
         /// <param name="buffer"></param>
         public TextLocalization(Span<byte> buffer)
         {
-            if (!buffer.Matches(DataType.TextLocalization19)) throw new InvalidOperationException("Not an XL 19 stream");
+            if (!buffer.Matches(DataType.TextLocalization19))
+            {
+                throw new InvalidOperationException("Not an XL 19 stream");
+            }
+
             var header = MemoryMarshal.Read<TextLocalizationHeader>(buffer);
 
             Helper.Assert(header.Size == 0x14);
@@ -46,9 +50,13 @@ namespace Cethleann
                 }
 
                 if (size == 1)
+                {
                     strings.Add("");
+                }
                 else
+                {
                     strings.Add(Encoding.UTF8.GetString(buffer.Slice(offset + header.Size, size - 1)).Split('\0')[0]);
+                }
             }
             Entries = strings;
         }

@@ -1,6 +1,6 @@
-﻿using Cethleann.Structure.Art;
-using System;
+﻿using Cethleann.Structure.Resource;
 using DragonLib;
+using System;
 using System.Runtime.InteropServices;
 
 namespace Cethleann.G1.G1ModelSection
@@ -27,11 +27,20 @@ namespace Cethleann.G1.G1ModelSection
         /// </summary>
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
-        public G1MM(Span<byte> data, bool ignoreVersion = false)
+        /// <param name="sectionHeader"></param>
+        public G1MM(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (!data.Matches(DataType.ModelMatrix)) throw new InvalidOperationException("Not an G1MM stream");
-            Section = MemoryMarshal.Read<ResourceSectionHeader>(data);
-            if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MM version {Section.Version.ToVersion()} is not supported!");
+            if (sectionHeader.Magic != DataType.ModelMatrix)
+            {
+                throw new InvalidOperationException("Not an G1MM stream");
+            }
+
+            Section = sectionHeader;
+            if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion)
+            {
+                throw new NotSupportedException($"G1MM version {Section.Version.ToVersion()} is not supported!");
+            }
+
             var count = MemoryMarshal.Read<int>(data.Slice(0xC));
             Matrices = MemoryMarshal.Cast<byte, Matrix4x4>(data.Slice(0x10)).ToArray();
         }

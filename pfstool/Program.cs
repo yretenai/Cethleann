@@ -25,7 +25,7 @@ namespace pfstool
             public int Unknown { get; set; }
         }
 
-        private readonly static string[] ByteSizes = { "B", "KB", "MB", "GB", "TB" };
+        private static readonly string[] ByteSizes = { "B", "KB", "MB", "GB", "TB" };
 
         private static string HumanFriendlySize(double size)
         {
@@ -40,7 +40,7 @@ namespace pfstool
 
         public static void Main(string[] args)
         {
-            if(args.Length < 2)
+            if (args.Length < 2)
             {
                 Console.WriteLine($"Usage: pfstool.exe in_file out_dir");
                 return;
@@ -50,7 +50,7 @@ namespace pfstool
             var buffer = new Span<byte>(new byte[0x10]);
             archive.Read(buffer);
             var header = MemoryMarshal.Read<PFS0Header>(buffer);
-            if(header.Magic != PFS0Magic)
+            if (header.Magic != PFS0Magic)
             {
                 Console.Error.WriteLine("Not a PFS0 file.");
                 return;
@@ -63,8 +63,12 @@ namespace pfstool
             var eob = archive.Position;
 
             var targetDir = args[1];
-            if (!Directory.Exists(targetDir)) Directory.CreateDirectory(targetDir);
-            foreach(var entry in entries)
+            if (!Directory.Exists(targetDir))
+            {
+                Directory.CreateDirectory(targetDir);
+            }
+
+            foreach (var entry in entries)
             {
                 var filename = Encoding.ASCII.GetString(nameBlock.Slice(entry.StringOffset, nameBlock.IndexOf<byte>(0)));
                 archive.Position = eob + entry.Offset;
@@ -73,7 +77,7 @@ namespace pfstool
                 var read = 0L;
                 var path = Path.Combine(targetDir, filename);
                 using var file = File.Open(path, FileMode.Append, FileAccess.Write, FileShare.Read);
-                while(read < entry.Size)
+                while (read < entry.Size)
                 {
                     var blockRead = archive.Read(buffer);
                     file.Write(buffer.Slice(0, blockRead));
