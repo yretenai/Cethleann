@@ -1,31 +1,23 @@
-﻿using Cethleann.Structure;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using Cethleann.Structure;
 
 namespace Cethleann
 {
     /// <summary>
-    /// Text Localization files are used to collect text data.
+    ///     Text Localization files are used to collect text data.
     /// </summary>
     public class TextLocalization
     {
         /// <summary>
-        /// List of string entries in this text blob
-        /// </summary>
-        public IEnumerable<string> Entries { get; set; }
-
-        /// <summary>
-        /// Initialize with a span buffer
+        ///     Initialize with a span buffer
         /// </summary>
         /// <param name="buffer"></param>
         public TextLocalization(Span<byte> buffer)
         {
-            if (!buffer.Matches(DataType.TextLocalization19))
-            {
-                throw new InvalidOperationException("Not an XL 19 stream");
-            }
+            if (!buffer.Matches(DataType.TextLocalization19)) throw new InvalidOperationException("Not an XL 19 stream");
 
             var header = MemoryMarshal.Read<TextLocalizationHeader>(buffer);
 
@@ -50,15 +42,17 @@ namespace Cethleann
                 }
 
                 if (size == 1)
-                {
                     strings.Add("");
-                }
                 else
-                {
                     strings.Add(Encoding.UTF8.GetString(buffer.Slice(offset + header.Size, size - 1)).Split('\0')[0]);
-                }
             }
+
             Entries = strings;
         }
+
+        /// <summary>
+        ///     List of string entries in this text blob
+        /// </summary>
+        public IEnumerable<string> Entries { get; set; }
     }
 }

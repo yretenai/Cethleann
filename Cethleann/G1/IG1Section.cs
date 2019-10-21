@@ -3,18 +3,18 @@
 namespace Cethleann.G1
 {
     /// <summary>
-    /// Boiler interface for G1 Sections.
+    ///     Boiler interface for G1 Sections.
     /// </summary>
     public interface IG1Section
     {
         /// <summary>
-        /// Version implemented by this class
+        ///     Version implemented by this class
         /// </summary>
-        public int SupportedVersion { get; }
+        int SupportedVersion { get; }
 
         /// <summary>
-        /// Section header for this section
+        ///     Section header for this section
         /// </summary>
-        public ResourceSectionHeader Section { get; }
+        ResourceSectionHeader Section { get; }
     }
 }

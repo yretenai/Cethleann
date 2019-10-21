@@ -1,21 +1,23 @@
 ﻿namespace Cethleann.Structure
 {
     /// <summary>
-    /// Info regarding compression for a file in DATA1
+    ///     Info regarding compression for a file in DATA1
     /// </summary>
     public struct DATA1CompressionInfo
     {
         /// <summary>
-        /// Always 0x0001_0000, I assumed ChunkSize but it doesn't match up.
+        ///     Always 0x0001_0000, I assumed ChunkSize but it doesn't match up.
         /// </summary>
         public int Unknown { get; set; }
+
         /// <summary>
-        /// Number of chunks
+        ///     Number of chunks
         /// </summary>
         public int ChunkCount { get; set; }
+
         /// <summary>
-        /// Compressed (read: bytes to read in this file) size of this file.
-        /// Don't know why this exist, maybe anonymous file pointers?
+        ///     Compressed (read: bytes to read in this file) size of this file.
+        ///     Don't know why this exist, maybe anonymous file pointers?
         /// </summary>
         public int Size { get; set; }
     }

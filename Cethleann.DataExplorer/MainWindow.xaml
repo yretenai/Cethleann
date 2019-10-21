@@ -6,7 +6,5 @@
         xmlns:local="clr-namespace:Cethleann.DataExplorer"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+    <Grid />
 </Window>

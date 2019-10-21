@@ -1,16 +1,13 @@
-﻿using Cethleann.Structure.Resource.Model;
-using DragonLib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Cethleann.Structure.Resource.Model;
+using DragonLib;
 
 namespace Cethleann.G1.G1ModelSection.G1MGSection
 {
     public class G1MGMaterial : IG1MGSection
     {
-        public ModelGeometrySection Section { get; }
-        public ModelGeometryType Type => ModelGeometryType.Material;
-
         public List<(ModelGeometryMaterial material, ModelGeometryTextureSet[] textureSet)> Materials = new List<(ModelGeometryMaterial, ModelGeometryTextureSet[])>();
 
         public G1MGMaterial(Span<byte> data, ModelGeometrySection sectionInfo)
@@ -27,5 +24,8 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
                 Materials.Add((material, textureSet));
             }
         }
+
+        public ModelGeometrySection Section { get; }
+        public ModelGeometryType Type => ModelGeometryType.Material;
     }
 }

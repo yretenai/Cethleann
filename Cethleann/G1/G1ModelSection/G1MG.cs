@@ -1,46 +1,30 @@
-﻿using Cethleann.G1.G1ModelSection.G1MGSection;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using Cethleann.G1.G1ModelSection.G1MGSection;
 using Cethleann.Structure.Resource;
 using Cethleann.Structure.Resource.Model;
 using DragonLib;
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace Cethleann.G1.G1ModelSection
 {
     /// <summary>
-    /// Geometry Section of G1M models
+    ///     Geometry Section of G1M models
     /// </summary>
     public class G1MG : IG1Section
     {
-        /// <inheritdoc/>
-        public int SupportedVersion { get; } = 44;
-
-        /// <inheritdoc/>
-        public ResourceSectionHeader Section { get; }
-
-        public ModelGeometryHeader Header { get; }
-
-        public List<IG1MGSection> SubSections { get; set; } = new List<IG1MGSection>();
-
         /// <summary>
-        /// Model Geometry
+        ///     Model Geometry
         /// </summary>
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
         /// <param name="sectionHeader"></param>
         public G1MG(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (sectionHeader.Magic != DataType.ModelGeometry)
-            {
-                throw new InvalidOperationException("Not an G1MG stream");
-            }
+            if (sectionHeader.Magic != DataType.ModelGeometry) throw new InvalidOperationException("Not an G1MG stream");
 
             Section = sectionHeader;
-            if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion)
-            {
-                throw new NotSupportedException($"G1MG version {Section.Version.ToVersion()} is not supported!");
-            }
+            if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MG version {Section.Version.ToVersion()} is not supported!");
 
             Header = MemoryMarshal.Read<ModelGeometryHeader>(data);
             Helper.Assert(Header.ModelType.ToFourCC(true) == "NX_", "ModelType == NX_");
@@ -67,5 +51,15 @@ namespace Cethleann.G1.G1ModelSection
                 }
             }
         }
+
+        public ModelGeometryHeader Header { get; }
+
+        public List<IG1MGSection> SubSections { get; set; } = new List<IG1MGSection>();
+
+        /// <inheritdoc />
+        public int SupportedVersion { get; } = 44;
+
+        /// <inheritdoc />
+        public ResourceSectionHeader Section { get; }
     }
 }

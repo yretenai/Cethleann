@@ -9,22 +9,6 @@ namespace pfstool
     {
         private const int PFS0Magic = 'P' << 0 | 'F' << 8 | 'S' << 16 | '0' << 24;
 
-        private struct PFS0Header
-        {
-            public int Magic { get; set; }
-            public int FileCount { get; set; }
-            public int NameBlockSize { get; set; }
-            public int Reserved { get; }
-        }
-
-        private struct PFS0Entry
-        {
-            public long Offset { get; set; }
-            public long Size { get; set; }
-            public int StringOffset { get; set; }
-            public int Unknown { get; set; }
-        }
-
         private static readonly string[] ByteSizes = { "B", "KB", "MB", "GB", "TB" };
 
         private static string HumanFriendlySize(double size)
@@ -35,6 +19,7 @@ namespace pfstool
                 order++;
                 size /= 1024.0d;
             }
+
             return $"{size:0.##} {ByteSizes[order]}";
         }
 
@@ -42,7 +27,7 @@ namespace pfstool
         {
             if (args.Length < 2)
             {
-                Console.WriteLine($"Usage: pfstool.exe in_file out_dir");
+                Console.WriteLine("Usage: pfstool.exe in_file out_dir");
                 return;
             }
 
@@ -55,6 +40,7 @@ namespace pfstool
                 Console.Error.WriteLine("Not a PFS0 file.");
                 return;
             }
+
             buffer = new Span<byte>(new byte[0x18 * header.FileCount]);
             archive.Read(buffer);
             var entries = MemoryMarshal.Cast<byte, PFS0Entry>(buffer);
@@ -63,10 +49,7 @@ namespace pfstool
             var eob = archive.Position;
 
             var targetDir = args[1];
-            if (!Directory.Exists(targetDir))
-            {
-                Directory.CreateDirectory(targetDir);
-            }
+            if (!Directory.Exists(targetDir)) Directory.CreateDirectory(targetDir);
 
             foreach (var entry in entries)
             {
@@ -83,8 +66,25 @@ namespace pfstool
                     file.Write(buffer.Slice(0, blockRead));
                     read += blockRead;
                 }
+
                 Console.WriteLine($"{HumanFriendlySize(file.Length)} bytes written.");
             }
+        }
+
+        private struct PFS0Header
+        {
+            public int Magic { get; set; }
+            public int FileCount { get; set; }
+            public int NameBlockSize { get; set; }
+            public int Reserved { get; }
+        }
+
+        private struct PFS0Entry
+        {
+            public long Offset { get; set; }
+            public long Size { get; set; }
+            public int StringOffset { get; set; }
+            public int Unknown { get; set; }
         }
     }
 }
