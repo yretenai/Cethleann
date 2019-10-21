@@ -24,9 +24,24 @@ namespace Cethleann.G1
             var offset = 0x10;
             for (int i = 0; i < header.Size; ++i)
             {
-                var localHeader = MemoryMarshal.Read<ResourceSectionHeader>(buffer.Slice(offset));
-                Entries.Add(new Memory<byte>(buffer.Slice(offset, localHeader.Size).ToArray()));
-                offset += localHeader.Size;
+                var magic = buffer.Slice(offset).GetDataType();
+
+                // ReSharper disable once SwitchStatementMissingSomeCases
+                switch (magic)
+                {
+                    case DataType.Model:
+                    case DataType.Animation:
+                    case DataType.Effect:
+                    case DataType.EffectManager:
+                    {
+                        var localHeader = MemoryMarshal.Read<ResourceSectionHeader>(buffer.Slice(offset));
+                        Entries.Add(new Memory<byte>(buffer.Slice(offset, localHeader.Size).ToArray()));
+                        offset += localHeader.Size;
+                    }
+                        break;
+                    default:
+                        throw new NotImplementedException($"MDLK Sub {magic.ToFourCC(false)} not implemented!");
+                }
             }
         }
 

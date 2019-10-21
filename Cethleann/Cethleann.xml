@@ -177,11 +177,6 @@
                 WebM Video Container
             </summary>
         </member>
-        <member name="F:Cethleann.DataType.Bundle">
-            <summary>
-                MDLK Container
-            </summary>
-        </member>
         <member name="F:Cethleann.DataType.MDLK">
             <summary>
                 Koei Model Container

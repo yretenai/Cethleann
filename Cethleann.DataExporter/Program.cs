@@ -93,7 +93,6 @@ namespace Cethleann.DataExporter
             {
                 var blobs = new DataTable(data.Span);
                 if (blobs.Entries.Count == 0) return true;
-                if (!Directory.Exists(pathBase)) Directory.CreateDirectory(pathBase);
 
                 TryExtractBlobs(pathBase, blobs.Entries);
             }
@@ -114,13 +113,12 @@ namespace Cethleann.DataExporter
             {
                 var blobs = new Bundle(data.Span);
                 if (blobs.Entries.Count == 0) return true;
-                if (!Directory.Exists(pathBase)) Directory.CreateDirectory(pathBase);
 
                 TryExtractBlobs(pathBase, blobs.Entries);
             }
             catch (Exception e)
             {
-                Console.WriteLine($@"Failed unpacking DataTable, {e.Message}!");
+                Console.WriteLine($@"Failed unpacking Bundle, {e.Message}!");
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -135,13 +133,12 @@ namespace Cethleann.DataExporter
             {
                 var blobs = new G1ModelGroup(data.Span);
                 if (blobs.Entries.Count == 0) return true;
-                if (!Directory.Exists(pathBase)) Directory.CreateDirectory(pathBase);
 
                 TryExtractBlobs(pathBase, blobs.Entries);
             }
             catch (Exception e)
             {
-                Console.WriteLine($@"Failed unpacking DataTable, {e.Message}!");
+                Console.WriteLine($@"Failed unpacking ModelGroup, {e.Message}!");
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -173,6 +170,8 @@ namespace Cethleann.DataExporter
                 if (datablob.Span.GetDataType() == DataType.MDLK)
                     if (TryExtractModelGroup($"{blobBase}.mdlk", datablob))
                         continue;
+
+                if (!Directory.Exists(pathBase)) Directory.CreateDirectory(pathBase);
 
                 File.WriteAllBytes($@"{blobBase}.{ext}", datablob.ToArray());
             }

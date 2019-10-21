@@ -86,12 +86,6 @@ namespace Cethleann
         WEBM = 0xA3DF_451A,
 
         /// <summary>
-        ///     MDLK Container
-        /// </summary>
-        [FileExtension("bundle")]
-        Bundle = 0x0000_0009,
-
-        /// <summary>
         ///     Koei Model Container
         /// </summary>
         [FileExtension("mdlk")]

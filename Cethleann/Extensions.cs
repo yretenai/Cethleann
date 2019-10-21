@@ -92,7 +92,8 @@ namespace Cethleann
 
             var count = MemoryMarshal.Read<uint>(buffer);
             var firstOffset = MemoryMarshal.Read<uint>(buffer.Slice(4));
-            return firstOffset == 4 + count * 8;
+            var estimatedOffset = 4 + count * 8;
+            return firstOffset == estimatedOffset || firstOffset == estimatedOffset.Align(0x10);
         }
 
         /// <summary>

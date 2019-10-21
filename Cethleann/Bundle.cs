@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using DragonLib;
 
 namespace Cethleann
 {
@@ -20,7 +21,7 @@ namespace Cethleann
         {
             var sizes = Validate(data);
             if (sizes == null) throw new InvalidDataException("Not a valid bundle stream.");
-            var offset = 0x30;
+            var offset = (4 + sizes.Length * 4).Align(0x10);
             foreach (var size in sizes)
             {
                 Entries.Add(new Memory<byte>(data.Slice(offset, size).ToArray()));
@@ -40,10 +41,20 @@ namespace Cethleann
         /// <returns></returns>
         public static int[] Validate(Span<byte> data)
         {
-            if (MemoryMarshal.Read<int>(data) != 9) return null;
+            var count = MemoryMarshal.Read<int>(data);
+            if (count < 0 || count > 0xFF) return null;
 
-            var sizes = MemoryMarshal.Cast<byte, int>(data.Slice(4, 4 * 11)).ToArray();
-            return sizes.Sum() + 0x30 != data.Length ? null : sizes;
+            var headerSize = count * 4;
+            if (headerSize > data.Length || headerSize < 0) return null;
+            var sizes = MemoryMarshal.Cast<byte, int>(data.Slice(4, headerSize)).ToArray();
+            try
+            {
+                return sizes.Sum() + (headerSize + 4).Align(0x10) != data.Length ? null : sizes;
+            }
+            catch (ArithmeticException)
+            {
+                return null;
+            }
         }
     }
 }
