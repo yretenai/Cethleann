@@ -35,20 +35,14 @@ namespace Cethleann.G1.G1ModelSection
                 var subSectionHeader = MemoryMarshal.Read<ModelGeometrySection>(data.Slice(offset));
                 var block = data.Slice(offset + SizeHelper.SizeOf<ModelGeometrySection>(), subSectionHeader.Size - SizeHelper.SizeOf<ModelGeometrySection>());
                 offset += subSectionHeader.Size;
-                switch (subSectionHeader.Magic)
+                var section = subSectionHeader.Magic switch
                 {
-                    case ModelGeometryType.Lattice:
-                        SubSections.Add(new G1MGLattice(block, subSectionHeader));
-                        break;
-                    case ModelGeometryType.Material:
-                        SubSections.Add(new G1MGMaterial(block, subSectionHeader));
-                        break;
-                    case ModelGeometryType.ShaderParam:
-                        SubSections.Add(new G1MGShaderParam(block, subSectionHeader));
-                        break;
-                    default:
-                        throw new NotSupportedException($"Can't handle G1MG section {subSectionHeader.Magic:F}");
-                }
+                    ModelGeometryType.Lattice => (IG1MGSection) new G1MGLattice(block, subSectionHeader),
+                    ModelGeometryType.Material => new G1MGMaterial(block, subSectionHeader),
+                    ModelGeometryType.ShaderParam => new G1MGShaderParam(block, subSectionHeader),
+                    _ => throw new NotSupportedException($"Can't handle G1MG section {subSectionHeader.Magic:F}")
+                };
+                SubSections.Add(section);
             }
         }
 

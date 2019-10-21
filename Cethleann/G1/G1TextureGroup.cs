@@ -44,22 +44,14 @@ namespace Cethleann.G1
                 }
 
                 var (width, height, mips, _) = UnpackWHM(dataHeader);
-                int size;
-                switch (dataHeader.Type)
+                var size = dataHeader.Type switch
                 {
-                    case TextureType.R8G8B8A8:
-                    case TextureType.B8G8R8A8:
-                        size = width * height * 4;
-                        break;
-                    case TextureType.BC1:
-                        size = width * height / 2;
-                        break;
-                    case TextureType.BC5:
-                        size = width * height;
-                        break;
-                    default:
-                        throw new InvalidOperationException($"Format {dataHeader.Type:X} is unknown!");
-                }
+                    TextureType.R8G8B8A8 => (width * height * 4),
+                    TextureType.B8G8R8A8 => (width * height * 4),
+                    TextureType.BC1 => (width * height / 2),
+                    TextureType.BC5 => (width * height),
+                    _ => throw new InvalidOperationException($"Format {dataHeader.Type:X} is unknown!")
+                };
 
                 var localSize = size;
                 for (var j = 1; j < mips; j++)
@@ -94,22 +86,14 @@ namespace Cethleann.G1
             var width = (int) Math.Pow(2, header.PackedDimensions & 0xF);
             var height = (int) Math.Pow(2, header.PackedDimensions >> 4);
             var mips = header.MipCount >> 4;
-            var format = DXGIPixelFormat.R8G8B8A8_UNORM;
-            switch (header.Type)
+            var format = header.Type switch
             {
-                case TextureType.R8G8B8A8:
-                    format = DXGIPixelFormat.R8G8B8A8_UNORM;
-                    break;
-                case TextureType.B8G8R8A8:
-                    format = DXGIPixelFormat.B8G8R8A8_UNORM;
-                    break;
-                case TextureType.BC1:
-                    format = DXGIPixelFormat.BC1_UNORM;
-                    break;
-                case TextureType.BC5:
-                    format = DXGIPixelFormat.BC3_UNORM;
-                    break;
-            }
+                TextureType.R8G8B8A8 => DXGIPixelFormat.R8G8B8A8_UNORM,
+                TextureType.B8G8R8A8 => DXGIPixelFormat.B8G8R8A8_UNORM,
+                TextureType.BC1 => DXGIPixelFormat.BC1_UNORM,
+                TextureType.BC5 => DXGIPixelFormat.BC3_UNORM,
+                _ => DXGIPixelFormat.R8G8B8A8_UNORM
+            };
 
             return (width, height, mips, format);
         }

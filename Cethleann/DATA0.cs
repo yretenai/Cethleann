@@ -71,7 +71,7 @@ namespace Cethleann
         /// <param name="DATA1">Binary Read-capable Stream of DATA1</param>
         /// <param name="entry">Entry to read</param>
         /// <returns>memory stream of uncompressed bytes</returns>
-        public unsafe Memory<byte> ReadEntry(Stream DATA1, DATA0Entry entry)
+        public static unsafe Memory<byte> ReadEntry(Stream DATA1, DATA0Entry entry)
         {
             if (!DATA1.CanRead) throw new InvalidOperationException("Cannot read from stream!");
 

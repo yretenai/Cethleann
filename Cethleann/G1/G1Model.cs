@@ -29,30 +29,20 @@ namespace Cethleann.G1
             var offset = header.HeaderSize;
             for (var i = 0; i < header.SectionCount; ++i)
             {
-                var section = MemoryMarshal.Read<ResourceSectionHeader>(data.Slice(offset));
-                var block = data.Slice(offset + SizeHelper.SizeOf<ResourceSectionHeader>(), section.Size - SizeHelper.SizeOf<ResourceSectionHeader>());
-                switch (section.Magic)
+                var sectionHeader = MemoryMarshal.Read<ResourceSectionHeader>(data.Slice(offset));
+                var block = data.Slice(offset + SizeHelper.SizeOf<ResourceSectionHeader>(), sectionHeader.Size - SizeHelper.SizeOf<ResourceSectionHeader>());
+                var section = sectionHeader.Magic switch
                 {
-                    case DataType.ModelSkeleton:
-                        Sections.Add(new G1MS(block, ignoreVersion, section));
-                        break;
-                    case DataType.ModelF:
-                        Sections.Add(new G1MF(block, ignoreVersion, section));
-                        break;
-                    case DataType.ModelGeometry:
-                        Sections.Add(new G1MG(block, ignoreVersion, section));
-                        break;
-                    case DataType.ModelMatrix:
-                        Sections.Add(new G1MM(block, ignoreVersion, section));
-                        break;
-                    case DataType.ModelExtra:
-                        Sections.Add(new G1MExtra(block, ignoreVersion, section));
-                        break;
-                    default:
-                        throw new NotImplementedException($"Section {section.Magic.ToFourCC(false)} not supported!");
-                }
+                    DataType.ModelSkeleton => (IG1Section) new G1MS(block, ignoreVersion, sectionHeader),
+                    DataType.ModelF => new G1MF(block, ignoreVersion, sectionHeader),
+                    DataType.ModelGeometry => new G1MG(block, ignoreVersion, sectionHeader),
+                    DataType.ModelMatrix => new G1MM(block, ignoreVersion, sectionHeader),
+                    DataType.ModelExtra => new G1MExtra(block, ignoreVersion, sectionHeader),
+                    _ => throw new NotImplementedException($"Section {sectionHeader.Magic.ToFourCC(false)} not supported!")
+                };
+                Sections.Add(section);
 
-                offset += section.Size;
+                offset += sectionHeader.Size;
             }
         }
 

@@ -6,30 +6,30 @@
     <members>
         <member name="T:Cethleann.DATA0">
             <summary>
-            DATA0 is a list of information for which to read DATA1 with.
-            </summary>
-        </member>
-        <member name="P:Cethleann.DATA0.Entries">
-            <summary>
-            lsof <seealso cref="T:Cethleann.Structure.DATA0Entry"/>
+                DATA0 is a list of information for which to read DATA1 with.
             </summary>
         </member>
         <member name="M:Cethleann.DATA0.#ctor(System.String)">
             <summary>
-            Reads a DATA0 file list from a path
+                Reads a DATA0 file list from a path
             </summary>
             <param name="path">File path to read</param>
         </member>
+        <member name="P:Cethleann.DATA0.Entries">
+            <summary>
+                lsof <seealso cref="T:Cethleann.Structure.DATA0Entry" />
+            </summary>
+        </member>
         <member name="M:Cethleann.DATA0.#ctor(System.IO.Stream,System.Boolean)">
             <summary>
-            Reads a DATA0 file list from a stream
+                Reads a DATA0 file list from a stream
             </summary>
             <param name="stream">Binary Read-capable Stream of DATA0</param>
-            <param name="leaveOpen">If true, won't dispose <paramref name="stream"/></param>
+            <param name="leaveOpen">If true, won't dispose <paramref name="stream" /></param>
         </member>
         <member name="M:Cethleann.DATA0.ReadEntry(System.IO.Stream,System.Int32)">
             <summary>
-            Reads a file index from DATA1
+                Reads a file index from DATA1
             </summary>
             <param name="DATA1">Binary Read-capable Stream of DATA1</param>
             <param name="index">Entry Index to read</param>
@@ -37,7 +37,7 @@
         </member>
         <member name="M:Cethleann.DATA0.ReadEntry(System.IO.Stream,Cethleann.Structure.DATA0Entry)">
             <summary>
-            Reads a file entry from DATA1
+                Reads a file entry from DATA1
             </summary>
             <param name="DATA1">Binary Read-capable Stream of DATA1</param>
             <param name="entry">Entry to read</param>
@@ -45,193 +45,193 @@
         </member>
         <member name="T:Cethleann.DataTables.DataTable">
             <summary>
-            Main blob bundle of the game.
-            Can contain many things, from structures to art assets.
+                Main blob bundle of the game.
+                Can contain many things, from structures to art assets.
             </summary>
         </member>
-        <member name="F:Cethleann.DataTables.DataTable.Entries">
+        <member name="P:Cethleann.DataTables.DataTable.Entries">
             <summary>
-            Lsof Entries found in the table
+                Lsof Entries found in the table
             </summary>
         </member>
         <member name="M:Cethleann.DataTables.DataTable.#ctor(System.Span{System.Byte})">
             <summary>
-            Initialize with a span.
+                Initialize with a span.
             </summary>
             <param name="buffer"></param>
         </member>
         <member name="T:Cethleann.DataTables.StructTable">
             <summary>
-            Parses a memory buffer by assuming it consists of fixed width structs.
-            </summary>
-        </member>
-        <member name="P:Cethleann.DataTables.StructTable.Entries">
-            <summary>
-            Lsof Entries found in the struct table
+                Parses a memory buffer by assuming it consists of fixed width structs.
             </summary>
         </member>
         <member name="M:Cethleann.DataTables.StructTable.#ctor(System.Span{System.Byte})">
             <summary>
-            Initialize with given buffer
+                Initialize with given buffer
             </summary>
             <param name="buffer"></param>
         </member>
+        <member name="P:Cethleann.DataTables.StructTable.Entries">
+            <summary>
+                Lsof Entries found in the struct table
+            </summary>
+        </member>
         <member name="M:Cethleann.DataTables.StructTable.Cast``1">
             <summary>
-            Cast all entries to the specified struct type.
+                Cast all entries to the specified struct type.
             </summary>
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
         <member name="T:Cethleann.DataType">
             <summary>
-            LSOF 
+                Magic Values for most files.
             </summary>
         </member>
         <member name="F:Cethleann.DataType.StructTable">
             <summary>
-            <seealso cref="F:Cethleann.DataType.StructTable"/>
+                <seealso cref="F:Cethleann.DataType.StructTable" />
             </summary>
         </member>
         <member name="F:Cethleann.DataType.SARC">
             <summary>
-            S-Archive?
+                S-Archive?
             </summary>
         </member>
         <member name="F:Cethleann.DataType.SPKG">
             <summary>
-            S-Package?
+                S-Package?
             </summary>
         </member>
         <member name="F:Cethleann.DataType.KTSR">
             <summary>
-            Koei Tecmo Sound Resource
+                Koei Tecmo Sound Resource
             </summary>
         </member>
         <member name="F:Cethleann.DataType.KTSC">
             <summary>
-            Koei Tecmo Sound Container
+                Koei Tecmo Sound Container
             </summary>
         </member>
         <member name="F:Cethleann.DataType.SCEN">
             <summary>
-            Scene
+                Scene
             </summary>
         </member>
         <member name="F:Cethleann.DataType.SPK3">
             <summary>
-            Shader Pack?
+                Shader Pack?
             </summary>
         </member>
         <member name="F:Cethleann.DataType.SWGQ">
             <summary>
-            Shader Pack?
+                Shader Pack?
             </summary>
         </member>
         <member name="F:Cethleann.DataType.River">
             <summary>
-            River?
+                River?
             </summary>
         </member>
         <member name="F:Cethleann.DataType.RIGB">
             <summary>
-            Rig B?
+                Rig B?
             </summary>
         </member>
         <member name="F:Cethleann.DataType.DATD">
             <summary>
-            DATD
+                DATD
             </summary>
         </member>
         <member name="F:Cethleann.DataType.LCD0">
             <summary>
-            LCD 0
+                LCD 0
             </summary>
         </member>
         <member name="F:Cethleann.DataType.WEBM">
             <summary>
-            WebM Video Container
+                WebM Video Container
             </summary>
         </member>
         <member name="F:Cethleann.DataType.TextLocalization19">
             <summary>
-            teXt Localization, version 19.
+                teXt Localization, version 19.
             </summary>
         </member>
         <member name="F:Cethleann.DataType.TextureGroup">
             <summary>
-            Koei Texture Group
+                Koei Texture Group
             </summary>
         </member>
         <member name="F:Cethleann.DataType.Model">
             <summary>
-            Koei Model Base
+                Koei Model Base
             </summary>
         </member>
         <member name="F:Cethleann.DataType.ModelSkeleton">
             <summary>
-            Koei Model Skeleton
+                Koei Model Skeleton
             </summary>
         </member>
         <member name="F:Cethleann.DataType.ModelF">
             <summary>
-            Koei Model F?
+                Koei Model F?
             </summary>
         </member>
         <member name="F:Cethleann.DataType.ModelGeometry">
             <summary>
-            Koei Model Geometry
+                Koei Model Geometry
             </summary>
         </member>
         <member name="F:Cethleann.DataType.ModelMatrix">
             <summary>
-            Koei Model Matrices
+                Koei Model Matrices
             </summary>
         </member>
         <member name="F:Cethleann.DataType.ModelExtra">
             <summary>
-            Koei Model ExtraData.
+                Koei Model ExtraData.
             </summary>
         </member>
         <member name="F:Cethleann.DataType.Animation">
             <summary>
-            Koei Animation
+                Koei Animation
             </summary>
         </member>
         <member name="F:Cethleann.DataType.ModelGroup">
             <summary>
-            Koei Model Group.
+                Koei Model Group.
             </summary>
         </member>
         <member name="F:Cethleann.DataType.EffectManager">
             <summary>
-            ASSUMPTION
-            Koei Effect Manager
+                ASSUMPTION
+                Koei Effect Manager
             </summary>
         </member>
         <member name="F:Cethleann.DataType.Effect">
             <summary>
-            Koei Effect
+                Koei Effect
             </summary>
         </member>
         <member name="F:Cethleann.DataType.OLS">
             <summary>
-            Koei ?
+                Koei ?
             </summary>
         </member>
         <member name="F:Cethleann.DataType.PostFX">
             <summary>
-            Koei PostFX Shader Bundle
+                Koei PostFX Shader Bundle
             </summary>
         </member>
         <member name="T:Cethleann.Extensions">
             <summary>
-            Series of helper for FETH.
+                Series of helper for FETH.
             </summary>
         </member>
         <member name="M:Cethleann.Extensions.ToFourCC(System.Int32,System.Boolean)">
             <summary>
-            Converts an integer to a FourCC
+                Converts an integer to a FourCC
             </summary>
             <param name="value"></param>
             <param name="onlyAlphaNum"></param>
@@ -239,7 +239,7 @@
         </member>
         <member name="M:Cethleann.Extensions.ToFourCC(Cethleann.DataType,System.Boolean)">
             <summary>
-            Converts a DataType to a FourCC
+                Converts a DataType to a FourCC
             </summary>
             <param name="value"></param>
             <param name="onlyAlphaNum"></param>
@@ -247,35 +247,35 @@
         </member>
         <member name="M:Cethleann.Extensions.ToVersion(System.Int32)">
             <summary>
-            Converts a version tag to a number.
+                Converts a version tag to a number.
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
         <member name="M:Cethleann.Extensions.GetExtension(Cethleann.DataType)">
             <summary>
-            Returns determined string extension for this magic.
+                Returns determined string extension for this magic.
             </summary>
             <param name="magic"></param>
             <returns></returns>
         </member>
         <member name="M:Cethleann.Extensions.IsKnown(Cethleann.DataType)">
             <summary>
-            True if the magic values are known
+                True if the magic values are known
             </summary>
             <param name="magic"></param>
             <returns></returns>
         </member>
         <member name="M:Cethleann.Extensions.IsKnown(System.Span{System.Byte})">
             <summary>
-            True if the magic values are known
+                True if the magic values are known
             </summary>
             <param name="span"></param>
             <returns></returns>
         </member>
         <member name="M:Cethleann.Extensions.Matches(System.Span{System.Byte},Cethleann.DataType)">
             <summary>
-            True if the magic value matches the first 4 bytes of the span.
+                True if the magic value matches the first 4 bytes of the span.
             </summary>
             <param name="span"></param>
             <param name="magic"></param>
@@ -283,7 +283,7 @@
         </member>
         <member name="M:Cethleann.Extensions.Matches(Cethleann.DataType,System.Span{System.Byte})">
             <summary>
-            True if the magic value matches the first 4 bytes of the span.
+                True if the magic value matches the first 4 bytes of the span.
             </summary>
             <param name="magic"></param>
             <param name="span"></param>
@@ -291,307 +291,308 @@
         </member>
         <member name="M:Cethleann.Extensions.GetDataType(System.Span{System.Byte})">
             <summary>
-            Gets <seealso cref="T:Cethleann.DataType"/> from a Span.
+                Gets <seealso cref="T:Cethleann.DataType" /> from a Span.
             </summary>
             <param name="span"></param>
             <returns></returns>
         </member>
         <member name="M:Cethleann.Extensions.IsDataTable(System.Span{System.Byte})">
             <summary>
-            Guesses if the stream is a DataTable
-            </summary>H:\Datamining\FireEmblemTH\Cethleann\DragonLib\DataTypeHelper.cs
+                Guesses if the stream is a DataTable
+            </summary>
+            H:\Datamining\FireEmblemTH\Cethleann\DragonLib\DataTypeHelper.cs
             <param name="buffer">data to test</param>
             <returns>true if the header is predictable</returns>
         </member>
         <member name="M:Cethleann.Extensions.GetTextLocalizationsRoot(Cethleann.DataTables.DataTable)">
             <summary>
-            Gets two dimensional text localizations from a data table.
+                Gets two dimensional text localizations from a data table.
             </summary>
             <param name="table"></param>
             <returns></returns>
         </member>
         <member name="M:Cethleann.Extensions.GetTextLocalizations(Cethleann.DataTables.DataTable)">
             <summary>
-            Gets Text Localizations from table entries.
+                Gets Text Localizations from table entries.
             </summary>
             <param name="table"></param>
             <returns></returns>
         </member>
         <member name="T:Cethleann.G1.G1Model">
             <summary>
-            G1Model is the main model format
-            </summary>
-        </member>
-        <member name="P:Cethleann.G1.G1Model.SupportedVersion">
-            <inheritdoc/>
-        </member>
-        <member name="P:Cethleann.G1.G1Model.Section">
-            <inheritdoc/>
-        </member>
-        <member name="P:Cethleann.G1.G1Model.Sections">
-            <summary>
-            Sections found in this model.
-            Look for <seealso cref="T:Cethleann.G1.G1ModelSection.G1MG"/> for Geometry.
-            Look for <seealso cref="T:Cethleann.G1.G1ModelSection.G1MS"/> for Skeleton.
+                G1Model is the main model format
             </summary>
         </member>
         <member name="M:Cethleann.G1.G1Model.#ctor(System.Span{System.Byte},System.Boolean)">
             <summary>
-            Parse G1M from the provided data buffer
+                Parse G1M from the provided data buffer
             </summary>
             <param name="data"></param>
             <param name="ignoreVersion"></param>
+        </member>
+        <member name="P:Cethleann.G1.G1Model.Sections">
+            <summary>
+                Sections found in this model.
+                Look for <seealso cref="T:Cethleann.G1.G1ModelSection.G1MG" /> for Geometry.
+                Look for <seealso cref="T:Cethleann.G1.G1ModelSection.G1MS" /> for Skeleton.
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1Model.SupportedVersion">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.G1.G1Model.Section">
+            <inheritdoc />
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MExtra">
             <summary>
-            Extra Section of G1M models
+                Extra Section of G1M models
             </summary>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MExtra.SupportedVersion">
-            <inheritdoc/>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MExtra.Section">
-            <inheritdoc/>
         </member>
         <member name="M:Cethleann.G1.G1ModelSection.G1MExtra.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
             <summary>
-            Extra data found in G1M models.
+                Extra data found in G1M models.
             </summary>
             <param name="data"></param>
             <param name="ignoreVersion"></param>
             <param name="sectionHeader"></param>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MExtra.SupportedVersion">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MExtra.Section">
+            <inheritdoc />
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MF">
             <summary>
-            F Section of G1M models
+                F Section of G1M models
             </summary>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MF.SupportedVersion">
-            <inheritdoc/>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MF.Section">
-            <inheritdoc/>
         </member>
         <member name="M:Cethleann.G1.G1ModelSection.G1MF.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
             <summary>
-            Model F Data
-            Pay Respects.
+                Model F Data
+                Pay Respects.
             </summary>
             <param name="data"></param>
             <param name="ignoreVersion"></param>
             <param name="sectionHeader"></param>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MF.SupportedVersion">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MF.Section">
+            <inheritdoc />
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MG">
             <summary>
-            Geometry Section of G1M models
+                Geometry Section of G1M models
             </summary>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MG.SupportedVersion">
-            <inheritdoc/>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MG.Section">
-            <inheritdoc/>
         </member>
         <member name="M:Cethleann.G1.G1ModelSection.G1MG.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
             <summary>
-            Model Geometry
+                Model Geometry
             </summary>
             <param name="data"></param>
             <param name="ignoreVersion"></param>
             <param name="sectionHeader"></param>
         </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MG.SupportedVersion">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MG.Section">
+            <inheritdoc />
+        </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MM">
             <summary>
-            Matrix Section of G1M models
-            </summary>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MM.SupportedVersion">
-            <inheritdoc/>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MM.Section">
-            <inheritdoc/>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MM.Matrices">
-            <summary>
-            List of matrices found in the file. 
-            They're all weird.
+                Matrix Section of G1M models
             </summary>
         </member>
         <member name="M:Cethleann.G1.G1ModelSection.G1MM.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
             <summary>
-            Model Matrix Data
+                Model Matrix Data
             </summary>
             <param name="data"></param>
             <param name="ignoreVersion"></param>
             <param name="sectionHeader"></param>
         </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MM.Matrices">
+            <summary>
+                List of matrices found in the file.
+                They're all weird.
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MM.SupportedVersion">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MM.Section">
+            <inheritdoc />
+        </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MS">
             <summary>
-            Skeleton Section of G1M models
-            </summary>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MS.SupportedVersion">
-            <inheritdoc/>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MS.Section">
-            <inheritdoc/>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MS.BoneIndices">
-            <summary>
-            Bone Remap Index
-            </summary>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MS.BoneIndicesFiltered">
-            <summary>
-            BoneIndices but without -1
-            </summary>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MS.Bones">
-            <summary>
-            lsof bones
+                Skeleton Section of G1M models
             </summary>
         </member>
         <member name="M:Cethleann.G1.G1ModelSection.G1MS.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
             <summary>
-            Model Skeleton Data.
+                Model Skeleton Data.
             </summary>
             <param name="data"></param>
             <param name="ignoreVersion"></param>
             <param name="sectionHeader"></param>
         </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MS.BoneIndices">
+            <summary>
+                Bone Remap Index
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MS.BoneIndicesFiltered">
+            <summary>
+                BoneIndices but without -1
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MS.Bones">
+            <summary>
+                lsof bones
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MS.SupportedVersion">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MS.Section">
+            <inheritdoc />
+        </member>
         <member name="M:Cethleann.G1.G1ModelSection.G1MS.AtIndex(System.Int32)">
             <summary>
-            Returns the remapped bone at the specified index.
-            If the index is not remapped, returns null.
+                Returns the remapped bone at the specified index.
+                If the index is not remapped, returns null.
             </summary>
             <param name="i"></param>
             <returns></returns>
         </member>
         <member name="M:Cethleann.G1.G1ModelSection.G1MS.AtFilteredIndex(System.Int32)">
             <summary>
-            Returns the remapped bone at the specified index.
+                Returns the remapped bone at the specified index.
             </summary>
             <param name="i"></param>
             <returns></returns>
         </member>
         <member name="T:Cethleann.G1.G1TextureGroup">
             <summary>
-            G1TextureGroup is a bundle of textures.
-            This is how all textures are encoded.
+                G1TextureGroup is a bundle of textures.
+                This is how all textures are encoded.
             </summary>
-        </member>
-        <member name="P:Cethleann.G1.G1TextureGroup.Textures">
-            <summary>
-            List of textures found in this bundle
-            </summary>
-        </member>
-        <member name="P:Cethleann.G1.G1TextureGroup.SupportedVersion">
-            <inheritdoc/>
-        </member>
-        <member name="P:Cethleann.G1.G1TextureGroup.Section">
-            <inheritdoc/>
         </member>
         <member name="M:Cethleann.G1.G1TextureGroup.#ctor(System.Span{System.Byte},System.Boolean)">
             <summary>
-            Parse G1T from the provided data buffer
+                Parse G1T from the provided data buffer
             </summary>
             <param name="data"></param>
             <param name="ignoreVersion"></param>
         </member>
+        <member name="P:Cethleann.G1.G1TextureGroup.Textures">
+            <summary>
+                List of textures found in this bundle
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1TextureGroup.SupportedVersion">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.G1.G1TextureGroup.Section">
+            <inheritdoc />
+        </member>
         <member name="M:Cethleann.G1.G1TextureGroup.UnpackWHM(Cethleann.Structure.Resource.Texture.TextureDataHeader)">
             <summary>
-            Unpacks Width, Height, Mip Count, and DXGI Format from a G1T data header.
+                Unpacks Width, Height, Mip Count, and DXGI Format from a G1T data header.
             </summary>
             <param name="header"></param>
             <returns></returns>
         </member>
         <member name="T:Cethleann.G1.IG1Section">
             <summary>
-            Boiler interface for G1 Sections.
+                Boiler interface for G1 Sections.
             </summary>
         </member>
         <member name="P:Cethleann.G1.IG1Section.SupportedVersion">
             <summary>
-            Version implemented by this class
+                Version implemented by this class
             </summary>
         </member>
         <member name="P:Cethleann.G1.IG1Section.Section">
             <summary>
-            Section header for this section
+                Section header for this section
             </summary>
         </member>
         <member name="T:Cethleann.Structure.DATA0Entry">
             <summary>
-            An entry in DATA0
+                An entry in DATA0
             </summary>
         </member>
         <member name="P:Cethleann.Structure.DATA0Entry.Offset">
             <summary>
-            Offset in DATA1
+                Offset in DATA1
             </summary>
         </member>
         <member name="P:Cethleann.Structure.DATA0Entry.UncompressedSize">
             <summary>
-            Uncompressed (read: bytes to expect from decompression) size of this file.
+                Uncompressed (read: bytes to expect from decompression) size of this file.
             </summary>
         </member>
         <member name="P:Cethleann.Structure.DATA0Entry.CompressedSize">
             <summary>
-            Compressed (read: bytes to read in this file) size of this file.
+                Compressed (read: bytes to read in this file) size of this file.
             </summary>
         </member>
         <member name="P:Cethleann.Structure.DATA0Entry.IsCompressed">
             <summary>
-            True if the file is compressed with ZLIB
+                True if the file is compressed with ZLIB
             </summary>
         </member>
         <member name="T:Cethleann.Structure.DATA1CompressionInfo">
             <summary>
-            Info regarding compression for a file in DATA1
+                Info regarding compression for a file in DATA1
             </summary>
         </member>
         <member name="P:Cethleann.Structure.DATA1CompressionInfo.Unknown">
             <summary>
-            Always 0x0001_0000, I assumed ChunkSize but it doesn't match up.
+                Always 0x0001_0000, I assumed ChunkSize but it doesn't match up.
             </summary>
         </member>
         <member name="P:Cethleann.Structure.DATA1CompressionInfo.ChunkCount">
             <summary>
-            Number of chunks
+                Number of chunks
             </summary>
         </member>
         <member name="P:Cethleann.Structure.DATA1CompressionInfo.Size">
             <summary>
-            Compressed (read: bytes to read in this file) size of this file.
-            Don't know why this exist, maybe anonymous file pointers?
+                Compressed (read: bytes to read in this file) size of this file.
+                Don't know why this exist, maybe anonymous file pointers?
             </summary>
         </member>
         <member name="P:Cethleann.Structure.Resource.Texture.TextureDataHeader.MipCount">
             <summary>
-            SHR 4
+                SHR 4
             </summary>
         </member>
         <member name="P:Cethleann.Structure.Resource.Texture.TextureDataHeader.PackedDimensions">
             <summary>
-            2 POW value AND 0xF = width
-            2 POW value SHR 0x4 = height
+                2 POW value AND 0xF = width
+                2 POW value SHR 0x4 = height
             </summary>
         </member>
         <member name="T:Cethleann.TextLocalization">
             <summary>
-            Text Localization files are used to collect text data.
-            </summary>
-        </member>
-        <member name="P:Cethleann.TextLocalization.Entries">
-            <summary>
-            List of string entries in this text blob
+                Text Localization files are used to collect text data.
             </summary>
         </member>
         <member name="M:Cethleann.TextLocalization.#ctor(System.Span{System.Byte})">
             <summary>
-            Initialize with a span buffer
+                Initialize with a span buffer
             </summary>
             <param name="buffer"></param>
+        </member>
+        <member name="P:Cethleann.TextLocalization.Entries">
+            <summary>
+                List of string entries in this text blob
+            </summary>
         </member>
     </members>
 </doc>

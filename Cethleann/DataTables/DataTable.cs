@@ -13,11 +13,6 @@ namespace Cethleann.DataTables
     public class DataTable
     {
         /// <summary>
-        ///     Lsof Entries found in the table
-        /// </summary>
-        public IEnumerable<Memory<byte>> Entries;
-
-        /// <summary>
         ///     Initialize with a span.
         /// </summary>
         /// <param name="buffer"></param>
@@ -29,5 +24,10 @@ namespace Cethleann.DataTables
             foreach (var info in tableInfo) entries.Add(buffer.Slice(info.Offset, info.Size).ToArray());
             Entries = entries;
         }
+
+        /// <summary>
+        ///     Lsof Entries found in the table
+        /// </summary>
+        public List<Memory<byte>> Entries { get; }
     }
 }

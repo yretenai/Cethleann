@@ -25,7 +25,7 @@ namespace Cethleann.DataTables
         /// <summary>
         ///     Lsof Entries found in the struct table
         /// </summary>
-        public List<Memory<byte>> Entries { get; set; } = new List<Memory<byte>>();
+        public List<Memory<byte>> Entries { get; } = new List<Memory<byte>>();
 
         /// <summary>
         ///     Cast all entries to the specified struct type.

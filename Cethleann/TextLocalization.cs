@@ -41,10 +41,7 @@ namespace Cethleann
                     size = buffer.Length - offset - header.Size;
                 }
 
-                if (size == 1)
-                    strings.Add("");
-                else
-                    strings.Add(Encoding.UTF8.GetString(buffer.Slice(offset + header.Size, size - 1)).Split('\0')[0]);
+                strings.Add(size == 1 ? "" : Encoding.UTF8.GetString(buffer.Slice(offset + header.Size, size - 1)).Split('\0')[0]);
             }
 
             Entries = strings;

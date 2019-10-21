@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Cethleann.DataTables;
@@ -103,14 +102,7 @@ namespace Cethleann
         /// <returns></returns>
         public static TextLocalization[][] GetTextLocalizationsRoot(this DataTable table)
         {
-            var locs = new List<TextLocalization[]>();
-            foreach (var entry in table.Entries)
-            {
-                var entryTable = new DataTable(entry.Span);
-                locs.Add(GetTextLocalizations(entryTable));
-            }
-
-            return locs.ToArray();
+            return table.Entries.Select(entry => new DataTable(entry.Span)).Select(GetTextLocalizations).ToArray();
         }
 
         /// <summary>
@@ -120,9 +112,7 @@ namespace Cethleann
         /// <returns></returns>
         public static TextLocalization[] GetTextLocalizations(this DataTable table)
         {
-            var locs = new List<TextLocalization>();
-            foreach (var entry in table.Entries) locs.Add(new TextLocalization(entry.Span));
-            return locs.ToArray();
+            return table.Entries.Select(entry => new TextLocalization(entry.Span)).ToArray();
         }
     }
 }

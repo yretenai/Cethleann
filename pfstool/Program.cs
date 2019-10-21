@@ -5,7 +5,7 @@ using System.Text;
 
 namespace pfstool
 {
-    public class Program
+    internal static class Program
     {
         private const int PFS0Magic = 'P' << 0 | 'F' << 8 | 'S' << 16 | '0' << 24;
 
@@ -76,7 +76,7 @@ namespace pfstool
             public int Magic { get; set; }
             public int FileCount { get; set; }
             public int NameBlockSize { get; set; }
-            public int Reserved { get; }
+            public int Reserved { get; set; }
         }
 
         private struct PFS0Entry

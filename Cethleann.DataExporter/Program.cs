@@ -10,7 +10,7 @@ using DragonLib.DXGI;
 
 namespace Cethleann.DataExporter
 {
-    internal class Program
+    internal static class Program
     {
         private static void Main(string[] args)
         {
@@ -24,7 +24,7 @@ namespace Cethleann.DataExporter
             var i = 0;
             if (!Directory.Exists($@"{romfs}\ex\tex")) Directory.CreateDirectory($@"{romfs}\ex\tex");
 
-            foreach (var (usage, header, extra, blob) in texture.Textures)
+            foreach (var (_, header, _, blob) in texture.Textures)
             {
                 var (width, height, mips, format) = G1TextureGroup.UnpackWHM(header);
                 var data = DXGI.DecompressDXGIFormat(blob.Span, width, height, format);
@@ -35,8 +35,8 @@ namespace Cethleann.DataExporter
 
             var text = new DataTable(DATA0.ReadEntry(DATA1, 0).Span);
             var dh = new DataTable(DATA0.ReadEntry(DATA1, 12).Span);
-            var dhChar = new StructTable(dh.Entries.ElementAt(0).Span).Cast<CharacterInfo>();
-            var textCh = text.GetTextLocalizationsRoot();
+            _ = new StructTable(dh.Entries.ElementAt(0).Span).Cast<CharacterInfo>();
+            _ = text.GetTextLocalizationsRoot();
             // ExtractTables(romfs, DATA0, DATA1, 0);
             ExtractAll(romfs, DATA0, DATA1);
             // File.WriteAllText($@"{romfs}\ex\magic.txt", string.Join('\n', MagicValues.Select(x => x.ToFourCC() + " " + x.GetExtension())));
@@ -69,9 +69,8 @@ namespace Cethleann.DataExporter
             foreach (var entry in DATA0.Entries)
             {
                 var data = DATA0.ReadEntry(DATA1, entry);
-                string ext;
                 var pathBase = $@"{romfs}\ex\{(entry.IsCompressed ? "" : "un")}compressed\{i++:X16}";
-                ext = data.Span.GetDataType().GetExtension();
+                var ext = data.Span.GetDataType().GetExtension();
                 Console.WriteLine($@"{pathBase}.{ext}");
                 if (data.Length == 0)
                 {
