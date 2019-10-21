@@ -1,5 +1,6 @@
-﻿namespace Cethleann.Structure
-{    internal struct StructTableHeader
+﻿ namespace Cethleann.Structure
+{
+    internal struct StructTableHeader
     {
         public int Magic { get; set; }
         public int Count { get; set; }

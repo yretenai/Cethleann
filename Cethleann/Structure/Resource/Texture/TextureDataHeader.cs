@@ -1,10 +1,7 @@
 ﻿namespace Cethleann.Structure.Resource.Texture
 {
-
-
-
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member    public struct TextureDataHeader
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    public struct TextureDataHeader
     {
         /// <summary>
         /// SHR 4

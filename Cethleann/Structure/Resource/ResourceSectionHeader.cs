@@ -1,10 +1,7 @@
 ﻿namespace Cethleann.Structure.Resource
 {
-
-
-
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member    public struct ResourceSectionHeader
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    public struct ResourceSectionHeader
     {
         public DataType Magic { get; }
         public int Version { get; }

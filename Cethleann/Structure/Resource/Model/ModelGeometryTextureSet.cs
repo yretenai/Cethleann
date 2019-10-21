@@ -1,10 +1,7 @@
 ﻿namespace Cethleann.Structure.Resource.Model
 {
-
-
-
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member    public struct ModelGeometryTextureSet
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    public struct ModelGeometryTextureSet
     {
         public short ColorA { get; set; }
         public short ColorB { get; set; }

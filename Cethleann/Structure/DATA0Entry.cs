@@ -2,7 +2,8 @@
 {
     /// <summary>
     /// An entry in DATA0
-    /// </summary>    public struct DATA0Entry
+    /// </summary>
+    public struct DATA0Entry
     {
         /// <summary>
         /// Offset in DATA1

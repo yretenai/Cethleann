@@ -1,10 +1,7 @@
 ﻿namespace Cethleann.Structure.Resource.Model
 {
-
-
-
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member    public struct ModelSkeletonHeader
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    public struct ModelSkeletonHeader
     {
         public int DataOffset { get; set; }
         public int SkeletonCount { get; set; }

@@ -2,11 +2,8 @@
 
 namespace Cethleann.Structure.Resource.Model
 {
-
-
-
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member    public struct ModelSkeletonBone
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    public struct ModelSkeletonBone
     {
         public Vector Scale { get; set; }
         public uint Parent { get; set; }
