@@ -76,13 +76,13 @@ namespace Cethleann.DataExporter
 
                 if (!data.Span.IsKnown() && data.Span.IsDataTable())
                     if (TryExtractDataTable($"{pathBase}.datatable", data))
-                        continue;
+                        continue; /*
                 if (data.Span.IsBundle())
                     if (TryExtractBundle($"{pathBase}.bundle", data))
                         continue;
                 if (data.Span.GetDataType() == DataType.MDLK)
                     if (TryExtractModelGroup($"{pathBase}.mdlk", data))
-                        continue;
+                        continue; */
                 File.WriteAllBytes($@"{pathBase}.{ext}", data.ToArray());
             }
         }
@@ -163,13 +163,13 @@ namespace Cethleann.DataExporter
 
                 if (!datablob.Span.IsKnown() && datablob.Span.IsDataTable())
                     if (TryExtractDataTable($"{blobBase}.datatable", datablob))
-                        continue;
+                        continue; /*
                 if (datablob.Span.IsBundle())
                     if (TryExtractBundle($"{blobBase}.bundle", datablob))
                         continue;
                 if (datablob.Span.GetDataType() == DataType.MDLK)
                     if (TryExtractModelGroup($"{blobBase}.mdlk", datablob))
-                        continue;
+                        continue; */
 
                 if (!Directory.Exists(pathBase)) Directory.CreateDirectory(pathBase);
 
