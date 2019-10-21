@@ -96,6 +96,17 @@ namespace Cethleann
         }
 
         /// <summary>
+        ///     Guesses if the stream is a valid bundle.
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public static bool IsBundle(this Span<byte> buffer)
+        {
+            if (buffer.Length < 0x30) return false;
+            return Bundle.Validate(buffer) != null;
+        }
+
+        /// <summary>
         ///     Gets two dimensional text localizations from a data table.
         /// </summary>
         /// <param name="table"></param>

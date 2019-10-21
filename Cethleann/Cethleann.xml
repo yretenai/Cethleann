@@ -4,6 +4,30 @@
         <name>Cethleann</name>
     </assembly>
     <members>
+        <member name="T:Cethleann.Bundle">
+            <summary>
+                Koei Engine Bundle, apparently because DataTable is too boring.
+            </summary>
+        </member>
+        <member name="M:Cethleann.Bundle.#ctor(System.Span{System.Byte})">
+            <summary>
+                Split file into individual chunks
+            </summary>
+            <param name="data"></param>
+            <exception cref="T:System.IO.InvalidDataException"></exception>
+        </member>
+        <member name="P:Cethleann.Bundle.Entries">
+            <summary>
+                lsof data blobs
+            </summary>
+        </member>
+        <member name="M:Cethleann.Bundle.Validate(System.Span{System.Byte})">
+            <summary>
+                Checks if the stream makes sense to be a bundle
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
         <member name="T:Cethleann.DATA0">
             <summary>
                 DATA0 is a list of information for which to read DATA1 with.
@@ -49,16 +73,16 @@
                 Can contain many things, from structures to art assets.
             </summary>
         </member>
-        <member name="P:Cethleann.DataTables.DataTable.Entries">
-            <summary>
-                Lsof Entries found in the table
-            </summary>
-        </member>
         <member name="M:Cethleann.DataTables.DataTable.#ctor(System.Span{System.Byte})">
             <summary>
                 Initialize with a span.
             </summary>
             <param name="buffer"></param>
+        </member>
+        <member name="P:Cethleann.DataTables.DataTable.Entries">
+            <summary>
+                Lsof Entries found in the table
+            </summary>
         </member>
         <member name="T:Cethleann.DataTables.StructTable">
             <summary>
@@ -151,6 +175,16 @@
         <member name="F:Cethleann.DataType.WEBM">
             <summary>
                 WebM Video Container
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.Bundle">
+            <summary>
+                MDLK Container
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.MDLK">
+            <summary>
+                Koei Model Container
             </summary>
         </member>
         <member name="F:Cethleann.DataType.TextLocalization19">
@@ -304,6 +338,13 @@
             <param name="buffer">data to test</param>
             <returns>true if the header is predictable</returns>
         </member>
+        <member name="M:Cethleann.Extensions.IsBundle(System.Span{System.Byte})">
+            <summary>
+                Guesses if the stream is a valid bundle.
+            </summary>
+            <param name="buffer"></param>
+            <returns></returns>
+        </member>
         <member name="M:Cethleann.Extensions.GetTextLocalizationsRoot(Cethleann.DataTables.DataTable)">
             <summary>
                 Gets two dimensional text localizations from a data table.
@@ -342,6 +383,23 @@
         </member>
         <member name="P:Cethleann.G1.G1Model.Section">
             <inheritdoc />
+        </member>
+        <member name="T:Cethleann.G1.G1ModelGroup">
+            <summary>
+                Decomposes a MDLK buffer to individual files
+            </summary>
+        </member>
+        <member name="M:Cethleann.G1.G1ModelGroup.#ctor(System.Span{System.Byte})">
+            <summary>
+                Decomposes a MDLK buffer to individual files
+            </summary>
+            <param name="buffer"></param>
+            <exception cref="T:System.IO.InvalidDataException"></exception>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelGroup.Entries">
+            <summary>
+                Usually models.
+            </summary>
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MExtra">
             <summary>
