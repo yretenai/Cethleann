@@ -52,8 +52,14 @@ namespace Cethleann.G1.G1ModelSection
             }
         }
 
+        /// <summary>
+        ///     Header info (bounding box)
+        /// </summary>
         public ModelGeometryHeader Header { get; }
 
+        /// <summary>
+        ///     List of geometry sections
+        /// </summary>
         public List<IG1MGSection> SubSections { get; set; } = new List<IG1MGSection>();
 
         /// <inheritdoc />

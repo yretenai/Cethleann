@@ -5,6 +5,7 @@ using Cethleann.Structure.Resource.Model;
 namespace Cethleann.G1.G1ModelSection.G1MGSection
 {
     /// <summary>
+    ///     Parses submesh data
     /// </summary>
     public class G1MGSubMesh : IG1MGSection
     {
@@ -14,6 +15,9 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
             SubMeshes = MemoryMarshal.Cast<byte, ModelGeometrySubMesh>(data).ToArray();
         }
 
+        /// <summary>
+        ///     Assembles a series of faces into a polygon.
+        /// </summary>
         public ModelGeometrySubMesh[] SubMeshes { get; }
 
         /// <inheritdoc />

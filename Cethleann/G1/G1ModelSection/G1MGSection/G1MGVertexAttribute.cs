@@ -21,8 +21,14 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
             Attributes = MemoryMarshal.Cast<byte, ModelGeometryAttribute>(data.Slice(offset, count * SizeHelper.SizeOf<ModelGeometryAttribute>())).ToArray();
         }
 
+        /// <summary>
+        ///     IDK What this is used for
+        /// </summary>
         public int[] BufferInfo { get; }
 
+        /// <summary>
+        ///     Describes vertex strides
+        /// </summary>
         public ModelGeometryAttribute[] Attributes { get; }
 
         /// <inheritdoc />

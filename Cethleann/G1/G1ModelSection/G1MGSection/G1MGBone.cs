@@ -7,6 +7,7 @@ using DragonLib;
 namespace Cethleann.G1.G1ModelSection.G1MGSection
 {
     /// <summary>
+    ///     Parses mesh bones
     /// </summary>
     public class G1MGBone : IG1MGSection
     {
@@ -24,6 +25,9 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
             }
         }
 
+        /// <summary>
+        ///     Bone map
+        /// </summary>
         public List<ModelGeometryBone[]> Bones { get; } = new List<ModelGeometryBone[]>();
 
         /// <inheritdoc />

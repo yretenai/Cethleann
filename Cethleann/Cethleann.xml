@@ -448,6 +448,16 @@
             <param name="ignoreVersion"></param>
             <param name="sectionHeader"></param>
         </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MG.Header">
+            <summary>
+            Header info (bounding box)
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MG.SubSections">
+            <summary>
+            List of geometry sections
+            </summary>
+        </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MG.SupportedVersion">
             <inheritdoc />
         </member>
@@ -456,7 +466,12 @@
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGBone">
             <summary>
-            
+            Parses mesh bones
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGBone.Bones">
+            <summary>
+            Bone map
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGBone.Type">
@@ -467,12 +482,11 @@
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGIndexBuffer">
             <summary>
-            
             </summary>
         </member>
         <member name="F:Cethleann.G1.G1ModelSection.G1MGSection.G1MGIndexBuffer.Buffers">
             <summary>
-            List of vertex buffer strides
+                List of vertex buffer strides
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGIndexBuffer.Type">
@@ -483,14 +497,14 @@
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGLattice">
             <summary>
-            "Lattice" is an assumption.
-            Just a list of float data, used for bones maybe?
+                "Lattice" is an assumption.
+                Just a list of float data, used for bones maybe?
             </summary>
             <inheritdoc />
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGLattice.Lattice">
             <summary>
-            "Lattice" is an assumption.
+                "Lattice" is an assumption.
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGLattice.Section">
@@ -518,7 +532,12 @@
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMesh">
             <summary>
-            
+            Parses submesh groups
+            </summary>
+        </member>
+        <member name="F:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMesh.Meshes">
+            <summary>
+            List of meshes with the related data.
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMesh.Type">
@@ -535,8 +554,8 @@
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGShaderParam.ParamGroups">
             <summary>
-            Two dimensional list of param values.
-            I think count usually matches the number of materials.
+                Two dimensional list of param values.
+                I think count usually matches the number of materials.
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGShaderParam.Type">
@@ -547,7 +566,12 @@
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGSubMesh">
             <summary>
-            
+            Parses submesh data
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGSubMesh.SubMeshes">
+            <summary>
+            Assembles a series of faces into a polygon.
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGSubMesh.Type">
@@ -558,7 +582,17 @@
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexAttribute">
             <summary>
-            VertexBuffer Stride information
+                VertexBuffer Stride information
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexAttribute.BufferInfo">
+            <summary>
+            IDK What this is used for 
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexAttribute.Attributes">
+            <summary>
+            Describes vertex strides
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexAttribute.Type">
@@ -569,12 +603,12 @@
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexBuffer">
             <summary>
-            Copies raw vertex buffers.
+                Copies raw vertex buffers.
             </summary>
         </member>
         <member name="F:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexBuffer.Buffers">
             <summary>
-            List of vertex buffer strides
+                List of vertex buffer strides
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexBuffer.Type">
@@ -585,17 +619,17 @@
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.IG1MGSection">
             <summary>
-            Base Wrapper for G1MG Sections
+                Base Wrapper for G1MG Sections
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.IG1MGSection.Type">
             <summary>
-            Type of this section
+                Type of this section
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.IG1MGSection.Section">
             <summary>
-            Section header
+                Section header
             </summary>
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MM">
