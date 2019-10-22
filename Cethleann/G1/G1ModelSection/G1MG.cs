@@ -40,6 +40,12 @@ namespace Cethleann.G1.G1ModelSection
                     ModelGeometryType.Lattice => (IG1MGSection) new G1MGLattice(block, subSectionHeader),
                     ModelGeometryType.Material => new G1MGMaterial(block, subSectionHeader),
                     ModelGeometryType.ShaderParam => new G1MGShaderParam(block, subSectionHeader),
+                    ModelGeometryType.VertexBuffer => new G1MGVertexBuffer(block, subSectionHeader),
+                    ModelGeometryType.VertexAttribute => new G1MGVertexAttribute(block, subSectionHeader),
+                    ModelGeometryType.Bone => new G1MGBone(block, subSectionHeader),
+                    ModelGeometryType.IndexBuffer => new G1MGIndexBuffer(block, subSectionHeader),
+                    ModelGeometryType.SubMesh => new G1MGSubMesh(block, subSectionHeader),
+                    ModelGeometryType.Mesh => new G1MGMesh(block, subSectionHeader),
                     _ => throw new NotSupportedException($"Can't handle G1MG section {subSectionHeader.Magic:F}")
                 };
                 SubSections.Add(section);

@@ -19,18 +19,9 @@ namespace Cethleann.DataExporter
             using var DATA1 = File.OpenRead($@"{romfs}\DATA1.bin");
 
             var bundle = new DataTable(DATA0.ReadEntry(DATA1, 0xE34).Span);
-            // var model = new G1Model(bundle.Entries.ElementAt(0).Span);
+            var model = new G1Model(bundle.Entries.ElementAt(0).Span);
             var texture = new G1TextureGroup(bundle.Entries.ElementAt(1).Span);
-            var i = 0;
-            if (!Directory.Exists($@"{romfs}\ex\tex")) Directory.CreateDirectory($@"{romfs}\ex\tex");
-
-            foreach (var (_, header, _, blob) in texture.Textures)
-            {
-                var (width, height, mips, format) = G1TextureGroup.UnpackWHM(header);
-                var data = DXGI.DecompressDXGIFormat(blob.Span, width, height, format);
-                i += 1;
-                if (!TiffImage.WriteTiff($@"{romfs}\ex\tex\{i:X16}.tif", data, width, height)) File.WriteAllBytes($@"{romfs}\ex\tex\{i:X16}.dds", DXGI.BuildDDS(format, mips, width, height, blob.Span).ToArray());
-            }
+            SaveTextures($@"{romfs}\ex\tex", texture);
 
             var text = new DataTable(DATA0.ReadEntry(DATA1, 0).Span);
             var dh = new DataTable(DATA0.ReadEntry(DATA1, 12).Span);
@@ -174,6 +165,20 @@ namespace Cethleann.DataExporter
                 if (!Directory.Exists(pathBase)) Directory.CreateDirectory(pathBase);
 
                 File.WriteAllBytes($@"{blobBase}.{ext}", datablob.ToArray());
+            }
+        }
+
+        private static void SaveTextures(string pathBase, G1TextureGroup group)
+        {
+            var i = 0;
+            if (!Directory.Exists(pathBase)) Directory.CreateDirectory(pathBase);
+
+            foreach (var (_, header, _, blob) in group.Textures)
+            {
+                var (width, height, mips, format) = G1TextureGroup.UnpackWHM(header);
+                var data = DXGI.DecompressDXGIFormat(blob.Span, width, height, format);
+                i += 1;
+                if (!TiffImage.WriteTiff($@"{pathBase}\{i:X16}.tif", data, width, height)) File.WriteAllBytes($@"{pathBase}\{i:X16}.dds", DXGI.BuildDDS(format, mips, width, height, blob.Span).ToArray());
             }
         }
 #pragma warning restore IDE0051 // Remove unused private members

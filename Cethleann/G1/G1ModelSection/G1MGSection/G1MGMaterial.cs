@@ -6,11 +6,18 @@ using DragonLib;
 
 namespace Cethleann.G1.G1ModelSection.G1MGSection
 {
+    /// <summary>
+    ///     Parses material data
+    /// </summary>
+    /// <inheritdoc />
     public class G1MGMaterial : IG1MGSection
     {
+        /// <summary>
+        ///     Material data found in this section
+        /// </summary>
         public List<(ModelGeometryMaterial material, ModelGeometryTextureSet[] textureSet)> Materials = new List<(ModelGeometryMaterial, ModelGeometryTextureSet[])>();
 
-        public G1MGMaterial(Span<byte> data, ModelGeometrySection sectionInfo)
+        internal G1MGMaterial(Span<byte> data, ModelGeometrySection sectionInfo)
         {
             Section = sectionInfo;
             var offset = 0;
@@ -25,7 +32,10 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
             }
         }
 
+        /// <inheritdoc />
         public ModelGeometrySection Section { get; }
+
+        /// <inheritdoc />
         public ModelGeometryType Type => ModelGeometryType.Material;
     }
 }

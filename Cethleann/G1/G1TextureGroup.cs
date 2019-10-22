@@ -19,7 +19,7 @@ namespace Cethleann.G1
         /// </summary>
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
-        public G1TextureGroup(Span<byte> data, bool ignoreVersion = false)
+        public G1TextureGroup(Span<byte> data, bool ignoreVersion = true)
         {
             if (!data.Matches(DataType.TextureGroup)) throw new InvalidOperationException("Not an G1T stream");
 

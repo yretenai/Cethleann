@@ -6,9 +6,13 @@ using DragonLib;
 
 namespace Cethleann.G1.G1ModelSection.G1MGSection
 {
+    /// <summary>
+    ///     Parses shader variable data
+    /// </summary>
+    /// <inheritdoc />
     public class G1MGShaderParam : IG1MGSection
     {
-        public G1MGShaderParam(Span<byte> data, ModelGeometrySection sectionHeader)
+        internal G1MGShaderParam(Span<byte> data, ModelGeometrySection sectionHeader)
         {
             Section = sectionHeader;
 
@@ -46,8 +50,16 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
             }
         }
 
+        /// <summary>
+        ///     Two dimensional list of param values.
+        ///     I think count usually matches the number of materials.
+        /// </summary>
         public List<List<(ModelGeometryShaderParam param, string name, Array values)>> ParamGroups { get; } = new List<List<(ModelGeometryShaderParam param, string name, Array values)>>();
+
+        /// <inheritdoc />
         public ModelGeometryType Type => ModelGeometryType.ShaderParam;
+
+        /// <inheritdoc />
         public ModelGeometrySection Section { get; }
     }
 }

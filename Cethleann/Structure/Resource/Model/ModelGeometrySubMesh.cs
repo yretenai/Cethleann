@@ -1,0 +1,23 @@
+namespace Cethleann.Structure.Resource.Model
+{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    public struct ModelGeometrySubMesh
+    {
+        public int Unknown1 { get; set; }
+        public int LatticeIndex { get; set; }
+        public int BoneTableIndex { get; set; }
+        public int BoneIndex { get; set; }
+        public int TextureCount { get; set; }
+        public int MaterialIndex { get; set; }
+        public int TextureSetIndex { get; set; }
+        public int VertexBuffer { get; set; }
+        public int Unknown2 { get; set; }
+        public SubMeshFormat Format { get; set; }
+        public int VertexOffset { get; set; }
+        public int VertexCount { get; set; }
+        public int FaceOffset { get; set; }
+        public int FaceCount { get; set; }
+    }
+
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+}
