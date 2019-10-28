@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pfstool", "pfstool\pfstool.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonLib", "DragonLib\DragonLib.csproj", "{DFB760A9-0BF2-4C75-A015-BA4787B0E20E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLTFSerialization", "GLTFSerialization\GLTFSerialization.csproj", "{B240CFC3-C4B9-461C-90FD-0A96FEC3BF38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,10 @@ Global
 		{DFB760A9-0BF2-4C75-A015-BA4787B0E20E}.Debug|x64.Build.0 = Debug|x64
 		{DFB760A9-0BF2-4C75-A015-BA4787B0E20E}.Release|x64.ActiveCfg = Release|x64
 		{DFB760A9-0BF2-4C75-A015-BA4787B0E20E}.Release|x64.Build.0 = Release|x64
+		{B240CFC3-C4B9-461C-90FD-0A96FEC3BF38}.Debug|x64.ActiveCfg = Debug|x64
+		{B240CFC3-C4B9-461C-90FD-0A96FEC3BF38}.Debug|x64.Build.0 = Debug|x64
+		{B240CFC3-C4B9-461C-90FD-0A96FEC3BF38}.Release|x64.ActiveCfg = Release|x64
+		{B240CFC3-C4B9-461C-90FD-0A96FEC3BF38}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{EE0365C4-12FE-47FF-B2E7-929B6ABE7F36} = {8ABC4D50-0A23-4D29-BBE1-B1BD994D495D}
 		{DFB760A9-0BF2-4C75-A015-BA4787B0E20E} = {8ABC4D50-0A23-4D29-BBE1-B1BD994D495D}
+		{B240CFC3-C4B9-461C-90FD-0A96FEC3BF38} = {8ABC4D50-0A23-4D29-BBE1-B1BD994D495D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D101D9DD-E806-4794-B9BE-E43298235565}

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Cethleann.Structure.Resource.Model;
 using DragonLib;
@@ -14,22 +15,24 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
         {
             Section = section;
             var offset = 0;
-            BufferInfo = MemoryMarshal.Cast<byte, int>(data.Slice(offset, section.Count * 4)).ToArray();
-            offset += offset * 4;
-            var count = MemoryMarshal.Read<int>(data.Slice(offset));
-            offset += 4;
-            Attributes = MemoryMarshal.Cast<byte, ModelGeometryAttribute>(data.Slice(offset, count * SizeHelper.SizeOf<ModelGeometryAttribute>())).ToArray();
+            for (var i = 0; i < section.Count; ++i)
+            {
+                var count = MemoryMarshal.Read<int>(data.Slice(offset));
+                offset += 4;
+                var index = MemoryMarshal.Cast<byte, int>(data.Slice(offset, count * 4)).ToArray();
+                offset += count * 4;
+                count = MemoryMarshal.Read<int>(data.Slice(offset));
+                offset += 4;
+                var attributes = MemoryMarshal.Cast<byte, ModelGeometryAttribute>(data.Slice(offset, count * SizeHelper.SizeOf<ModelGeometryAttribute>())).ToArray();
+                offset += count * SizeHelper.SizeOf<ModelGeometryAttribute>();
+                Attributes.Add((index, attributes));
+            }
         }
-
-        /// <summary>
-        ///     IDK What this is used for
-        /// </summary>
-        public int[] BufferInfo { get; }
 
         /// <summary>
         ///     Describes vertex strides
         /// </summary>
-        public ModelGeometryAttribute[] Attributes { get; }
+        public List<(int[] index, ModelGeometryAttribute[] attributeList)> Attributes { get; } = new List<(int[] sizeMap, ModelGeometryAttribute[] attributeList)>();
 
         /// <inheritdoc />
         public ModelGeometryType Type => ModelGeometryType.VertexAttribute;

@@ -1,4 +1,4 @@
-﻿using DragonLib;
+﻿using DragonLib.Numerics;
 
 namespace Cethleann.Structure.Resource.Model
 {
@@ -7,7 +7,8 @@ namespace Cethleann.Structure.Resource.Model
     {
         public int ModelType { get; set; }
         public float BoundingBoxWeight { get; set; }
-        public BBox BoundingBox { get; set; }
+        public Vector3 BoundingBoxBottomRight { get; set; }
+        public Vector3 BoundingBoxTopLeft { get; set; }
         public int Count { get; set; } // assumption.
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

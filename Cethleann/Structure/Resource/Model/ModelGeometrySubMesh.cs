@@ -10,7 +10,7 @@ namespace Cethleann.Structure.Resource.Model
         public int TextureCount { get; set; }
         public int MaterialIndex { get; set; }
         public int TextureSetIndex { get; set; }
-        public int VertexBuffer { get; set; }
+        public int BufferIndex { get; set; }
         public int Unknown2 { get; set; }
         public SubMeshFormat Format { get; set; }
         public int VertexOffset { get; set; }

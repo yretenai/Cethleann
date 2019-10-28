@@ -3,7 +3,7 @@
 namespace Cethleann
 {
     /// <summary>
-    ///     Magic Values for most files.
+    ///     Magic Values for most files
     /// </summary>
     public enum DataType : uint
     {
@@ -92,7 +92,7 @@ namespace Cethleann
         MDLK = 'M' << 0 | 'D' << 8 | 'L' << 16 | 'K' << 24,
 
         /// <summary>
-        ///     teXt Localization, version 19.
+        ///     teXt Localization, version 19
         /// </summary>
         [FileExtension("text")]
         TextLocalization19 = 'X' << 0 | 'L' << 8 | 0x13 << 16,
@@ -110,43 +110,13 @@ namespace Cethleann
         Model = 'G' << 24 | '1' << 16 | 'M' << 8 | '_' << 0,
 
         /// <summary>
-        ///     Koei Model Skeleton
-        /// </summary>
-        [FileExtension("g1m.skeleton")]
-        ModelSkeleton = 'G' << 24 | '1' << 16 | 'M' << 8 | 'S' << 0,
-
-        /// <summary>
-        ///     Koei Model F?
-        /// </summary>
-        [FileExtension("g1m.f")]
-        ModelF = 'G' << 24 | '1' << 16 | 'M' << 8 | 'F' << 0,
-
-        /// <summary>
-        ///     Koei Model Geometry
-        /// </summary>
-        [FileExtension("g1m.geometry")]
-        ModelGeometry = 'G' << 24 | '1' << 16 | 'M' << 8 | 'G' << 0,
-
-        /// <summary>
-        ///     Koei Model Matrices
-        /// </summary>
-        [FileExtension("g1m.matrix")]
-        ModelMatrix = 'G' << 24 | '1' << 16 | 'M' << 8 | 'M' << 0,
-
-        /// <summary>
-        ///     Koei Model ExtraData.
-        /// </summary>
-        [FileExtension("g1m.extra")]
-        ModelExtra = 'E' << 24 | 'X' << 16 | 'T' << 8 | 'R' << 0,
-
-        /// <summary>
         ///     Koei Animation
         /// </summary>
         [FileExtension("g2a")]
         Animation = 'G' << 24 | '2' << 16 | 'A' << 8 | '_' << 0,
 
         /// <summary>
-        ///     Koei Model Group.
+        ///     Koei Model Group
         /// </summary>
         [FileExtension("g1mg")]
         ModelGroup = 'M' << 0 | 'D' << 8 | 'L' << 16 | 'K' << 24,

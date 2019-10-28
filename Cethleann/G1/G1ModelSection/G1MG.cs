@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Cethleann.G1.G1ModelSection.G1MGSection;
 using Cethleann.Structure.Resource;
@@ -21,7 +22,7 @@ namespace Cethleann.G1.G1ModelSection
         /// <param name="sectionHeader"></param>
         public G1MG(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (sectionHeader.Magic != DataType.ModelGeometry) throw new InvalidOperationException("Not an G1MG stream");
+            if (sectionHeader.Magic != ResourceSection.ModelGeometry) throw new InvalidOperationException("Not an G1MG stream");
 
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MG version {Section.Version.ToVersion()} is not supported!");
@@ -37,7 +38,7 @@ namespace Cethleann.G1.G1ModelSection
                 offset += subSectionHeader.Size;
                 var section = subSectionHeader.Magic switch
                 {
-                    ModelGeometryType.Lattice => (IG1MGSection) new G1MGLattice(block, subSectionHeader),
+                    ModelGeometryType.Socket => (IG1MGSection) new G1MGSocket(block, subSectionHeader),
                     ModelGeometryType.Material => new G1MGMaterial(block, subSectionHeader),
                     ModelGeometryType.ShaderParam => new G1MGShaderParam(block, subSectionHeader),
                     ModelGeometryType.VertexBuffer => new G1MGVertexBuffer(block, subSectionHeader),
@@ -67,5 +68,15 @@ namespace Cethleann.G1.G1ModelSection
 
         /// <inheritdoc />
         public ResourceSectionHeader Section { get; }
+
+        /// <summary>
+        ///     Gets a geometry component
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public T GetSection<T>() where T : class
+        {
+            return SubSections.FirstOrDefault(x => x is T) as T;
+        }
     }
 }

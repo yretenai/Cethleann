@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 using Cethleann.Structure.Resource;
 using Cethleann.Structure.Resource.Model;
 using DragonLib;
+using OpenTK;
+using Vector3 = DragonLib.Numerics.Vector3;
 
 namespace Cethleann.G1.G1ModelSection
 {
@@ -20,7 +21,7 @@ namespace Cethleann.G1.G1ModelSection
         /// <param name="sectionHeader"></param>
         public G1MS(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (sectionHeader.Magic != DataType.ModelSkeleton) throw new InvalidOperationException("Not an G1MS stream");
+            if (sectionHeader.Magic != ResourceSection.ModelSkeleton) throw new InvalidOperationException("Not an G1MS stream");
 
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MS version {Section.Version.ToVersion()} is not supported!");
@@ -28,8 +29,31 @@ namespace Cethleann.G1.G1ModelSection
             var header = MemoryMarshal.Read<ModelSkeletonHeader>(data);
             Helper.Assert(header.SkeletonCount == 1, "SkeletonCount == 1");
             BoneIndices = MemoryMarshal.Cast<byte, short>(data.Slice(SizeHelper.SizeOf<ModelSkeletonHeader>(), header.BoneTableCount * 2)).ToArray();
-            BoneIndicesFiltered = BoneIndices.Where(x => x != -1).ToArray();
             Bones = MemoryMarshal.Cast<byte, ModelSkeletonBone>(data.Slice(header.DataOffset - SizeHelper.SizeOf<ResourceSectionHeader>(), header.BoneCount * SizeHelper.SizeOf<ModelSkeletonBone>())).ToArray();
+
+            WorldBones = new ModelSkeletonBone[Bones.Length];
+            for (var index = 0; index < Bones.Length; index++)
+            {
+                var bone = Bones[index];
+                if (!bone.HasParent())
+                {
+                    WorldBones[index] = bone;
+                    continue;
+                }
+
+                if (bone.Parent > index) throw new InvalidOperationException("Bone calculated before parent bone");
+
+                var parentBone = WorldBones[bone.Parent];
+                WorldBones[index] = new ModelSkeletonBone
+                {
+                    Length = bone.Length,
+                    Parent = bone.Parent,
+                    Scale = (parentBone.Scale.ToOpenTK() * bone.Scale.ToOpenTK()).ToDragon(),
+                    Rotation = (parentBone.Rotation.ToOpenTK() * bone.Rotation.ToOpenTK()).ToDragon()
+                };
+                var local = parentBone.Rotation.ToOpenTK() * new Quaternion(bone.Position.ToOpenTK(), 0f) * new Quaternion(-parentBone.Rotation.X, -parentBone.Rotation.Y, -parentBone.Rotation.Z, parentBone.Rotation.W);
+                WorldBones[index].Position = new Vector3(local.X + parentBone.Position.X, local.Y + parentBone.Position.Y, local.Z + parentBone.Position.Z);
+            }
         }
 
         /// <summary>
@@ -38,40 +62,19 @@ namespace Cethleann.G1.G1ModelSection
         public short[] BoneIndices { get; }
 
         /// <summary>
-        ///     BoneIndices but without -1
-        /// </summary>
-        public short[] BoneIndicesFiltered { get; }
-
-        /// <summary>
         ///     lsof bones
         /// </summary>
         public ModelSkeletonBone[] Bones { get; }
+
+        /// <summary>
+        ///     lsof world bones
+        /// </summary>
+        public ModelSkeletonBone[] WorldBones { get; }
 
         /// <inheritdoc />
         public int SupportedVersion { get; } = 32;
 
         /// <inheritdoc />
         public ResourceSectionHeader Section { get; }
-
-        /// <summary>
-        ///     Returns the remapped bone at the specified index.
-        ///     If the index is not remapped, returns null.
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public ModelSkeletonBone? AtIndex(int i)
-        {
-            var index = BoneIndices[i];
-            if (index == -1) return null;
-
-            return Bones[index];
-        }
-
-        /// <summary>
-        ///     Returns the remapped bone at the specified index.
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public ModelSkeletonBone AtFilteredIndex(int i) => Bones[BoneIndices[i]];
     }
 }

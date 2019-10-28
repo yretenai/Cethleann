@@ -1,11 +1,11 @@
-﻿using DragonLib;
+﻿using DragonLib.Numerics;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace Cethleann.Structure.DataStructs
 {
     public struct CharacterInfo
     {
-        public Vector Unknown_X0 { get; set; } // Color? Or something?
+        public Vector3 Unknown_X0 { get; set; } // Color? Or something?
 
         public short Unknown_X10 { get; set; } // always -1?
 

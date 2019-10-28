@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 using Cethleann.DataTables;
+using Cethleann.Structure.Resource;
 using DragonLib;
 
 namespace Cethleann
@@ -28,6 +29,21 @@ namespace Cethleann
         /// <param name="onlyAlphaNum"></param>
         /// <returns></returns>
         public static string ToFourCC(this DataType value, bool onlyAlphaNum) => ((int) value).ToFourCC(onlyAlphaNum);
+
+        /// <summary>
+        ///     Converts a ResourceSection to a FourCC
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="onlyAlphaNum"></param>
+        /// <returns></returns>
+        public static string ToFourCC(this ResourceSection value, bool onlyAlphaNum) => ((int) value).ToFourCC(onlyAlphaNum);
+
+        /// <summary>
+        ///     Converts a ResourceSection to a DataType
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static DataType ToDataType(this ResourceSection value) => (DataType) value;
 
         /// <summary>
         ///     Converts a version tag to a number.

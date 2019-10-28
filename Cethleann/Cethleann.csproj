@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DragonLib\DragonLib.csproj" />
+    <ProjectReference Include="..\GLTFSerialization\GLTFSerialization.csproj" />
   </ItemGroup>
 
 </Project>

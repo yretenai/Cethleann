@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using Cethleann.Structure.Resource;
 using Cethleann.Structure.Resource.Texture;
 using DragonLib;
-using DragonLib.DXGI;
+using DragonLib.Imaging.DXGI;
 
 namespace Cethleann.G1
 {

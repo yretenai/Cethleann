@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Cethleann.Structure.Resource.Model;
 using DragonLib;
+using DragonLib.Numerics;
 
 namespace Cethleann.G1.G1ModelSection.G1MGSection
 {

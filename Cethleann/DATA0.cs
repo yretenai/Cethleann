@@ -20,10 +20,6 @@ namespace Cethleann
 #pragma warning disable IDE0068 // Use recommended dispose pattern, reason: disposed in sub-method DATA0(Stream, bool) when bool leaveOpen is false.
         public DATA0(string path) : this(File.OpenRead(path)) { }
 #pragma warning restore IDE0068 // Use recommended dispose pattern
-        /// <summary>
-        ///     lsof <seealso cref="DATA0Entry" />
-        /// </summary>
-        public List<DATA0Entry> Entries { get; set; }
 
         /// <summary>
         ///     Reads a DATA0 file list from a stream
@@ -51,6 +47,11 @@ namespace Cethleann
                 }
             }
         }
+
+        /// <summary>
+        ///     lsof <seealso cref="DATA0Entry" />
+        /// </summary>
+        public List<DATA0Entry> Entries { get; set; }
 
         /// <summary>
         ///     Reads a file index from DATA1

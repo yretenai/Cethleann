@@ -1,3 +1,6 @@
 [submodule "DragonLib"]
 	path = DragonLib
 	url = https://github.com/healingbrew/DragonLib.git
+[submodule "GLTFSerialization"]
+	path = GLTFSerialization
+	url = https://github.com/healingbrew/GLTFSerialization.git

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Cethleann.Structure.Resource;
-using DragonLib;
+using DragonLib.Numerics;
 
 namespace Cethleann.G1.G1ModelSection
 {
@@ -18,7 +18,7 @@ namespace Cethleann.G1.G1ModelSection
         /// <param name="sectionHeader"></param>
         public G1MM(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (sectionHeader.Magic != DataType.ModelMatrix) throw new InvalidOperationException("Not an G1MM stream");
+            if (sectionHeader.Magic != ResourceSection.ModelMatrix) throw new InvalidOperationException("Not an G1MM stream");
 
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MM version {Section.Version.ToVersion()} is not supported!");

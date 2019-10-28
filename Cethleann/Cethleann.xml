@@ -39,17 +39,17 @@
             </summary>
             <param name="path">File path to read</param>
         </member>
-        <member name="P:Cethleann.DATA0.Entries">
-            <summary>
-                lsof <seealso cref="T:Cethleann.Structure.DATA0Entry" />
-            </summary>
-        </member>
         <member name="M:Cethleann.DATA0.#ctor(System.IO.Stream,System.Boolean)">
             <summary>
                 Reads a DATA0 file list from a stream
             </summary>
             <param name="stream">Binary Read-capable Stream of DATA0</param>
             <param name="leaveOpen">If true, won't dispose <paramref name="stream" /></param>
+        </member>
+        <member name="P:Cethleann.DATA0.Entries">
+            <summary>
+                lsof <seealso cref="T:Cethleann.Structure.DATA0Entry" />
+            </summary>
         </member>
         <member name="M:Cethleann.DATA0.ReadEntry(System.IO.Stream,System.Int32)">
             <summary>
@@ -109,7 +109,7 @@
         </member>
         <member name="T:Cethleann.DataType">
             <summary>
-                Magic Values for most files.
+                Magic Values for most files
             </summary>
         </member>
         <member name="F:Cethleann.DataType.StructTable">
@@ -184,7 +184,7 @@
         </member>
         <member name="F:Cethleann.DataType.TextLocalization19">
             <summary>
-                teXt Localization, version 19.
+                teXt Localization, version 19
             </summary>
         </member>
         <member name="F:Cethleann.DataType.TextureGroup">
@@ -197,31 +197,6 @@
                 Koei Model Base
             </summary>
         </member>
-        <member name="F:Cethleann.DataType.ModelSkeleton">
-            <summary>
-                Koei Model Skeleton
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ModelF">
-            <summary>
-                Koei Model F?
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ModelGeometry">
-            <summary>
-                Koei Model Geometry
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ModelMatrix">
-            <summary>
-                Koei Model Matrices
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ModelExtra">
-            <summary>
-                Koei Model ExtraData.
-            </summary>
-        </member>
         <member name="F:Cethleann.DataType.Animation">
             <summary>
                 Koei Animation
@@ -229,7 +204,7 @@
         </member>
         <member name="F:Cethleann.DataType.ModelGroup">
             <summary>
-                Koei Model Group.
+                Koei Model Group
             </summary>
         </member>
         <member name="F:Cethleann.DataType.EffectManager">
@@ -272,6 +247,21 @@
             </summary>
             <param name="value"></param>
             <param name="onlyAlphaNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Extensions.ToFourCC(Cethleann.Structure.Resource.ResourceSection,System.Boolean)">
+            <summary>
+                Converts a ResourceSection to a FourCC
+            </summary>
+            <param name="value"></param>
+            <param name="onlyAlphaNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Extensions.ToDataType(Cethleann.Structure.Resource.ResourceSection)">
+            <summary>
+                Converts a ResourceSection to a DataType
+            </summary>
+            <param name="value"></param>
             <returns></returns>
         </member>
         <member name="M:Cethleann.Extensions.ToVersion(System.Int32)">
@@ -379,6 +369,26 @@
         <member name="P:Cethleann.G1.G1Model.Section">
             <inheritdoc />
         </member>
+        <member name="M:Cethleann.G1.G1Model.GetSection``1">
+            <summary>
+                Gets a specific section from the G1M model
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.G1.G1Model.ExportMeshes(System.String,System.String,System.Int32,System.Int32,System.Boolean,GLTF.Schema.GLTFRoot)">
+            <summary>
+                Exports meshes to GLTF
+            </summary>
+            <param name="bufferPath"></param>
+            <param name="bufferPathRoot"></param>
+            <param name="lod"></param>
+            <param name="group"></param>
+            <param name="exportSkeleton"></param>
+            <param name="root"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
         <member name="T:Cethleann.G1.G1ModelGroup">
             <summary>
                 Decomposes a MDLK buffer to individual files
@@ -450,12 +460,12 @@
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MG.Header">
             <summary>
-            Header info (bounding box)
+                Header info (bounding box)
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MG.SubSections">
             <summary>
-            List of geometry sections
+                List of geometry sections
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MG.SupportedVersion">
@@ -464,14 +474,21 @@
         <member name="P:Cethleann.G1.G1ModelSection.G1MG.Section">
             <inheritdoc />
         </member>
+        <member name="M:Cethleann.G1.G1ModelSection.G1MG.GetSection``1">
+            <summary>
+                Gets a geometry component
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGBone">
             <summary>
-            Parses mesh bones
+                Parses mesh bones
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGBone.Bones">
             <summary>
-            Bone map
+                Bone map
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGBone.Type">
@@ -495,24 +512,6 @@
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGIndexBuffer.Section">
             <inheritdoc />
         </member>
-        <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGLattice">
-            <summary>
-                "Lattice" is an assumption.
-                Just a list of float data, used for bones maybe?
-            </summary>
-            <inheritdoc />
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGLattice.Lattice">
-            <summary>
-                "Lattice" is an assumption.
-            </summary>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGLattice.Section">
-            <inheritdoc />
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGLattice.Type">
-            <inheritdoc />
-        </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMaterial">
             <summary>
                 Parses material data
@@ -532,12 +531,12 @@
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMesh">
             <summary>
-            Parses submesh groups
+                Parses submesh groups
             </summary>
         </member>
         <member name="F:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMesh.Meshes">
             <summary>
-            List of meshes with the related data.
+                List of meshes with the related data.
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMesh.Type">
@@ -564,14 +563,32 @@
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGShaderParam.Section">
             <inheritdoc />
         </member>
+        <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGSocket">
+            <summary>
+                "Lattice" is an assumption.
+                Just a list of float data, used for bones maybe?
+            </summary>
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGSocket.Sockets">
+            <summary>
+                Sockets
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGSocket.Section">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGSocket.Type">
+            <inheritdoc />
+        </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGSubMesh">
             <summary>
-            Parses submesh data
+                Parses submesh data
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGSubMesh.SubMeshes">
             <summary>
-            Assembles a series of faces into a polygon.
+                Assembles a series of faces into a polygon.
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGSubMesh.Type">
@@ -585,14 +602,9 @@
                 VertexBuffer Stride information
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexAttribute.BufferInfo">
-            <summary>
-            IDK What this is used for 
-            </summary>
-        </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexAttribute.Attributes">
             <summary>
-            Describes vertex strides
+                Describes vertex strides
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexAttribute.Type">
@@ -675,14 +687,14 @@
                 Bone Remap Index
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MS.BoneIndicesFiltered">
-            <summary>
-                BoneIndices but without -1
-            </summary>
-        </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MS.Bones">
             <summary>
                 lsof bones
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MS.WorldBones">
+            <summary>
+                lsof world bones
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MS.SupportedVersion">
@@ -690,21 +702,6 @@
         </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MS.Section">
             <inheritdoc />
-        </member>
-        <member name="M:Cethleann.G1.G1ModelSection.G1MS.AtIndex(System.Int32)">
-            <summary>
-                Returns the remapped bone at the specified index.
-                If the index is not remapped, returns null.
-            </summary>
-            <param name="i"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Cethleann.G1.G1ModelSection.G1MS.AtFilteredIndex(System.Int32)">
-            <summary>
-                Returns the remapped bone at the specified index.
-            </summary>
-            <param name="i"></param>
-            <returns></returns>
         </member>
         <member name="T:Cethleann.G1.G1TextureGroup">
             <summary>
@@ -796,6 +793,36 @@
             <summary>
                 Compressed (read: bytes to read in this file) size of this file.
                 Don't know why this exist, maybe anonymous file pointers?
+            </summary>
+        </member>
+        <member name="T:Cethleann.Structure.Resource.ResourceSection">
+            <summary>
+                Resources found in G1/2 assets
+            </summary>
+        </member>
+        <member name="F:Cethleann.Structure.Resource.ResourceSection.ModelSkeleton">
+            <summary>
+                Koei Model Skeleton
+            </summary>
+        </member>
+        <member name="F:Cethleann.Structure.Resource.ResourceSection.ModelF">
+            <summary>
+                Koei Model F?
+            </summary>
+        </member>
+        <member name="F:Cethleann.Structure.Resource.ResourceSection.ModelGeometry">
+            <summary>
+                Koei Model Geometry
+            </summary>
+        </member>
+        <member name="F:Cethleann.Structure.Resource.ResourceSection.ModelMatrix">
+            <summary>
+                Koei Model Matrices
+            </summary>
+        </member>
+        <member name="F:Cethleann.Structure.Resource.ResourceSection.ModelExtra">
+            <summary>
+                Koei Model ExtraData.
             </summary>
         </member>
         <member name="P:Cethleann.Structure.Resource.Texture.TextureDataHeader.MipCount">

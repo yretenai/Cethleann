@@ -9,23 +9,23 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
     ///     Just a list of float data, used for bones maybe?
     /// </summary>
     /// <inheritdoc />
-    public class G1MGLattice : IG1MGSection
+    public class G1MGSocket : IG1MGSection
     {
-        internal G1MGLattice(Span<byte> data, ModelGeometrySection sectionInfo)
+        internal G1MGSocket(Span<byte> data, ModelGeometrySection sectionInfo)
         {
             Section = sectionInfo;
-            Lattice = MemoryMarshal.Cast<byte, ModelGeometryLattice>(data).ToArray();
+            Sockets = MemoryMarshal.Cast<byte, ModelGeometrySocket>(data).ToArray();
         }
 
         /// <summary>
-        ///     "Lattice" is an assumption.
+        ///     Sockets
         /// </summary>
-        public ModelGeometryLattice[] Lattice { get; }
+        public ModelGeometrySocket[] Sockets { get; }
 
         /// <inheritdoc />
         public ModelGeometrySection Section { get; }
 
         /// <inheritdoc />
-        public ModelGeometryType Type => ModelGeometryType.Lattice;
+        public ModelGeometryType Type => ModelGeometryType.Socket;
     }
 }

@@ -17,7 +17,7 @@ namespace Cethleann.G1.G1ModelSection
         /// <param name="sectionHeader"></param>
         public G1MF(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (sectionHeader.Magic != DataType.ModelF) throw new InvalidOperationException("Not an G1MF stream");
+            if (sectionHeader.Magic != ResourceSection.ModelF) throw new InvalidOperationException("Not an G1MF stream");
 
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MF version {Section.Version.ToVersion()} is not supported!");

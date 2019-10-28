@@ -5,10 +5,9 @@ namespace Cethleann.Structure.Resource.Model
     {
         public short Index { get; set; }
         public short Offset { get; set; }
-        public short DataType { get; set; }
+        public VertexDataType DataType { get; set; }
         public VertexSemantic Semantic { get; set; }
         public byte Layer { get; }
     }
-
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

@@ -16,7 +16,7 @@ namespace Cethleann.G1.G1ModelSection
         /// <param name="sectionHeader"></param>
         public G1MExtra(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (sectionHeader.Magic != DataType.ModelExtra) throw new InvalidOperationException("Not an EXTR stream");
+            if (sectionHeader.Magic != ResourceSection.ModelExtra) throw new InvalidOperationException("Not an EXTR stream");
 
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"EXTR version {Section.Version.ToVersion()} is not supported!");

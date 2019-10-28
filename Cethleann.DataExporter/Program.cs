@@ -5,8 +5,8 @@ using System.Linq;
 using Cethleann.DataTables;
 using Cethleann.G1;
 using Cethleann.Structure.DataStructs;
-using DragonLib;
-using DragonLib.DXGI;
+using DragonLib.Imaging;
+using DragonLib.Imaging.DXGI;
 
 namespace Cethleann.DataExporter
 {
@@ -20,6 +20,12 @@ namespace Cethleann.DataExporter
 
             var bundle = new DataTable(DATA0.ReadEntry(DATA1, 0xE34).Span);
             var model = new G1Model(bundle.Entries.ElementAt(0).Span);
+            if (!Directory.Exists($@"{romfs}\ex\mdl")) Directory.CreateDirectory($@"{romfs}\ex\mdl");
+            var gltf = model.ExportMeshes($@"{romfs}\ex\mdl\model.bin", "model.bin", 0, 0, true);
+            using var file = File.OpenWrite($@"{romfs}\ex\mdl\model.gltf");
+            file.SetLength(0);
+            using var writer = new StreamWriter(file);
+            gltf.Serialize(writer);
             var texture = new G1TextureGroup(bundle.Entries.ElementAt(1).Span);
             SaveTextures($@"{romfs}\ex\tex", texture);
 
@@ -28,7 +34,7 @@ namespace Cethleann.DataExporter
             _ = new StructTable(dh.Entries.ElementAt(0).Span).Cast<CharacterInfo>();
             _ = text.GetTextLocalizationsRoot();
             // ExtractTables(romfs, DATA0, DATA1, 0);
-            ExtractAll(romfs, DATA0, DATA1);
+            // ExtractAll(romfs, DATA0, DATA1);
         }
 
 #pragma warning disable IDE0051 // Remove unused private members
