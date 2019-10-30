@@ -72,7 +72,7 @@ namespace Cethleann.G1
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetSection<T>() where T : class
+        public T GetSection<T>() where T : class, IG1Section
         {
             return Sections.FirstOrDefault(x => x is T) as T;
         }
@@ -112,11 +112,12 @@ namespace Cethleann.G1
         /// <param name="bufferPathRoot"></param>
         /// <param name="lod"></param>
         /// <param name="group"></param>
-        /// <param name="exportSkeleton"></param>
+        /// <param name="texBase"></param>
+        /// <param name="exportColor"></param>
         /// <param name="root"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public GLTFRoot ExportMeshes(string bufferPath, string bufferPathRoot, int lod = -1, int group = -1, bool exportSkeleton = false, GLTFRoot root = null)
+        public GLTFRoot ExportMeshes(string bufferPath, string bufferPathRoot, int lod = -1, int group = -1, string texBase = "", bool exportColor = false, GLTFRoot root = null)
         {
             if (root == null)
                 root = new GLTFRoot
@@ -147,7 +148,6 @@ namespace Cethleann.G1
             scene.Nodes ??= new List<NodeId>();
 
             var skeleton = GetSection<G1MS>();
-            if (!exportSkeleton) skeleton = null;
 
             var geom = GetSection<G1MG>();
             var skel = GetSection<G1MS>();
@@ -159,6 +159,55 @@ namespace Cethleann.G1
             var subMeshes = geom.GetSection<G1MGSubMesh>();
             var meshGroups = geom.GetSection<G1MGMesh>();
             var materials = geom.GetSection<G1MGMaterial>();
+
+            root.Samplers ??= new List<Sampler>();
+            var samplerId = new SamplerId
+            {
+                Root = root,
+                Id = root.Samplers.Count
+            };
+            root.Samplers.Add(new Sampler
+            {
+                WrapS = WrapMode.Repeat,
+                WrapT = WrapMode.Repeat,
+                MagFilter = MagFilterMode.Linear,
+                MinFilter = MinFilterMode.Linear
+            });
+
+            var materialIds = new List<MaterialId>();
+            var textureIds = new Dictionary<int, TextureId>();
+            root.Textures ??= new List<GLTFTexture>();
+            root.Materials ??= new List<GLTFMaterial>();
+            root.Images ??= new List<GLTFImage>();
+            foreach (var (material, textureSet) in materials.Materials)
+            {
+                materialIds.Add(new MaterialId
+                {
+                    Root = root,
+                    Id = root.Materials.Count
+                });
+                var gltfMaterial = new GLTFMaterial
+                {
+                    Name = $"Material_{materialIds.Count}",
+                    DoubleSided = false,
+                    PbrMetallicRoughness = new PbrMetallicRoughness()
+                };
+                if (GetTexture(texBase, root, textureSet, textureIds, TextureKind.Color, samplerId, out var colorId, out var colorIndex))
+                    gltfMaterial.PbrMetallicRoughness.BaseColorTexture = new TextureInfo
+                    {
+                        Index = colorId,
+                        TexCoord = colorIndex.TexCoord
+                    };
+
+                if (GetTexture(texBase, root, textureSet, textureIds, TextureKind.Normal, samplerId, out var normalId, out var normalIndex))
+                    gltfMaterial.NormalTexture = new NormalTextureInfo
+                    {
+                        Index = normalId,
+                        TexCoord = normalIndex.TexCoord
+                    };
+
+                root.Materials.Add(gltfMaterial);
+            }
 
             root.Buffers ??= new List<GLTFBuffer>();
             var gltfBuffer = new GLTFBuffer
@@ -337,6 +386,8 @@ namespace Cethleann.G1
                         jointsData.Add(data as List<Vector4Short>);
                         continue;
                     }
+
+                    if (semantic == "COLOR_0" && !exportColor) continue;
 
                     if ((data as IList)?.Count == 0) continue;
                     var bytes = data switch
@@ -659,7 +710,8 @@ namespace Cethleann.G1
                         {
                             Attributes = vboAttributes,
                             Indices = iboAccessor,
-                            Mode = format
+                            Mode = format,
+                            Material = materialIds[submesh.MaterialIndex]
                         };
                         mesh.Primitives.Add(primitive);
                     }
@@ -675,6 +727,45 @@ namespace Cethleann.G1
             gltfBuffer.ByteLength = (uint) bufferChunks.Length;
 
             return root;
+        }
+
+        private static bool GetTexture(string texBase, GLTFRoot root, ModelGeometryTextureSet[] textureSet, Dictionary<int, TextureId> textureIds, TextureKind kind, SamplerId samplerId, out TextureId texture, out ModelGeometryTextureSet set)
+        {
+            if (textureSet.Any(x => x.Kind == kind))
+            {
+                var index = textureSet.First(x => x.Kind == kind);
+                if (!textureIds.TryGetValue(index.Index, out var textureId))
+                {
+                    textureId = new TextureId
+                    {
+                        Root = root,
+                        Id = root.Textures.Count
+                    };
+                    root.Textures.Add(new GLTFTexture
+                    {
+                        Sampler = samplerId,
+                        Name = index.Index.ToString("X4"),
+                        Source = new ImageId
+                        {
+                            Id = root.Images.Count,
+                            Root = root
+                        }
+                    });
+                    root.Images.Add(new GLTFImage
+                    {
+                        Uri = $"{texBase}/{index.Index:X4}.png"
+                    });
+                    textureIds[index.Index] = textureId;
+                }
+
+                texture = textureId;
+                set = index;
+                return true;
+            }
+
+            texture = null;
+            set = default;
+            return false;
         }
     }
 }

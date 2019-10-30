@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using Cethleann.DataTables;
 using Cethleann.G1;
+using Cethleann.G1.G1ModelSection;
+using Cethleann.G1.G1ModelSection.G1MGSection;
 using Cethleann.Structure.DataStructs;
 using DragonLib.Imaging;
 using DragonLib.Imaging.DXGI;
@@ -20,14 +22,9 @@ namespace Cethleann.DataExporter
 
             var bundle = new DataTable(DATA0.ReadEntry(DATA1, 0xE34).Span);
             var model = new G1Model(bundle.Entries.ElementAt(0).Span);
-            if (!Directory.Exists($@"{romfs}\ex\mdl")) Directory.CreateDirectory($@"{romfs}\ex\mdl");
-            var gltf = model.ExportMeshes($@"{romfs}\ex\mdl\model.bin", "model.bin", 0, 0, true);
-            using var file = File.OpenWrite($@"{romfs}\ex\mdl\model.gltf");
-            file.SetLength(0);
-            using var writer = new StreamWriter(file);
-            gltf.Serialize(writer);
             var texture = new G1TextureGroup(bundle.Entries.ElementAt(1).Span);
-            SaveTextures($@"{romfs}\ex\tex", texture);
+            SaveTextures($@"{romfs}\ex\mdl\tex", texture);
+            SaveModel($@"{romfs}\ex\mdl", model, "tex");
 
             var text = new DataTable(DATA0.ReadEntry(DATA1, 0).Span);
             var dh = new DataTable(DATA0.ReadEntry(DATA1, 12).Span);
@@ -183,8 +180,29 @@ namespace Cethleann.DataExporter
             {
                 var (width, height, mips, format) = G1TextureGroup.UnpackWHM(header);
                 var data = DXGI.DecompressDXGIFormat(blob.Span, width, height, format);
+                if (!TiffImage.WriteTiff($@"{pathBase}\{i:X4}.tif", data, width, height)) File.WriteAllBytes($@"{pathBase}\{i:X16}.dds", DXGI.BuildDDS(format, mips, width, height, blob.Span).ToArray());
                 i += 1;
-                if (!TiffImage.WriteTiff($@"{pathBase}\{i:X16}.tif", data, width, height)) File.WriteAllBytes($@"{pathBase}\{i:X16}.dds", DXGI.BuildDDS(format, mips, width, height, blob.Span).ToArray());
+            }
+        }
+
+        private static void SaveModel(string pathBase, G1Model model, string texBase)
+        {
+            if (!Directory.Exists(pathBase)) Directory.CreateDirectory(pathBase);
+            var geom = model.GetSection<G1MG>();
+            var gltf = model.ExportMeshes($@"{pathBase}\model.bin", "model.bin", 0, 0, texBase);
+            using var file = File.OpenWrite($@"{pathBase}\model.gltf");
+            file.SetLength(0);
+            using var writer = new StreamWriter(file);
+            gltf.Serialize(writer);
+            using var materialInfo = File.OpenWrite($@"{pathBase}\model.material.txt");
+            materialInfo.SetLength(0);
+            var materials = geom.GetSection<G1MGMaterial>();
+            using var materialWriter = new StreamWriter(materialInfo);
+            for (var index = 0; index < materials.Materials.Count; ++index)
+            {
+                var (material, textureSet) = materials.Materials[index];
+                materialWriter.WriteLine($"Material {index} {{ Count = {material.Count}, Unknowns = [{material.Unknown1}, {material.Unknown2}, {material.Unknown3}] }}");
+                foreach (var texture in textureSet) materialWriter.WriteLine($"\tTexture {{ Index = {texture.Index:X4}, Type = {texture.Kind:G}, AlternateType = {texture.AlternateKind:G}, UV Layer = {texture.TexCoord}, Unknowns = [{texture.Unknown4}, {texture.Unknown5}] }}");
             }
         }
 #pragma warning restore IDE0051 // Remove unused private members

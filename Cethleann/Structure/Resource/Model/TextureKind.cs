@@ -1,10 +1,11 @@
-﻿namespace Cethleann.Structure.Resource.Texture
+namespace Cethleann.Structure.Resource.Model
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public enum TextureUsage
+    public enum TextureKind : short
     {
-        Color = 0,
-        Linear = 3
+        Color = 1,
+        Normal = 3,
+        Paint = 5
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

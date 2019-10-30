@@ -74,7 +74,7 @@ namespace Cethleann.G1.G1ModelSection
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetSection<T>() where T : class
+        public T GetSection<T>() where T : class, IG1MGSection
         {
             return SubSections.FirstOrDefault(x => x is T) as T;
         }
