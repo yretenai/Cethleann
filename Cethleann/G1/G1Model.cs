@@ -45,6 +45,8 @@ namespace Cethleann.G1
                     ResourceSection.ModelGeometry => new G1MG(block, ignoreVersion, sectionHeader),
                     ResourceSection.ModelMatrix => new G1MM(block, ignoreVersion, sectionHeader),
                     ResourceSection.ModelExtra => new G1MExtra(block, ignoreVersion, sectionHeader),
+                    ResourceSection.ModelCollision => null,
+                    ResourceSection.ModelCloth => null,
                     _ => throw new NotImplementedException($"Section {sectionHeader.Magic.ToFourCC(false)} not supported!")
                 };
                 Sections.Add(section);
@@ -308,7 +310,7 @@ namespace Cethleann.G1
                             case VertexSemantic.UV:
                             {
                                 var pos = ReadStrideEntryFloat(attr.DataType, slice);
-                                (chunks[$"TEXCOORD_{attr.Layer}"] as List<Vector2>).Add(new Vector2
+                                (chunks[$"TEXCOORD_{(attr.Layer == 0 ? 0 : 1)}"] as List<Vector2>).Add(new Vector2
                                 {
                                     X = pos.ElementAtOrDefault(0),
                                     Y = pos.ElementAtOrDefault(1)
@@ -643,10 +645,10 @@ namespace Cethleann.G1
                                     W = origJoint.W
                                 };
 
-                                joint.X = joint.X > -1 ? boneList[joint.X / 3].Bone : (short) 0;
-                                joint.Y = joint.Y > -1 ? boneList[joint.Y / 3].Bone : (short) 0;
-                                joint.Z = joint.Z > -1 ? boneList[joint.Z / 3].Bone : (short) 0;
-                                joint.W = joint.W > -1 ? boneList[joint.W / 3].Bone : (short) 0;
+                                joint.X = joint.X > -1 ? boneList[joint.X / 3 % boneList.Length].Bone : (short) 0;
+                                joint.Y = joint.Y > -1 ? boneList[joint.Y / 3 % boneList.Length].Bone : (short) 0;
+                                joint.Z = joint.Z > -1 ? boneList[joint.Z / 3 % boneList.Length].Bone : (short) 0;
+                                joint.W = joint.W > -1 ? boneList[joint.W / 3 % boneList.Length].Bone : (short) 0;
                                 newJoints.Add(joint);
                             }
 
@@ -753,7 +755,7 @@ namespace Cethleann.G1
                     });
                     root.Images.Add(new GLTFImage
                     {
-                        Uri = $"{texBase}/{index.Index:X4}.png"
+                        Uri = $"{texBase}/{index.Index:X4}.tif"
                     });
                     textureIds[index.Index] = textureId;
                 }

@@ -826,6 +826,16 @@
                 Koei Model ExtraData.
             </summary>
         </member>
+        <member name="F:Cethleann.Structure.Resource.ResourceSection.ModelCollision">
+            <summary>
+                Koei Collision Model.
+            </summary>
+        </member>
+        <member name="F:Cethleann.Structure.Resource.ResourceSection.ModelCloth">
+            <summary>
+                Assumption.
+            </summary>
+        </member>
         <member name="P:Cethleann.Structure.Resource.Texture.TextureDataHeader.MipCount">
             <summary>
                 SHR 4

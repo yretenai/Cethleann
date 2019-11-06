@@ -5,7 +5,8 @@ namespace Cethleann.Structure.Resource.Model
     {
         Color = 1,
         Normal = 3,
-        Paint = 5
+        Paint = 5,
+        Skin = 29
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

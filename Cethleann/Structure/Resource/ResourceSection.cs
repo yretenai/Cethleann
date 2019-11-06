@@ -28,6 +28,16 @@ namespace Cethleann.Structure.Resource
         /// <summary>
         ///     Koei Model ExtraData.
         /// </summary>
-        ModelExtra = 'E' << 24 | 'X' << 16 | 'T' << 8 | 'R' << 0
+        ModelExtra = 'E' << 24 | 'X' << 16 | 'T' << 8 | 'R' << 0,
+
+        /// <summary>
+        ///     Koei Collision Model.
+        /// </summary>
+        ModelCollision = 'C' << 24 | 'O' << 16 | 'L' << 8 | 'L' << 0,
+                         
+        /// <summary>
+        ///     Assumption.
+        /// </summary>
+        ModelCloth = 'N' << 24 | 'U' << 16 | 'N' << 8 | 'O' << 0
     }
 }

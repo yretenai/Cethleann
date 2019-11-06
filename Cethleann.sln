@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cethleann", "Cethleann\Ceth
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cethleann.DataExporter", "Cethleann.DataExporter\Cethleann.DataExporter.csproj", "{E9147282-FF78-49A5-95E6-2AD79DA8224F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cethleann.DataExplorer", "Cethleann.DataExplorer\Cethleann.DataExplorer.csproj", "{ECA6870B-ACE8-4F9D-B4E9-4FCEB0240900}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utility", "Utility", "{8ABC4D50-0A23-4D29-BBE1-B1BD994D495D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pfstool", "pfstool\pfstool.csproj", "{EE0365C4-12FE-47FF-B2E7-929B6ABE7F36}"
@@ -16,6 +14,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonLib", "DragonLib\DragonLib.csproj", "{DFB760A9-0BF2-4C75-A015-BA4787B0E20E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLTFSerialization", "GLTFSerialization\GLTFSerialization.csproj", "{B240CFC3-C4B9-461C-90FD-0A96FEC3BF38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cethleann.Model", "Cethleann.Model\Cethleann.Model.csproj", "{3F7BAF1A-6178-46DF-9D6C-E7F779879ABE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +31,6 @@ Global
 		{E9147282-FF78-49A5-95E6-2AD79DA8224F}.Debug|x64.Build.0 = Debug|x64
 		{E9147282-FF78-49A5-95E6-2AD79DA8224F}.Release|x64.ActiveCfg = Release|x64
 		{E9147282-FF78-49A5-95E6-2AD79DA8224F}.Release|x64.Build.0 = Release|x64
-		{ECA6870B-ACE8-4F9D-B4E9-4FCEB0240900}.Debug|x64.ActiveCfg = Debug|x64
-		{ECA6870B-ACE8-4F9D-B4E9-4FCEB0240900}.Debug|x64.Build.0 = Debug|x64
-		{ECA6870B-ACE8-4F9D-B4E9-4FCEB0240900}.Release|x64.ActiveCfg = Release|x64
-		{ECA6870B-ACE8-4F9D-B4E9-4FCEB0240900}.Release|x64.Build.0 = Release|x64
 		{EE0365C4-12FE-47FF-B2E7-929B6ABE7F36}.Debug|x64.ActiveCfg = Debug|x64
 		{EE0365C4-12FE-47FF-B2E7-929B6ABE7F36}.Debug|x64.Build.0 = Debug|x64
 		{EE0365C4-12FE-47FF-B2E7-929B6ABE7F36}.Release|x64.ActiveCfg = Release|x64
@@ -47,6 +43,8 @@ Global
 		{B240CFC3-C4B9-461C-90FD-0A96FEC3BF38}.Debug|x64.Build.0 = Debug|x64
 		{B240CFC3-C4B9-461C-90FD-0A96FEC3BF38}.Release|x64.ActiveCfg = Release|x64
 		{B240CFC3-C4B9-461C-90FD-0A96FEC3BF38}.Release|x64.Build.0 = Release|x64
+		{3F7BAF1A-6178-46DF-9D6C-E7F779879ABE}.Debug|x64.ActiveCfg = Debug|x64
+		{3F7BAF1A-6178-46DF-9D6C-E7F779879ABE}.Debug|x64.Build.0 = Debug|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
