@@ -4,11 +4,8 @@ using System.IO;
 using System.Linq;
 using Cethleann.DataTables;
 using Cethleann.G1;
-using Cethleann.G1.G1ModelSection;
-using Cethleann.G1.G1ModelSection.G1MGSection;
 using Cethleann.Structure.DataStructs;
-using DragonLib.Imaging;
-using DragonLib.Imaging.DXGI;
+using static Cethleann.Model.Program;
 
 namespace Cethleann.DataExporter
 {
@@ -24,7 +21,9 @@ namespace Cethleann.DataExporter
             var model = new G1Model(bundle.Entries.ElementAt(0).Span);
             var texture = new G1TextureGroup(bundle.Entries.ElementAt(1).Span);
             SaveTextures($@"{romfs}\ex\mdl\tex", texture);
-            SaveModel($@"{romfs}\ex\mdl", model, "tex");
+            SaveModel($@"{romfs}\ex\mdl\{0xE34:X4}.bin", model, "tex");
+
+            TryExtractSCEN($@"{romfs}\ex\scen", DATA0.ReadEntry(DATA1, 0x2BA));
 
             var text = new DataTable(DATA0.ReadEntry(DATA1, 0).Span);
             var dh = new DataTable(DATA0.ReadEntry(DATA1, 12).Span);
@@ -39,12 +38,12 @@ namespace Cethleann.DataExporter
         {
             var i = 0;
             var table = new DataTable(DATA0.ReadEntry(DATA1, index).Span);
-            if (!Directory.Exists($@"{romfs}\ex\table\{index:X16}")) Directory.CreateDirectory($@"{romfs}\ex\table\{index:X16}");
+            if (!Directory.Exists($@"{romfs}\ex\table\{index:X4}")) Directory.CreateDirectory($@"{romfs}\ex\table\{index:X4}");
 
             foreach (var entry in table.Entries)
             {
-                File.WriteAllBytes($@"{romfs}\ex\table\{index:X16}\{i++:X16}.bin", entry.ToArray());
-                Console.WriteLine($@"{romfs}\ex\table\{index:X16}\{i++:X16}.bin");
+                File.WriteAllBytes($@"{romfs}\ex\table\{index:X4}\{i++:X4}.bin", entry.ToArray());
+                Console.WriteLine($@"{romfs}\ex\table\{index:X4}\{i++:X4}.bin");
             }
         }
 
@@ -59,7 +58,7 @@ namespace Cethleann.DataExporter
             foreach (var entry in DATA0.Entries)
             {
                 var data = DATA0.ReadEntry(DATA1, entry);
-                var pathBase = $@"{romfs}\ex\{(entry.IsCompressed ? "" : "un")}compressed\{i++:X16}";
+                var pathBase = $@"{romfs}\ex\{(entry.IsCompressed ? "" : "un")}compressed\{i++:X4}";
                 var ext = data.Span.GetDataType().GetExtension();
                 Console.WriteLine($@"{pathBase}.{ext}");
                 if (data.Length == 0)
@@ -70,6 +69,9 @@ namespace Cethleann.DataExporter
 
                 if (!data.Span.IsKnown() && data.Span.IsDataTable())
                     if (TryExtractDataTable($"{pathBase}.datatable", data))
+                        continue;
+                if (data.Span.GetDataType() == DataType.SCEN)
+                    if (TryExtractSCEN($"{pathBase}.scene", data))
                         continue; /*
                 if (data.Span.IsBundle())
                     if (TryExtractBundle($"{pathBase}.bundle", data))
@@ -93,6 +95,26 @@ namespace Cethleann.DataExporter
             catch (Exception e)
             {
                 Console.WriteLine($@"Failed unpacking DataTable, {e.Message}!");
+                if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool TryExtractSCEN(string pathBase, Memory<byte> data)
+        {
+            try
+            {
+                var blobs = new SCEN(data.Span);
+                if (blobs.Entries.Count == 0) return true;
+
+                TryExtractBlobs(pathBase, blobs.Entries);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($@"Failed unpacking SCEN, {e.Message}!");
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -146,7 +168,7 @@ namespace Cethleann.DataExporter
             var j = 0;
             foreach (var datablob in blobs)
             {
-                var blobBase = $@"{pathBase}\{j++:X16}";
+                var blobBase = $@"{pathBase}\{j++:X4}";
                 var ext = datablob.Span.GetDataType().GetExtension();
                 Console.WriteLine($@"{blobBase}.{ext}");
                 if (datablob.Length == 0)
@@ -168,41 +190,6 @@ namespace Cethleann.DataExporter
                 if (!Directory.Exists(pathBase)) Directory.CreateDirectory(pathBase);
 
                 File.WriteAllBytes($@"{blobBase}.{ext}", datablob.ToArray());
-            }
-        }
-
-        private static void SaveTextures(string pathBase, G1TextureGroup group)
-        {
-            var i = 0;
-            if (!Directory.Exists(pathBase)) Directory.CreateDirectory(pathBase);
-
-            foreach (var (_, header, _, blob) in group.Textures)
-            {
-                var (width, height, mips, format) = G1TextureGroup.UnpackWHM(header);
-                var data = DXGI.DecompressDXGIFormat(blob.Span, width, height, format);
-                if (!TiffImage.WriteTiff($@"{pathBase}\{i:X4}.tif", data, width, height)) File.WriteAllBytes($@"{pathBase}\{i:X16}.dds", DXGI.BuildDDS(format, mips, width, height, blob.Span).ToArray());
-                i += 1;
-            }
-        }
-
-        private static void SaveModel(string pathBase, G1Model model, string texBase)
-        {
-            if (!Directory.Exists(pathBase)) Directory.CreateDirectory(pathBase);
-            var geom = model.GetSection<G1MG>();
-            var gltf = model.ExportMeshes($@"{pathBase}\model.bin", "model.bin", 0, 0, texBase);
-            using var file = File.OpenWrite($@"{pathBase}\model.gltf");
-            file.SetLength(0);
-            using var writer = new StreamWriter(file);
-            gltf.Serialize(writer);
-            using var materialInfo = File.OpenWrite($@"{pathBase}\model.material.txt");
-            materialInfo.SetLength(0);
-            var materials = geom.GetSection<G1MGMaterial>();
-            using var materialWriter = new StreamWriter(materialInfo);
-            for (var index = 0; index < materials.Materials.Count; ++index)
-            {
-                var (material, textureSet) = materials.Materials[index];
-                materialWriter.WriteLine($"Material {index} {{ Count = {material.Count}, Unknowns = [{material.Unknown1}, {material.Unknown2}, {material.Unknown3}] }}");
-                foreach (var texture in textureSet) materialWriter.WriteLine($"\tTexture {{ Index = {texture.Index:X4}, Type = {texture.Kind:G}, AlternateType = {texture.AlternateKind:G}, UV Layer = {texture.TexCoord}, Unknowns = [{texture.Unknown4}, {texture.Unknown5}] }}");
             }
         }
 #pragma warning restore IDE0051 // Remove unused private members

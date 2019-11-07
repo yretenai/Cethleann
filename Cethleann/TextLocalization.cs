@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using Cethleann.Structure;
+using DragonLib.IO;
 
 namespace Cethleann
 {
@@ -21,8 +22,8 @@ namespace Cethleann
 
             var header = MemoryMarshal.Read<TextLocalizationHeader>(buffer);
 
-            Helper.Assert(header.Size == 0x14);
-            Helper.Assert(header.Width == 4);
+            Logger.Assert(header.Size == 0x14);
+            Logger.Assert(header.Width == 4);
 
             var strings = new List<string>();
             for (var i = 0; i < header.Count; ++i)

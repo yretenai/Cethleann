@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Cethleann.Structure.Resource.Model;
 using DragonLib;
+using DragonLib.IO;
 
 namespace Cethleann.G1.G1ModelSection.G1MGSection
 {
@@ -32,7 +33,7 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
                     offset += 0x10;
                     var mesh = MemoryMarshal.Read<ModelGeometryMesh>(data.Slice(offset));
                     offset += SizeHelper.SizeOf<ModelGeometryMesh>();
-                    Helper.Assert(mesh.IndexCount > 0, "mesh.IndexCount > 0");
+                    Logger.Assert(mesh.IndexCount > 0, "mesh.IndexCount > 0");
                     var indices = MemoryMarshal.Cast<byte, int>(data.Slice(offset, mesh.IndexCount * 4)).ToArray();
                     offset += mesh.IndexCount * 4;
                     meshes.Add((name, mesh, indices));

@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Cethleann.Structure;
+using DragonLib.IO;
 
 namespace Cethleann
 {
@@ -87,7 +88,7 @@ namespace Cethleann
             Span<byte> zBuffer = stackalloc byte[12];
             DATA1.Read(zBuffer);
             var compInfo = MemoryMarshal.Read<DATA1CompressionInfo>(zBuffer);
-            Helper.Assert(compInfo.Unknown != -1, "Unknown is -1");
+            Logger.Assert(compInfo.Unknown != -1, "Unknown is -1");
             var chunkSizeBuffer = new Span<byte>(new byte[4 * compInfo.ChunkCount]);
             DATA1.Read(chunkSizeBuffer);
             var chunkSizes = MemoryMarshal.Cast<byte, int>(chunkSizeBuffer);

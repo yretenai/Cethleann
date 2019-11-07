@@ -5,12 +5,13 @@ using Cethleann.G1;
 using Cethleann.DataTables;
 using Cethleann.G1.G1ModelSection;
 using Cethleann.G1.G1ModelSection.G1MGSection;
+using Cethleann.Structure.Resource.Texture;
 using DragonLib.Imaging;
 using DragonLib.Imaging.DXGI;
 
 namespace Cethleann.Model
 {
-    class Program
+    public static class Program
     {
         static void Main(string[] args)
         {
@@ -70,11 +71,9 @@ namespace Cethleann.Model
                     g1t = new G1TextureGroup(g1tData.Span);
                 }
             }
-
-            if (g1m == null)
+            else if (containerData.GetDataType() == DataType.TextureGroup)
             {
-                Console.WriteLine("Can't find G1M file");
-                return;
+                g1t = new G1TextureGroup(containerData);
             }
 
             if (g1t != null)
@@ -82,24 +81,78 @@ namespace Cethleann.Model
                 SaveTextures(texDestination, g1t);
             }
 
-            SaveModel(destination, g1m, Path.GetFileName(texDestination));
+            if (g1m != null)
+            {
+                SaveModel(destination, g1m, Path.GetFileName(texDestination));
+            }
         }
 
-        private static void SaveTextures(string pathBase, G1TextureGroup group)
+        public static void SaveTextures(string pathBase, G1TextureGroup group)
         {
             var i = 0;
             if (!Directory.Exists(pathBase)) Directory.CreateDirectory(pathBase);
 
-            foreach (var (_, header, _, blob) in group.Textures)
+            foreach (var (_, header, ex, blob) in group.Textures)
             {
                 var (width, height, mips, format) = G1TextureGroup.UnpackWHM(header);
-                var data = DXGI.DecompressDXGIFormat(blob.Span, width, height, format);
-                if (!TiffImage.WriteTiff($@"{pathBase}\{i:X4}.tif", data, width, height)) File.WriteAllBytes($@"{pathBase}\{i:X16}.dds", DXGI.BuildDDS(format, mips, width, height, blob.Span).ToArray());
+                if (format == DXGIPixelFormat.UNKNOWN)
+                {
+                    for (var dxgiFormat = DXGIPixelFormat.UNKNOWN + 1; dxgiFormat < DXGIPixelFormat.DXGI_END; ++dxgiFormat)
+                    {
+                        File.WriteAllBytes($@"{pathBase}\{i:X4}_({dxgiFormat:G}).dds", DXGI.BuildDDS(dxgiFormat, mips, width, height, 1, blob.Span).ToArray());
+                    }
+                    continue;
+                }
+
+                var size = header.Type switch
+                {
+                    TextureType.R8G8B8A8 => (width * height * 4),
+                    TextureType.B8G8R8A8 => (width * height * 4),
+                    TextureType.BC1 => (width * height / 2),
+                    TextureType.BC5 => (width * height),
+                    TextureType.BC6 => (width * height),
+                    _ => -1
+                };
+
+                if (size == -1)
+                {
+                    size = blob.Length;
+                }
+                else
+                {
+                    var localSize = size;
+                    for (var j = 1; j < mips; j++)
+                    {
+                        localSize /= 4;
+                        size += localSize;
+                    }
+                }
+
+                var frames = blob.Span.Length / size;
+
+                if (frames == 1)
+                {
+                    try
+                    {
+                        var data = DXGI.DecompressDXGIFormat(blob.Span, width, height, format);
+                        if (TiffImage.WriteTiff($@"{pathBase}\{i:X4}.tif", data, width, height))
+                        {
+                            i += 1;
+                            continue;
+                        }
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+
+                File.WriteAllBytes($@"{pathBase}\{i:X4}.dds", DXGI.BuildDDS(format, frames != 0 ? 0 : mips, width, height, frames, blob.Span).ToArray());
                 i += 1;
             }
         }
 
-        private static void SaveModel(string pathBase, G1Model model, string texBase)
+        public static void SaveModel(string pathBase, G1Model model, string texBase)
         {
             var geom = model.GetSection<G1MG>();
             var gltf = model.ExportMeshes(Path.ChangeExtension(pathBase, "bin"), $"{Path.GetFileNameWithoutExtension(pathBase)}.bin", 0, 0, texBase);

@@ -7,13 +7,13 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DefineConstants>TRACE;DEBUG;DEBUG_ASSERTIONS</DefineConstants>
+    <DefineConstants>TRACE_ASSERTIONS;DEBUG_ASSERTIONS;DEBUG_ASSERTIONS_LOG</DefineConstants>
     <DocumentationFile>Cethleann.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DefineConstants>TRACE;DEBUG_ASSERTIONS</DefineConstants>
+    <DefineConstants>TRACE;DEBUG_ASSERTIONS;DEBUG_ASSERTIONS_LOG</DefineConstants>
     <DocumentationFile>Cethleann.xml</DocumentationFile>
   </PropertyGroup>
 

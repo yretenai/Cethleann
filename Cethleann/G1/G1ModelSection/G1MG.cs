@@ -6,6 +6,7 @@ using Cethleann.G1.G1ModelSection.G1MGSection;
 using Cethleann.Structure.Resource;
 using Cethleann.Structure.Resource.Model;
 using DragonLib;
+using DragonLib.IO;
 
 namespace Cethleann.G1.G1ModelSection
 {
@@ -28,7 +29,7 @@ namespace Cethleann.G1.G1ModelSection
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MG version {Section.Version.ToVersion()} is not supported!");
 
             Header = MemoryMarshal.Read<ModelGeometryHeader>(data);
-            Helper.Assert(Header.ModelType.ToFourCC(true) == "NX_", "ModelType == NX_");
+            Logger.Assert(Header.ModelType.ToFourCC(true) == "NX_", "ModelType == NX_");
 
             var offset = SizeHelper.SizeOf<ModelGeometryHeader>();
             while (offset < data.Length)
