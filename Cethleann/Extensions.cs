@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Cethleann.DataTables;
 using Cethleann.Structure.Resource;
 using DragonLib;
 
@@ -121,26 +120,6 @@ namespace Cethleann
         {
             if (buffer.Length < 0x30) return false;
             return Bundle.Validate(buffer) != null;
-        }
-
-        /// <summary>
-        ///     Gets two dimensional text localizations from a data table.
-        /// </summary>
-        /// <param name="table"></param>
-        /// <returns></returns>
-        public static TextLocalization[][] GetTextLocalizationsRoot(this DataTable table)
-        {
-            return table.Entries.Select(entry => new DataTable(entry.Span)).Select(GetTextLocalizations).ToArray();
-        }
-
-        /// <summary>
-        ///     Gets Text Localizations from table entries.
-        /// </summary>
-        /// <param name="table"></param>
-        /// <returns></returns>
-        public static TextLocalization[] GetTextLocalizations(this DataTable table)
-        {
-            return table.Entries.Select(entry => new TextLocalization(entry.Span)).ToArray();
         }
     }
 }

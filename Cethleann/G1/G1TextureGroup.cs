@@ -35,28 +35,22 @@ namespace Cethleann.G1
             for (var i = 0; i < header.EntrySize; i++)
             {
                 var nextOffset = data.Length - header.TableOffset - offsets[i];
-                if (i < header.EntrySize - 1)
-                {
-                    nextOffset = offsets[i + 1] - offsets[i];
-                }
-                var imageData = data.Slice(header.TableOffset + offsets[i],nextOffset);
+                if (i < header.EntrySize - 1) nextOffset = offsets[i + 1] - offsets[i];
+                var imageData = data.Slice(header.TableOffset + offsets[i], nextOffset);
                 var dataHeader = MemoryMarshal.Read<TextureDataHeader>(imageData);
                 var offset = SizeHelper.SizeOf<TextureDataHeader>();
                 var extra = new TextureExtraDataHeader
                 {
                     Size = 0xC
                 };
-                
+
                 if (dataHeader.Flags.HasFlag(TextureFlags.ExtraData))
                 {
                     extra = MemoryMarshal.Read<TextureExtraDataHeader>(imageData.Slice(offset));
                     offset += extra.Size;
                 }
 
-                if (dataHeader.Type.ToString("G") == dataHeader.Type.ToString("D"))
-                {
-                    Logger.Warn("G1T", $"Texture Type {dataHeader.Type:X} is unsupported!");
-                }
+                if (dataHeader.Type.ToString("G") == dataHeader.Type.ToString("D")) Logger.Warn("G1T", $"Texture Type {dataHeader.Type:X} is unsupported!");
 
                 Textures.Add((usage[i], dataHeader, extra, new Memory<byte>(imageData.Slice(offset).ToArray())));
             }
@@ -95,7 +89,7 @@ namespace Cethleann.G1
 
             if (width < 1) width = 1;
             if (height < 1) height = width;
-            
+
             return (width, height, mips, format);
         }
     }

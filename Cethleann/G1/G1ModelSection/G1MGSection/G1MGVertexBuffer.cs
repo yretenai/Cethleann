@@ -11,11 +11,6 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
     /// </summary>
     public class G1MGVertexBuffer : IG1MGSection
     {
-        /// <summary>
-        ///     List of vertex buffer strides
-        /// </summary>
-        public List<(ModelGeometryVertexBuffer info, Memory<byte> buffer)> Buffers = new List<(ModelGeometryVertexBuffer info, Memory<byte> buffer)>();
-
         internal G1MGVertexBuffer(Span<byte> block, ModelGeometrySection subSectionHeader)
         {
             Section = subSectionHeader;
@@ -30,6 +25,11 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
                 Buffers.Add((info, memory));
             }
         }
+
+        /// <summary>
+        ///     List of vertex buffer strides
+        /// </summary>
+        public List<(ModelGeometryVertexBuffer info, Memory<byte> buffer)> Buffers { get; set; } = new List<(ModelGeometryVertexBuffer info, Memory<byte> buffer)>();
 
         /// <inheritdoc />
         public ModelGeometryType Type => ModelGeometryType.VertexBuffer;

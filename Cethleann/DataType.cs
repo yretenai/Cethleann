@@ -1,5 +1,7 @@
 ﻿using DragonLib;
 
+// ReSharper disable ShiftExpressionRealShiftCountIsZero
+
 namespace Cethleann
 {
     /// <summary>
@@ -144,6 +146,12 @@ namespace Cethleann
         ///     Koei PostFX Shader Bundle
         /// </summary>
         [FileExtension("postfx")]
-        PostFX = 'K' << 24 | 'P' << 16 | 'S' << 8 | '_' << 0
+        PostFX = 'K' << 24 | 'P' << 16 | 'S' << 8 | '_' << 0,
+
+        /// <summary>
+        ///     DEFLATE Compressed File.
+        /// </summary>
+        [FileExtension("gz")]
+        Compressed = 0x0001_0000
     }
 }

@@ -12,11 +12,6 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
     /// </summary>
     public class G1MGMesh : IG1MGSection
     {
-        /// <summary>
-        ///     List of meshes with the related data.
-        /// </summary>
-        public List<(ModelGeometryMeshGroup meshGroup, List<(string name, ModelGeometryMesh mesh, int[] indexList)> meshes)> Meshes = new List<(ModelGeometryMeshGroup, List<(string, ModelGeometryMesh, int[])>)>();
-
         internal G1MGMesh(Span<byte> data, ModelGeometrySection section)
         {
             Section = section;
@@ -42,6 +37,11 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
                 Meshes.Add((group, meshes));
             }
         }
+
+        /// <summary>
+        ///     List of meshes with the related data.
+        /// </summary>
+        public List<(ModelGeometryMeshGroup meshGroup, List<(string name, ModelGeometryMesh mesh, int[] indexList)> meshes)> Meshes { get; set; } = new List<(ModelGeometryMeshGroup, List<(string, ModelGeometryMesh, int[])>)>();
 
         /// <inheritdoc />
         public ModelGeometryType Type => ModelGeometryType.Mesh;

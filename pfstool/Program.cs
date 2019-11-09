@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -53,12 +54,12 @@ namespace pfstool
 
             foreach (var entry in entries)
             {
-                var filename = Encoding.ASCII.GetString(nameBlock.Slice(entry.StringOffset, nameBlock.IndexOf<byte>(0)));
+                var filename = Encoding.UTF8.GetString(nameBlock.Slice(entry.StringOffset, nameBlock.IndexOf<byte>(0)).ToArray().TakeWhile(x => x != 0).ToArray());
                 archive.Position = eob + entry.Offset;
                 buffer = new Span<byte>(new byte[Math.Min(1024 * 1024 * 1024, entry.Size)]);
                 Console.Write($"Dumping {filename} ({HumanFriendlySize(entry.Size)} in {HumanFriendlySize(buffer.Length)} blocks)... ");
                 var read = 0L;
-                var path = Path.Combine(targetDir, filename);
+                var path = Path.Combine(targetDir, filename).Trim();
                 using var file = File.Open(path, FileMode.Append, FileAccess.Write, FileShare.Read);
                 while (read < entry.Size)
                 {

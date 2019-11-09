@@ -8,8 +8,6 @@ namespace Cethleann
 {
     public class SCEN
     {
-        public List<Memory<byte>> Entries { get; set; } = new List<Memory<byte>>();
-        
         public SCEN(Span<byte> data)
         {
             var header = MemoryMarshal.Read<SCENHeader>(data);
@@ -24,10 +22,9 @@ namespace Cethleann
 
             var offsets = MemoryMarshal.Cast<byte, int>(data.Slice(header.OffsetTableOffset, header.OffsetCount * 4));
             var sizes = MemoryMarshal.Cast<byte, int>(data.Slice(header.SizeTableOffset, header.SizeTableOffset * 4));
-            for (var index = 0; index < offsets.Length; index++)
-            {
-                Entries.Add(new Memory<byte>(data.Slice(offsets[index], sizes[index]).ToArray()));
-            }
+            for (var index = 0; index < offsets.Length; index++) Entries.Add(new Memory<byte>(data.Slice(offsets[index], sizes[index]).ToArray()));
         }
+
+        public List<Memory<byte>> Entries { get; set; } = new List<Memory<byte>>();
     }
 }

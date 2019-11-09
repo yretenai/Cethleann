@@ -14,6 +14,7 @@ namespace Cethleann.G1.G1ModelSection
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
         /// <param name="sectionHeader"></param>
+        // ReSharper disable once UnusedParameter.Local
         public G1MExtra(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
             if (sectionHeader.Magic != ResourceSection.ModelExtra) throw new InvalidOperationException("Not an EXTR stream");

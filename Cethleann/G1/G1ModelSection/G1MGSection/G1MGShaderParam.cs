@@ -37,7 +37,7 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
                         {
                             ShaderType.Float32 => MemoryMarshal.Cast<byte, float>(paramsBlock).ToArray(),
                             ShaderType.Matrix4x4x2 => (Array) MemoryMarshal.Cast<byte, Matrix4x4>(paramsBlock).ToArray(),
-                            _ => throw new NotSupportedException($"Can't handle ShaderParam {blockHeader.Type:F}"),
+                            _ => throw new NotSupportedException($"Can't handle ShaderParam {blockHeader.Type:F}")
                         };
                         @params.Add((blockHeader, name, paramData));
                     }

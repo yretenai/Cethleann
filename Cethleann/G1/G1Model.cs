@@ -152,7 +152,6 @@ namespace Cethleann.G1
             var skeleton = GetSection<G1MS>();
 
             var geom = GetSection<G1MG>();
-            var skel = GetSection<G1MS>();
 
             var bones = geom.GetSection<G1MGBone>();
             var ibos = geom.GetSection<G1MGIndexBuffer>();
@@ -181,7 +180,7 @@ namespace Cethleann.G1
             root.Textures ??= new List<GLTFTexture>();
             root.Materials ??= new List<GLTFMaterial>();
             root.Images ??= new List<GLTFImage>();
-            foreach (var (material, textureSet) in materials.Materials)
+            foreach (var (_, textureSet) in materials.Materials)
             {
                 materialIds.Add(new MaterialId
                 {
@@ -249,23 +248,11 @@ namespace Cethleann.G1
                 { "JOINTS_0", GLTFAccessorAttributeType.VEC4 },
                 { "WEIGHTS_0", GLTFAccessorAttributeType.VEC4 }
             };
-            var semanticToWidth = new Dictionary<string, int>
-            {
-                { "POSITION", 4 * 3 },
-                { "NORMAL", 4 * 3 },
-                { "TANGENT", 4 * 4 },
-                { "TEXCOORD_0", 4 * 2 },
-                { "TEXCOORD_1", 4 * 2 },
-                { "COLOR_0", 4 * 4 },
-                { "JOINTS_0", 2 * 4 },
-                { "WEIGHTS_0", 4 * 4 }
-            };
             var jointsData = new List<List<Vector4Short>>();
             for (var i = 0; i < vbos.Buffers.Count; ++i)
             {
                 var (vboInfo, vbo) = vbos.Buffers.ElementAt(i);
                 var (_, attrs) = attributes.Attributes.ElementAt(i);
-                var (iboInfo, ibo) = ibos.Buffers.ElementAt(i);
                 var chunks = new Dictionary<string, object>
                 {
                     { "POSITION", new List<Vector3>() },
@@ -383,13 +370,14 @@ namespace Cethleann.G1
                 var vboBuffer = new Dictionary<string, AccessorId>();
                 foreach (var (semantic, data) in chunks)
                 {
-                    if (semantic == "JOINTS_0")
+                    switch (semantic)
                     {
-                        jointsData.Add(data as List<Vector4Short>);
-                        continue;
+                        case "JOINTS_0":
+                            jointsData.Add(data as List<Vector4Short>);
+                            continue;
+                        case "COLOR_0" when !exportColor:
+                            continue;
                     }
-
-                    if (semantic == "COLOR_0" && !exportColor) continue;
 
                     if ((data as IList)?.Count == 0) continue;
                     var bytes = data switch
@@ -530,7 +518,7 @@ namespace Cethleann.G1
                     matrices.Add(worldBone.GetMatrix());
                 }
 
-                foreach (var (joint, jointId, bone) in jointsActual)
+                foreach (var (_, jointId, bone) in jointsActual)
                 {
                     if (bone.HasParent())
                         jointsActual[bone.Parent].Item1.Children.Add(jointId);
@@ -575,13 +563,12 @@ namespace Cethleann.G1
                 root.Skins.Add(skin);
             }
 
-            var meshDecollision = new Dictionary<string, int>();
             foreach (var (meshGroup, meshes) in meshGroups.Meshes)
             {
                 if (lod > -1 && meshGroup.LOD != lod) continue;
                 if (group > -1 && meshGroup.Group != group) continue;
 
-                foreach (var (name, meshInfo, indexList) in meshes)
+                foreach (var (name, _, indexList) in meshes)
                 {
                     skinNode.Children.Add(new NodeId
                     {
@@ -608,6 +595,7 @@ namespace Cethleann.G1
                     foreach (var submeshIndex in indexList)
                     {
                         var submesh = subMeshes.SubMeshes.ElementAt(submeshIndex);
+                        // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
                         var format = submesh.Format switch
                         {
                             SubMeshFormat.Triangle => DrawMode.Triangles,
@@ -694,6 +682,7 @@ namespace Cethleann.G1
                             Id = root.Accessors.Count,
                             Root = root
                         };
+                        // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
                         var width = submesh.Format switch
                         {
                             SubMeshFormat.Triangle => 2,

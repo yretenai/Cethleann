@@ -21,7 +21,12 @@ namespace Cethleann.DataTables
             var count = MemoryMarshal.Read<int>(buffer);
             var tableInfo = MemoryMarshal.Cast<byte, DataTableRecord>(buffer.Slice(sizeof(int), SizeHelper.SizeOf<DataTableRecord>() * count));
             var entries = new List<Memory<byte>>();
-            foreach (var info in tableInfo) entries.Add(buffer.Slice(info.Offset, info.Size).ToArray());
+            foreach (var info in tableInfo)
+            {
+                var block = buffer.Slice(info.Offset, info.Size);
+                entries.Add(block.GetDataType() == DataType.Compressed ? DATA0.Decompress(block) : new Memory<byte>(block.ToArray()));
+            }
+
             Entries = entries;
         }
 

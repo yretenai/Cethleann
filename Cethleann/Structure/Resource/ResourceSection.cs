@@ -34,7 +34,7 @@ namespace Cethleann.Structure.Resource
         ///     Koei Collision Model.
         /// </summary>
         ModelCollision = 'C' << 24 | 'O' << 16 | 'L' << 8 | 'L' << 0,
-                         
+
         /// <summary>
         ///     Assumption.
         /// </summary>

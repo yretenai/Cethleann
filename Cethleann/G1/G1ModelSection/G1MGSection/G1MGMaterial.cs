@@ -12,11 +12,6 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
     /// <inheritdoc />
     public class G1MGMaterial : IG1MGSection
     {
-        /// <summary>
-        ///     Material data found in this section
-        /// </summary>
-        public List<(ModelGeometryMaterial material, ModelGeometryTextureSet[] textureSet)> Materials = new List<(ModelGeometryMaterial, ModelGeometryTextureSet[])>();
-
         internal G1MGMaterial(Span<byte> data, ModelGeometrySection sectionInfo)
         {
             Section = sectionInfo;
@@ -31,6 +26,11 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
                 Materials.Add((material, textureSet));
             }
         }
+
+        /// <summary>
+        ///     Material data found in this section
+        /// </summary>
+        public List<(ModelGeometryMaterial material, ModelGeometryTextureSet[] textureSet)> Materials { get; set; } = new List<(ModelGeometryMaterial, ModelGeometryTextureSet[])>();
 
         /// <inheritdoc />
         public ModelGeometrySection Section { get; }

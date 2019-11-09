@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Cethleann.DataTables;
@@ -9,56 +10,72 @@ using static Cethleann.Model.Program;
 
 namespace Cethleann.DataExporter
 {
+    [SuppressMessage("ReSharper", "UnusedVariable")]
     internal static class Program
     {
         private static void Main(string[] args)
         {
-            var romfs = args.Last();
-            var DATA0 = new DATA0($@"{romfs}\DATA0.bin");
-            using var DATA1 = File.OpenRead($@"{romfs}\DATA1.bin");
+            if (args.Length < 2)
+            {
+                Console.WriteLine("Usage: Cethleann.DataExporter.exe RomFS output [PatchRomFS [DLCRomFS...]]");
+                return;
+            }
+            var romfs = args.First();
+            var output = args.ElementAt(1);
+            using var cethleann = new Cethleann(romfs);
+            
+            if (args.Length > 2)
+            {
+                cethleann.AddPatchFS(args.ElementAt(2));
+            }
+            
+            foreach (var dlcromfs in args.Skip(3))
+            {
+                cethleann.AddDataFS(dlcromfs);
+            }
 
-            var bundle = new DataTable(DATA0.ReadEntry(DATA1, 0xE34).Span);
+            cethleann.ReadEntry(0x026A);
+
+            var bundle = new DataTable(cethleann.ReadEntry(0xE34).Span);
             var model = new G1Model(bundle.Entries.ElementAt(0).Span);
             var texture = new G1TextureGroup(bundle.Entries.ElementAt(1).Span);
-            SaveTextures($@"{romfs}\ex\mdl\tex", texture);
-            SaveModel($@"{romfs}\ex\mdl\{0xE34:X4}.bin", model, "tex");
+            SaveTextures($@"{output}\mdl\tex", texture);
+            SaveModel($@"{output}\mdl\{0xE34:X4}.bin", model, "tex");
 
-            TryExtractSCEN($@"{romfs}\ex\scen", DATA0.ReadEntry(DATA1, 0x2BA));
+            TryExtractSCEN($@"{output}\scene", cethleann.ReadEntry(0x2BA));
 
-            var text = new DataTable(DATA0.ReadEntry(DATA1, 0).Span);
-            var dh = new DataTable(DATA0.ReadEntry(DATA1, 12).Span);
-            _ = new StructTable(dh.Entries.ElementAt(0).Span).Cast<CharacterInfo>();
-            _ = text.GetTextLocalizationsRoot();
-            // ExtractTables(romfs, DATA0, DATA1, 0);
-            // ExtractAll(romfs, DATA0, DATA1);
+            var text = new DataTable(cethleann.ReadEntry(0).Span);
+            var dh = new DataTable(cethleann.ReadEntry(12).Span);
+            var character =new StructTable(dh.Entries.ElementAt(0).Span).Cast<CharacterInfo>();
+            var texts = text.Entries.Select(entry => new DataTable(entry.Span)).Select(table => table.Entries.Select(entry => new TextLocalization(entry.Span)).ToArray()).ToArray();
+            // ExtractTables(romfs, cethleann, 0);
+            ExtractAll(output, cethleann);
         }
 
 #pragma warning disable IDE0051 // Remove unused private members
-        private static void ExtractTables(string romfs, DATA0 DATA0, Stream DATA1, int index)
+        private static void ExtractTables(string romfs, Cethleann cethleann, int index)
         {
             var i = 0;
-            var table = new DataTable(DATA0.ReadEntry(DATA1, index).Span);
-            if (!Directory.Exists($@"{romfs}\ex\table\{index:X4}")) Directory.CreateDirectory($@"{romfs}\ex\table\{index:X4}");
+            var table = new DataTable(cethleann.ReadEntry(index).Span);
+            if (!Directory.Exists($@"{romfs}\table\{index:X4}")) Directory.CreateDirectory($@"{romfs}\table\{index:X4}");
 
             foreach (var entry in table.Entries)
             {
-                File.WriteAllBytes($@"{romfs}\ex\table\{index:X4}\{i++:X4}.bin", entry.ToArray());
-                Console.WriteLine($@"{romfs}\ex\table\{index:X4}\{i++:X4}.bin");
+                File.WriteAllBytes($@"{romfs}\table\{index:X4}\{i++:X4}.bin", entry.ToArray());
+                Console.WriteLine($@"{romfs}\table\{index:X4}\{i++:X4}.bin");
             }
         }
 
-        private static void ExtractAll(string romfs, DATA0 DATA0, Stream DATA1)
+        private static void ExtractAll(string romfs, Cethleann cethleann)
         {
             var i = 0;
 
-            if (!Directory.Exists($@"{romfs}\ex\uncompressed")) Directory.CreateDirectory($@"{romfs}\ex\uncompressed");
+            if (!Directory.Exists($@"{romfs}\romfs")) Directory.CreateDirectory($@"{romfs}\romfs");
 
-            if (!Directory.Exists($@"{romfs}\ex\compressed")) Directory.CreateDirectory($@"{romfs}\ex\compressed");
-
-            foreach (var entry in DATA0.Entries)
+            for (var index = 0; index < cethleann.EntryCount; index++)
             {
-                var data = DATA0.ReadEntry(DATA1, entry);
-                var pathBase = $@"{romfs}\ex\{(entry.IsCompressed ? "" : "un")}compressed\{i++:X4}";
+                var data = cethleann.ReadEntry(index);
+                var pathBase = $@"{romfs}\romfs\{i++:X4}";
                 var ext = data.Span.GetDataType().GetExtension();
                 Console.WriteLine($@"{pathBase}.{ext}");
                 if (data.Length == 0)

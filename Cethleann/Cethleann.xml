@@ -228,6 +228,11 @@
                 Koei PostFX Shader Bundle
             </summary>
         </member>
+        <member name="F:Cethleann.DataType.Compressed">
+            <summary>
+                DEFLATE Compressed File.
+            </summary>
+        </member>
         <member name="T:Cethleann.Extensions">
             <summary>
                 Series of helper for FETH.
@@ -328,20 +333,6 @@
                 Guesses if the stream is a valid bundle.
             </summary>
             <param name="buffer"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Cethleann.Extensions.GetTextLocalizationsRoot(Cethleann.DataTables.DataTable)">
-            <summary>
-                Gets two dimensional text localizations from a data table.
-            </summary>
-            <param name="table"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Cethleann.Extensions.GetTextLocalizations(Cethleann.DataTables.DataTable)">
-            <summary>
-                Gets Text Localizations from table entries.
-            </summary>
-            <param name="table"></param>
             <returns></returns>
         </member>
         <member name="T:Cethleann.G1.G1Model">
@@ -502,7 +493,7 @@
             <summary>
             </summary>
         </member>
-        <member name="F:Cethleann.G1.G1ModelSection.G1MGSection.G1MGIndexBuffer.Buffers">
+        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGIndexBuffer.Buffers">
             <summary>
                 List of vertex buffer strides
             </summary>
@@ -519,7 +510,7 @@
             </summary>
             <inheritdoc />
         </member>
-        <member name="F:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMaterial.Materials">
+        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMaterial.Materials">
             <summary>
                 Material data found in this section
             </summary>
@@ -535,7 +526,7 @@
                 Parses submesh groups
             </summary>
         </member>
-        <member name="F:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMesh.Meshes">
+        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMesh.Meshes">
             <summary>
                 List of meshes with the related data.
             </summary>
@@ -619,7 +610,7 @@
                 Copies raw vertex buffers.
             </summary>
         </member>
-        <member name="F:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexBuffer.Buffers">
+        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexBuffer.Buffers">
             <summary>
                 List of vertex buffer strides
             </summary>
@@ -750,6 +741,78 @@
                 Section header for this section
             </summary>
         </member>
+        <member name="T:Cethleann.INFO0">
+            <summary>
+                INFO0 is a list of information for which to read the patch RomFS with.
+            </summary>
+        </member>
+        <member name="M:Cethleann.INFO0.#ctor(Cethleann.Structure.INFO2,System.String)">
+            <summary>
+                Reads a INFO0 file list from a path
+            </summary>
+            <param name="INFO2"></param>
+            <param name="path">File path to read</param>
+        </member>
+        <member name="M:Cethleann.INFO0.#ctor(Cethleann.Structure.INFO2,System.IO.Stream,System.Boolean)">
+            <summary>
+                Reads a INFO0 file list from a stream
+            </summary>
+            <param name="INFO2"></param>
+            <param name="stream"></param>
+            <param name="leaveOpen"></param>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="P:Cethleann.INFO0.Entries">
+            <summary>
+                Entries found in the INFO0
+            </summary>
+        </member>
+        <member name="T:Cethleann.INFO1">
+            <summary>
+                INFO1 is a list of information of base files deleted with this patch.
+                Usually this means that the files are contained in a DLC.
+            </summary>
+        </member>
+        <member name="M:Cethleann.INFO1.#ctor(Cethleann.Structure.INFO2,System.String)">
+            <summary>
+                Reads a INFO1 file list from a path
+            </summary>
+            <param name="INFO2"></param>
+            <param name="path">File path to read</param>
+        </member>
+        <member name="M:Cethleann.INFO1.#ctor(Cethleann.Structure.INFO2,System.IO.Stream,System.Boolean)">
+            <summary>
+                Reads a INFO1 file list from a stream
+            </summary>
+            <param name="INFO2"></param>
+            <param name="stream"></param>
+            <param name="leaveOpen"></param>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="P:Cethleann.INFO1.Entries">
+            <summary>
+                Entries found in the INFO1
+            </summary>
+        </member>
+        <member name="T:Cethleann.Structure.CompressionInfo">
+            <summary>
+                Info regarding compression for a file in DATA1
+            </summary>
+        </member>
+        <member name="P:Cethleann.Structure.CompressionInfo.Magic">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:Cethleann.Structure.CompressionInfo.ChunkCount">
+            <summary>
+                Number of chunks
+            </summary>
+        </member>
+        <member name="P:Cethleann.Structure.CompressionInfo.Size">
+            <summary>
+                Compressed (read: bytes to read in this file) size of this file.
+            </summary>
+        </member>
         <member name="T:Cethleann.Structure.DATA0Entry">
             <summary>
                 An entry in DATA0
@@ -775,25 +838,9 @@
                 True if the file is compressed with ZLIB
             </summary>
         </member>
-        <member name="T:Cethleann.Structure.DATA1CompressionInfo">
+        <member name="T:Cethleann.Structure.INFO1Entry">
             <summary>
-                Info regarding compression for a file in DATA1
-            </summary>
-        </member>
-        <member name="P:Cethleann.Structure.DATA1CompressionInfo.Unknown">
-            <summary>
-                Always 0x0001_0000, I assumed ChunkSize but it doesn't match up.
-            </summary>
-        </member>
-        <member name="P:Cethleann.Structure.DATA1CompressionInfo.ChunkCount">
-            <summary>
-                Number of chunks
-            </summary>
-        </member>
-        <member name="P:Cethleann.Structure.DATA1CompressionInfo.Size">
-            <summary>
-                Compressed (read: bytes to read in this file) size of this file.
-                Don't know why this exist, maybe anonymous file pointers?
+                All assumed
             </summary>
         </member>
         <member name="T:Cethleann.Structure.Resource.ResourceSection">

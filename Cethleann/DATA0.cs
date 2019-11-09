@@ -5,7 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Cethleann.Structure;
-using DragonLib.IO;
+using DragonLib;
 
 namespace Cethleann
 {
@@ -52,7 +52,7 @@ namespace Cethleann
         /// <summary>
         ///     lsof <seealso cref="DATA0Entry" />
         /// </summary>
-        public List<DATA0Entry> Entries { get; set; }
+        public List<DATA0Entry> Entries { get; }
 
         /// <summary>
         ///     Reads a file index from DATA1
@@ -62,7 +62,7 @@ namespace Cethleann
         /// <returns>memory stream of uncompressed bytes</returns>
         public Memory<byte> ReadEntry(Stream DATA1, int index)
         {
-            if (index < 0 || index > Entries.Count) throw new IndexOutOfRangeException($"Index {index} does not exist!");
+            if (index < 0 || index >= Entries.Count) throw new IndexOutOfRangeException($"Index {index} does not exist!");
 
             return ReadEntry(DATA1, Entries[index]);
         }
@@ -73,54 +73,61 @@ namespace Cethleann
         /// <param name="DATA1">Binary Read-capable Stream of DATA1</param>
         /// <param name="entry">Entry to read</param>
         /// <returns>memory stream of uncompressed bytes</returns>
-        public static unsafe Memory<byte> ReadEntry(Stream DATA1, DATA0Entry entry)
+        public static Memory<byte> ReadEntry(Stream DATA1, DATA0Entry entry)
         {
             if (!DATA1.CanRead) throw new InvalidOperationException("Cannot read from stream!");
+            if (entry.UncompressedSize == 0) return Memory<byte>.Empty;
 
             DATA1.Position = entry.Offset;
-            var buffer = new Memory<byte>(new byte[entry.UncompressedSize]);
-            if (!entry.IsCompressed)
-            {
-                DATA1.Read(buffer.Span);
-                return buffer;
-            }
 
-            Span<byte> zBuffer = stackalloc byte[12];
-            DATA1.Read(zBuffer);
-            var compInfo = MemoryMarshal.Read<DATA1CompressionInfo>(zBuffer);
-            Logger.Assert(compInfo.Unknown != -1, "Unknown is -1");
-            var chunkSizeBuffer = new Span<byte>(new byte[4 * compInfo.ChunkCount]);
-            DATA1.Read(chunkSizeBuffer);
-            var chunkSizes = MemoryMarshal.Cast<byte, int>(chunkSizeBuffer);
+            if (entry.IsCompressed) return Decompress(DATA1, entry.CompressedSize);
+
+            var buffer = new Memory<byte>(new byte[entry.UncompressedSize]);
+            DATA1.Read(buffer.Span);
+            return buffer;
+        }
+
+        public static Memory<byte> Decompress(Stream stream, long compressedSize)
+        {
+            var compressedBuffer = new Span<byte>(new byte[compressedSize + SizeHelper.SizeOf<CompressionInfo>()]);
+            stream.Read(compressedBuffer);
+            return Decompress(compressedBuffer);
+        }
+
+        public static unsafe Memory<byte> Decompress(Span<byte> data)
+        {
             var cursor = 0;
-            DATA1.Position = entry.Offset + (long) (Math.Ceiling((double) (DATA1.Position - entry.Offset) / 0x80) * 0x80);
+            var compInfo = MemoryMarshal.Read<CompressionInfo>(data);
+            var buffer = new Memory<byte>(new byte[compInfo.Size]);
+            cursor += SizeHelper.SizeOf<CompressionInfo>();
+            var chunkSizes = MemoryMarshal.Cast<byte, int>(data.Slice(cursor, 4 * compInfo.ChunkCount));
+            cursor = (cursor + 4 * compInfo.ChunkCount).Align(0x80);
+            var bufferCursor = 0;
             for (var i = 0; i < compInfo.ChunkCount; ++i)
             {
+                var chunkSize = chunkSizes[i];
                 try
                 {
-                    var chunkSize = chunkSizes[i];
-                    Span<byte> tmp;
-                    if (chunkSize + cursor == entry.UncompressedSize)
+                    if (chunkSize + cursor == buffer.Length)
                     {
-                        tmp = new Span<byte>(new byte[chunkSize]);
-                        DATA1.Read(tmp);
-                        tmp.CopyTo(buffer.Span.Slice(cursor));
-                        cursor += tmp.Length;
+                        data.Slice(cursor, chunkSize).CopyTo(buffer.Span.Slice(bufferCursor));
+                        bufferCursor += chunkSize;
                         continue;
                     }
 
-                    tmp = new Span<byte>(new byte[chunkSize]);
-                    DATA1.Read(tmp);
-                    using var zMs = new MemoryStream(tmp.ToArray())
+                    fixed (byte* pinData = &data.Slice(cursor)[6])
                     {
-                        Position = 6
-                    };
-                    using var zDs = new DeflateStream(zMs, CompressionMode.Decompress);
-                    cursor += zDs.Read(buffer.Span.Slice(cursor));
+                        using var stream = new UnmanagedMemoryStream(pinData, chunkSize - 6);
+                        using var deflateStream = new DeflateStream(stream, CompressionMode.Decompress);
+                        var block = new Span<byte>(new byte[0x0001_0000]);
+                        var read = deflateStream.Read(block);
+                        block.Slice(0, read).CopyTo(buffer.Span.Slice(bufferCursor));
+                        bufferCursor = (bufferCursor + read).Align(0x80);
+                    }
                 }
                 finally
                 {
-                    DATA1.Position = entry.Offset + (long) (Math.Ceiling((double) (DATA1.Position - entry.Offset) / 0x80) * 0x80);
+                    cursor = (cursor + chunkSize).Align(0x80);
                 }
             }
 
