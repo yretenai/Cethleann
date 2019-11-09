@@ -6,8 +6,9 @@
     public struct CompressionInfo
     {
         /// <summary>
+        /// usually 0x0001_0000, sometimes 0xFFFF_FFFF for dynamically sized.
         /// </summary>
-        public DataType Magic { get; set; }
+        public int ChunkSize { get; set; }
 
         /// <summary>
         ///     Number of chunks
