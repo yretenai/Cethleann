@@ -108,7 +108,7 @@ namespace Cethleann
                 var chunkSize = chunkSizes[i];
                 try
                 {
-                    if (chunkSize + cursor == buffer.Length)
+                    if (chunkSize + bufferCursor == buffer.Length)
                     {
                         data.Slice(cursor, chunkSize).CopyTo(buffer.Span.Slice(bufferCursor));
                         bufferCursor += chunkSize;

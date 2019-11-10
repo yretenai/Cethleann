@@ -84,6 +84,7 @@ namespace Cethleann.G1
             return dataType switch
             {
                 VertexDataType.Vector4Byte => MemoryMarshal.Cast<byte, byte>(slice.Slice(0, 4)).ToArray().Select(x => x / (float) byte.MaxValue).ToArray(),
+                VertexDataType.Vector2Single => MemoryMarshal.Cast<byte, float>(slice.Slice(0, 4 * 2)).ToArray(),
                 VertexDataType.Vector3Single => MemoryMarshal.Cast<byte, float>(slice.Slice(0, 4 * 3)).ToArray(),
                 VertexDataType.Vector4Single => MemoryMarshal.Cast<byte, float>(slice.Slice(0, 4 * 4)).ToArray(),
                 VertexDataType.Vector4ByteNormalized => MemoryMarshal.Cast<byte, byte>(slice.Slice(0, 4)).ToArray().Select(x => x / (float) byte.MaxValue).ToArray(),
@@ -98,6 +99,7 @@ namespace Cethleann.G1
             return dataType switch
             {
                 VertexDataType.Vector4Byte => MemoryMarshal.Cast<byte, byte>(slice.Slice(0, 4)).ToArray().Select(x => (int) x).ToArray(),
+                VertexDataType.Vector2Single => MemoryMarshal.Cast<byte, int>(slice.Slice(0, 4 * 2)).ToArray(),
                 VertexDataType.Vector3Single => MemoryMarshal.Cast<byte, int>(slice.Slice(0, 4 * 3)).ToArray(),
                 VertexDataType.Vector4Single => MemoryMarshal.Cast<byte, int>(slice.Slice(0, 4 * 4)).ToArray(),
                 VertexDataType.Vector4ByteNormalized => MemoryMarshal.Cast<byte, byte>(slice.Slice(0, 4)).ToArray().Select(x => (int) x).ToArray(),
@@ -119,7 +121,7 @@ namespace Cethleann.G1
         /// <param name="root"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public GLTFRoot ExportMeshes(string bufferPath, string bufferPathRoot, int lod = -1, int group = -1, string texBase = "", bool exportColor = false, GLTFRoot root = null)
+        public GLTFRoot ExportMeshes(string bufferPath, string bufferPathRoot, int lod = -1, int group = -1, string texBase = "", GLTFRoot root = null)
         {
             if (root == null)
                 root = new GLTFRoot
@@ -375,8 +377,6 @@ namespace Cethleann.G1
                         case "JOINTS_0":
                             jointsData.Add(data as List<Vector4Short>);
                             continue;
-                        case "COLOR_0" when !exportColor:
-                            continue;
                     }
 
                     if ((data as IList)?.Count == 0) continue;
@@ -605,7 +605,7 @@ namespace Cethleann.G1
                         var ibo = iboDeconstructed[submesh.BufferIndex];
                         var vbo = vboDeconstructed[submesh.BufferIndex];
                         var vboAttributes = vbo.ToDictionary(x => x.Key, y => y.Value);
-                        if (skeleton != null)
+                        if (skeleton != null && jointsData[submesh.BufferIndex].Count > 0)
                         {
                             var joints = jointsData[submesh.BufferIndex];
                             var boneList = bones.Bones[submesh.BoneTableIndex];

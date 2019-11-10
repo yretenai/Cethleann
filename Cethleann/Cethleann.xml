@@ -367,7 +367,7 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.G1.G1Model.ExportMeshes(System.String,System.String,System.Int32,System.Int32,System.String,System.Boolean,GLTF.Schema.GLTFRoot)">
+        <member name="M:Cethleann.G1.G1Model.ExportMeshes(System.String,System.String,System.Int32,System.Int32,System.String,GLTF.Schema.GLTFRoot)">
             <summary>
                 Exports meshes to GLTF
             </summary>
@@ -799,8 +799,9 @@
                 Info regarding compression for a file in DATA1
             </summary>
         </member>
-        <member name="P:Cethleann.Structure.CompressionInfo.Magic">
+        <member name="P:Cethleann.Structure.CompressionInfo.ChunkSize">
             <summary>
+            usually 0x0001_0000, sometimes 0xFFFF_FFFF for dynamically sized.
             </summary>
         </member>
         <member name="P:Cethleann.Structure.CompressionInfo.ChunkCount">

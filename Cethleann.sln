@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLTFSerialization", "GLTFSe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cethleann.Model", "Cethleann.Model\Cethleann.Model.csproj", "{3F7BAF1A-6178-46DF-9D6C-E7F779879ABE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cethleann.Unbundler", "Cethleann.Unbundler\Cethleann.Unbundler.csproj", "{F37C7661-1B73-487D-9FBB-6421968949E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -47,6 +49,10 @@ Global
 		{3F7BAF1A-6178-46DF-9D6C-E7F779879ABE}.Debug|x64.Build.0 = Debug|x64
 		{3F7BAF1A-6178-46DF-9D6C-E7F779879ABE}.Release|x64.ActiveCfg = Release|x64
 		{3F7BAF1A-6178-46DF-9D6C-E7F779879ABE}.Release|x64.Build.0 = Release|x64
+		{F37C7661-1B73-487D-9FBB-6421968949E7}.Debug|x64.ActiveCfg = Debug|x64
+		{F37C7661-1B73-487D-9FBB-6421968949E7}.Debug|x64.Build.0 = Debug|x64
+		{F37C7661-1B73-487D-9FBB-6421968949E7}.Release|x64.ActiveCfg = Release|x64
+		{F37C7661-1B73-487D-9FBB-6421968949E7}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
