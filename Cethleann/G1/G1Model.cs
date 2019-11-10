@@ -685,7 +685,7 @@ namespace Cethleann.G1
                         // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
                         var width = submesh.Format switch
                         {
-                            SubMeshFormat.Triangle => 2,
+                            SubMeshFormat.Triangle => 3,
                             SubMeshFormat.Strip => 2,
                             _ => throw new ArgumentOutOfRangeException()
                         };
