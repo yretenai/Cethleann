@@ -219,7 +219,7 @@
 3407,action/model/3407 - Wyvern Body.bin
 3408,action/model/3408 - Pegasus Body.bin
 3409,action/model/3409 - Pegasus Body.bin
-3410,action/model/3410 - White Wyvern? Body.bin
+3410,action/model/3410 - White Wyvern Body.bin
 3411,action/model/3411 - Horse Body.bin
 3412,action/model/3412 - Horse Body.bin
 3413,action/model/3413 - Wyvern Body.bin
@@ -26025,17 +26025,15 @@
 6072,ui/400_abbey/6072 - 400_abbey_TWN.g1t
 6073,ui/400_abbey/6073 - 400_abbey_CHN.g1t
 71,ui/font/71 - font00_JPN.g1t
-72,ui/font/72.g1t
-73,ui/font/73.g1t
-74,ui/font/74.g1t
-75,ui/font/75.g1t
+72,ui/font/72 - font00_LATIN.g1t
+73,ui/font/73 - font00_CHN1.g1t
+74,ui/font/74 - font00_CHN2.g1t
+75,ui/font/75 - font00_KOR.g1t
 76,ui/font/76 - UTF8TBL_JPN.bin
-77,ui/font/77.bin
-78,ui/font/78.bin
-79,ui/font/79.bin
-80,ui/font/80.bin
-81,ui/font/81.bin
-82,ui/font/82.bin
+77,ui/font/77 - UTF8TBL_LATIN.bin
+78,ui/font/78 - UTF8TBL_CHN1.bin
+79,ui/font/79 - UTF8TBL_CHN2.bin
+80,ui/font/80 - UTF8TBL_KOR.bin
 30776,ui/layout/title/30776.arc
 30777,ui/layout/title/30777.arc
 30778,ui/layout/title/30778.arc

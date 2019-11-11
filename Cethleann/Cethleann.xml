@@ -9,6 +9,11 @@
                 Koei Engine Bundle, apparently because DataTable is too boring.
             </summary>
         </member>
+        <member name="M:Cethleann.Bundle.#ctor">
+            <summary>
+            Initialize with no data
+            </summary>
+        </member>
         <member name="M:Cethleann.Bundle.#ctor(System.Span{System.Byte})">
             <summary>
                 Split file into individual chunks
@@ -73,6 +78,11 @@
                 Can contain many things, from structures to art assets.
             </summary>
         </member>
+        <member name="M:Cethleann.DataTables.DataTable.#ctor">
+            <summary>
+            Initialize with no data.
+            </summary>
+        </member>
         <member name="M:Cethleann.DataTables.DataTable.#ctor(System.Span{System.Byte})">
             <summary>
                 Initialize with a span.
@@ -83,6 +93,12 @@
             <summary>
                 Lsof Entries found in the table
             </summary>
+        </member>
+        <member name="M:Cethleann.DataTables.DataTable.Write">
+            <summary>
+            Writes a data buffer for this structure.
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:Cethleann.DataTables.StringTable">
             <summary>
@@ -249,6 +265,11 @@
                 DEFLATE Compressed File.
             </summary>
         </member>
+        <member name="F:Cethleann.DataType.CompressedChonky">
+            <summary>
+                DEFLATE Compressed File.
+            </summary>
+        </member>
         <member name="T:Cethleann.Extensions">
             <summary>
                 Series of helper for FETH.
@@ -396,23 +417,6 @@
             <param name="root"></param>
             <returns></returns>
             <exception cref="T:System.ArgumentOutOfRangeException"></exception>
-        </member>
-        <member name="T:Cethleann.G1.G1ModelGroup">
-            <summary>
-                Decomposes a MDLK buffer to individual files
-            </summary>
-        </member>
-        <member name="M:Cethleann.G1.G1ModelGroup.#ctor(System.Span{System.Byte})">
-            <summary>
-                Decomposes a MDLK buffer to individual files
-            </summary>
-            <param name="buffer"></param>
-            <exception cref="T:System.IO.InvalidDataException"></exception>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelGroup.Entries">
-            <summary>
-                Usually models.
-            </summary>
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MExtra">
             <summary>
@@ -755,6 +759,23 @@
         <member name="P:Cethleann.G1.IG1Section.Section">
             <summary>
                 Section header for this section
+            </summary>
+        </member>
+        <member name="T:Cethleann.G1.KLDM">
+            <summary>
+                Decomposes a MDLK buffer to individual files
+            </summary>
+        </member>
+        <member name="M:Cethleann.G1.KLDM.#ctor(System.Span{System.Byte})">
+            <summary>
+                Decomposes a MDLK buffer to individual files
+            </summary>
+            <param name="buffer"></param>
+            <exception cref="T:System.IO.InvalidDataException"></exception>
+        </member>
+        <member name="P:Cethleann.G1.KLDM.Entries">
+            <summary>
+                Usually models.
             </summary>
         </member>
         <member name="T:Cethleann.INFO0">
