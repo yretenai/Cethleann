@@ -605,6 +605,7 @@ namespace Cethleann.G1
                         var format = submesh.Format switch
                         {
                             SubMeshFormat.Triangle => DrawMode.Triangles,
+                            SubMeshFormat.Quad => DrawMode.Triangles, // xd
                             SubMeshFormat.Strip => DrawMode.TriangleStrip,
                             _ => throw new ArgumentOutOfRangeException()
                         };
@@ -702,8 +703,9 @@ namespace Cethleann.G1
                         // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
                         var width = submesh.Format switch
                         {
-                            SubMeshFormat.Triangle => 3,
+                            SubMeshFormat.Quad => 1, // ok sure, i guess.
                             SubMeshFormat.Strip => 2,
+                            SubMeshFormat.Triangle => 3,
                             _ => throw new ArgumentOutOfRangeException()
                         };
                         root.Accessors.Add(new Accessor

@@ -23237,7 +23237,7 @@
 2999,misc/formats/DCL/2999.dcl
 3007,misc/formats/DCL/3007.dcl
 3008,misc/formats/DCL/3008.dcl
-30573,misc/formats/G1M/30573.g1m
+30573,misc/dx11/g1m/30573 - Half-Cylinder - Probably Background.g1m
 1377,misc/formats/G1T/1377.g1t
 1378,misc/formats/G1T/1378.g1t
 1379,misc/formats/G1T/1379.g1t
@@ -23851,606 +23851,606 @@
 4740,misc/formats/G1T/4740 - Red Male Myrmidon.g1t
 4741,misc/formats/G1T/4741 - Blue Male Myrmidon.g1t
 4742,misc/formats/G1T/4742 - Yellow Male Myrmidon.g1t
-4743,misc/formats/G1T/4743 - Grey/Red Male Myrmidon.g1t
-4744,misc/formats/G1T/4744 - Black/Red Male Myrmidon.g1t
+4743,misc/formats/G1T/4743 - Grey-Red Male Myrmidon.g1t
+4744,misc/formats/G1T/4744 - Black-Red Male Myrmidon.g1t
 4745,misc/formats/G1T/4745 - Green Male Myrmidon.g1t
-4746,misc/formats/G1T/4746 - Grey/Blue Male Myrmidon.g1t
+4746,misc/formats/G1T/4746 - Grey-Blue Male Myrmidon.g1t
 4747,misc/formats/G1T/4747 - Brown Male Myrmidon.g1t
-4748,misc/formats/G1T/4748 - Silver/Blue Male Myrmidon.g1t
+4748,misc/formats/G1T/4748 - Silver-Blue Male Myrmidon.g1t
 4749,misc/formats/G1T/4749 - Red Female Myrmidon.g1t
 4750,misc/formats/G1T/4750 - Blue Female Myrmidon.g1t
 4751,misc/formats/G1T/4751 - Yellow Female Myrmidon.g1t
-4752,misc/formats/G1T/4752 - Grey/Red Female Myrmidon.g1t
-4753,misc/formats/G1T/4753 - Black/Red Female Myrmidon.g1t
+4752,misc/formats/G1T/4752 - Grey-Red Female Myrmidon.g1t
+4753,misc/formats/G1T/4753 - Black-Red Female Myrmidon.g1t
 4754,misc/formats/G1T/4754 - Green Female Myrmidon.g1t
-4755,misc/formats/G1T/4755 - Grey/Blue Female Myrmidon.g1t
+4755,misc/formats/G1T/4755 - Grey-Blue Female Myrmidon.g1t
 4756,misc/formats/G1T/4756 - Brown Female Myrmidon.g1t
-4757,misc/formats/G1T/4757 - Silver/Blue Female Myrmidon.g1t
+4757,misc/formats/G1T/4757 - Silver-Blue Female Myrmidon.g1t
 4758,misc/formats/G1T/4758 - Red Male Soldier.g1t
 4759,misc/formats/G1T/4759 - Blue Male Soldier.g1t
 4760,misc/formats/G1T/4760 - Yellow Male Soldier.g1t
-4761,misc/formats/G1T/4761 - Grey/Red Male Soldier.g1t
-4762,misc/formats/G1T/4762 - Black/Red Male Soldier.g1t
+4761,misc/formats/G1T/4761 - Grey-Red Male Soldier.g1t
+4762,misc/formats/G1T/4762 - Black-Red Male Soldier.g1t
 4763,misc/formats/G1T/4763 - Green Male Soldier.g1t
-4764,misc/formats/G1T/4764 - Grey/Blue Male Soldier.g1t
+4764,misc/formats/G1T/4764 - Grey-Blue Male Soldier.g1t
 4765,misc/formats/G1T/4765 - Brown Male Soldier.g1t
-4766,misc/formats/G1T/4766 - Silver/Blue Male Soldier.g1t
+4766,misc/formats/G1T/4766 - Silver-Blue Male Soldier.g1t
 4767,misc/formats/G1T/4767 - Red Female Soldier.g1t
 4768,misc/formats/G1T/4768 - Blue Female Soldier.g1t
 4769,misc/formats/G1T/4769 - Yellow Female Soldier.g1t
-4770,misc/formats/G1T/4770 - Grey/Red Female Soldier.g1t
-4771,misc/formats/G1T/4771 - Black/Red Female Soldier.g1t
+4770,misc/formats/G1T/4770 - Grey-Red Female Soldier.g1t
+4771,misc/formats/G1T/4771 - Black-Red Female Soldier.g1t
 4772,misc/formats/G1T/4772 - Green Female Soldier.g1t
-4773,misc/formats/G1T/4773 - Grey/Blue Female Soldier.g1t
+4773,misc/formats/G1T/4773 - Grey-Blue Female Soldier.g1t
 4774,misc/formats/G1T/4774 - Brown Female Soldier.g1t
-4775,misc/formats/G1T/4775 - Silver/Blue Female Soldier.g1t
+4775,misc/formats/G1T/4775 - Silver-Blue Female Soldier.g1t
 4776,misc/formats/G1T/4776 - Red Male Fighter.g1t
 4777,misc/formats/G1T/4777 - Blue Male Fighter.g1t
 4778,misc/formats/G1T/4778 - Yellow Male Fighter.g1t
-4779,misc/formats/G1T/4779 - Grey/Red Male Fighter.g1t
-4780,misc/formats/G1T/4780 - Black/Red Male Fighter.g1t
+4779,misc/formats/G1T/4779 - Grey-Red Male Fighter.g1t
+4780,misc/formats/G1T/4780 - Black-Red Male Fighter.g1t
 4781,misc/formats/G1T/4781 - Green Male Fighter.g1t
-4782,misc/formats/G1T/4782 - Grey/Blue Male Fighter.g1t
+4782,misc/formats/G1T/4782 - Grey-Blue Male Fighter.g1t
 4783,misc/formats/G1T/4783 - Brown Male Fighter.g1t
-4784,misc/formats/G1T/4784 - Silver/Blue Male Fighter.g1t
+4784,misc/formats/G1T/4784 - Silver-Blue Male Fighter.g1t
 4785,misc/formats/G1T/4785 - Red Female Fighter.g1t
 4786,misc/formats/G1T/4786 - Blue Female Fighter.g1t
 4787,misc/formats/G1T/4787 - Yellow Female Fighter.g1t
-4788,misc/formats/G1T/4788 - Grey/Red Female Fighter.g1t
-4789,misc/formats/G1T/4789 - Black/Red Female Fighter.g1t
+4788,misc/formats/G1T/4788 - Grey-Red Female Fighter.g1t
+4789,misc/formats/G1T/4789 - Black-Red Female Fighter.g1t
 4790,misc/formats/G1T/4790 - Green Female Fighter.g1t
-4791,misc/formats/G1T/4791 - Grey/Blue Female Fighter.g1t
+4791,misc/formats/G1T/4791 - Grey-Blue Female Fighter.g1t
 4792,misc/formats/G1T/4792 - Brown Female Fighter.g1t
-4793,misc/formats/G1T/4793 - Silver/Blue Female Fighter.g1t
+4793,misc/formats/G1T/4793 - Silver-Blue Female Fighter.g1t
 4794,misc/formats/G1T/4794 - Red Male Monk.g1t
 4795,misc/formats/G1T/4795 - Blue Male Monk.g1t
 4796,misc/formats/G1T/4796 - Yellow Male Monk.g1t
-4797,misc/formats/G1T/4797 - Grey/Red Male Monk.g1t
-4798,misc/formats/G1T/4798 - Black/Red Male Monk.g1t
+4797,misc/formats/G1T/4797 - Grey-Red Male Monk.g1t
+4798,misc/formats/G1T/4798 - Black-Red Male Monk.g1t
 4799,misc/formats/G1T/4799 - Green Male Monk.g1t
-4800,misc/formats/G1T/4800 - Grey/Blue Male Monk.g1t
+4800,misc/formats/G1T/4800 - Grey-Blue Male Monk.g1t
 4801,misc/formats/G1T/4801 - Brown Male Monk.g1t
-4802,misc/formats/G1T/4802 - Silver/Blue Male Monk.g1t
+4802,misc/formats/G1T/4802 - Silver-Blue Male Monk.g1t
 4803,misc/formats/G1T/4803 - Red Female Monk.g1t
 4804,misc/formats/G1T/4804 - Blue Female Monk.g1t
 4805,misc/formats/G1T/4805 - Yellow Female Monk.g1t
-4806,misc/formats/G1T/4806 - Grey/Red Female Monk.g1t
-4807,misc/formats/G1T/4807 - Black/Red Female Monk.g1t
+4806,misc/formats/G1T/4806 - Grey-Red Female Monk.g1t
+4807,misc/formats/G1T/4807 - Black-Red Female Monk.g1t
 4808,misc/formats/G1T/4808 - Green Female Monk.g1t
-4809,misc/formats/G1T/4809 - Grey/Blue Female Monk.g1t
+4809,misc/formats/G1T/4809 - Grey-Blue Female Monk.g1t
 4810,misc/formats/G1T/4810 - Brown Female Monk.g1t
-4811,misc/formats/G1T/4811 - Silver/Blue Female Monk.g1t
+4811,misc/formats/G1T/4811 - Silver-Blue Female Monk.g1t
 4812,misc/formats/G1T/4812 - Red Male Lord.g1t
 4813,misc/formats/G1T/4813 - Blue Male Lord.g1t
 4814,misc/formats/G1T/4814 - Yellow Male Lord.g1t
-4815,misc/formats/G1T/4815 - Grey/Red Male Lord.g1t
-4816,misc/formats/G1T/4816 - Black/Red Male Lord.g1t
+4815,misc/formats/G1T/4815 - Grey-Red Male Lord.g1t
+4816,misc/formats/G1T/4816 - Black-Red Male Lord.g1t
 4817,misc/formats/G1T/4817 - Green Male Lord.g1t
-4818,misc/formats/G1T/4818 - Grey/Blue Male Lord.g1t
+4818,misc/formats/G1T/4818 - Grey-Blue Male Lord.g1t
 4819,misc/formats/G1T/4819 - Brown Male Lord.g1t
-4820,misc/formats/G1T/4820 - Silver/Blue Male Lord.g1t
+4820,misc/formats/G1T/4820 - Silver-Blue Male Lord.g1t
 4821,misc/formats/G1T/4821 - Red Female Lord.g1t
 4822,misc/formats/G1T/4822 - Blue Female Lord.g1t
 4823,misc/formats/G1T/4823 - Yellow Female Lord.g1t
-4824,misc/formats/G1T/4824 - Grey/Red Female Lord.g1t
-4825,misc/formats/G1T/4825 - Black/Red Female Lord.g1t
+4824,misc/formats/G1T/4824 - Grey-Red Female Lord.g1t
+4825,misc/formats/G1T/4825 - Black-Red Female Lord.g1t
 4826,misc/formats/G1T/4826 - Green Female Lord.g1t
-4827,misc/formats/G1T/4827 - Grey/Blue Female Lord.g1t
+4827,misc/formats/G1T/4827 - Grey-Blue Female Lord.g1t
 4828,misc/formats/G1T/4828 - Brown Female Lord.g1t
-4829,misc/formats/G1T/4829 - Silver/Blue Female Lord.g1t
+4829,misc/formats/G1T/4829 - Silver-Blue Female Lord.g1t
 4830,misc/formats/G1T/4830 - Red Male Mercenary.g1t
 4831,misc/formats/G1T/4831 - Blue Male Mercenary.g1t
 4832,misc/formats/G1T/4832 - Yellow Male Mercenary.g1t
-4833,misc/formats/G1T/4833 - Grey/Red Male Mercenary.g1t
-4834,misc/formats/G1T/4834 - Black/Red Male Mercenary.g1t
+4833,misc/formats/G1T/4833 - Grey-Red Male Mercenary.g1t
+4834,misc/formats/G1T/4834 - Black-Red Male Mercenary.g1t
 4835,misc/formats/G1T/4835 - Green Male Mercenary.g1t
-4836,misc/formats/G1T/4836 - Grey/Blue Male Mercenary.g1t
+4836,misc/formats/G1T/4836 - Grey-Blue Male Mercenary.g1t
 4837,misc/formats/G1T/4837 - Brown Male Mercenary.g1t
-4838,misc/formats/G1T/4838 - Silver/Blue Male Mercenary.g1t
+4838,misc/formats/G1T/4838 - Silver-Blue Male Mercenary.g1t
 4839,misc/formats/G1T/4839 - Red Female Mercenary.g1t
 4840,misc/formats/G1T/4840 - Blue Female Mercenary.g1t
 4841,misc/formats/G1T/4841 - Yellow Female Mercenary.g1t
-4842,misc/formats/G1T/4842 - Grey/Red Female Mercenary.g1t
-4843,misc/formats/G1T/4843 - Black/Red Female Mercenary.g1t
+4842,misc/formats/G1T/4842 - Grey-Red Female Mercenary.g1t
+4843,misc/formats/G1T/4843 - Black-Red Female Mercenary.g1t
 4844,misc/formats/G1T/4844 - Green Female Mercenary.g1t
-4845,misc/formats/G1T/4845 - Grey/Blue Female Mercenary.g1t
+4845,misc/formats/G1T/4845 - Grey-Blue Female Mercenary.g1t
 4846,misc/formats/G1T/4846 - Brown Female Mercenary.g1t
-4847,misc/formats/G1T/4847 - Silver/Blue Female Mercenary.g1t
+4847,misc/formats/G1T/4847 - Silver-Blue Female Mercenary.g1t
 4848,misc/formats/G1T/4848 - Red Male Thief.g1t
 4849,misc/formats/G1T/4849 - Blue Male Thief.g1t
 4850,misc/formats/G1T/4850 - Yellow Male Thief.g1t
-4851,misc/formats/G1T/4851 - Grey/Red Male Thief.g1t
-4852,misc/formats/G1T/4852 - Black/Red Male Thief.g1t
+4851,misc/formats/G1T/4851 - Grey-Red Male Thief.g1t
+4852,misc/formats/G1T/4852 - Black-Red Male Thief.g1t
 4853,misc/formats/G1T/4853 - Green Male Thief.g1t
-4854,misc/formats/G1T/4854 - Grey/Blue Male Thief.g1t
+4854,misc/formats/G1T/4854 - Grey-Blue Male Thief.g1t
 4855,misc/formats/G1T/4855 - Brown Male Thief.g1t
-4856,misc/formats/G1T/4856 - Silver/Blue Male Thief.g1t
+4856,misc/formats/G1T/4856 - Silver-Blue Male Thief.g1t
 4857,misc/formats/G1T/4857 - Red Female Thief.g1t
 4858,misc/formats/G1T/4858 - Blue Female Thief.g1t
 4859,misc/formats/G1T/4859 - Yellow Female Thief.g1t
-4860,misc/formats/G1T/4860 - Grey/Red Female Thief.g1t
-4861,misc/formats/G1T/4861 - Black/Red Female Thief.g1t
+4860,misc/formats/G1T/4860 - Grey-Red Female Thief.g1t
+4861,misc/formats/G1T/4861 - Black-Red Female Thief.g1t
 4862,misc/formats/G1T/4862 - Green Female Thief.g1t
-4863,misc/formats/G1T/4863 - Grey/Blue Female Thief.g1t
+4863,misc/formats/G1T/4863 - Grey-Blue Female Thief.g1t
 4864,misc/formats/G1T/4864 - Brown Female Thief.g1t
-4865,misc/formats/G1T/4865 - Silver/Blue Female Thief.g1t
+4865,misc/formats/G1T/4865 - Silver-Blue Female Thief.g1t
 4866,misc/formats/G1T/4866 - Red Male Armored Knight.g1t
 4867,misc/formats/G1T/4867 - Blue Male Armored Knight.g1t
 4868,misc/formats/G1T/4868 - Yellow Male Armored Knight.g1t
-4869,misc/formats/G1T/4869 - Grey/Red Male Armored Knight.g1t
-4870,misc/formats/G1T/4870 - Black/Red Male Armored Knight.g1t
+4869,misc/formats/G1T/4869 - Grey-Red Male Armored Knight.g1t
+4870,misc/formats/G1T/4870 - Black-Red Male Armored Knight.g1t
 4871,misc/formats/G1T/4871 - Green Male Armored Knight.g1t
-4872,misc/formats/G1T/4872 - Grey/Blue Male Armored Knight.g1t
+4872,misc/formats/G1T/4872 - Grey-Blue Male Armored Knight.g1t
 4873,misc/formats/G1T/4873 - Brown Male Armored Knight.g1t
-4874,misc/formats/G1T/4874 - Silver/Blue Male Armored Knight.g1t
+4874,misc/formats/G1T/4874 - Silver-Blue Male Armored Knight.g1t
 4875,misc/formats/G1T/4875 - Red Female Armored Knight.g1t
 4876,misc/formats/G1T/4876 - Blue Female Armored Knight.g1t
 4877,misc/formats/G1T/4877 - Yellow Female Armored Knight.g1t
-4878,misc/formats/G1T/4878 - Grey/Red Female Armored Knight.g1t
-4879,misc/formats/G1T/4879 - Black/Red Female Armored Knight.g1t
+4878,misc/formats/G1T/4878 - Grey-Red Female Armored Knight.g1t
+4879,misc/formats/G1T/4879 - Black-Red Female Armored Knight.g1t
 4880,misc/formats/G1T/4880 - Green Female Armored Knight.g1t
-4881,misc/formats/G1T/4881 - Grey/Blue Female Armored Knight.g1t
+4881,misc/formats/G1T/4881 - Grey-Blue Female Armored Knight.g1t
 4882,misc/formats/G1T/4882 - Brown Female Armored Knight.g1t
-4883,misc/formats/G1T/4883 - Silver/Blue Female Armored Knight.g1t
+4883,misc/formats/G1T/4883 - Silver-Blue Female Armored Knight.g1t
 4884,misc/formats/G1T/4884 - Red Male Cavalier.g1t
 4885,misc/formats/G1T/4885 - Blue Male Cavalier.g1t
 4886,misc/formats/G1T/4886 - Yellow Male Cavalier.g1t
-4887,misc/formats/G1T/4887 - Grey/Red Male Cavalier.g1t
-4888,misc/formats/G1T/4888 - Black/Red Male Cavalier.g1t
+4887,misc/formats/G1T/4887 - Grey-Red Male Cavalier.g1t
+4888,misc/formats/G1T/4888 - Black-Red Male Cavalier.g1t
 4889,misc/formats/G1T/4889 - Green Male Cavalier.g1t
-4890,misc/formats/G1T/4890 - Grey/Blue Male Cavalier.g1t
+4890,misc/formats/G1T/4890 - Grey-Blue Male Cavalier.g1t
 4891,misc/formats/G1T/4891 - Brown Male Cavalier.g1t
-4892,misc/formats/G1T/4892 - Silver/Blue Male Cavalier.g1t
+4892,misc/formats/G1T/4892 - Silver-Blue Male Cavalier.g1t
 4893,misc/formats/G1T/4893 - Red Female Cavalier.g1t
 4894,misc/formats/G1T/4894 - Blue Female Cavalier.g1t
 4895,misc/formats/G1T/4895 - Yellow Female Cavalier.g1t
-4896,misc/formats/G1T/4896 - Grey/Red Female Cavalier.g1t
-4897,misc/formats/G1T/4897 - Black/Red Female Cavalier.g1t
+4896,misc/formats/G1T/4896 - Grey-Red Female Cavalier.g1t
+4897,misc/formats/G1T/4897 - Black-Red Female Cavalier.g1t
 4898,misc/formats/G1T/4898 - Green Female Cavalier.g1t
-4899,misc/formats/G1T/4899 - Grey/Blue Female Cavalier.g1t
+4899,misc/formats/G1T/4899 - Grey-Blue Female Cavalier.g1t
 4900,misc/formats/G1T/4900 - Brown Female Cavalier.g1t
-4901,misc/formats/G1T/4901 - Silver/Blue Female Cavalier.g1t
+4901,misc/formats/G1T/4901 - Silver-Blue Female Cavalier.g1t
 4902,misc/formats/G1T/4902 - Red Male Brigand.g1t
 4903,misc/formats/G1T/4903 - Blue Male Brigand.g1t
 4904,misc/formats/G1T/4904 - Yellow Male Brigand.g1t
-4905,misc/formats/G1T/4905 - Grey/Red Male Brigand.g1t
-4906,misc/formats/G1T/4906 - Black/Red Male Brigand.g1t
+4905,misc/formats/G1T/4905 - Grey-Red Male Brigand.g1t
+4906,misc/formats/G1T/4906 - Black-Red Male Brigand.g1t
 4907,misc/formats/G1T/4907 - Green Male Brigand.g1t
-4908,misc/formats/G1T/4908 - Grey/Blue Male Brigand.g1t
+4908,misc/formats/G1T/4908 - Grey-Blue Male Brigand.g1t
 4909,misc/formats/G1T/4909 - Brown Male Brigand.g1t
-4910,misc/formats/G1T/4910 - Silver/Blue Male Brigand.g1t
+4910,misc/formats/G1T/4910 - Silver-Blue Male Brigand.g1t
 4911,misc/formats/G1T/4911 - Red Female Brigand.g1t
 4912,misc/formats/G1T/4912 - Blue Female Brigand.g1t
 4913,misc/formats/G1T/4913 - Yellow Female Brigand.g1t
-4914,misc/formats/G1T/4914 - Grey/Red Female Brigand.g1t
-4915,misc/formats/G1T/4915 - Black/Red Female Brigand.g1t
+4914,misc/formats/G1T/4914 - Grey-Red Female Brigand.g1t
+4915,misc/formats/G1T/4915 - Black-Red Female Brigand.g1t
 4916,misc/formats/G1T/4916 - Green Female Brigand.g1t
-4917,misc/formats/G1T/4917 - Grey/Blue Female Brigand.g1t
+4917,misc/formats/G1T/4917 - Grey-Blue Female Brigand.g1t
 4918,misc/formats/G1T/4918 - Brown Female Brigand.g1t
-4919,misc/formats/G1T/4919 - Silver/Blue Female Brigand.g1t
+4919,misc/formats/G1T/4919 - Silver-Blue Female Brigand.g1t
 4920,misc/formats/G1T/4920 - Red Male Archer.g1t
 4921,misc/formats/G1T/4921 - Blue Male Archer.g1t
 4922,misc/formats/G1T/4922 - Yellow Male Archer.g1t
-4923,misc/formats/G1T/4923 - Grey/Red Male Archer.g1t
-4924,misc/formats/G1T/4924 - Black/Red Male Archer.g1t
+4923,misc/formats/G1T/4923 - Grey-Red Male Archer.g1t
+4924,misc/formats/G1T/4924 - Black-Red Male Archer.g1t
 4925,misc/formats/G1T/4925 - Green Male Archer.g1t
-4926,misc/formats/G1T/4926 - Grey/Blue Male Archer.g1t
+4926,misc/formats/G1T/4926 - Grey-Blue Male Archer.g1t
 4927,misc/formats/G1T/4927 - Brown Male Archer.g1t
-4928,misc/formats/G1T/4928 - Silver/Blue Male Archer.g1t
+4928,misc/formats/G1T/4928 - Silver-Blue Male Archer.g1t
 4929,misc/formats/G1T/4929 - Red Female Archer.g1t
 4930,misc/formats/G1T/4930 - Blue Female Archer.g1t
 4931,misc/formats/G1T/4931 - Yellow Female Archer.g1t
-4932,misc/formats/G1T/4932 - Grey/Red Female Archer.g1t
-4933,misc/formats/G1T/4933 - Black/Red Female Archer.g1t
+4932,misc/formats/G1T/4932 - Grey-Red Female Archer.g1t
+4933,misc/formats/G1T/4933 - Black-Red Female Archer.g1t
 4934,misc/formats/G1T/4934 - Green Female Archer.g1t
-4935,misc/formats/G1T/4935 - Grey/Blue Female Archer.g1t
+4935,misc/formats/G1T/4935 - Grey-Blue Female Archer.g1t
 4936,misc/formats/G1T/4936 - Brown Female Archer.g1t
-4937,misc/formats/G1T/4937 - Silver/Blue Female Archer.g1t
+4937,misc/formats/G1T/4937 - Silver-Blue Female Archer.g1t
 4938,misc/formats/G1T/4938 - Red Brawler.g1t
 4939,misc/formats/G1T/4939 - Blue Brawler.g1t
 4940,misc/formats/G1T/4940 - Yellow Brawler.g1t
-4941,misc/formats/G1T/4941 - Grey/Red Brawler.g1t
-4942,misc/formats/G1T/4942 - Black/Red Brawler.g1t
+4941,misc/formats/G1T/4941 - Grey-Red Brawler.g1t
+4942,misc/formats/G1T/4942 - Black-Red Brawler.g1t
 4943,misc/formats/G1T/4943 - Green Brawler.g1t
-4944,misc/formats/G1T/4944 - Grey/Blue Brawler.g1t
+4944,misc/formats/G1T/4944 - Grey-Blue Brawler.g1t
 4945,misc/formats/G1T/4945 - Brown Brawler.g1t
-4946,misc/formats/G1T/4946 - Silver/Blue Brawler.g1t
+4946,misc/formats/G1T/4946 - Silver-Blue Brawler.g1t
 4947,misc/formats/G1T/4947 - Red Male Mage.g1t
 4948,misc/formats/G1T/4948 - Blue Male Mage.g1t
 4949,misc/formats/G1T/4949 - Yellow Male Mage.g1t
-4950,misc/formats/G1T/4950 - Grey/Red Male Mage.g1t
-4951,misc/formats/G1T/4951 - Black/Red Male Mage.g1t
+4950,misc/formats/G1T/4950 - Grey-Red Male Mage.g1t
+4951,misc/formats/G1T/4951 - Black-Red Male Mage.g1t
 4952,misc/formats/G1T/4952 - Green Male Mage.g1t
-4953,misc/formats/G1T/4953 - Grey/Blue Male Mage.g1t
+4953,misc/formats/G1T/4953 - Grey-Blue Male Mage.g1t
 4954,misc/formats/G1T/4954 - Brown Male Mage.g1t
-4955,misc/formats/G1T/4955 - Silver/Blue Male Mage.g1t
+4955,misc/formats/G1T/4955 - Silver-Blue Male Mage.g1t
 4956,misc/formats/G1T/4956 - Red Female Mage.g1t
 4957,misc/formats/G1T/4957 - Blue Female Mage.g1t
 4958,misc/formats/G1T/4958 - Yellow Female Mage.g1t
-4959,misc/formats/G1T/4959 - Grey/Red Female Mage.g1t
-4960,misc/formats/G1T/4960 - Black/Red Female Mage.g1t
+4959,misc/formats/G1T/4959 - Grey-Red Female Mage.g1t
+4960,misc/formats/G1T/4960 - Black-Red Female Mage.g1t
 4961,misc/formats/G1T/4961 - Green Female Mage.g1t
-4962,misc/formats/G1T/4962 - Grey/Blue Female Mage.g1t
+4962,misc/formats/G1T/4962 - Grey-Blue Female Mage.g1t
 4963,misc/formats/G1T/4963 - Brown Female Mage.g1t
-4964,misc/formats/G1T/4964 - Silver/Blue Female Mage.g1t
+4964,misc/formats/G1T/4964 - Silver-Blue Female Mage.g1t
 4965,misc/formats/G1T/4965 - Red Dark Mage.g1t
 4966,misc/formats/G1T/4966 - Blue Dark Mage.g1t
 4967,misc/formats/G1T/4967 - Yellow Dark Mage.g1t
-4968,misc/formats/G1T/4968 - Grey/Red Dark Mage.g1t
-4969,misc/formats/G1T/4969 - Black/Red Dark Mage.g1t
+4968,misc/formats/G1T/4968 - Grey-Red Dark Mage.g1t
+4969,misc/formats/G1T/4969 - Black-Red Dark Mage.g1t
 4970,misc/formats/G1T/4970 - Green Dark Mage.g1t
-4971,misc/formats/G1T/4971 - Grey/Blue Dark Mage.g1t
+4971,misc/formats/G1T/4971 - Grey-Blue Dark Mage.g1t
 4972,misc/formats/G1T/4972 - Brown Dark Mage.g1t
-4973,misc/formats/G1T/4973 - Silver/Blue Dark Mage.g1t
+4973,misc/formats/G1T/4973 - Silver-Blue Dark Mage.g1t
 4974,misc/formats/G1T/4974 - Red Male Priest.g1t
 4975,misc/formats/G1T/4975 - Blue Male Priest.g1t
 4976,misc/formats/G1T/4976 - Yellow Male Priest.g1t
-4977,misc/formats/G1T/4977 - Grey/Red Male Priest.g1t
-4978,misc/formats/G1T/4978 - Black/Red Male Priest.g1t
+4977,misc/formats/G1T/4977 - Grey-Red Male Priest.g1t
+4978,misc/formats/G1T/4978 - Black-Red Male Priest.g1t
 4979,misc/formats/G1T/4979 - Green Male Priest.g1t
-4980,misc/formats/G1T/4980 - Grey/Blue Male Priest.g1t
+4980,misc/formats/G1T/4980 - Grey-Blue Male Priest.g1t
 4981,misc/formats/G1T/4981 - Brown Male Priest.g1t
-4982,misc/formats/G1T/4982 - Silver/Blue Male Priest.g1t
+4982,misc/formats/G1T/4982 - Silver-Blue Male Priest.g1t
 4983,misc/formats/G1T/4983 - Red Female Priest.g1t
 4984,misc/formats/G1T/4984 - Blue Female Priest.g1t
 4985,misc/formats/G1T/4985 - Yellow Female Priest.g1t
-4986,misc/formats/G1T/4986 - Grey/Red Female Priest.g1t
-4987,misc/formats/G1T/4987 - Black/Red Female Priest.g1t
+4986,misc/formats/G1T/4986 - Grey-Red Female Priest.g1t
+4987,misc/formats/G1T/4987 - Black-Red Female Priest.g1t
 4988,misc/formats/G1T/4988 - Green Female Priest.g1t
-4989,misc/formats/G1T/4989 - Grey/Blue Female Priest.g1t
+4989,misc/formats/G1T/4989 - Grey-Blue Female Priest.g1t
 4990,misc/formats/G1T/4990 - Brown Female Priest.g1t
-4991,misc/formats/G1T/4991 - Silver/Blue Female Priest.g1t
+4991,misc/formats/G1T/4991 - Silver-Blue Female Priest.g1t
 4992,misc/formats/G1T/4992 - Red Hero.g1t
 4993,misc/formats/G1T/4993 - Blue Hero.g1t
 4994,misc/formats/G1T/4994 - Yellow Hero.g1t
-4995,misc/formats/G1T/4995 - Grey/Red Hero.g1t
-4996,misc/formats/G1T/4996 - Black/Red Hero.g1t
+4995,misc/formats/G1T/4995 - Grey-Red Hero.g1t
+4996,misc/formats/G1T/4996 - Black-Red Hero.g1t
 4997,misc/formats/G1T/4997 - Green Hero.g1t
-4998,misc/formats/G1T/4998 - Grey/Blue Hero.g1t
+4998,misc/formats/G1T/4998 - Grey-Blue Hero.g1t
 4999,misc/formats/G1T/4999 - Brown Hero.g1t
-5000,misc/formats/G1T/5000 - Silver/Blue Hero.g1t
+5000,misc/formats/G1T/5000 - Silver-Blue Hero.g1t
 5001,misc/formats/G1T/5001 - Red Male Swordmaster.g1t
 5002,misc/formats/G1T/5002 - Blue Male Swordmaster.g1t
 5003,misc/formats/G1T/5003 - Yellow Male Swordmaster.g1t
-5004,misc/formats/G1T/5004 - Grey/Red Male Swordmaster.g1t
-5005,misc/formats/G1T/5005 - Black/Red Male Swordmaster.g1t
+5004,misc/formats/G1T/5004 - Grey-Red Male Swordmaster.g1t
+5005,misc/formats/G1T/5005 - Black-Red Male Swordmaster.g1t
 5006,misc/formats/G1T/5006 - Green Male Swordmaster.g1t
-5007,misc/formats/G1T/5007 - Grey/Blue Male Swordmaster.g1t
+5007,misc/formats/G1T/5007 - Grey-Blue Male Swordmaster.g1t
 5008,misc/formats/G1T/5008 - Brown Male Swordmaster.g1t
-5009,misc/formats/G1T/5009 - Silver/Blue Male Swordmaster.g1t
+5009,misc/formats/G1T/5009 - Silver-Blue Male Swordmaster.g1t
 5010,misc/formats/G1T/5010 - Red Female Swordmaster.g1t
 5011,misc/formats/G1T/5011 - Blue Female Swordmaster.g1t
 5012,misc/formats/G1T/5012 - Yellow Female Swordmaster.g1t
-5013,misc/formats/G1T/5013 - Grey/Red Female Swordmaster.g1t
-5014,misc/formats/G1T/5014 - Black/Red Female Swordmaster.g1t
+5013,misc/formats/G1T/5013 - Grey-Red Female Swordmaster.g1t
+5014,misc/formats/G1T/5014 - Black-Red Female Swordmaster.g1t
 5015,misc/formats/G1T/5015 - Green Female Swordmaster.g1t
-5016,misc/formats/G1T/5016 - Grey/Blue Female Swordmaster.g1t
+5016,misc/formats/G1T/5016 - Grey-Blue Female Swordmaster.g1t
 5017,misc/formats/G1T/5017 - Brown Female Swordmaster.g1t
-5018,misc/formats/G1T/5018 - Silver/Blue Female Swordmaster.g1t
+5018,misc/formats/G1T/5018 - Silver-Blue Female Swordmaster.g1t
 5019,misc/formats/G1T/5019 - Red Male Assassin.g1t
 5020,misc/formats/G1T/5020 - Blue Male Assassin.g1t
 5021,misc/formats/G1T/5021 - Yellow Male Assassin.g1t
-5022,misc/formats/G1T/5022 - Grey/Red Male Assassin.g1t
-5023,misc/formats/G1T/5023 - Black/Red Male Assassin.g1t
+5022,misc/formats/G1T/5022 - Grey-Red Male Assassin.g1t
+5023,misc/formats/G1T/5023 - Black-Red Male Assassin.g1t
 5024,misc/formats/G1T/5024 - Green Male Assassin.g1t
-5025,misc/formats/G1T/5025 - Grey/Blue Male Assassin.g1t
+5025,misc/formats/G1T/5025 - Grey-Blue Male Assassin.g1t
 5026,misc/formats/G1T/5026 - Brown Male Assassin.g1t
-5027,misc/formats/G1T/5027 - Silver/Blue Male Assassin.g1t
+5027,misc/formats/G1T/5027 - Silver-Blue Male Assassin.g1t
 5028,misc/formats/G1T/5028 - Red Female Assassin.g1t
 5029,misc/formats/G1T/5029 - Blue Female Assassin.g1t
 5030,misc/formats/G1T/5030 - Yellow Female Assassin.g1t
-5031,misc/formats/G1T/5031 - Grey/Red Female Assassin.g1t
-5032,misc/formats/G1T/5032 - Black/Red Female Assassin.g1t
+5031,misc/formats/G1T/5031 - Grey-Red Female Assassin.g1t
+5032,misc/formats/G1T/5032 - Black-Red Female Assassin.g1t
 5033,misc/formats/G1T/5033 - Green Female Assassin.g1t
-5034,misc/formats/G1T/5034 - Grey/Blue Female Assassin.g1t
+5034,misc/formats/G1T/5034 - Grey-Blue Female Assassin.g1t
 5035,misc/formats/G1T/5035 - Brown Female Assassin.g1t
-5036,misc/formats/G1T/5036 - Silver/Blue Female Assassin.g1t
+5036,misc/formats/G1T/5036 - Silver-Blue Female Assassin.g1t
 5037,misc/formats/G1T/5037 - Red Male Fortress Knight.g1t
 5038,misc/formats/G1T/5038 - Blue Male Fortress Knight.g1t
 5039,misc/formats/G1T/5039 - Yellow Male Fortress Knight.g1t
-5040,misc/formats/G1T/5040 - Grey/Red Male Fortress Knight.g1t
-5041,misc/formats/G1T/5041 - Black/Red Male Fortress Knight.g1t
+5040,misc/formats/G1T/5040 - Grey-Red Male Fortress Knight.g1t
+5041,misc/formats/G1T/5041 - Black-Red Male Fortress Knight.g1t
 5042,misc/formats/G1T/5042 - Green Male Fortress Knight.g1t
-5043,misc/formats/G1T/5043 - Grey/Blue Male Fortress Knight.g1t
+5043,misc/formats/G1T/5043 - Grey-Blue Male Fortress Knight.g1t
 5044,misc/formats/G1T/5044 - Brown Male Fortress Knight.g1t
-5045,misc/formats/G1T/5045 - Silver/Blue Male Fortress Knight.g1t
+5045,misc/formats/G1T/5045 - Silver-Blue Male Fortress Knight.g1t
 5046,misc/formats/G1T/5046 - Red Female Fortress Knight.g1t
 5047,misc/formats/G1T/5047 - Blue Female Fortress Knight.g1t
 5048,misc/formats/G1T/5048 - Yellow Female Fortress Knight.g1t
-5049,misc/formats/G1T/5049 - Grey/Red Female Fortress Knight.g1t
-5050,misc/formats/G1T/5050 - Black/Red Female Fortress Knight.g1t
+5049,misc/formats/G1T/5049 - Grey-Red Female Fortress Knight.g1t
+5050,misc/formats/G1T/5050 - Black-Red Female Fortress Knight.g1t
 5051,misc/formats/G1T/5051 - Green Female Fortress Knight.g1t
-5052,misc/formats/G1T/5052 - Grey/Blue Female Fortress Knight.g1t
+5052,misc/formats/G1T/5052 - Grey-Blue Female Fortress Knight.g1t
 5053,misc/formats/G1T/5053 - Brown Female Fortress Knight.g1t
-5054,misc/formats/G1T/5054 - Silver/Blue Female Fortress Knight.g1t
+5054,misc/formats/G1T/5054 - Silver-Blue Female Fortress Knight.g1t
 5055,misc/formats/G1T/5055 - Red Male Paladin.g1t
 5056,misc/formats/G1T/5056 - Blue Male Paladin.g1t
 5057,misc/formats/G1T/5057 - Yellow Male Paladin.g1t
-5058,misc/formats/G1T/5058 - Grey/Red Male Paladin.g1t
-5059,misc/formats/G1T/5059 - Black/Red Male Paladin.g1t
+5058,misc/formats/G1T/5058 - Grey-Red Male Paladin.g1t
+5059,misc/formats/G1T/5059 - Black-Red Male Paladin.g1t
 5060,misc/formats/G1T/5060 - Green Male Paladin.g1t
-5061,misc/formats/G1T/5061 - Grey/Blue Male Paladin.g1t
+5061,misc/formats/G1T/5061 - Grey-Blue Male Paladin.g1t
 5062,misc/formats/G1T/5062 - Brown Male Paladin.g1t
-5063,misc/formats/G1T/5063 - Silver/Blue Male Paladin.g1t
+5063,misc/formats/G1T/5063 - Silver-Blue Male Paladin.g1t
 5064,misc/formats/G1T/5064 - Red Female Paladin.g1t
 5065,misc/formats/G1T/5065 - Blue Female Paladin.g1t
 5066,misc/formats/G1T/5066 - Yellow Female Paladin.g1t
-5067,misc/formats/G1T/5067 - Grey/Red Female Paladin.g1t
-5068,misc/formats/G1T/5068 - Black/Red Female Paladin.g1t
+5067,misc/formats/G1T/5067 - Grey-Red Female Paladin.g1t
+5068,misc/formats/G1T/5068 - Black-Red Female Paladin.g1t
 5069,misc/formats/G1T/5069 - Green Female Paladin.g1t
-5070,misc/formats/G1T/5070 - Grey/Blue Female Paladin.g1t
+5070,misc/formats/G1T/5070 - Grey-Blue Female Paladin.g1t
 5071,misc/formats/G1T/5071 - Brown Female Paladin.g1t
-5072,misc/formats/G1T/5072 - Silver/Blue Female Paladin.g1t
+5072,misc/formats/G1T/5072 - Silver-Blue Female Paladin.g1t
 5073,misc/formats/G1T/5073 - Red Pegasus Knight.g1t
 5074,misc/formats/G1T/5074 - Blue Pegasus Knight.g1t
 5075,misc/formats/G1T/5075 - Yellow Pegasus Knight.g1t
-5076,misc/formats/G1T/5076 - Grey/Red Pegasus Knight.g1t
-5077,misc/formats/G1T/5077 - Black/Red Pegasus Knight.g1t
+5076,misc/formats/G1T/5076 - Grey-Red Pegasus Knight.g1t
+5077,misc/formats/G1T/5077 - Black-Red Pegasus Knight.g1t
 5078,misc/formats/G1T/5078 - Green Pegasus Knight.g1t
-5079,misc/formats/G1T/5079 - Grey/Blue Pegasus Knight.g1t
+5079,misc/formats/G1T/5079 - Grey-Blue Pegasus Knight.g1t
 5080,misc/formats/G1T/5080 - Brown Pegasus Knight.g1t
-5081,misc/formats/G1T/5081 - Silver/Blue Pegasus Knight.g1t
+5081,misc/formats/G1T/5081 - Silver-Blue Pegasus Knight.g1t
 5082,misc/formats/G1T/5082 - Red Male Wyvern Rider.g1t
 5083,misc/formats/G1T/5083 - Blue Male Wyvern Rider.g1t
 5084,misc/formats/G1T/5084 - Yellow Male Wyvern Rider.g1t
-5085,misc/formats/G1T/5085 - Grey/Red Male Wyvern Rider.g1t
-5086,misc/formats/G1T/5086 - Black/Red Male Wyvern Rider.g1t
+5085,misc/formats/G1T/5085 - Grey-Red Male Wyvern Rider.g1t
+5086,misc/formats/G1T/5086 - Black-Red Male Wyvern Rider.g1t
 5087,misc/formats/G1T/5087 - Green Male Wyvern Rider.g1t
-5088,misc/formats/G1T/5088 - Grey/Blue Male Wyvern Rider.g1t
+5088,misc/formats/G1T/5088 - Grey-Blue Male Wyvern Rider.g1t
 5089,misc/formats/G1T/5089 - Brown Male Wyvern Rider.g1t
-5090,misc/formats/G1T/5090 - Silver/Blue Male Wyvern Rider.g1t
+5090,misc/formats/G1T/5090 - Silver-Blue Male Wyvern Rider.g1t
 5091,misc/formats/G1T/5091 - Red Female Wyvern Rider.g1t
 5092,misc/formats/G1T/5092 - Blue Female Wyvern Rider.g1t
 5093,misc/formats/G1T/5093 - Yellow Female Wyvern Rider.g1t
-5094,misc/formats/G1T/5094 - Grey/Red Female Wyvern Rider.g1t
-5095,misc/formats/G1T/5095 - Black/Red Female Wyvern Rider.g1t
+5094,misc/formats/G1T/5094 - Grey-Red Female Wyvern Rider.g1t
+5095,misc/formats/G1T/5095 - Black-Red Female Wyvern Rider.g1t
 5096,misc/formats/G1T/5096 - Green Female Wyvern Rider.g1t
-5097,misc/formats/G1T/5097 - Grey/Blue Female Wyvern Rider.g1t
+5097,misc/formats/G1T/5097 - Grey-Blue Female Wyvern Rider.g1t
 5098,misc/formats/G1T/5098 - Brown Female Wyvern Rider.g1t
-5099,misc/formats/G1T/5099 - Silver/Blue Female Wyvern Rider.g1t
+5099,misc/formats/G1T/5099 - Silver-Blue Female Wyvern Rider.g1t
 5100,misc/formats/G1T/5100 - Red Male Warrior.g1t
 5101,misc/formats/G1T/5101 - Blue Male Warrior.g1t
 5102,misc/formats/G1T/5102 - Yellow Male Warrior.g1t
-5103,misc/formats/G1T/5103 - Grey/Red Male Warrior.g1t
-5104,misc/formats/G1T/5104 - Black/Red Male Warrior.g1t
+5103,misc/formats/G1T/5103 - Grey-Red Male Warrior.g1t
+5104,misc/formats/G1T/5104 - Black-Red Male Warrior.g1t
 5105,misc/formats/G1T/5105 - Green Male Warrior.g1t
-5106,misc/formats/G1T/5106 - Grey/Blue Male Warrior.g1t
+5106,misc/formats/G1T/5106 - Grey-Blue Male Warrior.g1t
 5107,misc/formats/G1T/5107 - Brown Male Warrior.g1t
-5108,misc/formats/G1T/5108 - Silver/Blue Male Warrior.g1t
+5108,misc/formats/G1T/5108 - Silver-Blue Male Warrior.g1t
 5109,misc/formats/G1T/5109 - Red Female Warrior.g1t
 5110,misc/formats/G1T/5110 - Blue Female Warrior.g1t
 5111,misc/formats/G1T/5111 - Yellow Female Warrior.g1t
-5112,misc/formats/G1T/5112 - Grey/Red Female Warrior.g1t
-5113,misc/formats/G1T/5113 - Black/Red Female Warrior.g1t
+5112,misc/formats/G1T/5112 - Grey-Red Female Warrior.g1t
+5113,misc/formats/G1T/5113 - Black-Red Female Warrior.g1t
 5114,misc/formats/G1T/5114 - Green Female Warrior.g1t
-5115,misc/formats/G1T/5115 - Grey/Blue Female Warrior.g1t
+5115,misc/formats/G1T/5115 - Grey-Blue Female Warrior.g1t
 5116,misc/formats/G1T/5116 - Brown Female Warrior.g1t
-5117,misc/formats/G1T/5117 - Silver/Blue Female Warrior.g1t
+5117,misc/formats/G1T/5117 - Silver-Blue Female Warrior.g1t
 5118,misc/formats/G1T/5118 - Red Male Sniper.g1t
 5119,misc/formats/G1T/5119 - Blue Male Sniper.g1t
 5120,misc/formats/G1T/5120 - Yellow Male Sniper.g1t
-5121,misc/formats/G1T/5121 - Grey/Red Male Sniper.g1t
-5122,misc/formats/G1T/5122 - Black/Red Male Sniper.g1t
+5121,misc/formats/G1T/5121 - Grey-Red Male Sniper.g1t
+5122,misc/formats/G1T/5122 - Black-Red Male Sniper.g1t
 5123,misc/formats/G1T/5123 - Green Male Sniper.g1t
-5124,misc/formats/G1T/5124 - Grey/Blue Male Sniper.g1t
+5124,misc/formats/G1T/5124 - Grey-Blue Male Sniper.g1t
 5125,misc/formats/G1T/5125 - Brown Male Sniper.g1t
-5126,misc/formats/G1T/5126 - Silver/Blue Male Sniper.g1t
+5126,misc/formats/G1T/5126 - Silver-Blue Male Sniper.g1t
 5127,misc/formats/G1T/5127 - Red Female Sniper.g1t
 5128,misc/formats/G1T/5128 - Blue Female Sniper.g1t
 5129,misc/formats/G1T/5129 - Yellow Female Sniper.g1t
-5130,misc/formats/G1T/5130 - Grey/Red Female Sniper.g1t
-5131,misc/formats/G1T/5131 - Black/Red Female Sniper.g1t
+5130,misc/formats/G1T/5130 - Grey-Red Female Sniper.g1t
+5131,misc/formats/G1T/5131 - Black-Red Female Sniper.g1t
 5132,misc/formats/G1T/5132 - Green Female Sniper.g1t
-5133,misc/formats/G1T/5133 - Grey/Blue Female Sniper.g1t
+5133,misc/formats/G1T/5133 - Grey-Blue Female Sniper.g1t
 5134,misc/formats/G1T/5134 - Brown Female Sniper.g1t
-5135,misc/formats/G1T/5135 - Silver/Blue Female Sniper.g1t
+5135,misc/formats/G1T/5135 - Silver-Blue Female Sniper.g1t
 5136,misc/formats/G1T/5136 - Red Grappler.g1t
 5137,misc/formats/G1T/5137 - Blue Grappler.g1t
 5138,misc/formats/G1T/5138 - Yellow Grappler.g1t
-5139,misc/formats/G1T/5139 - Grey/Red Grappler.g1t
-5140,misc/formats/G1T/5140 - Black/Red Grappler.g1t
+5139,misc/formats/G1T/5139 - Grey-Red Grappler.g1t
+5140,misc/formats/G1T/5140 - Black-Red Grappler.g1t
 5141,misc/formats/G1T/5141 - Green Grappler.g1t
-5142,misc/formats/G1T/5142 - Grey/Blue Grappler.g1t
+5142,misc/formats/G1T/5142 - Grey-Blue Grappler.g1t
 5143,misc/formats/G1T/5143 - Brown Grappler.g1t
-5144,misc/formats/G1T/5144 - Silver/Blue Grappler.g1t
+5144,misc/formats/G1T/5144 - Silver-Blue Grappler.g1t
 5145,misc/formats/G1T/5145 - Red Male Warlock.g1t
 5146,misc/formats/G1T/5146 - Blue Male Warlock.g1t
 5147,misc/formats/G1T/5147 - Yellow Male Warlock.g1t
-5148,misc/formats/G1T/5148 - Grey/Red Male Warlock.g1t
-5149,misc/formats/G1T/5149 - Black/Red Male Warlock.g1t
+5148,misc/formats/G1T/5148 - Grey-Red Male Warlock.g1t
+5149,misc/formats/G1T/5149 - Black-Red Male Warlock.g1t
 5150,misc/formats/G1T/5150 - Green Male Warlock.g1t
-5151,misc/formats/G1T/5151 - Grey/Blue Male Warlock.g1t
+5151,misc/formats/G1T/5151 - Grey-Blue Male Warlock.g1t
 5152,misc/formats/G1T/5152 - Brown Male Warlock.g1t
-5153,misc/formats/G1T/5153 - Silver/Blue Male Warlock.g1t
+5153,misc/formats/G1T/5153 - Silver-Blue Male Warlock.g1t
 5154,misc/formats/G1T/5154 - Red Female Warlock.g1t
 5155,misc/formats/G1T/5155 - Blue Female Warlock.g1t
 5156,misc/formats/G1T/5156 - Yellow Female Warlock.g1t
-5157,misc/formats/G1T/5157 - Grey/Red Female Warlock.g1t
-5158,misc/formats/G1T/5158 - Black/Red Female Warlock.g1t
+5157,misc/formats/G1T/5157 - Grey-Red Female Warlock.g1t
+5158,misc/formats/G1T/5158 - Black-Red Female Warlock.g1t
 5159,misc/formats/G1T/5159 - Green Female Warlock.g1t
-5160,misc/formats/G1T/5160 - Grey/Blue Female Warlock.g1t
+5160,misc/formats/G1T/5160 - Grey-Blue Female Warlock.g1t
 5161,misc/formats/G1T/5161 - Brown Female Warlock.g1t
-5162,misc/formats/G1T/5162 - Silver/Blue Female Warlock.g1t
+5162,misc/formats/G1T/5162 - Silver-Blue Female Warlock.g1t
 5163,misc/formats/G1T/5163 - Red Dark Bishop.g1t
 5164,misc/formats/G1T/5164 - Blue Dark Bishop.g1t
 5165,misc/formats/G1T/5165 - Yellow Dark Bishop.g1t
-5166,misc/formats/G1T/5166 - Grey/Red Dark Bishop.g1t
-5167,misc/formats/G1T/5167 - Black/Red Dark Bishop.g1t
+5166,misc/formats/G1T/5166 - Grey-Red Dark Bishop.g1t
+5167,misc/formats/G1T/5167 - Black-Red Dark Bishop.g1t
 5168,misc/formats/G1T/5168 - Green Dark Bishop.g1t
-5169,misc/formats/G1T/5169 - Grey/Blue Dark Bishop.g1t
+5169,misc/formats/G1T/5169 - Grey-Blue Dark Bishop.g1t
 5170,misc/formats/G1T/5170 - Brown Dark Bishop.g1t
-5171,misc/formats/G1T/5171 - Silver/Blue Dark Bishop.g1t
+5171,misc/formats/G1T/5171 - Silver-Blue Dark Bishop.g1t
 5172,misc/formats/G1T/5172 - Red Male Bishop.g1t
 5173,misc/formats/G1T/5173 - Blue Male Bishop.g1t
 5174,misc/formats/G1T/5174 - Yellow Male Bishop.g1t
-5175,misc/formats/G1T/5175 - Grey/Red Male Bishop.g1t
-5176,misc/formats/G1T/5176 - Black/Red Male Bishop.g1t
+5175,misc/formats/G1T/5175 - Grey-Red Male Bishop.g1t
+5176,misc/formats/G1T/5176 - Black-Red Male Bishop.g1t
 5177,misc/formats/G1T/5177 - Green Male Bishop.g1t
-5178,misc/formats/G1T/5178 - Grey/Blue Male Bishop.g1t
+5178,misc/formats/G1T/5178 - Grey-Blue Male Bishop.g1t
 5179,misc/formats/G1T/5179 - Brown Male Bishop.g1t
-5180,misc/formats/G1T/5180 - Silver/Blue Male Bishop.g1t
+5180,misc/formats/G1T/5180 - Silver-Blue Male Bishop.g1t
 5181,misc/formats/G1T/5181 - Red Female Bishop.g1t
 5182,misc/formats/G1T/5182 - Blue Female Bishop.g1t
 5183,misc/formats/G1T/5183 - Yellow Female Bishop.g1t
-5184,misc/formats/G1T/5184 - Grey/Red Female Bishop.g1t
-5185,misc/formats/G1T/5185 - Black/Red Female Bishop.g1t
+5184,misc/formats/G1T/5184 - Grey-Red Female Bishop.g1t
+5185,misc/formats/G1T/5185 - Black-Red Female Bishop.g1t
 5186,misc/formats/G1T/5186 - Green Female Bishop.g1t
-5187,misc/formats/G1T/5187 - Grey/Blue Female Bishop.g1t
+5187,misc/formats/G1T/5187 - Grey-Blue Female Bishop.g1t
 5188,misc/formats/G1T/5188 - Brown Female Bishop.g1t
-5189,misc/formats/G1T/5189 - Silver/Blue Female Bishop.g1t
+5189,misc/formats/G1T/5189 - Silver-Blue Female Bishop.g1t
 5190,misc/formats/G1T/5190 - Red Falcon Knight.g1t
 5191,misc/formats/G1T/5191 - Blue Falcon Knight.g1t
 5192,misc/formats/G1T/5192 - Yellow Falcon Knight.g1t
-5193,misc/formats/G1T/5193 - Grey/Red Falcon Knight.g1t
-5194,misc/formats/G1T/5194 - Black/Red Falcon Knight.g1t
+5193,misc/formats/G1T/5193 - Grey-Red Falcon Knight.g1t
+5194,misc/formats/G1T/5194 - Black-Red Falcon Knight.g1t
 5195,misc/formats/G1T/5195 - Green Falcon Knight.g1t
-5196,misc/formats/G1T/5196 - Grey/Blue Falcon Knight.g1t
+5196,misc/formats/G1T/5196 - Grey-Blue Falcon Knight.g1t
 5197,misc/formats/G1T/5197 - Brown Falcon Knight.g1t
-5198,misc/formats/G1T/5198 - Silver/Blue. Falcon Knight.g1t
+5198,misc/formats/G1T/5198 - Silver-Blue. Falcon Knight.g1t
 5199,misc/formats/G1T/5199 - Red Male Wyvern Lord.g1t
 5200,misc/formats/G1T/5200 - Blue Male Wyvern Lord.g1t
 5201,misc/formats/G1T/5201 - Yellow Male Wyvern Lord.g1t
-5202,misc/formats/G1T/5202 - Grey/Red Male Wyvern Lord.g1t
-5203,misc/formats/G1T/5203 - Black/Red Male Wyvern Lord.g1t
+5202,misc/formats/G1T/5202 - Grey-Red Male Wyvern Lord.g1t
+5203,misc/formats/G1T/5203 - Black-Red Male Wyvern Lord.g1t
 5204,misc/formats/G1T/5204 - Green Male Wyvern Lord.g1t
-5205,misc/formats/G1T/5205 - Grey/Blue Male Wyvern Lord.g1t
+5205,misc/formats/G1T/5205 - Grey-Blue Male Wyvern Lord.g1t
 5206,misc/formats/G1T/5206 - Brown Male Wyvern Lord.g1t
-5207,misc/formats/G1T/5207 - Silver/Blue Male Wyvern Lord.g1t
+5207,misc/formats/G1T/5207 - Silver-Blue Male Wyvern Lord.g1t
 5208,misc/formats/G1T/5208 - Red Female Wyvern Lord.g1t
 5209,misc/formats/G1T/5209 - Blue Female Wyvern Lord.g1t
 5210,misc/formats/G1T/5210 - Yellow Female Wyvern Lord.g1t
-5211,misc/formats/G1T/5211 - Grey/Red Female Wyvern Lord.g1t
-5212,misc/formats/G1T/5212 - Black/Red Female Wyvern Lord.g1t
+5211,misc/formats/G1T/5211 - Grey-Red Female Wyvern Lord.g1t
+5212,misc/formats/G1T/5212 - Black-Red Female Wyvern Lord.g1t
 5213,misc/formats/G1T/5213 - Green Female Wyvern Lord.g1t
-5214,misc/formats/G1T/5214 - Grey/Blue Female Wyvern Lord.g1t
+5214,misc/formats/G1T/5214 - Grey-Blue Female Wyvern Lord.g1t
 5215,misc/formats/G1T/5215 - Brown Female Wyvern Lord.g1t
-5216,misc/formats/G1T/5216 - Silver/Blue Female Wyvern Lord.g1t
+5216,misc/formats/G1T/5216 - Silver-Blue Female Wyvern Lord.g1t
 5217,misc/formats/G1T/5217 - Red Male Mortal Savant.g1t
 5218,misc/formats/G1T/5218 - Blue Male Mortal Savant.g1t
 5219,misc/formats/G1T/5219 - Yellow Male Mortal Savant.g1t
-5220,misc/formats/G1T/5220 - Grey/Red Male Mortal Savant.g1t
-5221,misc/formats/G1T/5221 - Black/Red Male Mortal Savant.g1t
+5220,misc/formats/G1T/5220 - Grey-Red Male Mortal Savant.g1t
+5221,misc/formats/G1T/5221 - Black-Red Male Mortal Savant.g1t
 5222,misc/formats/G1T/5222 - Green Male Mortal Savant.g1t
-5223,misc/formats/G1T/5223 - Grey/Blue Male Mortal Savant.g1t
+5223,misc/formats/G1T/5223 - Grey-Blue Male Mortal Savant.g1t
 5224,misc/formats/G1T/5224 - Brown Male Mortal Savant.g1t
-5225,misc/formats/G1T/5225 - Silver/Blue Male Mortal Savant.g1t
+5225,misc/formats/G1T/5225 - Silver-Blue Male Mortal Savant.g1t
 5226,misc/formats/G1T/5226 - Red Female Mortal Savant.g1t
 5227,misc/formats/G1T/5227 - Blue Female Mortal Savant.g1t
 5228,misc/formats/G1T/5228 - Yellow Female Mortal Savant.g1t
-5229,misc/formats/G1T/5229 - Grey/Red Female Mortal Savant.g1t
-5230,misc/formats/G1T/5230 - Black/Red Female Mortal Savant.g1t
+5229,misc/formats/G1T/5229 - Grey-Red Female Mortal Savant.g1t
+5230,misc/formats/G1T/5230 - Black-Red Female Mortal Savant.g1t
 5231,misc/formats/G1T/5231 - Green Female Mortal Savant.g1t
-5232,misc/formats/G1T/5232 - Grey/Blue Female Mortal Savant.g1t
+5232,misc/formats/G1T/5232 - Grey-Blue Female Mortal Savant.g1t
 5233,misc/formats/G1T/5233 - Brown Female Mortal Savant.g1t
-5234,misc/formats/G1T/5234 - Silver/Blue Female Mortal Savant.g1t
+5234,misc/formats/G1T/5234 - Silver-Blue Female Mortal Savant.g1t
 5235,misc/formats/G1T/5235 - Red Male Great Knight.g1t
 5236,misc/formats/G1T/5236 - Blue Male Great Knight.g1t
 5237,misc/formats/G1T/5237 - Yellow Male Great Knight.g1t
-5238,misc/formats/G1T/5238 - Grey/Red Male Great Knight.g1t
-5239,misc/formats/G1T/5239 - Black/Red Male Great Knight.g1t
+5238,misc/formats/G1T/5238 - Grey-Red Male Great Knight.g1t
+5239,misc/formats/G1T/5239 - Black-Red Male Great Knight.g1t
 5240,misc/formats/G1T/5240 - Green Male Great Knight.g1t
-5241,misc/formats/G1T/5241 - Grey/Blue Male Great Knight.g1t
+5241,misc/formats/G1T/5241 - Grey-Blue Male Great Knight.g1t
 5242,misc/formats/G1T/5242 - Brown Male Great Knight.g1t
-5243,misc/formats/G1T/5243 - Silver/Blue Male Great Knight.g1t
+5243,misc/formats/G1T/5243 - Silver-Blue Male Great Knight.g1t
 5244,misc/formats/G1T/5244 - Red Female Great Knight.g1t
 5245,misc/formats/G1T/5245 - Blue Female Great Knight.g1t
 5246,misc/formats/G1T/5246 - Yellow Female Great Knight.g1t
-5247,misc/formats/G1T/5247 - Grey/Red Female Great Knight.g1t
-5248,misc/formats/G1T/5248 - Black/Red Female Great Knight.g1t
+5247,misc/formats/G1T/5247 - Grey-Red Female Great Knight.g1t
+5248,misc/formats/G1T/5248 - Black-Red Female Great Knight.g1t
 5249,misc/formats/G1T/5249 - Green Female Great Knight.g1t
-5250,misc/formats/G1T/5250 - Grey/Blue Female Great Knight.g1t
+5250,misc/formats/G1T/5250 - Grey-Blue Female Great Knight.g1t
 5251,misc/formats/G1T/5251 - Brown Female Great Knight.g1t
-5252,misc/formats/G1T/5252 - Silver/Blue Female Great Knight.g1t
+5252,misc/formats/G1T/5252 - Silver-Blue Female Great Knight.g1t
 5253,misc/formats/G1T/5253 - Red Male Bow Knight.g1t
 5254,misc/formats/G1T/5254 - Blue Male Bow Knight.g1t
 5255,misc/formats/G1T/5255 - Yellow Male Bow Knight.g1t
-5256,misc/formats/G1T/5256 - Grey/Red Male Bow Knight.g1t
-5257,misc/formats/G1T/5257 - Black/Red Male Bow Knight.g1t
+5256,misc/formats/G1T/5256 - Grey-Red Male Bow Knight.g1t
+5257,misc/formats/G1T/5257 - Black-Red Male Bow Knight.g1t
 5258,misc/formats/G1T/5258 - Green Male Bow Knight.g1t
-5259,misc/formats/G1T/5259 - Grey/Blue Male Bow Knight.g1t
+5259,misc/formats/G1T/5259 - Grey-Blue Male Bow Knight.g1t
 5260,misc/formats/G1T/5260 - Brown Male Bow Knight.g1t
-5261,misc/formats/G1T/5261 - Silver/Blue Male Bow Knight.g1t
+5261,misc/formats/G1T/5261 - Silver-Blue Male Bow Knight.g1t
 5262,misc/formats/G1T/5262 - Red Female Bow Knight.g1t
 5263,misc/formats/G1T/5263 - Blue Female Bow Knight.g1t
 5264,misc/formats/G1T/5264 - Yellow Female Bow Knight.g1t
-5265,misc/formats/G1T/5265 - Grey/Red Female Bow Knight.g1t
-5266,misc/formats/G1T/5266 - Black/Red Female Bow Knight.g1t
+5265,misc/formats/G1T/5265 - Grey-Red Female Bow Knight.g1t
+5266,misc/formats/G1T/5266 - Black-Red Female Bow Knight.g1t
 5267,misc/formats/G1T/5267 - Green Female Bow Knight.g1t
-5268,misc/formats/G1T/5268 - Grey/Blue Female Bow Knight.g1t
+5268,misc/formats/G1T/5268 - Grey-Blue Female Bow Knight.g1t
 5269,misc/formats/G1T/5269 - Brown Female Bow Knight.g1t
-5270,misc/formats/G1T/5270 - Silver/Blue Female Bow Knight.g1t
+5270,misc/formats/G1T/5270 - Silver-Blue Female Bow Knight.g1t
 5271,misc/formats/G1T/5271 - Red Male Dark Knight.g1t
 5272,misc/formats/G1T/5272 - Blue Male Dark Knight.g1t
 5273,misc/formats/G1T/5273 - Yellow Male Dark Knight.g1t
-5274,misc/formats/G1T/5274 - Grey/Red Male Dark Knight.g1t
-5275,misc/formats/G1T/5275 - Black/Red Male Dark Knight.g1t
+5274,misc/formats/G1T/5274 - Grey-Red Male Dark Knight.g1t
+5275,misc/formats/G1T/5275 - Black-Red Male Dark Knight.g1t
 5276,misc/formats/G1T/5276 - Green Male Dark Knight.g1t
-5277,misc/formats/G1T/5277 - Grey/Blue Male Dark Knight.g1t
+5277,misc/formats/G1T/5277 - Grey-Blue Male Dark Knight.g1t
 5278,misc/formats/G1T/5278 - Brown Male Dark Knight.g1t
-5279,misc/formats/G1T/5279 - Silver/Blue Male Dark Knight.g1t
+5279,misc/formats/G1T/5279 - Silver-Blue Male Dark Knight.g1t
 5280,misc/formats/G1T/5280 - Red Female Dark Knight.g1t
 5281,misc/formats/G1T/5281 - Blue Female Dark Knight.g1t
 5282,misc/formats/G1T/5282 - Yellow Female Dark Knight.g1t
-5283,misc/formats/G1T/5283 - Grey/Red Female Dark Knight.g1t
-5284,misc/formats/G1T/5284 - Black/Red Female Dark Knight.g1t
+5283,misc/formats/G1T/5283 - Grey-Red Female Dark Knight.g1t
+5284,misc/formats/G1T/5284 - Black-Red Female Dark Knight.g1t
 5285,misc/formats/G1T/5285 - Green Female Dark Knight.g1t
-5286,misc/formats/G1T/5286 - Grey/Blue Female Dark Knight.g1t
+5286,misc/formats/G1T/5286 - Grey-Blue Female Dark Knight.g1t
 5287,misc/formats/G1T/5287 - Brown Female Dark Knight.g1t
-5288,misc/formats/G1T/5288 - Silver/Blue Female Dark Knight.g1t
+5288,misc/formats/G1T/5288 - Silver-Blue Female Dark Knight.g1t
 5289,misc/formats/G1T/5289 - Red Male Holy Knight.g1t
 5290,misc/formats/G1T/5290 - Blue Male Holy Knight.g1t
 5291,misc/formats/G1T/5291 - Yellow Male Holy Knight.g1t
-5292,misc/formats/G1T/5292 - Grey/Red Male Holy Knight.g1t
-5293,misc/formats/G1T/5293 - Black/Red Male Holy Knight.g1t
+5292,misc/formats/G1T/5292 - Grey-Red Male Holy Knight.g1t
+5293,misc/formats/G1T/5293 - Black-Red Male Holy Knight.g1t
 5294,misc/formats/G1T/5294 - Green Male Holy Knight.g1t
-5295,misc/formats/G1T/5295 - Grey/Blue Male Holy Knight.g1t
+5295,misc/formats/G1T/5295 - Grey-Blue Male Holy Knight.g1t
 5296,misc/formats/G1T/5296 - Brown Male Holy Knight.g1t
-5297,misc/formats/G1T/5297 - Silver/Blue Male Holy Knight.g1t
+5297,misc/formats/G1T/5297 - Silver-Blue Male Holy Knight.g1t
 5298,misc/formats/G1T/5298 - Red Female Holy Knight.g1t
 5299,misc/formats/G1T/5299 - Blue Female Holy Knight.g1t
 5300,misc/formats/G1T/5300 - Yellow Female Holy Knight.g1t
-5301,misc/formats/G1T/5301 - Grey/Red Female Holy Knight.g1t
-5302,misc/formats/G1T/5302 - Black/Red Female Holy Knight.g1t
+5301,misc/formats/G1T/5301 - Grey-Red Female Holy Knight.g1t
+5302,misc/formats/G1T/5302 - Black-Red Female Holy Knight.g1t
 5303,misc/formats/G1T/5303 - Green Female Holy Knight.g1t
-5304,misc/formats/G1T/5304 - Grey/Blue Female Holy Knight.g1t
+5304,misc/formats/G1T/5304 - Grey-Blue Female Holy Knight.g1t
 5305,misc/formats/G1T/5305 - Brown Female Holy Knight.g1t
-5306,misc/formats/G1T/5306 - Silver/Blue Female Holy Knight.g1t
+5306,misc/formats/G1T/5306 - Silver-Blue Female Holy Knight.g1t
 5307,misc/formats/G1T/5307 - Red War Master.g1t
 5308,misc/formats/G1T/5308 - Blue War Master.g1t
 5309,misc/formats/G1T/5309 - Yellow War Master.g1t
-5310,misc/formats/G1T/5310 - Grey/Red War Master.g1t
-5311,misc/formats/G1T/5311 - Black/Red War Master.g1t
+5310,misc/formats/G1T/5310 - Grey-Red War Master.g1t
+5311,misc/formats/G1T/5311 - Black-Red War Master.g1t
 5312,misc/formats/G1T/5312 - Green War Master.g1t
-5313,misc/formats/G1T/5313 - Grey/Blue War Master.g1t
+5313,misc/formats/G1T/5313 - Grey-Blue War Master.g1t
 5314,misc/formats/G1T/5314 - Brown War Master.g1t
-5315,misc/formats/G1T/5315 - Silver/Blue War Master.g1t
+5315,misc/formats/G1T/5315 - Silver-Blue War Master.g1t
 5316,misc/formats/G1T/5316 - Red Gremory.g1t
 5317,misc/formats/G1T/5317 - Blue Gremory.g1t
 5318,misc/formats/G1T/5318 - Yellow Gremory.g1t
-5319,misc/formats/G1T/5319 - Grey/Red Gremory.g1t
-5320,misc/formats/G1T/5320 - Black/Red Gremory.g1t
+5319,misc/formats/G1T/5319 - Grey-Red Gremory.g1t
+5320,misc/formats/G1T/5320 - Black-Red Gremory.g1t
 5321,misc/formats/G1T/5321 - Green Gremory.g1t
-5322,misc/formats/G1T/5322 - Grey/Blue Gremory.g1t
+5322,misc/formats/G1T/5322 - Grey-Blue Gremory.g1t
 5323,misc/formats/G1T/5323 - Brown Gremory.g1t
-5324,misc/formats/G1T/5324 - Silver/Blue Gremory.g1t
+5324,misc/formats/G1T/5324 - Silver-Blue Gremory.g1t
 5325,misc/formats/G1T/5325 - Red Male Dancer.g1t
 5326,misc/formats/G1T/5326 - Blue Male Dancer.g1t
 5327,misc/formats/G1T/5327 - Yellow Male Dancer.g1t
-5328,misc/formats/G1T/5328 - Grey/Red Male Dancer.g1t
-5329,misc/formats/G1T/5329 - Black/Red Male Dancer.g1t
+5328,misc/formats/G1T/5328 - Grey-Red Male Dancer.g1t
+5329,misc/formats/G1T/5329 - Black-Red Male Dancer.g1t
 5330,misc/formats/G1T/5330 - Green Male Dancer.g1t
-5331,misc/formats/G1T/5331 - Grey/Blue Male Dancer.g1t
+5331,misc/formats/G1T/5331 - Grey-Blue Male Dancer.g1t
 5332,misc/formats/G1T/5332 - Brown Male Dancer.g1t
-5333,misc/formats/G1T/5333 - Silver/Blue Male Dancer.g1t
+5333,misc/formats/G1T/5333 - Silver-Blue Male Dancer.g1t
 5334,misc/formats/G1T/5334 - Red Female Dancer.g1t
 5335,misc/formats/G1T/5335 - Blue Female Dancer.g1t
 5336,misc/formats/G1T/5336 - Yellow Female Dancer.g1t
-5337,misc/formats/G1T/5337 - Grey/Red Female Dancer.g1t
-5338,misc/formats/G1T/5338 - Black/Red Female Dancer.g1t
+5337,misc/formats/G1T/5337 - Grey-Red Female Dancer.g1t
+5338,misc/formats/G1T/5338 - Black-Red Female Dancer.g1t
 5339,misc/formats/G1T/5339 - Green Female Dancer.g1t
-5340,misc/formats/G1T/5340 - Grey/Blue Female Dancer.g1t
+5340,misc/formats/G1T/5340 - Grey-Blue Female Dancer.g1t
 5341,misc/formats/G1T/5341 - Brown Female Dancer.g1t
-5342,misc/formats/G1T/5342 - Silver/Blue Female Dancer.g1t
+5342,misc/formats/G1T/5342 - Silver-Blue Female Dancer.g1t
 5343,misc/formats/G1T/5343 - Generic Unit Palette 1.g1t
 5344,misc/formats/G1T/5344 - Generic Unit Palette 2.g1t
 5345,misc/formats/G1T/5345 - Generic Unit Palette 3.g1t

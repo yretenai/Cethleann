@@ -5,7 +5,7 @@ namespace Cethleann.Structure.Resource.Model
     {
         Triangle = 1,
         Unknown2 = 2,
-        Unknown3 = 3,
+        Quad = 3,
         Strip = 4
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
