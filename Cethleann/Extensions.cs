@@ -63,7 +63,7 @@ namespace Cethleann
         /// </summary>
         /// <param name="magic"></param>
         /// <returns></returns>
-        public static bool IsKnown(this DataType magic) => DataTypeHelper.IsKnown(magic);
+        public static bool IsKnown(this DataType magic) => magic != DataType.None && DataTypeHelper.IsKnown(magic);
 
         /// <summary>
         ///     True if the magic values are known

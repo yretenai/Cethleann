@@ -9,6 +9,7 @@ namespace Cethleann
     /// </summary>
     public enum DataType : uint
     {
+        [FileExtension("bin")]
         None = 0,
         
         /// <summary>
