@@ -1,6 +1,6 @@
 # Cethleann
 
-Gust Engine data exploration and research, specifically centered around FE: Three Houses
+Soft Engine data exploration and research, specifically centered around FE: Three Houses
 
 **THIS LIBRARY DOES NOT SUPPORT SAVING OR COMPRESSING FILES.**
 
