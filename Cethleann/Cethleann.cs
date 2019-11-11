@@ -144,10 +144,16 @@ namespace Cethleann
             }
         }
 
-        public string GetFilename(int index, string ext = "bin")
+        public string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
         {
-            if (FileList.TryGetValue(index, out var path)) return path;
-            return ext == "bin" ? $"misc/unknown/{index}.bin" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{index}.{ext}";
+
+            if (dataType == DataType.Compressed || dataType == DataType.CompressedChonky)
+            {
+                ext += ".gz";
+            }
+
+            if (FileList.TryGetValue(index, out var path)) return ext.EndsWith(".gz") ? path + ".gz" : path; 
+            return (ext == "bin" || ext == "bin.gz") ? $"misc/unknown/{index}.bin" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{index}.{ext}";
         }
     }
 }

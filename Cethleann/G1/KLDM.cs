@@ -9,14 +9,14 @@ namespace Cethleann.G1
     /// <summary>
     ///     Decomposes a MDLK buffer to individual files
     /// </summary>
-    public class G1ModelGroup
+    public class KLDM
     {
         /// <summary>
         ///     Decomposes a MDLK buffer to individual files
         /// </summary>
         /// <param name="buffer"></param>
         /// <exception cref="InvalidDataException"></exception>
-        public G1ModelGroup(Span<byte> buffer)
+        public KLDM(Span<byte> buffer)
         {
             var header = MemoryMarshal.Read<ResourceSectionHeader>(buffer);
             if (header.Magic.ToDataType() != DataType.KLDM) throw new InvalidDataException("Not a KLDM stream");

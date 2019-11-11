@@ -13,6 +13,14 @@ namespace Cethleann
     public class Bundle
     {
         /// <summary>
+        /// Initialize with no data
+        /// </summary>
+        public Bundle()
+        {
+            
+        }
+        
+        /// <summary>
         ///     Split file into individual chunks
         /// </summary>
         /// <param name="data"></param>
@@ -29,10 +37,31 @@ namespace Cethleann
             }
         }
 
+        public Span<byte> Write()
+        {
+            var baseLength = (4 + 4 * Entries.Count).Align(0x10);
+            var totalLength = baseLength + Entries.Sum(x => x.Length);
+            var table = new Span<byte>(new byte[totalLength]);
+
+            var count = Entries.Count;
+            MemoryMarshal.Write(table, ref count);
+
+            var dataOffset = baseLength;
+            for (int i = 0; i < Entries.Count; ++i)
+            {
+                var record = Entries[i].Length;
+                MemoryMarshal.Write(table.Slice(4 + 4 * i), ref record);
+                Entries[i].Span.CopyTo(table.Slice(dataOffset));
+                dataOffset += Entries[i].Length;
+            }
+
+            return table;
+        }
+
         /// <summary>
         ///     lsof data blobs
         /// </summary>
-        public List<Memory<byte>> Entries { get; } = new List<Memory<byte>>();
+        public List<Memory<byte>> Entries { get; set; } = new List<Memory<byte>>();
 
         /// <summary>
         ///     Checks if the stream makes sense to be a bundle

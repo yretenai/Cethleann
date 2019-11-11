@@ -9,6 +9,8 @@ namespace Cethleann
     /// </summary>
     public enum DataType : uint
     {
+        None = 0,
+        
         /// <summary>
         ///     <seealso cref="StructTable" />
         /// </summary>
@@ -152,6 +154,12 @@ namespace Cethleann
         ///     DEFLATE Compressed File.
         /// </summary>
         [FileExtension("gz")]
-        Compressed = 0x0001_0000
+        Compressed = 0x0001_0000,
+
+        /// <summary>
+        ///     DEFLATE Compressed File.
+        /// </summary>
+        [FileExtension("gz")]
+        CompressedChonky = 0x0002_0000
     }
 }

@@ -47,8 +47,9 @@ namespace Cethleann.DataExporter
             for (var index = 0; index < cethleann.EntryCount; index++)
             {
                 var data = cethleann.ReadEntry(index);
+                var dt = data.Span.GetDataType();
                 var ext = GetExtension(data.Span);
-                var pathBase = $@"{romfs}\romfs\{cethleann.GetFilename(index, ext)}";
+                var pathBase = $@"{romfs}\romfs\{cethleann.GetFilename(index, ext, dt)}";
                 TryExtractBlob(pathBase, data);
             }
         }
@@ -56,7 +57,7 @@ namespace Cethleann.DataExporter
         private static string GetExtension(Span<byte> data)
         {
             var dt = data.GetDataType();
-            if (!data.IsKnown() && data.IsDataTable()) return "gz";
+            if (!data.IsKnown() && data.IsDataTable()) return "datatable";
             if (dt == DataType.SCEN) return "scene";
             if (data.IsBundle()) return "bundle";
             if (dt == DataType.KLDM) return "kldm";
@@ -123,18 +124,18 @@ namespace Cethleann.DataExporter
             return true;
         }
 
-        private static bool TryExtractModelGroup(string pathBase, Memory<byte> data)
+        private static bool TryExtractKLDM(string pathBase, Memory<byte> data)
         {
             try
             {
-                var blobs = new G1ModelGroup(data.Span);
+                var blobs = new KLDM(data.Span);
                 if (blobs.Entries.Count == 0) return true;
 
                 TryExtractBlobs(pathBase, blobs.Entries);
             }
             catch (Exception e)
             {
-                Console.WriteLine($@"Failed unpacking ModelGroup, {e.Message}!");
+                Console.WriteLine($@"Failed unpacking KLDM, {e.Message}!");
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -161,18 +162,28 @@ namespace Cethleann.DataExporter
             }
 
             if (allTypes)
+            {
                 if (!datablob.Span.IsKnown() && datablob.Span.IsDataTable())
+                {
                     if (TryExtractDataTable($"{blobBase}", datablob))
                         return 1;
-                    else if (datablob.Span.GetDataType() == DataType.SCEN)
-                        if (TryExtractSCEN($"{blobBase}", datablob))
-                            return 1;
-                        else if (datablob.Span.IsBundle())
-                            if (TryExtractBundle($"{blobBase}", datablob))
-                                return 1;
-                            else if (datablob.Span.GetDataType() == DataType.KLDM)
-                                if (TryExtractModelGroup($"{blobBase}", datablob))
-                                    return 1;
+                }
+                else if (datablob.Span.GetDataType() == DataType.SCEN)
+                {
+                    if (TryExtractSCEN($"{blobBase}", datablob))
+                        return 1;
+                }
+                else if (datablob.Span.IsBundle())
+                {
+                    if (TryExtractBundle($"{blobBase}", datablob))
+                        return 1;
+                }
+                else if (datablob.Span.GetDataType() == DataType.KLDM)
+                {
+                    if (TryExtractKLDM($"{blobBase}", datablob))
+                        return 1;
+                }
+            }
 
             Console.WriteLine($@"{blobBase}");
 
