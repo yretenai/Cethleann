@@ -19,7 +19,7 @@ namespace Cethleann.G1
         public G1ModelGroup(Span<byte> buffer)
         {
             var header = MemoryMarshal.Read<ResourceSectionHeader>(buffer);
-            if (header.Magic.ToDataType() != DataType.MDLK) throw new InvalidDataException("Not a MDLK stream");
+            if (header.Magic.ToDataType() != DataType.KLDM) throw new InvalidDataException("Not a KLDM stream");
 
             var offset = 0x10;
             for (int i = 0; i < header.Size; ++i)

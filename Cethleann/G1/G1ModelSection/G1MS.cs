@@ -29,7 +29,7 @@ namespace Cethleann.G1.G1ModelSection
 
             var header = MemoryMarshal.Read<ModelSkeletonHeader>(data);
             Logger.Assert(header.SkeletonCount == 1, "SkeletonCount == 1");
-            BoneIndices = MemoryMarshal.Cast<byte, short>(data.Slice(SizeHelper.SizeOf<ModelSkeletonHeader>(), header.BoneTableCount * 2)).ToArray();
+            BoneIndices = MemoryMarshal.Cast<byte, short>(data.Slice(SizeHelper.SizeOf<ModelSkeletonHeader>(), header.BoneTableCount)).ToArray();
             Bones = MemoryMarshal.Cast<byte, ModelSkeletonBone>(data.Slice(header.DataOffset - SizeHelper.SizeOf<ResourceSectionHeader>(), header.BoneCount * SizeHelper.SizeOf<ModelSkeletonBone>())).ToArray();
 
             WorldBones = new ModelSkeletonBone[Bones.Length];

@@ -23,4 +23,11 @@
     <ProjectReference Include="..\GLTFSerialization\GLTFSerialization.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="filelist.csv" />
+    <Content Include="filelist.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

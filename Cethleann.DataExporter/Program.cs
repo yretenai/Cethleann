@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using Cethleann.DataTables;
 using Cethleann.G1;
-using Cethleann.Structure.DataStructs;
 using static Cethleann.Model.Program;
 
 namespace Cethleann.DataExporter
@@ -29,48 +28,39 @@ namespace Cethleann.DataExporter
 
             foreach (var dlcromfs in args.Skip(3)) cethleann.AddDataFS(dlcromfs);
 
+            cethleann.LoadFileList();
+
 #if DEBUG
-            cethleann.ReadEntry(0x026A);
+            var strings = new StringTable(cethleann.ReadEntry(0x216C).Span);
             var bundle = new DataTable(cethleann.ReadEntry(0xE34).Span);
             var model = new G1Model(bundle.Entries.ElementAt(0).Span);
             var texture = new G1TextureGroup(bundle.Entries.ElementAt(1).Span);
             SaveTextures($@"{output}\mdl\tex", texture);
             SaveModel($@"{output}\mdl\{0xE34:X4}.gltf", model, "tex");
-            TryExtractBlob($@"{output}\mdlktest", cethleann.ReadEntry(0x04CD));
-
-            var text = new DataTable(cethleann.ReadEntry(0).Span);
-            var dh = new DataTable(cethleann.ReadEntry(12).Span);
-            var character = new StructTable(dh.Entries.ElementAt(0).Span).Cast<CharacterInfo>();
-            var texts = text.Entries.Select(entry => new DataTable(entry.Span)).Select(table => table.Entries.Select(entry => new TextLocalization(entry.Span)).ToArray()).ToArray();
-            // ExtractTables(romfs, cethleann, 0);
 #endif
             ExtractAll(output, cethleann);
-        }
-
-#pragma warning disable IDE0051 // Remove unused private members
-        private static void ExtractTables(string romfs, Cethleann cethleann, int index)
-        {
-            var table = new DataTable(cethleann.ReadEntry(index).Span);
-            if (!Directory.Exists($@"{romfs}\table\{index:X4}")) Directory.CreateDirectory($@"{romfs}\table\{index:X4}");
-
-            for (var index1 = 0; index1 < table.Entries.Count; index1++)
-            {
-                var entry = table.Entries[index1];
-                File.WriteAllBytes($@"{romfs}\table\{index:X4}\{index1:X4}.bin", entry.ToArray());
-                Console.WriteLine($@"{romfs}\table\{index:X4}\{index1:X4}.bin");
-            }
         }
 
         private static void ExtractAll(string romfs, Cethleann cethleann)
         {
             if (!Directory.Exists($@"{romfs}\romfs")) Directory.CreateDirectory($@"{romfs}\romfs");
-
             for (var index = 0; index < cethleann.EntryCount; index++)
             {
                 var data = cethleann.ReadEntry(index);
-                var pathBase = $@"{romfs}\romfs\{index:X4}";
+                var ext = GetExtension(data.Span);
+                var pathBase = $@"{romfs}\romfs\{cethleann.GetFilename(index, ext)}";
                 TryExtractBlob(pathBase, data);
             }
+        }
+
+        private static string GetExtension(Span<byte> data)
+        {
+            var dt = data.GetDataType();
+            if (!data.IsKnown() && data.IsDataTable()) return "gz";
+            if (dt == DataType.SCEN) return "scene";
+            if (data.IsBundle()) return "bundle";
+            if (dt == DataType.KLDM) return "kldm";
+            return dt.GetExtension();
         }
 
         private static bool TryExtractDataTable(string pathBase, Memory<byte> data)
@@ -158,46 +148,39 @@ namespace Cethleann.DataExporter
             for (var index = 0; index < blobs.Count; index++)
             {
                 var datablob = blobs[index];
-                TryExtractBlob($@"{pathBase}\{index:X4}", datablob, allTypes);
+                TryExtractBlob($@"{pathBase}\{index:X4}.{GetExtension(datablob.Span)}", datablob, allTypes);
             }
         }
 
         public static int TryExtractBlob(string blobBase, Memory<byte> datablob, bool allTypes = false)
         {
-            var ext = datablob.Span.GetDataType().GetExtension();
             if (datablob.Length == 0)
             {
-                Console.WriteLine($"{blobBase}.{ext} is zero!");
+                Console.WriteLine($"{blobBase} is zero!");
                 return 0;
             }
 
-            if (!datablob.Span.IsKnown() && datablob.Span.IsDataTable())
-                if (TryExtractDataTable($"{blobBase}.datatable", datablob))
-                    return 1;
-            if (datablob.Span.GetDataType() == DataType.SCEN)
-                if (allTypes && TryExtractSCEN($"{blobBase}.scen", datablob))
-                    return 1;
-                else
-                    ext = "scen";
-            if (datablob.Span.IsBundle())
-                if (allTypes && TryExtractBundle($"{blobBase}.bundle", datablob))
-                    return 1;
-                else
-                    ext = "bundle";
-            if (datablob.Span.GetDataType() == DataType.MDLK)
-                if (allTypes && TryExtractModelGroup($"{blobBase}.mdlk", datablob))
-                    return 1;
-                else
-                    ext = "mdlk";
+            if (allTypes)
+                if (!datablob.Span.IsKnown() && datablob.Span.IsDataTable())
+                    if (TryExtractDataTable($"{blobBase}", datablob))
+                        return 1;
+                    else if (datablob.Span.GetDataType() == DataType.SCEN)
+                        if (TryExtractSCEN($"{blobBase}", datablob))
+                            return 1;
+                        else if (datablob.Span.IsBundle())
+                            if (TryExtractBundle($"{blobBase}", datablob))
+                                return 1;
+                            else if (datablob.Span.GetDataType() == DataType.KLDM)
+                                if (TryExtractModelGroup($"{blobBase}", datablob))
+                                    return 1;
 
-            Console.WriteLine($@"{blobBase}.{ext}");
+            Console.WriteLine($@"{blobBase}");
 
             var basedir = Path.GetDirectoryName(blobBase);
             if (!Directory.Exists(basedir)) Directory.CreateDirectory(basedir);
 
-            File.WriteAllBytes($@"{blobBase}.{ext}", datablob.ToArray());
+            File.WriteAllBytes($@"{blobBase}", datablob.ToArray());
             return 2;
         }
-#pragma warning restore IDE0051 // Remove unused private members
     }
 }

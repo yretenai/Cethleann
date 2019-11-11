@@ -2,14 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using Cethleann.Structure;
 using DragonLib;
+using DragonLib.IO;
 
 namespace Cethleann
 {
     public class Cethleann : IDisposable
     {
+        public Dictionary<int, string> FileList = new Dictionary<int, string>();
+
         public Cethleann(string baseRomFs)
         {
             AddDataFS(baseRomFs);
@@ -112,6 +116,38 @@ namespace Cethleann
             foreach (var (_, stream, _) in Data) stream.Dispose();
 
             if (disposing) Data = new List<(DATA0 DATA0, Stream DATA1, string romfs)>();
+        }
+
+        public void LoadFileList()
+        {
+            var loc = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "filelist.csv");
+            if (!File.Exists(loc)) return;
+            var csv = File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith("#")).Select(x => x.Split(',', 2, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToArray());
+            foreach (var entry in csv)
+            {
+                if (entry.Length < 2) continue;
+                if (entry[0].Length == 0 || entry[1].Length == 0) continue;
+                if (!int.TryParse(entry[0], out var id))
+                {
+                    Logger.Error("CETH", $"Id {id} cannot be parsed!");
+                    continue;
+                }
+
+                if (Path.GetInvalidPathChars().Any(x => entry[1].Contains(x)))
+                {
+                    Logger.Error("CETH", $"Path {entry[1]} for id {id} is invalid!");
+                    continue;
+                }
+
+                Logger.Assert(!FileList.ContainsKey(id), "!FileList.ContainsKey(id)", $"File List lists id {id} twice!");
+                FileList[id] = entry[1];
+            }
+        }
+
+        public string GetFilename(int index, string ext = "bin")
+        {
+            if (FileList.TryGetValue(index, out var path)) return path;
+            return ext == "bin" ? $"misc/unknown/{index}.bin" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{index}.{ext}";
         }
     }
 }

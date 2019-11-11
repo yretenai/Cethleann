@@ -369,6 +369,12 @@ namespace Cethleann.G1
                     }
                 }
 
+                if (skeleton != null && (chunks["WEIGHTS_0"] as List<Vector4>).Count == 0)
+                {
+                    var size = (chunks["POSITION"] as List<Vector3>).Count;
+                    for (var j = 0; j < size; ++j) (chunks["WEIGHTS_0"] as List<Vector4>).Add(new Vector4(1, 0, 0, 0));
+                }
+
                 var vboBuffer = new Dictionary<string, AccessorId>();
                 foreach (var (semantic, data) in chunks)
                 {
@@ -605,12 +611,13 @@ namespace Cethleann.G1
                         var ibo = iboDeconstructed[submesh.BufferIndex];
                         var vbo = vboDeconstructed[submesh.BufferIndex];
                         var vboAttributes = vbo.ToDictionary(x => x.Key, y => y.Value);
-                        if (skeleton != null && jointsData[submesh.BufferIndex].Count > 0)
+                        if (skeleton != null)
                         {
                             var joints = jointsData[submesh.BufferIndex];
                             var boneList = bones.Bones[submesh.BoneTableIndex];
                             var newJoints = new List<Vector4Short>();
-                            for (var index = 0; index < joints.Count; index++)
+                            var (vboInfo, _) = vbos.Buffers[submesh.BufferIndex];
+                            for (var index = 0; index < vboInfo.Count; index++)
                             {
                                 if (index < submesh.VertexOffset || index - submesh.VertexOffset > submesh.VertexCount)
                                 {
@@ -624,20 +631,30 @@ namespace Cethleann.G1
                                     continue;
                                 }
 
-                                var origJoint = joints[index];
-                                var joint = new Vector4Short
+                                if (joints.Count > index)
                                 {
-                                    X = origJoint.X,
-                                    Y = origJoint.Y,
-                                    Z = origJoint.Z,
-                                    W = origJoint.W
-                                };
+                                    var origJoint = joints[index];
+                                    var joint = new Vector4Short
+                                    {
+                                        X = origJoint.X,
+                                        Y = origJoint.Y,
+                                        Z = origJoint.Z,
+                                        W = origJoint.W
+                                    };
 
-                                joint.X = joint.X > -1 ? boneList[joint.X / 3 % boneList.Length].Bone : (short) 0;
-                                joint.Y = joint.Y > -1 ? boneList[joint.Y / 3 % boneList.Length].Bone : (short) 0;
-                                joint.Z = joint.Z > -1 ? boneList[joint.Z / 3 % boneList.Length].Bone : (short) 0;
-                                joint.W = joint.W > -1 ? boneList[joint.W / 3 % boneList.Length].Bone : (short) 0;
-                                newJoints.Add(joint);
+                                    joint.X = joint.X > -1 ? boneList[joint.X / 3 % boneList.Length].Bone : (short) 0;
+                                    joint.Y = joint.Y > -1 ? boneList[joint.Y / 3 % boneList.Length].Bone : (short) 0;
+                                    joint.Z = joint.Z > -1 ? boneList[joint.Z / 3 % boneList.Length].Bone : (short) 0;
+                                    joint.W = joint.W > -1 ? boneList[joint.W / 3 % boneList.Length].Bone : (short) 0;
+                                    newJoints.Add(joint);
+                                }
+                                else
+                                {
+                                    newJoints.Add(new Vector4Short
+                                    {
+                                        X = boneList[0].Bone
+                                    });
+                                }
                             }
 
                             var bytes = MemoryMarshal.Cast<Vector4Short, byte>(newJoints.ToArray());

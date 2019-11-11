@@ -84,6 +84,22 @@
                 Lsof Entries found in the table
             </summary>
         </member>
+        <member name="T:Cethleann.DataTables.StringTable">
+            <summary>
+                Main string bundle of the game.
+            </summary>
+        </member>
+        <member name="M:Cethleann.DataTables.StringTable.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize with a span.
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="P:Cethleann.DataTables.StringTable.Entries">
+            <summary>
+                Lsof Entries found in the table
+            </summary>
+        </member>
         <member name="T:Cethleann.DataTables.StructTable">
             <summary>
                 Parses a memory buffer by assuming it consists of fixed width structs.
@@ -177,7 +193,7 @@
                 WebM Video Container
             </summary>
         </member>
-        <member name="F:Cethleann.DataType.MDLK">
+        <member name="F:Cethleann.DataType.KLDM">
             <summary>
                 Koei Model Container
             </summary>
