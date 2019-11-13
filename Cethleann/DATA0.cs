@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Cethleann.Structure;
-using DragonLib;
 
 namespace Cethleann
 {
@@ -80,57 +78,10 @@ namespace Cethleann
 
             DATA1.Position = entry.Offset;
 
-            if (entry.IsCompressed) return Decompress(DATA1, entry.CompressedSize);
+            if (entry.IsCompressed) return Compression.Decompress(DATA1, entry.CompressedSize);
 
             var buffer = new Memory<byte>(new byte[entry.UncompressedSize]);
             DATA1.Read(buffer.Span);
-            return buffer;
-        }
-
-        public static Memory<byte> Decompress(Stream stream, long compressedSize)
-        {
-            var compressedBuffer = new Span<byte>(new byte[compressedSize + SizeHelper.SizeOf<CompressionInfo>()]);
-            stream.Read(compressedBuffer);
-            return Decompress(compressedBuffer);
-        }
-
-        public static unsafe Memory<byte> Decompress(Span<byte> data)
-        {
-            var cursor = 0;
-            var compInfo = MemoryMarshal.Read<CompressionInfo>(data);
-            var buffer = new Memory<byte>(new byte[compInfo.Size]);
-            cursor += SizeHelper.SizeOf<CompressionInfo>();
-            var chunkSizes = MemoryMarshal.Cast<byte, int>(data.Slice(cursor, 4 * compInfo.ChunkCount));
-            cursor = (cursor + 4 * compInfo.ChunkCount).Align(0x80);
-            var bufferCursor = 0;
-            for (var i = 0; i < compInfo.ChunkCount; ++i)
-            {
-                var chunkSize = chunkSizes[i];
-                try
-                {
-                    if (chunkSize + bufferCursor == buffer.Length)
-                    {
-                        data.Slice(cursor, chunkSize).CopyTo(buffer.Span.Slice(bufferCursor));
-                        bufferCursor += chunkSize;
-                        continue;
-                    }
-
-                    fixed (byte* pinData = &data.Slice(cursor)[6])
-                    {
-                        using var stream = new UnmanagedMemoryStream(pinData, chunkSize - 6);
-                        using var deflateStream = new DeflateStream(stream, CompressionMode.Decompress);
-                        var block = new Span<byte>(new byte[0x0001_0000]);
-                        var read = deflateStream.Read(block);
-                        block.Slice(0, read).CopyTo(buffer.Span.Slice(bufferCursor));
-                        bufferCursor = (bufferCursor + read).Align(0x80);
-                    }
-                }
-                finally
-                {
-                    cursor = (cursor + chunkSize).Align(0x80);
-                }
-            }
-
             return buffer;
         }
     }

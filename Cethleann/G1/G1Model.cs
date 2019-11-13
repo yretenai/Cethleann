@@ -117,7 +117,6 @@ namespace Cethleann.G1
         /// <param name="lod"></param>
         /// <param name="group"></param>
         /// <param name="texBase"></param>
-        /// <param name="exportColor"></param>
         /// <param name="root"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>

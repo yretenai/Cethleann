@@ -60,6 +60,13 @@ namespace Cethleann
         /// </summary>
         public List<(INFO0Entry entry, string path)> Entries { get; }
 
+        /// <summary>
+        ///     Attempts to read a Patch ROMFS entry
+        /// </summary>
+        /// <param name="romfs"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        /// <exception cref="IndexOutOfRangeException"></exception>
         public Memory<byte> ReadEntry(string romfs, int index)
         {
             var (entry, path) = Entries.FirstOrDefault(x => x.entry.Index == index);
@@ -67,13 +74,19 @@ namespace Cethleann
             return ReadEntry(Path.Combine(romfs, path.Substring(5)), entry);
         }
 
+        /// <summary>
+        ///     Attempts to read a Patch ROMFS entry
+        /// </summary>
+        /// <param name="entryPath"></param>
+        /// <param name="entry"></param>
+        /// <returns></returns>
         public static Memory<byte> ReadEntry(string entryPath, INFO0Entry entry)
         {
             if (entry.UncompressedSize == 0 || !File.Exists(entryPath)) return Memory<byte>.Empty;
             var buffer = new Memory<byte>(new byte[entry.UncompressedSize]);
             using var stream = File.OpenRead(entryPath);
 
-            if (entry.IsCompressed != 0) return DATA0.Decompress(stream, entry.CompressedSize);
+            if (entry.IsCompressed != 0) return Compression.Decompress(stream, entry.CompressedSize);
 
             stream.Read(buffer.Span);
             return buffer;

@@ -9,9 +9,12 @@ namespace Cethleann
     /// </summary>
     public enum DataType : uint
     {
+        /// <summary>
+        ///     Used as a dummy
+        /// </summary>
         [FileExtension("bin")]
         None = 0,
-        
+
         /// <summary>
         ///     <seealso cref="StructTable" />
         /// </summary>

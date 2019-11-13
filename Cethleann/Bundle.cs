@@ -13,13 +13,12 @@ namespace Cethleann
     public class Bundle
     {
         /// <summary>
-        /// Initialize with no data
+        ///     Initialize with no data
         /// </summary>
         public Bundle()
         {
-            
         }
-        
+
         /// <summary>
         ///     Split file into individual chunks
         /// </summary>
@@ -37,6 +36,15 @@ namespace Cethleann
             }
         }
 
+        /// <summary>
+        ///     lsof data blobs
+        /// </summary>
+        public List<Memory<byte>> Entries { get; set; } = new List<Memory<byte>>();
+
+        /// <summary>
+        ///     Writes bundle data
+        /// </summary>
+        /// <returns></returns>
         public Span<byte> Write()
         {
             var baseLength = (4 + 4 * Entries.Count).Align(0x10);
@@ -57,11 +65,6 @@ namespace Cethleann
 
             return table;
         }
-
-        /// <summary>
-        ///     lsof data blobs
-        /// </summary>
-        public List<Memory<byte>> Entries { get; set; } = new List<Memory<byte>>();
 
         /// <summary>
         ///     Checks if the stream makes sense to be a bundle

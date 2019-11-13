@@ -13,6 +13,7 @@ namespace Cethleann.Unbundler
         {
             foreach (var arg in args)
             {
+                Console.WriteLine(arg);
                 if (Directory.Exists(arg) && arg.EndsWith("_contents"))
                 {
                     var originalName = arg.Substring(0, arg.Length - 9);

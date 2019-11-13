@@ -11,7 +11,7 @@
         </member>
         <member name="M:Cethleann.Bundle.#ctor">
             <summary>
-            Initialize with no data
+                Initialize with no data
             </summary>
         </member>
         <member name="M:Cethleann.Bundle.#ctor(System.Span{System.Byte})">
@@ -26,11 +26,208 @@
                 lsof data blobs
             </summary>
         </member>
+        <member name="M:Cethleann.Bundle.Write">
+            <summary>
+                Writes bundle data
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Cethleann.Bundle.Validate(System.Span{System.Byte})">
             <summary>
                 Checks if the stream makes sense to be a bundle
             </summary>
             <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.Cethleann">
+            <summary>
+                Management class for DATA0 and INFO0 files.
+            </summary>
+        </member>
+        <member name="F:Cethleann.Cethleann.FileList">
+            <summary>
+                Loaded FileList.csv
+            </summary>
+        </member>
+        <member name="M:Cethleann.Cethleann.#ctor(System.String)">
+            <summary>
+                Loads data
+            </summary>
+            <param name="baseRomFs"></param>
+        </member>
+        <member name="P:Cethleann.Cethleann.Data">
+            <summary>
+                Game data
+            </summary>
+        </member>
+        <member name="P:Cethleann.Cethleann.Patch">
+            <summary>
+                Patch data
+            </summary>
+        </member>
+        <member name="P:Cethleann.Cethleann.PatchRomFS">
+            <summary>
+                Root directory of the Patch romfs://
+            </summary>
+        </member>
+        <member name="P:Cethleann.Cethleann.EntryCount">
+            <summary>
+                Maximum number of entries found in any one container
+            </summary>
+        </member>
+        <member name="M:Cethleann.Cethleann.Dispose">
+            <summary>
+                Cleans managed data
+            </summary>
+        </member>
+        <member name="M:Cethleann.Cethleann.Finalize">
+            <summary>
+                Cleanup
+            </summary>
+        </member>
+        <member name="M:Cethleann.Cethleann.AddDataFS(System.String)">
+            <summary>
+                Adds a DATA0 container, usually DLC
+            </summary>
+            <param name="path"></param>
+            <exception cref="T:System.IO.FileNotFoundException"></exception>
+        </member>
+        <member name="M:Cethleann.Cethleann.AddPatchFS(System.String)">
+            <summary>
+                Adds a patch container.
+            </summary>
+            <param name="path"></param>
+            <exception cref="T:System.IO.DirectoryNotFoundException"></exception>
+        </member>
+        <member name="M:Cethleann.Cethleann.ReadEntry(System.Int32,Cethleann.CethleannSearchFlags)">
+            <summary>
+                Reads an entry from the first valid (non-zero) storage.
+            </summary>
+            <param name="index"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Cethleann.Dispose(System.Boolean)">
+            <summary>
+                Disposes with Finalizer flag
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="M:Cethleann.Cethleann.LoadFileList">
+            <summary>
+                Loads a filelist from a csv file
+            </summary>
+        </member>
+        <member name="M:Cethleann.Cethleann.GetFilename(System.Int32,System.String,Cethleann.DataType)">
+            <summary>
+                Attempts to get a valid filename/filepath.
+            </summary>
+            <param name="index"></param>
+            <param name="ext"></param>
+            <param name="dataType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.CethleannSearchFlags">
+            <summary>
+                Flags used to optimize <seealso cref="M:Cethleann.Cethleann.ReadEntry(System.Int32,Cethleann.CethleannSearchFlags)" />
+            </summary>
+        </member>
+        <member name="F:Cethleann.CethleannSearchFlags.None">
+            <summary>
+                Don't read from any container
+            </summary>
+        </member>
+        <member name="F:Cethleann.CethleannSearchFlags.Base">
+            <summary>
+                Read from the base game
+            </summary>
+        </member>
+        <member name="F:Cethleann.CethleannSearchFlags.AllDLC">
+            <summary>
+                Read from all DLC
+            </summary>
+        </member>
+        <member name="F:Cethleann.CethleannSearchFlags.DLC1">
+            <summary>
+                Read from DLC1
+            </summary>
+        </member>
+        <member name="F:Cethleann.CethleannSearchFlags.DLC2">
+            <summary>
+                Read from DLC2
+            </summary>
+        </member>
+        <member name="F:Cethleann.CethleannSearchFlags.DLC3">
+            <summary>
+                Read from DLC3
+            </summary>
+        </member>
+        <member name="F:Cethleann.CethleannSearchFlags.DLC4">
+            <summary>
+                Read from DLC4
+            </summary>
+        </member>
+        <member name="F:Cethleann.CethleannSearchFlags.DLC5">
+            <summary>
+                Read from DLC5
+            </summary>
+        </member>
+        <member name="F:Cethleann.CethleannSearchFlags.DLC6">
+            <summary>
+                Read from DLC6
+            </summary>
+        </member>
+        <member name="F:Cethleann.CethleannSearchFlags.AllPatch">
+            <summary>
+                Read from all patches
+            </summary>
+        </member>
+        <member name="F:Cethleann.CethleannSearchFlags.Patch1">
+            <summary>
+                Read from Patch1
+            </summary>
+        </member>
+        <member name="F:Cethleann.CethleannSearchFlags.Patch2">
+            <summary>
+                Read from Patch2
+            </summary>
+        </member>
+        <member name="F:Cethleann.CethleannSearchFlags.Patch3">
+            <summary>
+                Read from Patch3
+            </summary>
+        </member>
+        <member name="F:Cethleann.CethleannSearchFlags.All">
+            <summary>
+                Read all files
+            </summary>
+        </member>
+        <member name="T:Cethleann.Compression">
+            <summary>
+                Compression helper class
+            </summary>
+        </member>
+        <member name="M:Cethleann.Compression.Compress(System.Span{System.Byte},System.Int32)">
+            <summary>
+                Compresses a stream into a .gz stream.
+            </summary>
+            <param name="data"></param>
+            <param name="blockSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Compression.Decompress(System.Span{System.Byte})">
+            <summary>
+                Decompresses a .gz stream.
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Compression.Decompress(System.IO.Stream,System.Int64)">
+            <summary>
+                Wrapper for Stream based buffers
+            </summary>
+            <param name="stream"></param>
+            <param name="compressedSize"></param>
             <returns></returns>
         </member>
         <member name="T:Cethleann.DATA0">
@@ -80,7 +277,7 @@
         </member>
         <member name="M:Cethleann.DataTables.DataTable.#ctor">
             <summary>
-            Initialize with no data.
+                Initialize with no data.
             </summary>
         </member>
         <member name="M:Cethleann.DataTables.DataTable.#ctor(System.Span{System.Byte})">
@@ -96,7 +293,7 @@
         </member>
         <member name="M:Cethleann.DataTables.DataTable.Write">
             <summary>
-            Writes a data buffer for this structure.
+                Writes a data buffer for this structure.
             </summary>
             <returns></returns>
         </member>
@@ -142,6 +339,11 @@
         <member name="T:Cethleann.DataType">
             <summary>
                 Magic Values for most files
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.None">
+            <summary>
+                Used as a dummy
             </summary>
         </member>
         <member name="F:Cethleann.DataType.StructTable">
@@ -413,7 +615,6 @@
             <param name="lod"></param>
             <param name="group"></param>
             <param name="texBase"></param>
-            <param name="exportColor"></param>
             <param name="root"></param>
             <returns></returns>
             <exception cref="T:System.ArgumentOutOfRangeException"></exception>
@@ -804,6 +1005,23 @@
                 Entries found in the INFO0
             </summary>
         </member>
+        <member name="M:Cethleann.INFO0.ReadEntry(System.String,System.Int32)">
+            <summary>
+                Attempts to read a Patch ROMFS entry
+            </summary>
+            <param name="romfs"></param>
+            <param name="index"></param>
+            <returns></returns>
+            <exception cref="T:System.IndexOutOfRangeException"></exception>
+        </member>
+        <member name="M:Cethleann.INFO0.ReadEntry(System.String,Cethleann.Structure.INFO0Entry)">
+            <summary>
+                Attempts to read a Patch ROMFS entry
+            </summary>
+            <param name="entryPath"></param>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
         <member name="T:Cethleann.INFO1">
             <summary>
                 INFO1 is a list of information of base files deleted with this patch.
@@ -829,6 +1047,22 @@
         <member name="P:Cethleann.INFO1.Entries">
             <summary>
                 Entries found in the INFO1
+            </summary>
+        </member>
+        <member name="T:Cethleann.SCEN">
+            <summary>
+                SCEN Container
+            </summary>
+        </member>
+        <member name="M:Cethleann.SCEN.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize with databuffer
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="P:Cethleann.SCEN.Entries">
+            <summary>
+                lsof data entries
             </summary>
         </member>
         <member name="T:Cethleann.Structure.CompressionInfo">
@@ -947,6 +1181,32 @@
             <summary>
                 List of string entries in this text blob
             </summary>
+        </member>
+        <member name="T:Cethleann.UTF8TBL">
+            <summary>
+                UTF-8 texture sheet character table
+            </summary>
+        </member>
+        <member name="M:Cethleann.UTF8TBL.#ctor">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:Cethleann.UTF8TBL.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize with databuffer
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="P:Cethleann.UTF8TBL.Characters">
+            <summary>
+                Chars found in the table.
+            </summary>
+        </member>
+        <member name="M:Cethleann.UTF8TBL.Write">
+            <summary>
+                Write table to buffer
+            </summary>
+            <returns></returns>
         </member>
     </members>
 </doc>

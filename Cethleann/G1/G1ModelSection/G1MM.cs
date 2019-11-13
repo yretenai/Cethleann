@@ -23,6 +23,7 @@ namespace Cethleann.G1.G1ModelSection
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MM version {Section.Version.ToVersion()} is not supported!");
 
+            // ReSharper disable once UnusedVariable
             var count = MemoryMarshal.Read<int>(data.Slice(0xC));
             Matrices = MemoryMarshal.Cast<byte, Matrix4x4>(data.Slice(0x10)).ToArray();
         }

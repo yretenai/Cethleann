@@ -6,8 +6,15 @@ using DragonLib.IO;
 
 namespace Cethleann
 {
+    /// <summary>
+    ///     SCEN Container
+    /// </summary>
     public class SCEN
     {
+        /// <summary>
+        ///     Initialize with databuffer
+        /// </summary>
+        /// <param name="data"></param>
         public SCEN(Span<byte> data)
         {
             var header = MemoryMarshal.Read<SCENHeader>(data);
@@ -25,6 +32,9 @@ namespace Cethleann
             for (var index = 0; index < offsets.Length; index++) Entries.Add(new Memory<byte>(data.Slice(offsets[index], sizes[index]).ToArray()));
         }
 
+        /// <summary>
+        ///     lsof data entries
+        /// </summary>
         public List<Memory<byte>> Entries { get; set; } = new List<Memory<byte>>();
     }
 }

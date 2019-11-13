@@ -1,5 +1,6 @@
 namespace Cethleann.Structure
 {
+#pragma warning disable 1591
     public struct INFO0Entry
     {
         public long Index { get; set; }
@@ -7,4 +8,5 @@ namespace Cethleann.Structure
         public long CompressedSize { get; set; }
         public long IsCompressed { get; set; }
     }
+#pragma warning restore 1591
 }

@@ -10,32 +10,67 @@ using DragonLib.IO;
 
 namespace Cethleann
 {
+    /// <summary>
+    ///     Management class for DATA0 and INFO0 files.
+    /// </summary>
     public class Cethleann : IDisposable
     {
+        /// <summary>
+        ///     Loaded FileList.csv
+        /// </summary>
         public Dictionary<int, string> FileList = new Dictionary<int, string>();
 
+        /// <summary>
+        ///     Loads data
+        /// </summary>
+        /// <param name="baseRomFs"></param>
         public Cethleann(string baseRomFs)
         {
             AddDataFS(baseRomFs);
         }
 
+        /// <summary>
+        ///     Game data
+        /// </summary>
         public List<(DATA0 DATA0, Stream DATA1, string romfs)> Data { get; private set; } = new List<(DATA0 DATA0, Stream DATA1, string romfs)>();
+
+        /// <summary>
+        ///     Patch data
+        /// </summary>
         public List<(INFO0 INFO0, INFO1 INFO1, INFO2 INFO2)> Patch { get; private set; } = new List<(INFO0 INFO0, INFO1 INFO1, INFO2 INFO2)>();
+
+        /// <summary>
+        ///     Root directory of the Patch romfs://
+        /// </summary>
         public string PatchRomFS { get; private set; }
 
+        /// <summary>
+        ///     Maximum number of entries found in any one container
+        /// </summary>
         public int EntryCount => (int) Math.Max(Data.Count > 0 ? Data.Max(x => x.DATA0.Entries.Count) : 0, Patch.Count > 0 ? Patch.Max(x => x.INFO0.Entries.Max(y => y.entry.Index)) : 0);
 
+        /// <summary>
+        ///     Cleans managed data
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        ///     Cleanup
+        /// </summary>
         ~Cethleann()
         {
             Dispose(false);
         }
 
+        /// <summary>
+        ///     Adds a DATA0 container, usually DLC
+        /// </summary>
+        /// <param name="path"></param>
+        /// <exception cref="FileNotFoundException"></exception>
         public void AddDataFS(string path)
         {
             var data0Path = Path.Combine(path, "DATA0.bin");
@@ -49,6 +84,11 @@ namespace Cethleann
             Data.Add((new DATA0(data0Path), File.OpenRead(data1Path), fullPath));
         }
 
+        /// <summary>
+        ///     Adds a patch container.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <exception cref="DirectoryNotFoundException"></exception>
         public void AddPatchFS(string path)
         {
             if (!Directory.Exists(path)) throw new DirectoryNotFoundException("Patch RomFS is not found!");
@@ -68,6 +108,12 @@ namespace Cethleann
             }
         }
 
+        /// <summary>
+        ///     Reads an entry from the first valid (non-zero) storage.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="flags"></param>
+        /// <returns></returns>
         public Memory<byte> ReadEntry(int index, CethleannSearchFlags flags = CethleannSearchFlags.All)
         {
             if ((flags & CethleannSearchFlags.AllPatch) != CethleannSearchFlags.None)
@@ -111,18 +157,25 @@ namespace Cethleann
             return baseData.ReadEntry(baseStream, index);
         }
 
-        public void Dispose(bool disposing)
+        /// <summary>
+        ///     Disposes with Finalizer flag
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected void Dispose(bool disposing)
         {
             foreach (var (_, stream, _) in Data) stream.Dispose();
 
             if (disposing) Data = new List<(DATA0 DATA0, Stream DATA1, string romfs)>();
         }
 
+        /// <summary>
+        ///     Loads a filelist from a csv file
+        /// </summary>
         public void LoadFileList()
         {
             var loc = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "filelist.csv");
             if (!File.Exists(loc)) return;
-            var csv = File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith("#")).Select(x => x.Split(',', 2, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToArray());
+            var csv = File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith("#")).Select(x => x.Split(',', 2, StringSplitOptions.RemoveEmptyEntries).Select(y => y.Trim()).ToArray());
             foreach (var entry in csv)
             {
                 if (entry.Length < 2) continue;
@@ -144,16 +197,19 @@ namespace Cethleann
             }
         }
 
+        /// <summary>
+        ///     Attempts to get a valid filename/filepath.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="ext"></param>
+        /// <param name="dataType"></param>
+        /// <returns></returns>
         public string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
         {
+            if (dataType == DataType.Compressed || dataType == DataType.CompressedChonky) ext += ".gz";
 
-            if (dataType == DataType.Compressed || dataType == DataType.CompressedChonky)
-            {
-                ext += ".gz";
-            }
-
-            if (FileList.TryGetValue(index, out var path)) return ext.EndsWith(".gz") ? path + ".gz" : path; 
-            return (ext == "bin" || ext == "bin.gz") ? $"misc/unknown/{index}.bin" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{index}.{ext}";
+            if (FileList.TryGetValue(index, out var path)) return ext.EndsWith(".gz") ? path + ".gz" : path;
+            return ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{index}.bin" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{index}.{ext}";
         }
     }
 }

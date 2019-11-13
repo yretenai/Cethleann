@@ -14,7 +14,7 @@ namespace Cethleann.DataTables
     public class DataTable
     {
         /// <summary>
-        /// Initialize with no data.
+        ///     Initialize with no data.
         /// </summary>
         public DataTable()
         {
@@ -32,7 +32,7 @@ namespace Cethleann.DataTables
             foreach (var info in tableInfo)
             {
                 var block = buffer.Slice(info.Offset, info.Size);
-                entries.Add(block.GetDataType() == DataType.Compressed ? DATA0.Decompress(block) : new Memory<byte>(block.ToArray()));
+                entries.Add(new Memory<byte>(block.ToArray()));
             }
 
             Entries = entries;
@@ -44,7 +44,7 @@ namespace Cethleann.DataTables
         public List<Memory<byte>> Entries { get; set; }
 
         /// <summary>
-        /// Writes a data buffer for this structure.
+        ///     Writes a data buffer for this structure.
         /// </summary>
         /// <returns></returns>
         public Span<byte> Write()
