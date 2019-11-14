@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using Cethleann.Audio;
 using Cethleann.DataTables;
 using Cethleann.G1;
+using DragonLib.IO;
 using static Cethleann.Model.Program;
 
 namespace Cethleann.DataExporter
@@ -75,7 +77,7 @@ namespace Cethleann.DataExporter
             }
             catch (Exception e)
             {
-                Console.WriteLine($@"Failed unpacking DataTable, {e.Message}!");
+                Logger.Error("DTBL", $"Failed unpacking DataTable, {e}");
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -95,7 +97,7 @@ namespace Cethleann.DataExporter
             }
             catch (Exception e)
             {
-                Console.WriteLine($@"Failed unpacking SCEN, {e.Message}!");
+                Logger.Error("SCEN", $"Failed unpacking SCEN, {e}");
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -115,7 +117,7 @@ namespace Cethleann.DataExporter
             }
             catch (Exception e)
             {
-                Console.WriteLine($@"Failed unpacking Bundle, {e.Message}!");
+                Logger.Error("BUN", $"Failed unpacking Bundle, {e}");
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -135,7 +137,7 @@ namespace Cethleann.DataExporter
             }
             catch (Exception e)
             {
-                Console.WriteLine($@"Failed unpacking KLDM, {e.Message}!");
+                Logger.Error("KLDM", $"Failed unpacking KLDM, {e}");
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -165,22 +167,27 @@ namespace Cethleann.DataExporter
             {
                 if (!datablob.Span.IsKnown() && datablob.Span.IsDataTable())
                 {
-                    if (TryExtractDataTable($"{blobBase}", datablob))
+                    if (TryExtractDataTable(blobBase, datablob))
                         return 1;
                 }
                 else if (datablob.Span.GetDataType() == DataType.SCEN)
                 {
-                    if (TryExtractSCEN($"{blobBase}", datablob))
+                    if (TryExtractSCEN(blobBase, datablob))
                         return 1;
                 }
                 else if (datablob.Span.IsBundle())
                 {
-                    if (TryExtractBundle($"{blobBase}", datablob))
+                    if (TryExtractBundle(blobBase, datablob))
                         return 1;
                 }
                 else if (datablob.Span.GetDataType() == DataType.KLDM)
                 {
-                    if (TryExtractKLDM($"{blobBase}", datablob))
+                    if (TryExtractKLDM(blobBase, datablob))
+                        return 1;
+                }
+                else if (datablob.Span.GetDataType() == DataType.KTSR)
+                {
+                    if (TryExtractKTSR(blobBase, datablob))
                         return 1;
                 }
             }
@@ -192,6 +199,35 @@ namespace Cethleann.DataExporter
 
             File.WriteAllBytes($@"{blobBase}", datablob.ToArray());
             return 2;
+        }
+
+        private static bool TryExtractKTSR(string pathBase, in Memory<byte> data)
+        {
+            try
+            {
+                var blobs = new SoundResource(data.Span);
+                if (blobs.Entries.Count == 0) return true;
+
+                foreach (var datablob in blobs.Entries)
+                {
+                    var buffer = datablob switch
+                    {
+                        SoundResourceSample sample => sample.Data.FullBuffer,
+                        SoundUnknown unknown => unknown.Data,
+                        _ => Memory<byte>.Empty
+                    };
+                    TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}.{GetExtension(buffer.Span)}", buffer);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error("KTSR", $"Failed unpacking KTSR, {e}");
+                if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
+
+                return false;
+            }
+
+            return true;
         }
     }
 }

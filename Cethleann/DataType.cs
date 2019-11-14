@@ -46,6 +46,12 @@ namespace Cethleann
         KTSC = 'K' << 0 | 'T' << 8 | 'S' << 16 | 'C' << 24,
 
         /// <summary>
+        ///     Koei Tecmo Sound Sample
+        /// </summary>
+        [FileExtension("ktss")]
+        KTSS = 'K' << 0 | 'T' << 8 | 'S' << 16 | 'S' << 24,
+
+        /// <summary>
         ///     Scene
         /// </summary>
         [FileExtension("scene")]

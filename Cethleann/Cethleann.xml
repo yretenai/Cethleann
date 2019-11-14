@@ -371,6 +371,11 @@
                 Koei Tecmo Sound Container
             </summary>
         </member>
+        <member name="F:Cethleann.DataType.KTSS">
+            <summary>
+                Koei Tecmo Sound Sample
+            </summary>
+        </member>
         <member name="F:Cethleann.DataType.SCEN">
             <summary>
                 Scene
