@@ -149,10 +149,10 @@ namespace Cethleann
         Effect = 'G' << 24 | '1' << 16 | 'F' << 8 | 'X' << 0,
 
         /// <summary>
-        ///     Koei ?
+        ///     Sound E Bin
         /// </summary>
-        [FileExtension("g0s")]
-        OLS = 'S' << 24 | 'L' << 16 | 'O' << 8 | '_' << 0,
+        [FileExtension("sebin")]
+        SEBin = 'S' << 24 | 'L' << 16 | 'O' << 8 | '_' << 0,
 
         /// <summary>
         ///     Koei PostFX Shader Bundle
