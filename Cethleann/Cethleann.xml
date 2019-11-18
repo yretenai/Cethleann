@@ -55,9 +55,14 @@
             </summary>
             <param name="baseRomFs"></param>
         </member>
-        <member name="P:Cethleann.Cethleann.Data">
+        <member name="P:Cethleann.Cethleann.RootData">
             <summary>
                 Game data
+            </summary>
+        </member>
+        <member name="P:Cethleann.Cethleann.Data">
+            <summary>
+                DLC data
             </summary>
         </member>
         <member name="P:Cethleann.Cethleann.Patch">
@@ -67,15 +72,25 @@
         </member>
         <member name="P:Cethleann.Cethleann.PatchRomFS">
             <summary>
-                Root directory of the Patch romfs://
+                Root directory of the Patch rom:/
+            </summary>
+        </member>
+        <member name="P:Cethleann.Cethleann.RootEntryCount">
+            <summary>
+                Maximum number of entries found in the base container
+            </summary>
+        </member>
+        <member name="P:Cethleann.Cethleann.DataEntryCount">
+            <summary>
+                Maximum number of entries found in the DLC containers
+            </summary>
+        </member>
+        <member name="P:Cethleann.Cethleann.PatchEntryCount">
+            <summary>
+                Maximum number of entries found in the latest patch container.
             </summary>
         </member>
         <member name="P:Cethleann.Cethleann.EntryCount">
-            <summary>
-                Maximum number of entries found in any one container
-            </summary>
-        </member>
-        <member name="P:Cethleann.Cethleann.TotalEntryCount">
             <summary>
                 Maximum number of entries found in both containers and patches
             </summary>
@@ -423,9 +438,9 @@
                 Koei Effect
             </summary>
         </member>
-        <member name="F:Cethleann.DataType.OLS">
+        <member name="F:Cethleann.DataType.SEBin">
             <summary>
-                Koei ?
+                Sound E Bin
             </summary>
         </member>
         <member name="F:Cethleann.DataType.PostFX">
@@ -1027,7 +1042,7 @@
         </member>
         <member name="M:Cethleann.Koei.INFO0.GetPath(System.Int32)">
             <summary>
-            Gets the path from Patch containers.
+                Gets the path from Patch containers.
             </summary>
             <param name="index"></param>
             <returns></returns>
@@ -1045,13 +1060,6 @@
                 INFO1 is a list of information of base files deleted with this patch.
                 Usually this means that the files are contained in a DLC.
             </summary>
-        </member>
-        <member name="M:Cethleann.Koei.INFO1.#ctor(Cethleann.Structure.INFO2,System.String)">
-            <summary>
-                Reads a INFO1 file list from a path
-            </summary>
-            <param name="INFO2"></param>
-            <param name="path">File path to read</param>
         </member>
         <member name="M:Cethleann.Koei.INFO1.#ctor(Cethleann.Structure.INFO2,System.IO.Stream,System.Boolean)">
             <summary>
@@ -1078,7 +1086,7 @@
         </member>
         <member name="M:Cethleann.Koei.INFO1.GetPath(System.Int32)">
             <summary>
-            Gets the path from Patch containers.
+                Gets the path from Patch containers.
             </summary>
             <param name="index"></param>
             <returns></returns>
@@ -1090,6 +1098,13 @@
             <param name="entryPath"></param>
             <param name="entry"></param>
             <returns></returns>
+        </member>
+        <member name="M:Cethleann.Koei.INFO1.#ctor(Cethleann.Structure.INFO2,System.String)">
+            <summary>
+                Reads a INFO1 file list from a path
+            </summary>
+            <param name="INFO2"></param>
+            <param name="path">File path to read</param>
         </member>
         <member name="T:Cethleann.SCEN">
             <summary>

@@ -102,8 +102,6 @@ namespace Cethleann.Koei
         /// <param name="path">File path to read</param>
 #pragma warning disable IDE0068 // Use recommended dispose pattern, reason: disposed in sub-method DATA0(Stream, bool) when bool leaveOpen is false.
         public INFO1(INFO2 INFO2, string path) : this(INFO2, File.OpenRead(path)) { }
-
-        internal int IndexOffset { get; set; }
 #pragma warning restore IDE0068 // Use recommended dispose pattern
     }
 }
