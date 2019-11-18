@@ -19,7 +19,7 @@ namespace Cethleann
         /// <summary>
         ///     Loaded FileList.csv
         /// </summary>
-        public Dictionary<int, string> FileList = new Dictionary<int, string>();
+        public Dictionary<string, string> FileList = new Dictionary<string, string>();
 
         /// <summary>
         ///     Loads data
@@ -34,7 +34,7 @@ namespace Cethleann
         ///     Game data
         /// </summary>
         public (DATA0 DATA0, Stream DATA1, string romfs) RootData { get; private set; }
-        
+
         /// <summary>
         ///     DLC data
         /// </summary>
@@ -43,7 +43,7 @@ namespace Cethleann
         /// <summary>
         ///     Patch data
         /// </summary>
-        public List<(INFO0 INFO0, INFO1 INFO1, INFO2 INFO2)> Patch { get; private set; } = new List<(INFO0 INFO0, INFO1 INFO1, INFO2 INFO2)>();
+        public (INFO0 INFO0, INFO1 INFO1, INFO2 INFO2) Patch { get; private set; }
 
         /// <summary>
         ///     Root directory of the Patch rom:/
@@ -54,12 +54,12 @@ namespace Cethleann
         ///     Maximum number of entries found in the base container
         /// </summary>
         public int RootEntryCount { get; private set; }
-        
+
         /// <summary>
         ///     Maximum number of entries found in the DLC containers
         /// </summary>
         public int DataEntryCount { get; private set; }
-        
+
         /// <summary>
         ///     Maximum number of entries found in the latest patch container.
         /// </summary>
@@ -123,21 +123,16 @@ namespace Cethleann
         public void AddPatchFS(string path)
         {
             if (!Directory.Exists(path)) throw new DirectoryNotFoundException("Patch RomFS is not found!");
-            Patch = new List<(INFO0 INFO0, INFO1 INFO1, INFO2 INFO2)>();
-            PatchRomFS = path;
+            PatchRomFS = Path.GetFullPath(Path.Combine(path, ".."));
             var buffer = new Span<byte>(new byte[SizeHelper.SizeOf<INFO2>()]);
-            foreach (var directory in Directory.GetDirectories(path).Where(x => Path.GetFileName(x).StartsWith("patch", StringComparison.InvariantCultureIgnoreCase)).OrderBy(x => int.Parse(Path.GetFileName(x).Substring(5))))
-            {
-                var info0Path = Path.Combine(directory, "INFO0.bin");
-                var info1Path = Path.Combine(directory, "INFO1.bin");
-                var info2Path = Path.Combine(directory, "INFO2.bin");
-                if (!File.Exists(info0Path) || !File.Exists(info1Path) || !File.Exists(info2Path)) continue;
-                using var info2 = File.OpenRead(info2Path);
-                info2.Read(buffer);
-                var INFO2 = MemoryMarshal.Read<INFO2>(buffer);
-                Patch.Add((new INFO0(INFO2, info0Path), new INFO1(INFO2, info1Path), INFO2));
-            }
-            PatchEntryCount = Patch.LastOrDefault().INFO1?.Entries.Count ?? 0;
+            var info0Path = Path.Combine(path, "INFO0.bin");
+            var info1Path = Path.Combine(path, "INFO1.bin");
+            var info2Path = Path.Combine(path, "INFO2.bin");
+            using var info2 = File.OpenRead(info2Path);
+            info2.Read(buffer);
+            var INFO2 = MemoryMarshal.Read<INFO2>(buffer);
+            Patch = (new INFO0(INFO2, info0Path), new INFO1(INFO2, info1Path), INFO2);
+            PatchEntryCount = Patch.INFO1?.Entries.Count ?? 0;
         }
 
         /// <summary>
@@ -146,83 +141,68 @@ namespace Cethleann
         /// <param name="index"></param>
         /// <param name="flags"></param>
         /// <returns></returns>
-        public Memory<byte> ReadEntry(int index, CethleannSearchFlags flags = CethleannSearchFlags.All)
+        public Memory<byte> ReadEntry(int index)
         {
             if (index >= EntryCount) throw new IndexOutOfRangeException($"Index {index} does not exist!");
-            
+
             if (index >= RootEntryCount)
             {
                 index -= RootEntryCount;
                 if (index >= PatchEntryCount)
                 {
                     index -= PatchEntryCount;
-                    return FindDLC(index, flags);
+                    return FindDLC(index);
                 }
-                else
-                {
-                    return FindPatch(index, flags);
-                }
+
+                return FindPatch(index);
             }
 
-            if ((flags & CethleannSearchFlags.AllPatch) != CethleannSearchFlags.None)
-                for (int i = Patch.Count; i > 0; --i)
-                {
-                    try
-                    {
-                        var (info0, _, _) = Patch[i - 1];
-                        if (!flags.HasFlag((CethleannSearchFlags) (i << 16))) continue;
-
-                        var entry = info0.ReadEntry(PatchRomFS, index);
-                        if (entry.Length > 0) return entry;
-                    }
-                    catch (IndexOutOfRangeException)
-                    {
-                        // ignored.
-                    }
-                }
-
-            if (!flags.HasFlag(CethleannSearchFlags.Base)) return Memory<byte>.Empty;
+            try
+            {
+                var (info0, _, _) = Patch;
+                var entry = info0.ReadEntry(PatchRomFS, index);
+                if (entry.Length > 0) return entry;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                // ignored.
+            }
 
             var (baseData, baseStream, _) = RootData;
             return baseData.ReadEntry(baseStream, index);
         }
 
-        private Memory<byte> FindPatch(int index, CethleannSearchFlags flags)
+        private Memory<byte> FindPatch(int index)
         {
-            if ((flags & CethleannSearchFlags.AllPatch) == CethleannSearchFlags.None) return Memory<byte>.Empty;
-
-            for (int i = Patch.Count; i > 0; --i)
+            try
             {
-                try
-                {
-                    var (_, info1, _) = Patch[i - 1];
-                    if (!flags.HasFlag((CethleannSearchFlags) (i << 16))) continue;
-
-                    var entry = info1.ReadEntry(PatchRomFS, index);
-                    if (entry.Length > 0) return entry;
-                }
-                catch (IndexOutOfRangeException)
-                {
-                    // ignored.
-                }
+                var (_, info1, _) = Patch;
+                var entry = info1.ReadEntry(PatchRomFS, index);
+                if (entry.Length > 0) return entry;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                // ignored.
             }
 
             return Memory<byte>.Empty;
         }
 
-        private Memory<byte> FindDLC(int index, CethleannSearchFlags flags)
+        private Memory<byte> FindDLC(int index)
         {
-            if ((flags & CethleannSearchFlags.AllDLC) == CethleannSearchFlags.None) return Memory<byte>.Empty;
-            for (int i = 0; i < Data.Count; ++i)
+            foreach (var (data, stream, _) in Data)
             {
-                var (data, stream, _) = Data[i];
+                if (index >= data.Entries.Count)
+                {
+                    index -= data.Entries.Count;
+                    continue;
+                }
+
                 try
                 {
-                    if (flags.HasFlag((CethleannSearchFlags) (i << 4)))
-                    {
-                        var entry = data.ReadEntry(stream, index);
-                        if (entry.Length > 0) return entry;
-                    }
+                    var blob = data.ReadEntry(stream, index);
+                    if (blob.Length == 0) continue;
+                    return blob;
                 }
                 catch (IndexOutOfRangeException)
                 {
@@ -256,11 +236,7 @@ namespace Cethleann
             {
                 if (entry.Length < 2) continue;
                 if (entry[0].Length == 0 || entry[1].Length == 0) continue;
-                if (!int.TryParse(entry[0], out var id))
-                {
-                    Logger.Error("CETH", $"Id {id} cannot be parsed!");
-                    continue;
-                }
+                var id = entry[0];
 
                 if (Path.GetInvalidPathChars().Any(x => entry[1].Contains(x)))
                 {
@@ -284,25 +260,46 @@ namespace Cethleann
         {
             if (dataType == DataType.Compressed || dataType == DataType.CompressedChonky) ext += ".gz";
 
-            string path;
-            var prefix = index >= RootEntryCount ? (index >= RootEntryCount + PatchEntryCount ? "dlc/" : "patch/") : "";
-
-            if (index >= RootEntryCount && index < RootEntryCount + PatchEntryCount && Patch.Count > 0)
+            var path = default(string);
+            var prefix = "";
+            var logicalId = default(string);
+            if (index >= RootEntryCount)
             {
-                var info1 = Patch.Last().INFO1;
-                path = info1.GetPath(index - RootEntryCount);
-                if (!string.IsNullOrWhiteSpace(path) && path != "nx/")
+                if (index >= RootEntryCount + PatchEntryCount)
                 {
-                    if (path.StartsWith("nx/", StringComparison.InvariantCultureIgnoreCase)) path = path.Substring(3);
-                    var dir = Path.GetDirectoryName(path);
-                    var file = Path.GetFileName(path);
-                    path = "patch/" + Path.Combine(dir, $"{index} - {file}");
-                    return prefix + (ext.EndsWith(".gz") ? path + ".gz" : path);
+                    prefix = "dlc/";
+                    logicalId = "DLC" + (index - RootEntryCount - PatchEntryCount);
+                }
+                else
+                {
+                    prefix = "patch/";
+                    logicalId = "P" + (index - RootEntryCount);
+                    var info1 = Patch.INFO1;
+                    path = info1.GetPath(index - RootEntryCount);
+                    if (!string.IsNullOrWhiteSpace(path) && path != "nx/")
+                    {
+                        if (path.StartsWith("nx/", StringComparison.InvariantCultureIgnoreCase)) path = path.Substring(3);
+                        var dir = Path.GetDirectoryName(path);
+                        var file = Path.GetFileName(path);
+                        path = Path.Combine(dir, $"{logicalId} - {file}");
+                    }
                 }
             }
 
-            if (FileList.TryGetValue(index, out path)) return prefix + (ext.EndsWith(".gz") ? path + ".gz" : path);
-            return prefix + (ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{index}.bin" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{index}.{ext}");
+            var temp = path;
+            if (!FileList.TryGetValue(logicalId ?? index.ToString(), out path)) path = temp ?? (ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{logicalId ?? index.ToString()}.bin" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{logicalId ?? index.ToString()}.{ext}");
+
+            return prefix + (ext.EndsWith(".gz") ? path + ".gz" : path);
+        }
+
+        /// <summary>
+        ///     Tests DLC sanity. DEBUG
+        /// </summary>
+        public void TestDLCSanity()
+        {
+            if (Data.Count < 2) return;
+            Logger.Assert(Data.All(x => x.DATA0.Entries.Count == DataEntryCount), "Data.All(x => x.DATA0.Entries.Count == DataEntryCount)");
+            for (var i = 0; i < DataEntryCount; ++i) Logger.Assert(Data.Count(x => x.DATA0.Entries[i].UncompressedSize > 0) <= 1, "Data.Count(x => x.DATA0.Entries[i].UncompressedSize > 0) <= 1");
         }
     }
 }

@@ -119,7 +119,7 @@
             <param name="path"></param>
             <exception cref="T:System.IO.DirectoryNotFoundException"></exception>
         </member>
-        <member name="M:Cethleann.Cethleann.ReadEntry(System.Int32,Cethleann.CethleannSearchFlags)">
+        <member name="M:Cethleann.Cethleann.ReadEntry(System.Int32)">
             <summary>
                 Reads an entry from the first valid (non-zero) storage.
             </summary>
@@ -147,79 +147,9 @@
             <param name="dataType"></param>
             <returns></returns>
         </member>
-        <member name="T:Cethleann.CethleannSearchFlags">
+        <member name="M:Cethleann.Cethleann.TestDLCSanity">
             <summary>
-                Flags used to optimize <seealso cref="M:Cethleann.Cethleann.ReadEntry(System.Int32,Cethleann.CethleannSearchFlags)" />
-            </summary>
-        </member>
-        <member name="F:Cethleann.CethleannSearchFlags.None">
-            <summary>
-                Don't read from any container
-            </summary>
-        </member>
-        <member name="F:Cethleann.CethleannSearchFlags.Base">
-            <summary>
-                Read from the base game
-            </summary>
-        </member>
-        <member name="F:Cethleann.CethleannSearchFlags.AllDLC">
-            <summary>
-                Read from all DLC
-            </summary>
-        </member>
-        <member name="F:Cethleann.CethleannSearchFlags.DLC1">
-            <summary>
-                Read from DLC1
-            </summary>
-        </member>
-        <member name="F:Cethleann.CethleannSearchFlags.DLC2">
-            <summary>
-                Read from DLC2
-            </summary>
-        </member>
-        <member name="F:Cethleann.CethleannSearchFlags.DLC3">
-            <summary>
-                Read from DLC3
-            </summary>
-        </member>
-        <member name="F:Cethleann.CethleannSearchFlags.DLC4">
-            <summary>
-                Read from DLC4
-            </summary>
-        </member>
-        <member name="F:Cethleann.CethleannSearchFlags.DLC5">
-            <summary>
-                Read from DLC5
-            </summary>
-        </member>
-        <member name="F:Cethleann.CethleannSearchFlags.DLC6">
-            <summary>
-                Read from DLC6
-            </summary>
-        </member>
-        <member name="F:Cethleann.CethleannSearchFlags.AllPatch">
-            <summary>
-                Read from all patches
-            </summary>
-        </member>
-        <member name="F:Cethleann.CethleannSearchFlags.Patch1">
-            <summary>
-                Read from Patch1
-            </summary>
-        </member>
-        <member name="F:Cethleann.CethleannSearchFlags.Patch2">
-            <summary>
-                Read from Patch2
-            </summary>
-        </member>
-        <member name="F:Cethleann.CethleannSearchFlags.Patch3">
-            <summary>
-                Read from Patch3
-            </summary>
-        </member>
-        <member name="F:Cethleann.CethleannSearchFlags.All">
-            <summary>
-                Read all files
+            Tests DLC sanity. DEBUG
             </summary>
         </member>
         <member name="T:Cethleann.Compression">

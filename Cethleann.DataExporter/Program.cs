@@ -29,6 +29,7 @@ namespace Cethleann.DataExporter
             if (args.Length > 3 && Directory.Exists(args.ElementAt(2))) cethleann.AddPatchFS(args.ElementAt(2));
 
             foreach (var dlcromfs in args.Skip(3)) cethleann.AddDataFS(dlcromfs);
+            cethleann.TestDLCSanity();
 
             cethleann.LoadFileList();
 
