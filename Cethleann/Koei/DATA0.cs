@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Cethleann.Structure;
 
-namespace Cethleann
+namespace Cethleann.Koei
 {
     /// <summary>
     ///     DATA0 is a list of information for which to read DATA1 with.

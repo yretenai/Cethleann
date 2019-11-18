@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using Cethleann.Structure;
 using DragonLib;
 
-namespace Cethleann
+namespace Cethleann.Koei
 {
     /// <summary>
     ///     INFO0 is a list of information for which to read the patch RomFS with.
@@ -35,7 +35,7 @@ namespace Cethleann
             {
                 if (!stream.CanRead) throw new InvalidOperationException("Cannot read from stream!");
 
-                Entries = new List<(INFO0Entry entry, string path)>(INFO2.INFO0Count);
+                Entries = new List<(INFO0Entry entry, string path)>((int) INFO2.INFO0Count);
                 var buffer = new Span<byte>(new byte[SizeHelper.SizeOf<INFO0Entry>() + 0x100]);
                 for (int i = 0; i < INFO2.INFO0Count; ++i)
                 {
@@ -72,6 +72,17 @@ namespace Cethleann
             var (entry, path) = Entries.FirstOrDefault(x => x.entry.Index == index);
             if (path == null) throw new IndexOutOfRangeException($"Index {index} does not exist!");
             return ReadEntry(Path.Combine(romfs, path.Substring(5)), entry);
+        }
+
+        /// <summary>
+        ///     Gets the path from Patch containers.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public string GetPath(int index)
+        {
+            var (_, path) = Entries.FirstOrDefault(x => x.entry.Index == index);
+            return path?.Substring(12, path.Length - 12 - (path.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase) ? 3 : 0));
         }
 
         /// <summary>

@@ -10,12 +10,8 @@ namespace Cethleann.Audio
 {
     public class SoundResource
     {
-        public SoundResourceHeader Header { get; set; }
-        
-        public List<ISoundResourceSection> Entries { get; set; } = new List<ISoundResourceSection>();
+        public SoundResource(Stream stream) : this(stream.ToSpan()) { }
 
-        public SoundResource(Stream stream) : this(stream.ToSpan()) {}
-        
         public SoundResource(Span<byte> buffer)
         {
             Header = MemoryMarshal.Read<SoundResourceHeader>(buffer);
@@ -34,5 +30,9 @@ namespace Cethleann.Audio
                 offset += header.Size;
             }
         }
+
+        public SoundResourceHeader Header { get; set; }
+
+        public List<ISoundResourceSection> Entries { get; set; } = new List<ISoundResourceSection>();
     }
 }

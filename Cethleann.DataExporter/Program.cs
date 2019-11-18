@@ -46,7 +46,7 @@ namespace Cethleann.DataExporter
         private static void ExtractAll(string romfs, Cethleann cethleann)
         {
             if (!Directory.Exists($@"{romfs}\romfs")) Directory.CreateDirectory($@"{romfs}\romfs");
-            for (var index = 0; index < cethleann.EntryCount; index++)
+            for (var index = 0; index < cethleann.TotalEntryCount; index++)
             {
                 var data = cethleann.ReadEntry(index);
                 var dt = data.Span.GetDataType();

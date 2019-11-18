@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Cethleann.Koei;
 using Cethleann.Structure;
 using DragonLib;
 using DragonLib.IO;
@@ -48,6 +49,11 @@ namespace Cethleann
         ///     Maximum number of entries found in any one container
         /// </summary>
         public int EntryCount => (int) Math.Max(Data.Count > 0 ? Data.Max(x => x.DATA0.Entries.Count) : 0, Patch.Count > 0 ? Patch.Max(x => x.INFO0.Entries.Max(y => y.entry.Index)) : 0);
+
+        /// <summary>
+        ///     Maximum number of entries found in both containers and patches
+        /// </summary>
+        public int TotalEntryCount => EntryCount + Patch.Max(x => x.INFO1.Entries.Count + x.INFO1.IndexOffset);
 
         /// <summary>
         ///     Cleans managed data
@@ -104,7 +110,13 @@ namespace Cethleann
                 using var info2 = File.OpenRead(info2Path);
                 info2.Read(buffer);
                 var INFO2 = MemoryMarshal.Read<INFO2>(buffer);
-                Patch.Add((new INFO0(INFO2, info0Path), new INFO1(INFO2, info1Path), INFO2));
+                var (_, latestINFO1, _) = Patch.LastOrDefault();
+                var offset = 0;
+                if (latestINFO1 != null) offset = latestINFO1.Entries.Count + latestINFO1.IndexOffset;
+                Patch.Add((new INFO0(INFO2, info0Path), new INFO1(INFO2, info1Path)
+                {
+                    IndexOffset = offset
+                }, INFO2));
             }
         }
 
@@ -116,6 +128,30 @@ namespace Cethleann
         /// <returns></returns>
         public Memory<byte> ReadEntry(int index, CethleannSearchFlags flags = CethleannSearchFlags.All)
         {
+            var ec = EntryCount;
+            if (index >= ec)
+            {
+                if (index >= TotalEntryCount) throw new IndexOutOfRangeException($"Index {index} does not exist!");
+                for (int i = Patch.Count; i > 0; --i)
+                {
+                    try
+                    {
+                        var (_, info1, _) = Patch[i - 1];
+                        if (!flags.HasFlag((CethleannSearchFlags) (i << 16))) continue;
+                        if (index - ec - info1.IndexOffset < 0) continue;
+
+                        var entry = info1.ReadEntry(PatchRomFS, index - ec - info1.IndexOffset);
+                        if (entry.Length > 0) return entry;
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        // ignored.
+                    }
+                }
+
+                return Memory<byte>.Empty;
+            }
+
             if ((flags & CethleannSearchFlags.AllPatch) != CethleannSearchFlags.None)
                 for (int i = Patch.Count; i > 0; --i)
                 {
@@ -208,7 +244,23 @@ namespace Cethleann
         {
             if (dataType == DataType.Compressed || dataType == DataType.CompressedChonky) ext += ".gz";
 
-            if (FileList.TryGetValue(index, out var path)) return ext.EndsWith(".gz") ? path + ".gz" : path;
+            var ec = EntryCount;
+            string path;
+            if (index >= ec)
+                for (int i = Patch.Count; i > 0; --i)
+                {
+                    var info1 = Patch[i - 1].INFO1;
+                    if (index - ec - info1.IndexOffset < 0) continue;
+                    path = info1.GetPath(index - ec - info1.IndexOffset);
+                    if (string.IsNullOrWhiteSpace(path) || path == "nx/") break;
+                    if (path.StartsWith("nx/", StringComparison.InvariantCultureIgnoreCase)) path = path.Substring(3);
+                    var dir = Path.GetDirectoryName(path);
+                    var file = Path.GetFileName(path);
+                    path = Path.Combine(dir, $"{index} - {file}");
+                    return ext.EndsWith(".gz") ? path + ".gz" : path;
+                }
+
+            if (FileList.TryGetValue(index, out path)) return ext.EndsWith(".gz") ? path + ".gz" : path;
             return ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{index}.bin" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{index}.{ext}";
         }
     }

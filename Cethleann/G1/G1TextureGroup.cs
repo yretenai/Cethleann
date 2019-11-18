@@ -71,13 +71,15 @@ namespace Cethleann.G1
         ///     Unpacks Width, Height, Mip Count, and DXGI Format from a G1T data header.
         /// </summary>
         /// <param name="header"></param>
+        /// <param name="rewriteTextureType"></param>
         /// <returns></returns>
-        public static (int width, int height, int mips, DXGIPixelFormat format) UnpackWHM(TextureDataHeader header)
+        public static (int width, int height, int mips, DXGIPixelFormat format) UnpackWHM(TextureDataHeader header, Func<byte, TextureType> rewriteTextureType = null)
         {
             var width = (int) Math.Max(1, Math.Pow(2, header.PackedDimensions & 0xF));
             var height = (int) Math.Max(1, Math.Pow(2, header.PackedDimensions >> 4));
             var mips = header.MipCount >> 4;
-            var format = header.Type switch
+            var type = rewriteTextureType?.Invoke((byte) header.Type) ?? header.Type;
+            var format = type switch
             {
                 TextureType.R8G8B8A8 => DXGIPixelFormat.R8G8B8A8_UNORM,
                 TextureType.B8G8R8A8 => DXGIPixelFormat.B8G8R8A8_UNORM,

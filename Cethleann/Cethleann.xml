@@ -75,6 +75,11 @@
                 Maximum number of entries found in any one container
             </summary>
         </member>
+        <member name="P:Cethleann.Cethleann.TotalEntryCount">
+            <summary>
+                Maximum number of entries found in both containers and patches
+            </summary>
+        </member>
         <member name="M:Cethleann.Cethleann.Dispose">
             <summary>
                 Cleans managed data
@@ -229,45 +234,6 @@
             <param name="stream"></param>
             <param name="compressedSize"></param>
             <returns></returns>
-        </member>
-        <member name="T:Cethleann.DATA0">
-            <summary>
-                DATA0 is a list of information for which to read DATA1 with.
-            </summary>
-        </member>
-        <member name="M:Cethleann.DATA0.#ctor(System.String)">
-            <summary>
-                Reads a DATA0 file list from a path
-            </summary>
-            <param name="path">File path to read</param>
-        </member>
-        <member name="M:Cethleann.DATA0.#ctor(System.IO.Stream,System.Boolean)">
-            <summary>
-                Reads a DATA0 file list from a stream
-            </summary>
-            <param name="stream">Binary Read-capable Stream of DATA0</param>
-            <param name="leaveOpen">If true, won't dispose <paramref name="stream" /></param>
-        </member>
-        <member name="P:Cethleann.DATA0.Entries">
-            <summary>
-                lsof <seealso cref="T:Cethleann.Structure.DATA0Entry" />
-            </summary>
-        </member>
-        <member name="M:Cethleann.DATA0.ReadEntry(System.IO.Stream,System.Int32)">
-            <summary>
-                Reads a file index from DATA1
-            </summary>
-            <param name="DATA1">Binary Read-capable Stream of DATA1</param>
-            <param name="index">Entry Index to read</param>
-            <returns>memory stream of uncompressed bytes</returns>
-        </member>
-        <member name="M:Cethleann.DATA0.ReadEntry(System.IO.Stream,Cethleann.Structure.DATA0Entry)">
-            <summary>
-                Reads a file entry from DATA1
-            </summary>
-            <param name="DATA1">Binary Read-capable Stream of DATA1</param>
-            <param name="entry">Entry to read</param>
-            <returns>memory stream of uncompressed bytes</returns>
         </member>
         <member name="T:Cethleann.DataTables.DataTable">
             <summary>
@@ -945,11 +911,12 @@
         <member name="P:Cethleann.G1.G1TextureGroup.Section">
             <inheritdoc />
         </member>
-        <member name="M:Cethleann.G1.G1TextureGroup.UnpackWHM(Cethleann.Structure.Resource.Texture.TextureDataHeader)">
+        <member name="M:Cethleann.G1.G1TextureGroup.UnpackWHM(Cethleann.Structure.Resource.Texture.TextureDataHeader,System.Func{System.Byte,Cethleann.Structure.Resource.Texture.TextureType})">
             <summary>
                 Unpacks Width, Height, Mip Count, and DXGI Format from a G1T data header.
             </summary>
             <param name="header"></param>
+            <param name="rewriteTextureType"></param>
             <returns></returns>
         </member>
         <member name="T:Cethleann.G1.IG1Section">
@@ -984,19 +951,58 @@
                 Usually models.
             </summary>
         </member>
-        <member name="T:Cethleann.INFO0">
+        <member name="T:Cethleann.Koei.DATA0">
+            <summary>
+                DATA0 is a list of information for which to read DATA1 with.
+            </summary>
+        </member>
+        <member name="M:Cethleann.Koei.DATA0.#ctor(System.String)">
+            <summary>
+                Reads a DATA0 file list from a path
+            </summary>
+            <param name="path">File path to read</param>
+        </member>
+        <member name="M:Cethleann.Koei.DATA0.#ctor(System.IO.Stream,System.Boolean)">
+            <summary>
+                Reads a DATA0 file list from a stream
+            </summary>
+            <param name="stream">Binary Read-capable Stream of DATA0</param>
+            <param name="leaveOpen">If true, won't dispose <paramref name="stream" /></param>
+        </member>
+        <member name="P:Cethleann.Koei.DATA0.Entries">
+            <summary>
+                lsof <seealso cref="T:Cethleann.Structure.DATA0Entry" />
+            </summary>
+        </member>
+        <member name="M:Cethleann.Koei.DATA0.ReadEntry(System.IO.Stream,System.Int32)">
+            <summary>
+                Reads a file index from DATA1
+            </summary>
+            <param name="DATA1">Binary Read-capable Stream of DATA1</param>
+            <param name="index">Entry Index to read</param>
+            <returns>memory stream of uncompressed bytes</returns>
+        </member>
+        <member name="M:Cethleann.Koei.DATA0.ReadEntry(System.IO.Stream,Cethleann.Structure.DATA0Entry)">
+            <summary>
+                Reads a file entry from DATA1
+            </summary>
+            <param name="DATA1">Binary Read-capable Stream of DATA1</param>
+            <param name="entry">Entry to read</param>
+            <returns>memory stream of uncompressed bytes</returns>
+        </member>
+        <member name="T:Cethleann.Koei.INFO0">
             <summary>
                 INFO0 is a list of information for which to read the patch RomFS with.
             </summary>
         </member>
-        <member name="M:Cethleann.INFO0.#ctor(Cethleann.Structure.INFO2,System.String)">
+        <member name="M:Cethleann.Koei.INFO0.#ctor(Cethleann.Structure.INFO2,System.String)">
             <summary>
                 Reads a INFO0 file list from a path
             </summary>
             <param name="INFO2"></param>
             <param name="path">File path to read</param>
         </member>
-        <member name="M:Cethleann.INFO0.#ctor(Cethleann.Structure.INFO2,System.IO.Stream,System.Boolean)">
+        <member name="M:Cethleann.Koei.INFO0.#ctor(Cethleann.Structure.INFO2,System.IO.Stream,System.Boolean)">
             <summary>
                 Reads a INFO0 file list from a stream
             </summary>
@@ -1005,12 +1011,12 @@
             <param name="leaveOpen"></param>
             <exception cref="T:System.InvalidOperationException"></exception>
         </member>
-        <member name="P:Cethleann.INFO0.Entries">
+        <member name="P:Cethleann.Koei.INFO0.Entries">
             <summary>
                 Entries found in the INFO0
             </summary>
         </member>
-        <member name="M:Cethleann.INFO0.ReadEntry(System.String,System.Int32)">
+        <member name="M:Cethleann.Koei.INFO0.ReadEntry(System.String,System.Int32)">
             <summary>
                 Attempts to read a Patch ROMFS entry
             </summary>
@@ -1019,7 +1025,14 @@
             <returns></returns>
             <exception cref="T:System.IndexOutOfRangeException"></exception>
         </member>
-        <member name="M:Cethleann.INFO0.ReadEntry(System.String,Cethleann.Structure.INFO0Entry)">
+        <member name="M:Cethleann.Koei.INFO0.GetPath(System.Int32)">
+            <summary>
+            Gets the path from Patch containers.
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Koei.INFO0.ReadEntry(System.String,Cethleann.Structure.INFO0Entry)">
             <summary>
                 Attempts to read a Patch ROMFS entry
             </summary>
@@ -1027,20 +1040,20 @@
             <param name="entry"></param>
             <returns></returns>
         </member>
-        <member name="T:Cethleann.INFO1">
+        <member name="T:Cethleann.Koei.INFO1">
             <summary>
                 INFO1 is a list of information of base files deleted with this patch.
                 Usually this means that the files are contained in a DLC.
             </summary>
         </member>
-        <member name="M:Cethleann.INFO1.#ctor(Cethleann.Structure.INFO2,System.String)">
+        <member name="M:Cethleann.Koei.INFO1.#ctor(Cethleann.Structure.INFO2,System.String)">
             <summary>
                 Reads a INFO1 file list from a path
             </summary>
             <param name="INFO2"></param>
             <param name="path">File path to read</param>
         </member>
-        <member name="M:Cethleann.INFO1.#ctor(Cethleann.Structure.INFO2,System.IO.Stream,System.Boolean)">
+        <member name="M:Cethleann.Koei.INFO1.#ctor(Cethleann.Structure.INFO2,System.IO.Stream,System.Boolean)">
             <summary>
                 Reads a INFO1 file list from a stream
             </summary>
@@ -1049,10 +1062,34 @@
             <param name="leaveOpen"></param>
             <exception cref="T:System.InvalidOperationException"></exception>
         </member>
-        <member name="P:Cethleann.INFO1.Entries">
+        <member name="P:Cethleann.Koei.INFO1.Entries">
             <summary>
                 Entries found in the INFO1
             </summary>
+        </member>
+        <member name="M:Cethleann.Koei.INFO1.ReadEntry(System.String,System.Int32)">
+            <summary>
+                Attempts to read a Patch ROMFS entry
+            </summary>
+            <param name="romfs"></param>
+            <param name="index"></param>
+            <returns></returns>
+            <exception cref="T:System.IndexOutOfRangeException"></exception>
+        </member>
+        <member name="M:Cethleann.Koei.INFO1.GetPath(System.Int32)">
+            <summary>
+            Gets the path from Patch containers.
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Koei.INFO1.ReadEntry(System.String,Cethleann.Structure.INFO1Entry)">
+            <summary>
+                Attempts to read a Patch ROMFS entry
+            </summary>
+            <param name="entryPath"></param>
+            <param name="entry"></param>
+            <returns></returns>
         </member>
         <member name="T:Cethleann.SCEN">
             <summary>
