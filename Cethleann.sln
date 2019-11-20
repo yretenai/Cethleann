@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cethleann.Gz", "Cethleann.G
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tool", "Tool", "{388956EC-D30E-4FF6-85E9-460C20EA944C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gust.EncFinder", "Gust.EncFinder\Gust.EncFinder.csproj", "{3C146E07-EC6B-4098-B5EC-FBEA270FA6F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +63,10 @@ Global
 		{AF82849C-288D-460F-9DAB-67989CFCD280}.Debug|x64.Build.0 = Debug|x64
 		{AF82849C-288D-460F-9DAB-67989CFCD280}.Release|x64.ActiveCfg = Release|x64
 		{AF82849C-288D-460F-9DAB-67989CFCD280}.Release|x64.Build.0 = Release|x64
+		{3C146E07-EC6B-4098-B5EC-FBEA270FA6F0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3C146E07-EC6B-4098-B5EC-FBEA270FA6F0}.Debug|x64.Build.0 = Debug|Any CPU
+		{3C146E07-EC6B-4098-B5EC-FBEA270FA6F0}.Release|x64.ActiveCfg = Release|Any CPU
+		{3C146E07-EC6B-4098-B5EC-FBEA270FA6F0}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 		{3F7BAF1A-6178-46DF-9D6C-E7F779879ABE} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
 		{F37C7661-1B73-487D-9FBB-6421968949E7} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
 		{EE0365C4-12FE-47FF-B2E7-929B6ABE7F36} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
+		{3C146E07-EC6B-4098-B5EC-FBEA270FA6F0} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D101D9DD-E806-4794-B9BE-E43298235565}
