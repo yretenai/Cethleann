@@ -49,11 +49,17 @@
                 Loaded FileList.csv
             </summary>
         </member>
-        <member name="M:Cethleann.Cethleann.#ctor(System.String)">
+        <member name="M:Cethleann.Cethleann.#ctor(System.String,Cethleann.GameId)">
             <summary>
                 Loads data
             </summary>
             <param name="baseRomFs"></param>
+            <param name="game"></param>
+        </member>
+        <member name="P:Cethleann.Cethleann.GameId">
+            <summary>
+                Game ID of the game.
+            </summary>
         </member>
         <member name="P:Cethleann.Cethleann.RootData">
             <summary>
@@ -124,7 +130,6 @@
                 Reads an entry from the first valid (non-zero) storage.
             </summary>
             <param name="index"></param>
-            <param name="flags"></param>
             <returns></returns>
         </member>
         <member name="M:Cethleann.Cethleann.Dispose(System.Boolean)">
@@ -133,7 +138,7 @@
             </summary>
             <param name="disposing"></param>
         </member>
-        <member name="M:Cethleann.Cethleann.LoadFileList">
+        <member name="M:Cethleann.Cethleann.LoadFileList(System.String)">
             <summary>
                 Loads a filelist from a csv file
             </summary>
@@ -149,7 +154,7 @@
         </member>
         <member name="M:Cethleann.Cethleann.TestDLCSanity">
             <summary>
-            Tests DLC sanity. DEBUG
+                Tests DLC sanity. DEBUG
             </summary>
         </member>
         <member name="T:Cethleann.Compression">
@@ -283,6 +288,11 @@
             </summary>
         </member>
         <member name="F:Cethleann.DataType.KTSS">
+            <summary>
+                Koei Tecmo Sound Sample
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.KOVS">
             <summary>
                 Koei Tecmo Sound Sample
             </summary>

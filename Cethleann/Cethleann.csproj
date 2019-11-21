@@ -24,8 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="filelist.csv" />
-    <Content Include="filelist.csv">
+    <Content Include="filelist-FireEmblemThreeHouses.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

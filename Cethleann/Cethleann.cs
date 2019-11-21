@@ -25,10 +25,18 @@ namespace Cethleann
         ///     Loads data
         /// </summary>
         /// <param name="baseRomFs"></param>
-        public Cethleann(string baseRomFs)
+        /// <param name="game"></param>
+        public Cethleann(string baseRomFs, GameId game = GameId.None)
         {
+            GameId = game;
             AddDataFS(baseRomFs);
+            if (GameId == GameId.FireEmblemThreeHouses) Logger.Assert(RootEntryCount == 31161, "RootEntryCount == 31161");
         }
+
+        /// <summary>
+        ///     Game ID of the game.
+        /// </summary>
+        public GameId GameId { get; }
 
         /// <summary>
         ///     Game data
@@ -106,7 +114,7 @@ namespace Cethleann
             if (RootData == default)
             {
                 RootData = set;
-                RootEntryCount = RootData.DATA0.Entries.Count;
+                RootEntryCount = RootData.DATA0.Entries.Count + 1; // thanks Koei.
             }
             else
             {
@@ -130,6 +138,7 @@ namespace Cethleann
             var info2Path = Path.Combine(path, "INFO2.bin");
             using var info2 = File.OpenRead(info2Path);
             info2.Read(buffer);
+            // ReSharper disable once InconsistentNaming
             var INFO2 = MemoryMarshal.Read<INFO2>(buffer);
             Patch = (new INFO0(INFO2, info0Path), new INFO1(INFO2, info1Path), INFO2);
             PatchEntryCount = Patch.INFO1?.Entries.Count ?? 0;
@@ -139,7 +148,6 @@ namespace Cethleann
         ///     Reads an entry from the first valid (non-zero) storage.
         /// </summary>
         /// <param name="index"></param>
-        /// <param name="flags"></param>
         /// <returns></returns>
         public Memory<byte> ReadEntry(int index)
         {
@@ -227,9 +235,9 @@ namespace Cethleann
         /// <summary>
         ///     Loads a filelist from a csv file
         /// </summary>
-        public void LoadFileList()
+        public void LoadFileList(string filename = null)
         {
-            var loc = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "filelist.csv");
+            var loc = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), filename ?? $"filelist{(GameId == GameId.None ? "" : $"-{GameId:G}")}.csv");
             if (!File.Exists(loc)) return;
             var csv = File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith("#")).Select(x => x.Split(',', 2, StringSplitOptions.RemoveEmptyEntries).Select(y => y.Trim()).ToArray());
             foreach (var entry in csv)
@@ -268,12 +276,12 @@ namespace Cethleann
                 if (index >= RootEntryCount + PatchEntryCount)
                 {
                     prefix = "dlc/";
-                    logicalId = "DLC" + (index - RootEntryCount - PatchEntryCount);
+                    logicalId = $"DLC{index - RootEntryCount - PatchEntryCount} - {index}";
                 }
                 else
                 {
                     prefix = "patch/";
-                    logicalId = "P" + (index - RootEntryCount);
+                    logicalId = $"PATCH{index - RootEntryCount} - {index}";
                     var info1 = Patch.INFO1;
                     path = info1.GetPath(index - RootEntryCount);
                     if (!string.IsNullOrWhiteSpace(path) && path != "nx/")

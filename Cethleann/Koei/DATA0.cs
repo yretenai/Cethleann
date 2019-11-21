@@ -60,6 +60,7 @@ namespace Cethleann.Koei
         /// <returns>memory stream of uncompressed bytes</returns>
         public Memory<byte> ReadEntry(Stream DATA1, int index)
         {
+            if (index == Entries.Count) return Memory<byte>.Empty;
             if (index < 0 || index >= Entries.Count) throw new IndexOutOfRangeException($"Index {index} does not exist!");
 
             return ReadEntry(DATA1, Entries[index]);

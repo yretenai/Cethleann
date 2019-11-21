@@ -23,7 +23,7 @@ namespace Cethleann.Audio
                 var sectionData = buffer.Slice(offset, header.Size);
                 var section = header.SectionType switch
                 {
-                    SoundResourceSectionType.KTSS => (ISoundResourceSection) new SoundResourceSample(sectionData),
+                    SoundResourceSectionType.SoundSample => (ISoundResourceSection) new SoundResourceSample(sectionData),
                     _ => new SoundUnknown(sectionData)
                 };
                 Entries.Add(section);

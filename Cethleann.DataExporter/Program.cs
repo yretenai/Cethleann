@@ -7,7 +7,6 @@ using Cethleann.Audio;
 using Cethleann.DataTables;
 using Cethleann.G1;
 using DragonLib.IO;
-using static Cethleann.Model.Program;
 
 namespace Cethleann.DataExporter
 {
@@ -24,7 +23,7 @@ namespace Cethleann.DataExporter
 
             var romfs = args.First();
             var output = args.ElementAt(1);
-            using var cethleann = new Cethleann(romfs);
+            using var cethleann = new Cethleann(romfs, GameId.FireEmblemThreeHouses);
 
             if (args.Length > 3 && Directory.Exists(args.ElementAt(2))) cethleann.AddPatchFS(args.ElementAt(2));
 
