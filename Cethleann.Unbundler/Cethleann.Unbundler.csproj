@@ -7,9 +7,9 @@
         <Platforms>x64</Platforms>
         <RuntimeIdentifiers>win10-x64;osx-x64;linux-x64</RuntimeIdentifiers>
     </PropertyGroup>
-    
+
     <ItemGroup>
-      <ProjectReference Include="..\Cethleann.DataExporter\Cethleann.DataExporter.csproj" />
+      <ProjectReference Include="..\Koei.DataExporter\Koei.DataExporter.csproj" />
     </ItemGroup>
 
 </Project>

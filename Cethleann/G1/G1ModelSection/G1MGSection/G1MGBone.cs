@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Cethleann.Structure.Resource.Model;
+using Cethleann.Koei.Structure.Resource.Model;
 using DragonLib;
+using JetBrains.Annotations;
 
-namespace Cethleann.G1.G1ModelSection.G1MGSection
+namespace Cethleann.Koei.G1.G1ModelSection.G1MGSection
 {
     /// <summary>
     ///     Parses mesh bones
     /// </summary>
+    [PublicAPI]
     public class G1MGBone : IG1MGSection
     {
         internal G1MGBone(Span<byte> data, ModelGeometrySection section)

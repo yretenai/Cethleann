@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
-using Cethleann.Structure;
+using Cethleann.Koei.Structure;
 using DragonLib.IO;
+using JetBrains.Annotations;
 
-namespace Cethleann
+namespace Cethleann.Koei
 {
     /// <summary>
     ///     Text Localization files are used to collect text data.
     /// </summary>
+    [PublicAPI]
     public class TextLocalization
     {
         /// <summary>

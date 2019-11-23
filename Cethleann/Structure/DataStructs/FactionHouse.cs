@@ -1,4 +1,4 @@
-﻿namespace Cethleann.Structure.DataStructs
+﻿namespace Cethleann.Koei.Structure.DataStructs
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public enum FactionHouse : ushort

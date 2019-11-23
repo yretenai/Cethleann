@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Cethleann.Structure;
+using Cethleann.Koei.Structure;
+using JetBrains.Annotations;
 
-namespace Cethleann.Koei
+namespace Cethleann.Koei.Koei
 {
     /// <summary>
     ///     DATA0 is a list of information for which to read DATA1 with.
     /// </summary>
+    [PublicAPI]
     public class DATA0
     {
         /// <summary>
@@ -55,34 +57,34 @@ namespace Cethleann.Koei
         /// <summary>
         ///     Reads a file index from DATA1
         /// </summary>
-        /// <param name="DATA1">Binary Read-capable Stream of DATA1</param>
+        /// <param name="data1">Binary Read-capable Stream of DATA1</param>
         /// <param name="index">Entry Index to read</param>
         /// <returns>memory stream of uncompressed bytes</returns>
-        public Memory<byte> ReadEntry(Stream DATA1, int index)
+        public Memory<byte> ReadEntry(Stream data1, int index)
         {
             if (index == Entries.Count) return Memory<byte>.Empty;
             if (index < 0 || index >= Entries.Count) throw new IndexOutOfRangeException($"Index {index} does not exist!");
 
-            return ReadEntry(DATA1, Entries[index]);
+            return ReadEntry(data1, Entries[index]);
         }
 
         /// <summary>
         ///     Reads a file entry from DATA1
         /// </summary>
-        /// <param name="DATA1">Binary Read-capable Stream of DATA1</param>
+        /// <param name="data1">Binary Read-capable Stream of DATA1</param>
         /// <param name="entry">Entry to read</param>
         /// <returns>memory stream of uncompressed bytes</returns>
-        public static Memory<byte> ReadEntry(Stream DATA1, DATA0Entry entry)
+        public static Memory<byte> ReadEntry(Stream data1, DATA0Entry entry)
         {
-            if (!DATA1.CanRead) throw new InvalidOperationException("Cannot read from stream!");
+            if (!data1.CanRead) throw new InvalidOperationException("Cannot read from stream!");
             if (entry.UncompressedSize == 0) return Memory<byte>.Empty;
 
-            DATA1.Position = entry.Offset;
+            data1.Position = entry.Offset;
 
-            if (entry.IsCompressed) return Compression.Decompress(DATA1, entry.CompressedSize);
+            if (entry.IsCompressed) return Compression.Decompress(data1, entry.CompressedSize);
 
             var buffer = new Memory<byte>(new byte[entry.UncompressedSize]);
-            DATA1.Read(buffer.Span);
+            data1.Read(buffer.Span);
             return buffer;
         }
     }

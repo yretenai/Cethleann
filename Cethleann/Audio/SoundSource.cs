@@ -1,14 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Cethleann.Structure.Resource.Audio;
+using Cethleann.Koei.Structure.Resource.Audio;
 using DragonLib;
 using DragonLib.IO;
+using JetBrains.Annotations;
 
-namespace Cethleann.Audio
+namespace Cethleann.Koei.Audio
 {
+    /// <summary>
+    /// KTSS Sound Sample, or KOVS Encrypted Sound Sample
+    /// </summary>
+    [PublicAPI]
     public class SoundSource
     {
+        /// <summary>
+        /// Initialize from a buffer.
+        /// </summary>
+        /// <param name="buffer"></param>
         public SoundSource(Span<byte> buffer)
         {
             FullBuffer = new Memory<byte>(buffer.ToArray());
@@ -34,10 +43,29 @@ namespace Cethleann.Audio
             }
         }
 
+        /// <summary>
+        /// KTSS
+        /// </summary>
         public SoundSampleHeader Header { get; set; }
+
+        /// <summary>
+        /// KTSS Codec Header
+        /// </summary>
         public SoundSampleCodecHeader CodecHeader { get; set; }
+
+        /// <summary>
+        /// Channel info
+        /// </summary>
         public byte[] ChannelFamily { get; set; }
+
+        /// <summary>
+        /// Codec packets
+        /// </summary>
         public List<(SoundSampleFrame frame, Memory<byte> data)> Packets { get; set; } = new List<(SoundSampleFrame Unknown, Memory<byte> data)>();
+
+        /// <summary>
+        /// Full sound buffer
+        /// </summary>
         public Memory<byte> FullBuffer { get; set; }
     }
 }

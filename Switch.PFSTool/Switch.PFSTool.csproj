@@ -5,7 +5,7 @@
     <Platforms>x64</Platforms>
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
-    <StartupObject>pfstool.Program</StartupObject>
+    <StartupObject>Switch.PFSTool.Program</StartupObject>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

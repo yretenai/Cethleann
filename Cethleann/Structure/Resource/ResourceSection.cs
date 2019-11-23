@@ -1,4 +1,4 @@
-namespace Cethleann.Structure.Resource
+namespace Cethleann.Koei.Structure.Resource
 {
     /// <summary>
     ///     Resources found in G1/2 assets

@@ -4,12 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using DragonLib;
+using JetBrains.Annotations;
 
-namespace Cethleann
+namespace Cethleann.Koei
 {
     /// <summary>
     ///     Koei Engine Bundle, apparently because DataTable is too boring.
     /// </summary>
+    [PublicAPI]
     public class Bundle
     {
         /// <summary>

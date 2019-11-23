@@ -1,8 +1,10 @@
 ﻿using DragonLib.Numerics;
+using JetBrains.Annotations;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-namespace Cethleann.Structure.DataStructs
+namespace Cethleann.Koei.Structure.DataStructs
 {
+    [PublicAPI]
     public struct CharacterInfo
     {
         public Vector3 Unknown_X0 { get; set; } // Color? Or something?

@@ -4,11 +4,13 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace pfstool
+// ReSharper disable UnusedAutoPropertyAccessor.Local
+
+namespace Switch.PFSTool
 {
     internal static class Program
     {
-        private const int PFS0Magic = 'P' << 0 | 'F' << 8 | 'S' << 16 | '0' << 24;
+        private const int PFS0_MAGIC = 'P' << 0 | 'F' << 8 | 'S' << 16 | '0' << 24;
 
         private static readonly string[] ByteSizes = { "B", "KB", "MB", "GB", "TB" };
 
@@ -28,7 +30,7 @@ namespace pfstool
         {
             if (args.Length < 2)
             {
-                Console.WriteLine("Usage: pfstool.exe in_file out_dir");
+                Console.WriteLine("Usage: Switch.PFSTool.exe in_file out_dir");
                 return;
             }
 
@@ -36,7 +38,7 @@ namespace pfstool
             var buffer = new Span<byte>(new byte[0x10]);
             archive.Read(buffer);
             var header = MemoryMarshal.Read<PFS0Header>(buffer);
-            if (header.Magic != PFS0Magic)
+            if (header.Magic != PFS0_MAGIC)
             {
                 Console.Error.WriteLine("Not a PFS0 file.");
                 return;

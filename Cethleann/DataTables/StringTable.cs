@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Cethleann.Structure;
+using Cethleann.Koei.Structure;
 using DragonLib;
+using JetBrains.Annotations;
 
-namespace Cethleann.DataTables
+namespace Cethleann.Koei.DataTables
 {
     /// <summary>
     ///     Main string bundle of the game.
     /// </summary>
+    [PublicAPI]
     public class StringTable
     {
         /// <summary>

@@ -1,11 +1,13 @@
 ﻿using System;
-using Cethleann.Structure.Resource;
+using Cethleann.Koei.Structure.Resource;
+using JetBrains.Annotations;
 
-namespace Cethleann.G1.G1ModelSection
+namespace Cethleann.Koei.G1.G1ModelSection
 {
     /// <summary>
     ///     Extra Section of G1M models
     /// </summary>
+    [PublicAPI]
     public class G1MExtra : IG1Section
     {
         /// <summary>
@@ -14,7 +16,6 @@ namespace Cethleann.G1.G1ModelSection
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
         /// <param name="sectionHeader"></param>
-        // ReSharper disable once UnusedParameter.Local
         public G1MExtra(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
             if (sectionHeader.Magic != ResourceSection.ModelExtra) throw new InvalidOperationException("Not an EXTR stream");

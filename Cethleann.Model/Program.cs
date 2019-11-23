@@ -1,15 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Cethleann.G1;
-using Cethleann.DataTables;
-using Cethleann.G1.G1ModelSection;
-using Cethleann.G1.G1ModelSection.G1MGSection;
-using Cethleann.Structure.Resource.Texture;
+using Cethleann.Koei.DataTables;
+using Cethleann.Koei.G1;
+using Cethleann.Koei.G1.G1ModelSection;
+using Cethleann.Koei.G1.G1ModelSection.G1MGSection;
+using Cethleann.Koei.Structure.Resource.Texture;
 using DragonLib.Imaging;
 using DragonLib.Imaging.DXGI;
 
-namespace Cethleann.Model
+namespace Cethleann.Koei.Model
 {
     public static class Program
     {
@@ -38,8 +38,8 @@ namespace Cethleann.Model
             var containerData = new Span<byte>(new byte[file.Length]);
             file.Read(containerData);
 
-            var g1m = default(G1Model);
-            var g1t = default(G1TextureGroup);
+            var g1Model = default(G1Model);
+            var g1TextureGroup = default(G1TextureGroup);
 
             if (containerData.GetDataType() == DataType.Model)
             {
@@ -50,40 +50,40 @@ namespace Cethleann.Model
                     fileset.Read(setData);
                     if (setData.GetDataType() == DataType.TextureGroup)
                     {
-                        g1t = new G1TextureGroup(setData);
+                        g1TextureGroup = new G1TextureGroup(setData);
                     }
                 }
 
-                g1m = new G1Model(containerData);
+                g1Model = new G1Model(containerData);
             }
             else if (containerData.IsDataTable())
             {
                 var dataTable = new DataTable(containerData);
-                var g1mData = dataTable.Entries.FirstOrDefault(x => x.Span.GetDataType() == DataType.Model);
-                var g1tData = dataTable.Entries.FirstOrDefault(x => x.Span.GetDataType() == DataType.TextureGroup);
-                if (!g1mData.IsEmpty)
+                var g1ModelData = dataTable.Entries.FirstOrDefault(x => x.Span.GetDataType() == DataType.Model);
+                var g1TextureGroupData = dataTable.Entries.FirstOrDefault(x => x.Span.GetDataType() == DataType.TextureGroup);
+                if (!g1ModelData.IsEmpty)
                 {
-                    g1m = new G1Model(g1mData.Span);
+                    g1Model = new G1Model(g1ModelData.Span);
                 }
 
-                if (!g1tData.IsEmpty)
+                if (!g1TextureGroupData.IsEmpty)
                 {
-                    g1t = new G1TextureGroup(g1tData.Span);
+                    g1TextureGroup = new G1TextureGroup(g1TextureGroupData.Span);
                 }
             }
             else if (containerData.GetDataType() == DataType.TextureGroup)
             {
-                g1t = new G1TextureGroup(containerData);
+                g1TextureGroup = new G1TextureGroup(containerData);
             }
 
-            if (g1t != null)
+            if (g1TextureGroup != null)
             {
-                SaveTextures(texDestination, g1t);
+                SaveTextures(texDestination, g1TextureGroup);
             }
 
-            if (g1m != null)
+            if (g1Model != null)
             {
-                SaveModel(destination, g1m, Path.GetFileName(texDestination));
+                SaveModel(destination, g1Model, Path.GetFileName(texDestination));
             }
         }
 
@@ -92,7 +92,7 @@ namespace Cethleann.Model
             var i = 0;
             if (!Directory.Exists(pathBase)) Directory.CreateDirectory(pathBase);
 
-            foreach (var (_, header, ex, blob) in group.Textures)
+            foreach (var (_, header, _, blob) in group.Textures)
             {
                 var (width, height, mips, format) = G1TextureGroup.UnpackWHM(header);
                 if (format == DXGIPixelFormat.UNKNOWN)
@@ -101,6 +101,7 @@ namespace Cethleann.Model
                     {
                         File.WriteAllBytes($@"{pathBase}\{i:X4}_({dxgiFormat:G}).dds", DXGI.BuildDDS(dxgiFormat, mips, width, height, 1, blob.Span).ToArray());
                     }
+
                     continue;
                 }
 

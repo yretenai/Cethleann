@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Cethleann.Structure.Resource;
+using Cethleann.Koei.Structure.Resource;
 using DragonLib.Numerics;
+using JetBrains.Annotations;
 
-namespace Cethleann.G1.G1ModelSection
+namespace Cethleann.Koei.G1.G1ModelSection
 {
     /// <summary>
     ///     Matrix Section of G1M models
     /// </summary>
+    [PublicAPI]
     public class G1MM : IG1Section
     {
         /// <summary>
@@ -23,8 +25,7 @@ namespace Cethleann.G1.G1ModelSection
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MM version {Section.Version.ToVersion()} is not supported!");
 
-            // ReSharper disable once UnusedVariable
-            var count = MemoryMarshal.Read<int>(data.Slice(0xC));
+            var _ = MemoryMarshal.Read<int>(data.Slice(0xC)); // count
             Matrices = MemoryMarshal.Cast<byte, Matrix4x4>(data.Slice(0x10)).ToArray();
         }
 

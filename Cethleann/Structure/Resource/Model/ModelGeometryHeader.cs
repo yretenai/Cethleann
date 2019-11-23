@@ -1,6 +1,6 @@
 ﻿using DragonLib.Numerics;
 
-namespace Cethleann.Structure.Resource.Model
+namespace Cethleann.Koei.Structure.Resource.Model
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public struct ModelGeometryHeader

@@ -4,29 +4,31 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Cethleann.Koei;
-using Cethleann.Structure;
+using Cethleann.Koei.Koei;
+using Cethleann.Koei.Structure;
 using DragonLib;
 using DragonLib.IO;
+using JetBrains.Annotations;
 
-namespace Cethleann
+namespace Cethleann.Koei.ManagedFS
 {
     /// <summary>
     ///     Management class for DATA0 and INFO0 files.
     /// </summary>
-    public class Cethleann : IDisposable
+    [PublicAPI]
+    public class Flayn : IDisposable
     {
         /// <summary>
         ///     Loaded FileList.csv
         /// </summary>
-        public Dictionary<string, string> FileList = new Dictionary<string, string>();
+        public Dictionary<string, string> FileList { get; } = new Dictionary<string, string>();
 
         /// <summary>
         ///     Loads data
         /// </summary>
         /// <param name="baseRomFs"></param>
         /// <param name="game"></param>
-        public Cethleann(string baseRomFs, GameId game = GameId.None)
+        public Flayn(string baseRomFs, GameId game = GameId.None)
         {
             GameId = game;
             AddDataFS(baseRomFs);
@@ -90,7 +92,7 @@ namespace Cethleann
         /// <summary>
         ///     Cleanup
         /// </summary>
-        ~Cethleann()
+        ~Flayn()
         {
             Dispose(false);
         }
@@ -136,11 +138,10 @@ namespace Cethleann
             var info0Path = Path.Combine(path, "INFO0.bin");
             var info1Path = Path.Combine(path, "INFO1.bin");
             var info2Path = Path.Combine(path, "INFO2.bin");
-            using var info2 = File.OpenRead(info2Path);
-            info2.Read(buffer);
-            // ReSharper disable once InconsistentNaming
-            var INFO2 = MemoryMarshal.Read<INFO2>(buffer);
-            Patch = (new INFO0(INFO2, info0Path), new INFO1(INFO2, info1Path), INFO2);
+            using var info2Stream = File.OpenRead(info2Path);
+            info2Stream.Read(buffer);
+            var info2 = MemoryMarshal.Read<INFO2>(buffer);
+            Patch = (new INFO0(info2, info0Path), new INFO1(info2, info1Path), info2);
             PatchEntryCount = Patch.INFO1?.Entries.Count ?? 0;
         }
 
@@ -156,13 +157,10 @@ namespace Cethleann
             if (index >= RootEntryCount)
             {
                 index -= RootEntryCount;
-                if (index >= PatchEntryCount)
-                {
-                    index -= PatchEntryCount;
-                    return FindDLC(index);
-                }
+                if (index < PatchEntryCount) return FindPatch(index);
 
-                return FindPatch(index);
+                index -= PatchEntryCount;
+                return FindDLC(index);
             }
 
             try

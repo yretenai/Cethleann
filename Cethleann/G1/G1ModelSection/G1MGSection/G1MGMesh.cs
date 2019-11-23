@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Cethleann.Structure.Resource.Model;
+using Cethleann.Koei.Structure.Resource.Model;
 using DragonLib;
 using DragonLib.IO;
+using JetBrains.Annotations;
 
-namespace Cethleann.G1.G1ModelSection.G1MGSection
+namespace Cethleann.Koei.G1.G1ModelSection.G1MGSection
 {
     /// <summary>
     ///     Parses submesh groups
     /// </summary>
+    [PublicAPI]
     public class G1MGMesh : IG1MGSection
     {
         internal G1MGMesh(Span<byte> data, ModelGeometrySection section)

@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Cethleann.Structure.Resource.Model;
+using Cethleann.Koei.Structure.Resource.Model;
 using DragonLib;
+using JetBrains.Annotations;
 
-namespace Cethleann.G1.G1ModelSection.G1MGSection
+namespace Cethleann.Koei.G1.G1ModelSection.G1MGSection
 {
     /// <summary>
     ///     Copies raw vertex buffers.
     /// </summary>
+    [PublicAPI]
     public class G1MGVertexBuffer : IG1MGSection
     {
         internal G1MGVertexBuffer(Span<byte> block, ModelGeometrySection subSectionHeader)

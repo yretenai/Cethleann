@@ -1,10 +1,12 @@
-﻿using Cethleann.Structure.Resource.Model;
+﻿using Cethleann.Koei.Structure.Resource.Model;
+using JetBrains.Annotations;
 
-namespace Cethleann.G1.G1ModelSection.G1MGSection
+namespace Cethleann.Koei.G1.G1ModelSection.G1MGSection
 {
     /// <summary>
     ///     Base Wrapper for G1MG Sections
     /// </summary>
+    [PublicAPI]
     public interface IG1MGSection
     {
         /// <summary>

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Cethleann.Structure.Resource;
+using Cethleann.Koei.Structure.Resource;
 using DragonLib;
 
-namespace Cethleann
+namespace Cethleann.Koei
 {
     /// <summary>
     ///     Series of helper for FETH.

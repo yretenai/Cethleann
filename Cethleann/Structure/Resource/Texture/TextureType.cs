@@ -1,4 +1,4 @@
-﻿namespace Cethleann.Structure.Resource.Texture
+﻿namespace Cethleann.Koei.Structure.Resource.Texture
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public enum TextureType : byte

@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Cethleann.Structure.Resource.Model;
+using Cethleann.Koei.Structure.Resource.Model;
 using DragonLib;
 using DragonLib.Numerics;
+using JetBrains.Annotations;
 
-namespace Cethleann.G1.G1ModelSection.G1MGSection
+namespace Cethleann.Koei.G1.G1ModelSection.G1MGSection
 {
     /// <summary>
     ///     Parses shader variable data
     /// </summary>
     /// <inheritdoc />
+    [PublicAPI]
     public class G1MGShaderParam : IG1MGSection
     {
         internal G1MGShaderParam(Span<byte> data, ModelGeometrySection sectionHeader)

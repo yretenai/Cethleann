@@ -1,4 +1,4 @@
-namespace Cethleann.Structure
+namespace Cethleann.Koei.Structure
 {
 #pragma warning disable 1591
     public struct INFO2

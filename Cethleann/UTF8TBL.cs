@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using JetBrains.Annotations;
 
-namespace Cethleann
+namespace Cethleann.Koei
 {
     /// <summary>
     ///     UTF-8 texture sheet character table
     /// </summary>
+    [PublicAPI]
     public class UTF8TBL
     {
         /// <summary>

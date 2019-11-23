@@ -1,11 +1,13 @@
 ﻿using System;
-using Cethleann.Structure.Resource;
+using Cethleann.Koei.Structure.Resource;
+using JetBrains.Annotations;
 
-namespace Cethleann.G1.G1ModelSection
+namespace Cethleann.Koei.G1.G1ModelSection
 {
     /// <summary>
     ///     F Section of G1M models
     /// </summary>
+    [PublicAPI]
     public class G1MF : IG1Section
     {
         /// <summary>
@@ -15,7 +17,6 @@ namespace Cethleann.G1.G1ModelSection
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
         /// <param name="sectionHeader"></param>
-        // ReSharper disable once UnusedParameter.Local
         public G1MF(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
             if (sectionHeader.Magic != ResourceSection.ModelF) throw new InvalidOperationException("Not an G1MF stream");

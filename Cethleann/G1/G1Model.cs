@@ -4,20 +4,22 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Cethleann.G1.G1ModelSection;
-using Cethleann.G1.G1ModelSection.G1MGSection;
-using Cethleann.Structure.Resource;
-using Cethleann.Structure.Resource.Model;
+using Cethleann.Koei.G1.G1ModelSection;
+using Cethleann.Koei.G1.G1ModelSection.G1MGSection;
+using Cethleann.Koei.Structure.Resource;
+using Cethleann.Koei.Structure.Resource.Model;
 using DragonLib;
 using DragonLib.Numerics;
 using GLTF.Schema;
+using JetBrains.Annotations;
 using Quaternion = GLTF.Math.Quaternion;
 
-namespace Cethleann.G1
+namespace Cethleann.Koei.G1
 {
     /// <summary>
     ///     G1Model is the main model format
     /// </summary>
+    [PublicAPI]
     public class G1Model : IG1Section
     {
         /// <summary>

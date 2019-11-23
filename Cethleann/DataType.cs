@@ -1,8 +1,6 @@
 ﻿using DragonLib;
 
-// ReSharper disable ShiftExpressionRealShiftCountIsZero
-
-namespace Cethleann
+namespace Cethleann.Koei
 {
     /// <summary>
     ///     Magic Values for most files
@@ -26,6 +24,12 @@ namespace Cethleann
         /// </summary>
         [FileExtension("sarc")]
         SARC = 'S' << 0 | 'A' << 8 | 'R' << 16 | 'C' << 24,
+
+        /// <summary>
+        ///     Elixir Archive
+        /// </summary>
+        [FileExtension("elixir")]
+        ElixirArchive = 'E' << 0 | 'A' << 8 | 'R' << 16 | 'C' << 24,
 
         /// <summary>
         ///     S-Package?

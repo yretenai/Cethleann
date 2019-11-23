@@ -2,13 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using Cethleann.Structure.Resource;
+using Cethleann.Koei.Structure.Resource;
+using JetBrains.Annotations;
 
-namespace Cethleann.G1
+namespace Cethleann.Koei.G1
 {
     /// <summary>
     ///     Decomposes a MDLK buffer to individual files
     /// </summary>
+    [PublicAPI]
     public class KLDM
     {
         /// <summary>

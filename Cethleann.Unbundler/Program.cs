@@ -2,10 +2,10 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Cethleann.DataTables;
-using static Cethleann.DataExporter.Program;
+using Cethleann.Koei.DataTables;
+using static Koei.DataExporter.Program;
 
-namespace Cethleann.Unbundler
+namespace Cethleann.Koei.Unbundler
 {
     static class Program
     {

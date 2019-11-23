@@ -19,14 +19,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DragonLib\DragonLib.csproj" />
-    <ProjectReference Include="..\GLTFSerialization\GLTFSerialization.csproj" />
+    <ProjectReference Include="..\Library\DragonLib\DragonLib.csproj" />
+    <ProjectReference Include="..\Library\GLTFSerialization\GLTFSerialization.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="filelist-FireEmblemThreeHouses.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
   </ItemGroup>
 
 </Project>

@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using Cethleann.Audio;
-using Cethleann.DataTables;
-using Cethleann.G1;
+using Cethleann.Koei;
+using Cethleann.Koei.Audio;
+using Cethleann.Koei.ManagedFS;
+using Cethleann.Koei.DataTables;
+using Cethleann.Koei.G1;
 using DragonLib.IO;
+using static Cethleann.Koei.Model.Program;
 
-namespace Cethleann.DataExporter
+namespace Koei.DataExporter
 {
     [SuppressMessage("ReSharper", "UnusedVariable")]
     public static class Program
@@ -17,13 +20,13 @@ namespace Cethleann.DataExporter
         {
             if (args.Length < 2)
             {
-                Console.WriteLine("Usage: Cethleann.DataExporter.exe RomFS output [PatchRomFS [DLCRomFS...]]");
+                Console.WriteLine("Usage: Koei.DataExporter.exe RomFS output [PatchRomFS [DLCRomFS...]]");
                 return;
             }
 
             var romfs = args.First();
             var output = args.ElementAt(1);
-            using var cethleann = new Cethleann(romfs, GameId.FireEmblemThreeHouses);
+            using var cethleann = new Flayn(romfs, GameId.FireEmblemThreeHouses);
 
             if (args.Length > 3 && Directory.Exists(args.ElementAt(2))) cethleann.AddPatchFS(args.ElementAt(2));
 
@@ -43,7 +46,7 @@ namespace Cethleann.DataExporter
             ExtractAll(output, cethleann);
         }
 
-        private static void ExtractAll(string romfs, Cethleann cethleann)
+        private static void ExtractAll(string romfs, Flayn cethleann)
         {
             if (!Directory.Exists($@"{romfs}\romfs")) Directory.CreateDirectory($@"{romfs}\romfs");
             for (var index = 0; index < cethleann.EntryCount; index++)
@@ -56,6 +59,7 @@ namespace Cethleann.DataExporter
             }
         }
 
+        // ReSharper disable once ConvertIfStatementToReturnStatement
         private static string GetExtension(Span<byte> data)
         {
             var dt = data.GetDataType();

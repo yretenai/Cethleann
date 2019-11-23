@@ -1,4 +1,4 @@
-namespace Cethleann
+namespace Cethleann.Koei
 {
 #pragma warning disable 1591
     public enum GameId : uint

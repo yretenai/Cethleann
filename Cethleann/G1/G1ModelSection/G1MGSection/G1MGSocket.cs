@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Cethleann.Structure.Resource.Model;
+using Cethleann.Koei.Structure.Resource.Model;
+using JetBrains.Annotations;
 
-namespace Cethleann.G1.G1ModelSection.G1MGSection
+namespace Cethleann.Koei.G1.G1ModelSection.G1MGSection
 {
     /// <summary>
     ///     "Lattice" is an assumption.
     ///     Just a list of float data, used for bones maybe?
     /// </summary>
     /// <inheritdoc />
+    [PublicAPI]
     public class G1MGSocket : IG1MGSection
     {
         internal G1MGSocket(Span<byte> data, ModelGeometrySection sectionInfo)

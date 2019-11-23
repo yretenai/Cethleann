@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Cethleann.Structure.Resource;
-using Cethleann.Structure.Resource.Model;
+using Cethleann.Koei.Structure.Resource;
+using Cethleann.Koei.Structure.Resource.Model;
 using DragonLib;
 using DragonLib.IO;
+using JetBrains.Annotations;
 using OpenTK;
 using Vector3 = DragonLib.Numerics.Vector3;
 
-namespace Cethleann.G1.G1ModelSection
+namespace Cethleann.Koei.G1.G1ModelSection
 {
     /// <summary>
     ///     Skeleton Section of G1M models
     /// </summary>
+    [PublicAPI]
     public class G1MS : IG1Section
     {
         /// <summary>

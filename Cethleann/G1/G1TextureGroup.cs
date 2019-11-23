@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Cethleann.Structure.Resource;
-using Cethleann.Structure.Resource.Texture;
+using Cethleann.Koei.Structure.Resource;
+using Cethleann.Koei.Structure.Resource.Texture;
 using DragonLib;
 using DragonLib.Imaging.DXGI;
 using DragonLib.IO;
+using JetBrains.Annotations;
 
-namespace Cethleann.G1
+namespace Cethleann.Koei.G1
 {
     /// <summary>
     ///     G1TextureGroup is a bundle of textures.
     ///     This is how all textures are encoded.
     /// </summary>
+    [PublicAPI]
     public class G1TextureGroup : IG1Section
     {
         /// <summary>

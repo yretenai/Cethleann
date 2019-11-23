@@ -2,14 +2,16 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.InteropServices;
-using Cethleann.Structure;
+using Cethleann.Koei.Structure;
 using DragonLib;
+using JetBrains.Annotations;
 
-namespace Cethleann
+namespace Cethleann.Koei
 {
     /// <summary>
-    ///     Compression helper class
+    ///     Compression helper class for KTGL.
     /// </summary>
+    [PublicAPI]
     public static class Compression
     {
         /// <summary>
@@ -65,12 +67,13 @@ namespace Cethleann
         ///     Decompresses a .gz stream.
         /// </summary>
         /// <param name="data"></param>
+        /// <param name="blockSize"></param>
         /// <returns></returns>
-        public static unsafe Memory<byte> Decompress(Span<byte> data)
+        public static unsafe Span<byte> Decompress(Span<byte> data, int blockSize = (int) DataType.Compressed)
         {
             var cursor = 0;
             var compInfo = MemoryMarshal.Read<CompressionInfo>(data);
-            var buffer = new Memory<byte>(new byte[compInfo.Size]);
+            var buffer = new Span<byte>(new byte[compInfo.Size]);
             cursor += SizeHelper.SizeOf<CompressionInfo>();
             var chunkSizes = MemoryMarshal.Cast<byte, int>(data.Slice(cursor, 4 * compInfo.ChunkCount));
             cursor = (cursor + 4 * compInfo.ChunkCount).Align(0x80);
@@ -82,7 +85,7 @@ namespace Cethleann
                 {
                     if (chunkSize + bufferCursor == buffer.Length)
                     {
-                        data.Slice(cursor, chunkSize).CopyTo(buffer.Span.Slice(bufferCursor));
+                        data.Slice(cursor, chunkSize).CopyTo(buffer.Slice(bufferCursor));
                         bufferCursor += chunkSize;
                         continue;
                     }
@@ -91,9 +94,9 @@ namespace Cethleann
                     {
                         using var stream = new UnmanagedMemoryStream(pinData, chunkSize - 6);
                         using var inflateStream = new DeflateStream(stream, CompressionMode.Decompress);
-                        var block = new Span<byte>(new byte[0x0001_0000]);
+                        var block = new Span<byte>(new byte[blockSize]);
                         var read = inflateStream.Read(block);
-                        block.Slice(0, read).CopyTo(buffer.Span.Slice(bufferCursor));
+                        block.Slice(0, read).CopyTo(buffer.Slice(bufferCursor));
                         bufferCursor = (bufferCursor + read).Align(0x80);
                     }
                 }
@@ -116,7 +119,10 @@ namespace Cethleann
         {
             var compressedBuffer = new Span<byte>(new byte[compressedSize + SizeHelper.SizeOf<CompressionInfo>()]);
             stream.Read(compressedBuffer);
-            return Decompress(compressedBuffer);
+            var decompressed = Decompress(compressedBuffer);
+            var result = new Memory<byte>(new byte[decompressed.Length]);
+            decompressed.CopyTo(result.Span);
+            return result;
         }
     }
 }

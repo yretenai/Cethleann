@@ -146,10 +146,10 @@ namespace Gust.EncFinder
 
                 LogNumber("Fence IMUL instruction", fencePtr + main1Ptr + constantPtr);
                 var fence = MemoryMarshal.Read<int>(exe.Slice(fencePtr + main1Ptr + constantPtr + 2));
-                
+
                 Console.WriteLine();
 
-                Logger.Log24Bit(ConsoleSwatch.ColorReset, null, false, Console.Out, null, "All table entries are prime? ");
+                Logger.Log24Bit(ConsoleSwatch.COLOR_RESET, null, false, Console.Out, null, "All table entries are prime? ");
                 if (main.All(x => x.IsPrime()) && lengths.All(x => x.IsPrime()) && table.All(x => x.IsPrime()))
                 {
                     Logger.Log24Bit(ConsoleSwatch.XTermColor.GreenYellow, false, Console.Out, null, "Yes");
@@ -158,7 +158,7 @@ namespace Gust.EncFinder
                 {
                     Logger.Log24Bit(ConsoleSwatch.XTermColor.Red, false, Console.Out, null, "No");
                 }
-                
+
                 Console.WriteLine();
 
                 LogNumberImportant("table[0]", table[0]);
@@ -171,7 +171,7 @@ namespace Gust.EncFinder
                 LogNumberImportant("main[1]", main[1]);
                 LogNumberImportant("main[2]", main[2]);
                 LogNumberImportant("fence", fence);
-                
+
                 Console.WriteLine();
             }
 
@@ -180,13 +180,13 @@ namespace Gust.EncFinder
 
         private static void LogNumber(string message, int number)
         {
-            Logger.Log24Bit(ConsoleSwatch.ColorReset, null, false, Console.Out, null, $"{message}: ");
+            Logger.Log24Bit(ConsoleSwatch.COLOR_RESET, null, false, Console.Out, null, $"{message}: ");
             Logger.Log24Bit(ConsoleSwatch.XTermColor.Fuchsia, true, Console.Out, null, $"0x{number:X8}");
         }
 
         private static void LogNumberImportant(string message, int number)
         {
-            Logger.Log24Bit(ConsoleSwatch.ColorReset, null, false, Console.Out, null, $"{message}: ");
+            Logger.Log24Bit(ConsoleSwatch.COLOR_RESET, null, false, Console.Out, null, $"{message}: ");
             Logger.Log24Bit(ConsoleSwatch.XTermColor.OrangeRed, true, Console.Out, null, $"0x{number:X2}");
         }
     }

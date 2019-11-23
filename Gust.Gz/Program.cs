@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
+using Cethleann.Gust;
 
-namespace Cethleann.Gz
+namespace Koei.Gz
 {
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {

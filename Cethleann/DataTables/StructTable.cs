@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Cethleann.Structure;
+using Cethleann.Koei.Structure;
 using DragonLib;
+using JetBrains.Annotations;
 
-namespace Cethleann.DataTables
+namespace Cethleann.Koei.DataTables
 {
     /// <summary>
     ///     Parses a memory buffer by assuming it consists of fixed width structs.
     /// </summary>
+    [PublicAPI]
     public class StructTable
     {
         /// <summary>

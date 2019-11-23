@@ -1,4 +1,4 @@
-﻿namespace Cethleann.Structure
+﻿namespace Cethleann.Koei.Structure
 {
     /// <summary>
     ///     Info regarding compression for a file in DATA1

@@ -5,25 +5,29 @@ VisualStudioVersion = 16.0.29209.152
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cethleann", "Cethleann\Cethleann.csproj", "{D30484B3-3BAF-496E-80FA-E63D5DB723C5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cethleann.DataExporter", "Cethleann.DataExporter\Cethleann.DataExporter.csproj", "{E9147282-FF78-49A5-95E6-2AD79DA8224F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Koei.DataExporter", "Koei.DataExporter\Koei.DataExporter.csproj", "{E9147282-FF78-49A5-95E6-2AD79DA8224F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utility", "Utility", "{8ABC4D50-0A23-4D29-BBE1-B1BD994D495D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{8ABC4D50-0A23-4D29-BBE1-B1BD994D495D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pfstool", "pfstool\pfstool.csproj", "{EE0365C4-12FE-47FF-B2E7-929B6ABE7F36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Switch.PFSTool", "Switch.PFSTool\Switch.PFSTool.csproj", "{EE0365C4-12FE-47FF-B2E7-929B6ABE7F36}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonLib", "DragonLib\DragonLib.csproj", "{DFB760A9-0BF2-4C75-A015-BA4787B0E20E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonLib", "Library\DragonLib\DragonLib.csproj", "{DFB760A9-0BF2-4C75-A015-BA4787B0E20E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLTFSerialization", "GLTFSerialization\GLTFSerialization.csproj", "{B240CFC3-C4B9-461C-90FD-0A96FEC3BF38}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLTFSerialization", "Library\GLTFSerialization\GLTFSerialization.csproj", "{B240CFC3-C4B9-461C-90FD-0A96FEC3BF38}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cethleann.Model", "Cethleann.Model\Cethleann.Model.csproj", "{3F7BAF1A-6178-46DF-9D6C-E7F779879ABE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cethleann.Unbundler", "Cethleann.Unbundler\Cethleann.Unbundler.csproj", "{F37C7661-1B73-487D-9FBB-6421968949E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cethleann.Gz", "Cethleann.Gz\Cethleann.Gz.csproj", "{AF82849C-288D-460F-9DAB-67989CFCD280}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Koei.Gz", "Koei.Gz\Koei.Gz.csproj", "{AF82849C-288D-460F-9DAB-67989CFCD280}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tool", "Tool", "{388956EC-D30E-4FF6-85E9-460C20EA944C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gust.EncFinder", "Gust.EncFinder\Gust.EncFinder.csproj", "{3C146E07-EC6B-4098-B5EC-FBEA270FA6F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gust.DataExporter", "Gust.DataExporter\Gust.DataExporter.csproj", "{94510826-824F-4366-B6CE-2049A189A404}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gust.Gz", "Gust.Gz\Gust.Gz.csproj", "{27ACC7EF-9459-4E86-8C70-5ECCF32E9AE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +71,14 @@ Global
 		{3C146E07-EC6B-4098-B5EC-FBEA270FA6F0}.Debug|x64.Build.0 = Debug|x64
 		{3C146E07-EC6B-4098-B5EC-FBEA270FA6F0}.Release|x64.ActiveCfg = Release|x64
 		{3C146E07-EC6B-4098-B5EC-FBEA270FA6F0}.Release|x64.Build.0 = Release|x64
+		{94510826-824F-4366-B6CE-2049A189A404}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{94510826-824F-4366-B6CE-2049A189A404}.Debug|x64.Build.0 = Debug|Any CPU
+		{94510826-824F-4366-B6CE-2049A189A404}.Release|x64.ActiveCfg = Release|Any CPU
+		{94510826-824F-4366-B6CE-2049A189A404}.Release|x64.Build.0 = Release|Any CPU
+		{27ACC7EF-9459-4E86-8C70-5ECCF32E9AE0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{27ACC7EF-9459-4E86-8C70-5ECCF32E9AE0}.Debug|x64.Build.0 = Debug|Any CPU
+		{27ACC7EF-9459-4E86-8C70-5ECCF32E9AE0}.Release|x64.ActiveCfg = Release|Any CPU
+		{27ACC7EF-9459-4E86-8C70-5ECCF32E9AE0}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +92,8 @@ Global
 		{F37C7661-1B73-487D-9FBB-6421968949E7} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
 		{EE0365C4-12FE-47FF-B2E7-929B6ABE7F36} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
 		{3C146E07-EC6B-4098-B5EC-FBEA270FA6F0} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
+		{94510826-824F-4366-B6CE-2049A189A404} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
+		{27ACC7EF-9459-4E86-8C70-5ECCF32E9AE0} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D101D9DD-E806-4794-B9BE-E43298235565}

@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Cethleann.Structure;
+using Cethleann.Koei.Structure;
 using DragonLib;
+using JetBrains.Annotations;
 
-namespace Cethleann.DataTables
+namespace Cethleann.Koei.DataTables
 {
     /// <summary>
     ///     Main blob bundle of the game.
     ///     Can contain many things, from structures to art assets.
     /// </summary>
+    [PublicAPI]
     public class DataTable
     {
         /// <summary>
