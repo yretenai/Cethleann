@@ -1,6 +1,6 @@
 # Cethleann [![Build Status](https://dev.azure.com/yretenai/Cethleann/_apis/build/status/healingbrew.Cethleann?branchName=master)](https://dev.azure.com/yretenai/Cethleann/_build/latest?definitionId=1&branchName=master)
 
-Soft Engine data exploration and research, specifically centered around FE: Three Houses
+KTGL Soft Engine data exploration and research, specifically centered around FE: Three Houses
 
 ## While this library supports writing and modifying files, support is experimental
 
