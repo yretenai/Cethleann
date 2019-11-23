@@ -920,6 +920,11 @@
             <param name="stream"></param>
             <param name="a18">set to true if the PAKs are from Atelier Sophie or a newer Atelier</param>
         </member>
+        <member name="M:Cethleann.Koei.Gust.PAK.Finalize">
+            <summary>
+            Disposes
+            </summary>
+        </member>
         <member name="M:Cethleann.Koei.Gust.PAK.TryGetEntry(System.String,Cethleann.Koei.Structure.PAKEntry@)">
             <summary>
             Gets an entry from it's filepath.
@@ -1258,6 +1263,11 @@
         </member>
         <member name="M:Cethleann.Koei.ManagedFS.Reisalin.GetEnumerator">
             <inheritdoc />
+        </member>
+        <member name="M:Cethleann.Koei.ManagedFS.Reisalin.Finalize">
+            <summary>
+            Disposes
+            </summary>
         </member>
         <member name="M:Cethleann.Koei.ManagedFS.Reisalin.Dispose">
             <inheritdoc />

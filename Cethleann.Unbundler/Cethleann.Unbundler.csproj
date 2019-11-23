@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Koei.DataExporter\Koei.DataExporter.csproj" />
+        <ProjectReference Include="..\Koei.DataExporter\Koei.DataExporter.csproj" />
     </ItemGroup>
 
 </Project>
