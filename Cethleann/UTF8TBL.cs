@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei
+namespace Cethleann
 {
     /// <summary>
     ///     UTF-8 texture sheet character table

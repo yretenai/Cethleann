@@ -1,16 +1,16 @@
-using Cethleann.Koei.Structure.Resource.Audio;
+using Cethleann.Structure.Resource.Audio;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei.Audio
+namespace Cethleann.Audio
 {
     /// <summary>
-    /// Section helper
+    ///     Section helper
     /// </summary>
     [PublicAPI]
     public interface ISoundResourceSection
     {
         /// <summary>
-        /// Underlying entry
+        ///     Underlying entry
         /// </summary>
         SoundResourceEntry Base { get; }
     }

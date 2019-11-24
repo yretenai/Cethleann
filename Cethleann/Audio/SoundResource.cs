@@ -2,27 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using Cethleann.Koei.Structure.Resource.Audio;
+using Cethleann.Structure.Resource.Audio;
 using DragonLib;
 using DragonLib.IO;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei.Audio
+namespace Cethleann.Audio
 {
     /// <summary>
-    /// Implements KTSR
+    ///     Implements KTSR
     /// </summary>
     [PublicAPI]
     public class SoundResource
     {
         /// <summary>
-        /// Initialize a KTSR from a Stream
+        ///     Initialize a KTSR from a Stream
         /// </summary>
         /// <param name="stream"></param>
         public SoundResource(Stream stream) : this(stream.ToSpan()) { }
 
         /// <summary>
-        /// Initialize a KTSR from a Span buffer
+        ///     Initialize a KTSR from a Span buffer
         /// </summary>
         /// <param name="buffer"></param>
         public SoundResource(Span<byte> buffer)
@@ -45,12 +45,12 @@ namespace Cethleann.Koei.Audio
         }
 
         /// <summary>
-        /// KTSR Header
+        ///     KTSR Header
         /// </summary>
         public SoundResourceHeader Header { get; set; }
 
         /// <summary>
-        /// Sound resources found in the KTSR container.
+        ///     Sound resources found in the KTSR container.
         /// </summary>
         public List<ISoundResourceSection> Entries { get; set; } = new List<ISoundResourceSection>();
     }

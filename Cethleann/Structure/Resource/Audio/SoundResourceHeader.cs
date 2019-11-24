@@ -1,4 +1,4 @@
-namespace Cethleann.Koei.Structure.Resource.Audio
+namespace Cethleann.Structure.Resource.Audio
 {
 #pragma warning disable 1591
     public struct SoundResourceHeader

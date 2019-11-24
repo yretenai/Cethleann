@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Cethleann.Koei.Structure;
+using Cethleann.Structure;
 using DragonLib;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei.Koei
+namespace Cethleann.Koei
 {
     /// <summary>
     ///     INFO1 is a list of information of base files deleted with this patch.
@@ -48,6 +48,15 @@ namespace Cethleann.Koei.Koei
                 }
             }
         }
+
+        /// <summary>
+        ///     Reads a INFO1 file list from a path
+        /// </summary>
+        /// <param name="info2"></param>
+        /// <param name="path">File path to read</param>
+#pragma warning disable IDE0068 // Use recommended dispose pattern, reason: disposed in sub-method DATA0(Stream, bool) when bool leaveOpen is false.
+        public INFO1(INFO2 info2, string path) : this(info2, File.OpenRead(path)) { }
+#pragma warning restore IDE0068 // Use recommended dispose pattern
 
         /// <summary>
         ///     Entries found in the INFO1
@@ -96,14 +105,5 @@ namespace Cethleann.Koei.Koei
             stream.Read(buffer.Span);
             return buffer;
         }
-
-        /// <summary>
-        ///     Reads a INFO1 file list from a path
-        /// </summary>
-        /// <param name="info2"></param>
-        /// <param name="path">File path to read</param>
-#pragma warning disable IDE0068 // Use recommended dispose pattern, reason: disposed in sub-method DATA0(Stream, bool) when bool leaveOpen is false.
-        public INFO1(INFO2 info2, string path) : this(info2, File.OpenRead(path)) { }
-#pragma warning restore IDE0068 // Use recommended dispose pattern
     }
 }

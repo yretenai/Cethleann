@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Cethleann.Koei.Structure.Resource;
-using Cethleann.Koei.Structure.Resource.Model;
+using Cethleann.Structure.Resource;
+using Cethleann.Structure.Resource.Model;
 using DragonLib;
 using DragonLib.IO;
 using JetBrains.Annotations;
 using OpenTK;
 using Vector3 = DragonLib.Numerics.Vector3;
 
-namespace Cethleann.Koei.G1.G1ModelSection
+namespace Cethleann.G1.G1ModelSection
 {
     /// <summary>
     ///     Skeleton Section of G1M models
     /// </summary>
     [PublicAPI]
-    public class G1MS : IG1Section
+    public class IktglMs : IKTGLSection
     {
         /// <summary>
         ///     Model Skeleton Data.
@@ -22,9 +22,9 @@ namespace Cethleann.Koei.G1.G1ModelSection
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
         /// <param name="sectionHeader"></param>
-        public G1MS(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
+        public IktglMs(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (sectionHeader.Magic != ResourceSection.ModelSkeleton) throw new InvalidOperationException("Not an G1MS stream");
+            if (sectionHeader.Magic != DataType.ModelSkeleton) throw new InvalidOperationException("Not an G1MS stream");
 
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MS version {Section.Version.ToVersion()} is not supported!");

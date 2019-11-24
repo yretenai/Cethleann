@@ -1,14 +1,14 @@
 ﻿using System;
-using Cethleann.Koei.Structure.Resource;
+using Cethleann.Structure.Resource;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei.G1.G1ModelSection
+namespace Cethleann.G1.G1ModelSection
 {
     /// <summary>
     ///     F Section of G1M models
     /// </summary>
     [PublicAPI]
-    public class G1MF : IG1Section
+    public class IktglMf : IKTGLSection
     {
         /// <summary>
         ///     Model F Data
@@ -17,9 +17,9 @@ namespace Cethleann.Koei.G1.G1ModelSection
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
         /// <param name="sectionHeader"></param>
-        public G1MF(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
+        public IktglMf(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (sectionHeader.Magic != ResourceSection.ModelF) throw new InvalidOperationException("Not an G1MF stream");
+            if (sectionHeader.Magic != DataType.ModelF) throw new InvalidOperationException("Not an G1MF stream");
 
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MF version {Section.Version.ToVersion()} is not supported!");

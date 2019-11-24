@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Cethleann.Koei.Structure.Resource;
+using System.Text;
 using DragonLib;
 
-namespace Cethleann.Koei
+namespace Cethleann
 {
     /// <summary>
     ///     Series of helper for FETH.
@@ -30,26 +31,24 @@ namespace Cethleann.Koei
         public static string ToFourCC(this DataType value, bool onlyAlphaNum) => ((int) value).ToFourCC(onlyAlphaNum);
 
         /// <summary>
-        ///     Converts a ResourceSection to a FourCC
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="onlyAlphaNum"></param>
-        /// <returns></returns>
-        public static string ToFourCC(this ResourceSection value, bool onlyAlphaNum) => ((int) value).ToFourCC(onlyAlphaNum);
-
-        /// <summary>
-        ///     Converts a ResourceSection to a DataType
+        ///     Converts a version tag to a number.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static DataType ToDataType(this ResourceSection value) => (DataType) value;
+        public static int ToVersion(this int value) => int.Parse(value.ToFourCC(false).Reverse().ToArray());
 
         /// <summary>
         ///     Converts a version tag to a number.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static int ToVersion(this int value) => int.Parse(value.ToFourCC(false).Reverse().ToArray());
+        public static int ToVersionA(this int value)
+        {
+            var text = value.ToString("");
+            while (text.Length < 4) text = "0" + text;
+            text = string.Join("", Encoding.ASCII.GetBytes(text).Select(x => $"{x:X2}"));
+            return int.Parse(text, NumberStyles.HexNumber);
+        }
 
         /// <summary>
         ///     Returns determined string extension for this magic.

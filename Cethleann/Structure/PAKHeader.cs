@@ -1,4 +1,4 @@
-namespace Cethleann.Koei.Structure
+namespace Cethleann.Structure
 {
 #pragma warning disable 1591
     public struct PAKHeader

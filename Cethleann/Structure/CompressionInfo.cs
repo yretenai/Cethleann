@@ -1,4 +1,4 @@
-﻿namespace Cethleann.Koei.Structure
+﻿namespace Cethleann.Structure
 {
     /// <summary>
     ///     Info regarding compression for a file in DATA1
@@ -6,7 +6,7 @@
     public struct CompressionInfo
     {
         /// <summary>
-        /// usually 0x0001_0000, sometimes 0xFFFF_FFFF for dynamically sized.
+        ///     usually 0x0001_0000, sometimes 0xFFFF_FFFF for dynamically sized.
         /// </summary>
         public int ChunkSize { get; set; }
 

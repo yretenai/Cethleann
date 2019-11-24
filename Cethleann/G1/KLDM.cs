@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using Cethleann.Koei.Structure.Resource;
+using Cethleann.Structure.Resource;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei.G1
+namespace Cethleann.G1
 {
     /// <summary>
     ///     Decomposes a MDLK buffer to individual files
@@ -21,7 +21,7 @@ namespace Cethleann.Koei.G1
         public KLDM(Span<byte> buffer)
         {
             var header = MemoryMarshal.Read<ResourceSectionHeader>(buffer);
-            if (header.Magic.ToDataType() != DataType.KLDM) throw new InvalidDataException("Not a KLDM stream");
+            if (header.Magic != DataType.KLDM) throw new InvalidDataException("Not a KLDM stream");
 
             var offset = 0x10;
             for (int i = 0; i < header.Size; ++i)

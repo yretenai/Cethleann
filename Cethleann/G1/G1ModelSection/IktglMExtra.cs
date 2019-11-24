@@ -1,14 +1,14 @@
 ﻿using System;
-using Cethleann.Koei.Structure.Resource;
+using Cethleann.Structure.Resource;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei.G1.G1ModelSection
+namespace Cethleann.G1.G1ModelSection
 {
     /// <summary>
     ///     Extra Section of G1M models
     /// </summary>
     [PublicAPI]
-    public class G1MExtra : IG1Section
+    public class IktglMExtra : IKTGLSection
     {
         /// <summary>
         ///     Extra data found in G1M models.
@@ -16,9 +16,9 @@ namespace Cethleann.Koei.G1.G1ModelSection
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
         /// <param name="sectionHeader"></param>
-        public G1MExtra(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
+        public IktglMExtra(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (sectionHeader.Magic != ResourceSection.ModelExtra) throw new InvalidOperationException("Not an EXTR stream");
+            if (sectionHeader.Magic != DataType.ModelExtra) throw new InvalidOperationException("Not an EXTR stream");
 
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"EXTR version {Section.Version.ToVersion()} is not supported!");

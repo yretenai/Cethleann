@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Cethleann.Koei.Structure;
+using Cethleann.Structure;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei.Koei
+namespace Cethleann.Koei
 {
     /// <summary>
     ///     DATA0 is a list of information for which to read DATA1 with.

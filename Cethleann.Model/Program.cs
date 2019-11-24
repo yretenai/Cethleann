@@ -1,15 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Cethleann.Koei.DataTables;
-using Cethleann.Koei.G1;
-using Cethleann.Koei.G1.G1ModelSection;
-using Cethleann.Koei.G1.G1ModelSection.G1MGSection;
-using Cethleann.Koei.Structure.Resource.Texture;
+using Cethleann.DataTables;
+using Cethleann.G1;
+using Cethleann.G1.G1ModelSection;
+using Cethleann.G1.G1ModelSection.G1MGSection;
+using Cethleann.Structure.Resource.Texture;
 using DragonLib.Imaging;
 using DragonLib.Imaging.DXGI;
 
-namespace Cethleann.Koei.Model
+namespace Cethleann.Model
 {
     public static class Program
     {
@@ -38,8 +38,8 @@ namespace Cethleann.Koei.Model
             var containerData = new Span<byte>(new byte[file.Length]);
             file.Read(containerData);
 
-            var g1Model = default(G1Model);
-            var g1TextureGroup = default(G1TextureGroup);
+            var g1Model = default(IktglModel);
+            var g1TextureGroup = default(IktglTextureGroup);
 
             if (containerData.GetDataType() == DataType.Model)
             {
@@ -48,59 +48,41 @@ namespace Cethleann.Koei.Model
                     using var fileset = File.OpenRead(set);
                     var setData = new Span<byte>(new byte[fileset.Length]);
                     fileset.Read(setData);
-                    if (setData.GetDataType() == DataType.TextureGroup)
-                    {
-                        g1TextureGroup = new G1TextureGroup(setData);
-                    }
+                    if (setData.GetDataType() == DataType.TextureGroup) g1TextureGroup = new IktglTextureGroup(setData);
                 }
 
-                g1Model = new G1Model(containerData);
+                g1Model = new IktglModel(containerData);
             }
             else if (containerData.IsDataTable())
             {
                 var dataTable = new DataTable(containerData);
                 var g1ModelData = dataTable.Entries.FirstOrDefault(x => x.Span.GetDataType() == DataType.Model);
                 var g1TextureGroupData = dataTable.Entries.FirstOrDefault(x => x.Span.GetDataType() == DataType.TextureGroup);
-                if (!g1ModelData.IsEmpty)
-                {
-                    g1Model = new G1Model(g1ModelData.Span);
-                }
+                if (!g1ModelData.IsEmpty) g1Model = new IktglModel(g1ModelData.Span);
 
-                if (!g1TextureGroupData.IsEmpty)
-                {
-                    g1TextureGroup = new G1TextureGroup(g1TextureGroupData.Span);
-                }
+                if (!g1TextureGroupData.IsEmpty) g1TextureGroup = new IktglTextureGroup(g1TextureGroupData.Span);
             }
             else if (containerData.GetDataType() == DataType.TextureGroup)
             {
-                g1TextureGroup = new G1TextureGroup(containerData);
+                g1TextureGroup = new IktglTextureGroup(containerData);
             }
 
-            if (g1TextureGroup != null)
-            {
-                SaveTextures(texDestination, g1TextureGroup);
-            }
+            if (g1TextureGroup != null) SaveTextures(texDestination, g1TextureGroup);
 
-            if (g1Model != null)
-            {
-                SaveModel(destination, g1Model, Path.GetFileName(texDestination));
-            }
+            if (g1Model != null) SaveModel(destination, g1Model, Path.GetFileName(texDestination));
         }
 
-        public static void SaveTextures(string pathBase, G1TextureGroup group)
+        public static void SaveTextures(string pathBase, IktglTextureGroup group)
         {
             var i = 0;
             if (!Directory.Exists(pathBase)) Directory.CreateDirectory(pathBase);
 
             foreach (var (_, header, _, blob) in group.Textures)
             {
-                var (width, height, mips, format) = G1TextureGroup.UnpackWHM(header);
+                var (width, height, mips, format) = IktglTextureGroup.UnpackWHM(header);
                 if (format == DXGIPixelFormat.UNKNOWN)
                 {
-                    for (var dxgiFormat = DXGIPixelFormat.UNKNOWN + 1; dxgiFormat < DXGIPixelFormat.DXGI_END; ++dxgiFormat)
-                    {
-                        File.WriteAllBytes($@"{pathBase}\{i:X4}_({dxgiFormat:G}).dds", DXGI.BuildDDS(dxgiFormat, mips, width, height, 1, blob.Span).ToArray());
-                    }
+                    for (var dxgiFormat = DXGIPixelFormat.UNKNOWN + 1; dxgiFormat < DXGIPixelFormat.DXGI_END; ++dxgiFormat) File.WriteAllBytes($@"{pathBase}\{i:X4}_({dxgiFormat:G}).dds", DXGI.BuildDDS(dxgiFormat, mips, width, height, 1, blob.Span).ToArray());
 
                     continue;
                 }
@@ -132,7 +114,6 @@ namespace Cethleann.Koei.Model
                 var frames = blob.Span.Length / size;
 
                 if (frames == 1)
-                {
                     try
                     {
                         var data = DXGI.DecompressDXGIFormat(blob.Span, width, height, format);
@@ -146,16 +127,15 @@ namespace Cethleann.Koei.Model
                     {
                         // ignored
                     }
-                }
 
                 File.WriteAllBytes($@"{pathBase}\{i:X4}.dds", DXGI.BuildDDS(format, frames != 0 ? 0 : mips, width, height, frames, blob.Span).ToArray());
                 i += 1;
             }
         }
 
-        public static void SaveModel(string pathBase, G1Model model, string texBase)
+        public static void SaveModel(string pathBase, IktglModel model, string texBase)
         {
-            var geom = model.GetSection<G1MG>();
+            var geom = model.GetSection<IktglMg>();
             var gltf = model.ExportMeshes(Path.ChangeExtension(pathBase, "bin"), $"{Path.GetFileNameWithoutExtension(pathBase)}.bin", 0, 0, texBase);
             using var file = File.OpenWrite(pathBase);
             file.SetLength(0);

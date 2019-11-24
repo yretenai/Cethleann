@@ -1,9 +1,9 @@
-﻿namespace Cethleann.Koei.Structure.Resource
+﻿namespace Cethleann.Structure.Resource
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public struct ResourceSectionHeader
     {
-        public ResourceSection Magic { get; set; }
+        public DataType Magic { get; set; }
         public int Version { get; set; }
         public int Size { get; set; }
     }

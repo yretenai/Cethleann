@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Cethleann.Koei.Structure;
+using Cethleann.Structure;
 using DragonLib;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei.Koei
+namespace Cethleann.Koei
 {
     /// <summary>
     ///     INFO0 is a list of information for which to read the patch RomFS with.

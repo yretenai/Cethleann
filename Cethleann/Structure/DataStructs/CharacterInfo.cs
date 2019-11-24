@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-namespace Cethleann.Koei.Structure.DataStructs
+namespace Cethleann.Structure.DataStructs
 {
     [PublicAPI]
     public struct CharacterInfo

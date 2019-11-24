@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using DragonLib;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei
+namespace Cethleann
 {
     /// <summary>
     ///     Koei Engine Bundle, apparently because DataTable is too boring.

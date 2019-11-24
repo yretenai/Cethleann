@@ -4,13 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Cethleann.Koei.Koei;
-using Cethleann.Koei.Structure;
+using Cethleann.Koei;
+using Cethleann.Structure;
 using DragonLib;
 using DragonLib.IO;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei.ManagedFS
+namespace Cethleann.ManagedFS
 {
     /// <summary>
     ///     Management class for DATA0 and INFO0 files.
@@ -18,11 +18,6 @@ namespace Cethleann.Koei.ManagedFS
     [PublicAPI]
     public class Flayn : IDisposable
     {
-        /// <summary>
-        ///     Loaded FileList.csv
-        /// </summary>
-        public Dictionary<string, string> FileList { get; } = new Dictionary<string, string>();
-
         /// <summary>
         ///     Loads data
         /// </summary>
@@ -34,6 +29,11 @@ namespace Cethleann.Koei.ManagedFS
             AddDataFS(baseRomFs);
             if (GameId == GameId.FireEmblemThreeHouses) Logger.Assert(RootEntryCount == 31161, "RootEntryCount == 31161");
         }
+
+        /// <summary>
+        ///     Loaded FileList.csv
+        /// </summary>
+        public Dictionary<string, string> FileList { get; } = new Dictionary<string, string>();
 
         /// <summary>
         ///     Game ID of the game.

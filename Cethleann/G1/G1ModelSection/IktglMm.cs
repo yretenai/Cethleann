@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Cethleann.Koei.Structure.Resource;
+using Cethleann.Structure.Resource;
 using DragonLib.Numerics;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei.G1.G1ModelSection
+namespace Cethleann.G1.G1ModelSection
 {
     /// <summary>
     ///     Matrix Section of G1M models
     /// </summary>
     [PublicAPI]
-    public class G1MM : IG1Section
+    public class IktglMm : IKTGLSection
     {
         /// <summary>
         ///     Model Matrix Data
@@ -18,9 +18,9 @@ namespace Cethleann.Koei.G1.G1ModelSection
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
         /// <param name="sectionHeader"></param>
-        public G1MM(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
+        public IktglMm(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (sectionHeader.Magic != ResourceSection.ModelMatrix) throw new InvalidOperationException("Not an G1MM stream");
+            if (sectionHeader.Magic != DataType.ModelMatrix) throw new InvalidOperationException("Not an G1MM stream");
 
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MM version {Section.Version.ToVersion()} is not supported!");

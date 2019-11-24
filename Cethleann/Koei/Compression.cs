@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.InteropServices;
-using Cethleann.Koei.Structure;
+using Cethleann.Structure;
 using DragonLib;
 using JetBrains.Annotations;
 

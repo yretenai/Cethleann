@@ -1,4 +1,4 @@
-namespace Cethleann.Koei.Structure
+namespace Cethleann.Structure
 {
     internal struct SCENHeader
     {

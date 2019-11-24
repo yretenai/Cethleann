@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Cethleann.Koei.Structure;
+using Cethleann.Structure;
 using DragonLib.IO;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei
+namespace Cethleann
 {
     /// <summary>
     ///     SCEN Container

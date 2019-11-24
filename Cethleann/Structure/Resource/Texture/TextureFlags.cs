@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Cethleann.Koei.Structure.Resource.Texture
+namespace Cethleann.Structure.Resource.Texture
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     [Flags]

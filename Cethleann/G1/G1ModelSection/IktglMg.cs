@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Cethleann.Koei.G1.G1ModelSection.G1MGSection;
-using Cethleann.Koei.Structure.Resource;
-using Cethleann.Koei.Structure.Resource.Model;
+using Cethleann.G1.G1ModelSection.G1MGSection;
+using Cethleann.Structure.Resource;
+using Cethleann.Structure.Resource.Model;
 using DragonLib;
 using DragonLib.IO;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei.G1.G1ModelSection
+namespace Cethleann.G1.G1ModelSection
 {
     /// <summary>
     ///     Geometry Section of G1M models
     /// </summary>
     [PublicAPI]
-    public class G1MG : IG1Section
+    public class IktglMg : IKTGLSection
     {
         /// <summary>
         ///     Model Geometry
@@ -23,9 +23,9 @@ namespace Cethleann.Koei.G1.G1ModelSection
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
         /// <param name="sectionHeader"></param>
-        public G1MG(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
+        public IktglMg(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (sectionHeader.Magic != ResourceSection.ModelGeometry) throw new InvalidOperationException("Not an G1MG stream");
+            if (sectionHeader.Magic != DataType.ModelGeometry) throw new InvalidOperationException("Not an G1MG stream");
 
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MG version {Section.Version.ToVersion()} is not supported!");

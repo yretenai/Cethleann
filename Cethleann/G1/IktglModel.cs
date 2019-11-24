@@ -4,30 +4,45 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Cethleann.Koei.G1.G1ModelSection;
-using Cethleann.Koei.G1.G1ModelSection.G1MGSection;
-using Cethleann.Koei.Structure.Resource;
-using Cethleann.Koei.Structure.Resource.Model;
+using Cethleann.G1.G1ModelSection;
+using Cethleann.G1.G1ModelSection.G1MGSection;
+using Cethleann.Structure.Resource;
+using Cethleann.Structure.Resource.Model;
 using DragonLib;
 using DragonLib.Numerics;
 using GLTF.Schema;
 using JetBrains.Annotations;
 using Quaternion = GLTF.Math.Quaternion;
 
-namespace Cethleann.Koei.G1
+namespace Cethleann.G1
 {
     /// <summary>
     ///     G1Model is the main model format
     /// </summary>
     [PublicAPI]
-    public class G1Model : IG1Section
+    public class IktglModel : IKTGLSection
     {
+        /// <summary>
+        ///     Initialize with no data.
+        /// </summary>
+        public IktglModel()
+        {
+            Section = new ResourceSectionHeader
+            {
+                Magic = DataType.Model,
+                Size = -1,
+                Version = SupportedVersion.ToVersionA()
+            };
+            SectionRoot = new PackedResource();
+        }
+
         /// <summary>
         ///     Parse G1M from the provided data buffer
         /// </summary>
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
-        public G1Model(Span<byte> data, bool ignoreVersion = false)
+        /// <param name="parse"></param>
+        public IktglModel(Span<byte> data, bool ignoreVersion = false, bool parse = true)
         {
             if (!data.Matches(DataType.Model)) throw new InvalidOperationException("Not an G1M stream");
 
@@ -35,34 +50,40 @@ namespace Cethleann.Koei.G1
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1M version {Section.Version.ToVersion()} is not supported!");
 
             var header = MemoryMarshal.Read<ModelHeader>(data.Slice(0xC));
-            var offset = header.HeaderSize;
-            for (var i = 0; i < header.SectionCount; ++i)
+            SectionRoot = new PackedResource(data.Slice(header.HeaderSize, Section.Size - header.HeaderSize), header.SectionCount);
+            if (!parse) return;
+            // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
+            foreach (var block in SectionRoot.Sections)
             {
-                var sectionHeader = MemoryMarshal.Read<ResourceSectionHeader>(data.Slice(offset));
-                var block = data.Slice(offset + SizeHelper.SizeOf<ResourceSectionHeader>(), sectionHeader.Size - SizeHelper.SizeOf<ResourceSectionHeader>());
-                var section = sectionHeader.Magic switch
+                var sectionHeader = MemoryMarshal.Read<ResourceSectionHeader>(block.Span);
+                var dataBlock = block.Span.Slice(SizeHelper.SizeOf<ResourceSectionHeader>());
+                // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
+                IKTGLSection section = sectionHeader.Magic switch
                 {
-                    ResourceSection.ModelSkeleton => (IG1Section) new G1MS(block, ignoreVersion, sectionHeader),
-                    ResourceSection.ModelF => new G1MF(block, ignoreVersion, sectionHeader),
-                    ResourceSection.ModelGeometry => new G1MG(block, ignoreVersion, sectionHeader),
-                    ResourceSection.ModelMatrix => new G1MM(block, ignoreVersion, sectionHeader),
-                    ResourceSection.ModelExtra => new G1MExtra(block, ignoreVersion, sectionHeader),
-                    ResourceSection.ModelCollision => null,
-                    ResourceSection.ModelCloth => null,
+                    DataType.ModelSkeleton => new IktglMs(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.ModelF => new IktglMf(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.ModelGeometry => new IktglMg(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.ModelMatrix => new IktglMm(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.ModelExtra => new IktglMExtra(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.ModelCollision => null,
+                    DataType.ModelCloth => null,
                     _ => throw new NotImplementedException($"Section {sectionHeader.Magic.ToFourCC(false)} not supported!")
                 };
                 Sections.Add(section);
-
-                offset += sectionHeader.Size;
             }
         }
 
         /// <summary>
-        ///     Sections found in this model.
-        ///     Look for <seealso cref="G1MG" /> for Geometry.
-        ///     Look for <seealso cref="G1MS" /> for Skeleton.
+        ///     Raw data for each section
         /// </summary>
-        public List<IG1Section> Sections { get; } = new List<IG1Section>();
+        public PackedResource SectionRoot { get; set; }
+
+        /// <summary>
+        ///     Sections found in this model.
+        ///     Look for <seealso cref="IktglMg" /> for Geometry.
+        ///     Look for <seealso cref="IktglMs" /> for Skeleton.
+        /// </summary>
+        public List<IKTGLSection> Sections { get; } = new List<IKTGLSection>();
 
         /// <inheritdoc />
         public int SupportedVersion { get; } = 37;
@@ -72,11 +93,42 @@ namespace Cethleann.Koei.G1
         public ResourceSectionHeader Section { get; }
 
         /// <summary>
+        ///     Write to G1M span using just SectionsRoot
+        /// </summary>
+        /// <returns></returns>
+        public Span<byte> WriteFromRoot()
+        {
+            var sectionHeaderSize = SizeHelper.SizeOf<ResourceSectionHeader>();
+            var size = SizeHelper.SizeOf<ModelHeader>() + sectionHeaderSize + SectionRoot.Sections.Sum(x => x.Length);
+            var buffer = new Span<byte>(new byte[size]);
+            var modelSectionHeader = Section;
+            modelSectionHeader.Size = size;
+            MemoryMarshal.Write(buffer, ref modelSectionHeader);
+            var offset = sectionHeaderSize;
+            var modelHeader = new ModelHeader
+            {
+                HeaderSize = sectionHeaderSize + SizeHelper.SizeOf<ModelHeader>(),
+                Reserved = 0,
+                SectionCount = SectionRoot.Sections.Count
+            };
+            MemoryMarshal.Write(buffer.Slice(offset), ref modelHeader);
+            offset = modelHeader.HeaderSize;
+
+            foreach (var data in SectionRoot.Sections)
+            {
+                data.Span.CopyTo(buffer.Slice(offset));
+                offset += data.Length;
+            }
+
+            return buffer;
+        }
+
+        /// <summary>
         ///     Gets a specific section from the G1M model
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetSection<T>() where T : class, IG1Section
+        public T GetSection<T>() where T : class, IKTGLSection
         {
             return Sections.FirstOrDefault(x => x is T) as T;
         }
@@ -152,9 +204,9 @@ namespace Cethleann.Koei.G1
 
             scene.Nodes ??= new List<NodeId>();
 
-            var skeleton = GetSection<G1MS>();
+            var skeleton = GetSection<IktglMs>();
 
-            var geom = GetSection<G1MG>();
+            var geom = GetSection<IktglMg>();
 
             var bones = geom.GetSection<G1MGBone>();
             var ibos = geom.GetSection<G1MGIndexBuffer>();

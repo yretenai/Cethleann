@@ -1,18 +1,18 @@
 using System;
 using System.Runtime.InteropServices;
-using Cethleann.Koei.Structure.Resource.Audio;
+using Cethleann.Structure.Resource.Audio;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei.Audio
+namespace Cethleann.Audio
 {
     /// <summary>
-    /// KTSS/KOVS Container found in KTSS containers
+    ///     KTSS/KOVS Container found in KTSS containers
     /// </summary>
     [PublicAPI]
     public class SoundResourceSample : ISoundResourceSection
     {
         /// <summary>
-        /// Initialize from a blob
+        ///     Initialize from a blob
         /// </summary>
         /// <param name="blob"></param>
         public SoundResourceSample(Span<byte> blob)
@@ -22,12 +22,12 @@ namespace Cethleann.Koei.Audio
         }
 
         /// <summary>
-        /// KTSS/KOVS container header
+        ///     KTSS/KOVS container header
         /// </summary>
         public SoundResourceEntryKTSS Header { get; set; }
 
         /// <summary>
-        /// KTSS/KOVS Sound blob
+        ///     KTSS/KOVS Sound blob
         /// </summary>
         public SoundSource Data { get; set; }
 

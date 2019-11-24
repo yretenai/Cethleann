@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Cethleann.Koei.Structure.Resource;
-using Cethleann.Koei.Structure.Resource.Texture;
+using Cethleann.Structure.Resource;
+using Cethleann.Structure.Resource.Texture;
 using DragonLib;
 using DragonLib.Imaging.DXGI;
 using DragonLib.IO;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei.G1
+namespace Cethleann.G1
 {
     /// <summary>
     ///     G1TextureGroup is a bundle of textures.
     ///     This is how all textures are encoded.
     /// </summary>
     [PublicAPI]
-    public class G1TextureGroup : IG1Section
+    public class IktglTextureGroup : IKTGLSection
     {
         /// <summary>
         ///     Parse G1T from the provided data buffer
         /// </summary>
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
-        public G1TextureGroup(Span<byte> data, bool ignoreVersion = true)
+        public IktglTextureGroup(Span<byte> data, bool ignoreVersion = true)
         {
             if (!data.Matches(DataType.TextureGroup)) throw new InvalidOperationException("Not an G1T stream");
 

@@ -4,7 +4,7 @@ using OpenTK;
 using Quaternion = DragonLib.Numerics.Quaternion;
 using Vector3 = DragonLib.Numerics.Vector3;
 
-namespace Cethleann.Koei.Structure.Resource.Model
+namespace Cethleann.Structure.Resource.Model
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public struct ModelSkeletonBone

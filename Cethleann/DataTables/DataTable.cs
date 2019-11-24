@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Cethleann.Koei.Structure;
+using Cethleann.Structure;
 using DragonLib;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei.DataTables
+namespace Cethleann.DataTables
 {
     /// <summary>
     ///     Main blob bundle of the game.

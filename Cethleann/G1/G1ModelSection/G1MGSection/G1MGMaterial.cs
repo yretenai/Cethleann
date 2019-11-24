@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Cethleann.Koei.Structure.Resource.Model;
+using Cethleann.Structure.Resource.Model;
 using DragonLib;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei.G1.G1ModelSection.G1MGSection
+namespace Cethleann.G1.G1ModelSection.G1MGSection
 {
     /// <summary>
     ///     Parses material data

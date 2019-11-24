@@ -1,20 +1,20 @@
 using System;
 using System.Runtime.InteropServices;
-using Cethleann.Koei.Structure.Resource.Audio;
+using Cethleann.Structure.Resource.Audio;
 using DragonLib;
 using DragonLib.IO;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei.Audio
+namespace Cethleann.Audio
 {
     /// <summary>
-    /// Unknown Blob shim
+    ///     Unknown Blob shim
     /// </summary>
     [PublicAPI]
     public class SoundUnknown : ISoundResourceSection
     {
         /// <summary>
-        /// Initialize with a blob
+        ///     Initialize with a blob
         /// </summary>
         /// <param name="blob"></param>
         public SoundUnknown(Span<byte> blob)
@@ -25,7 +25,7 @@ namespace Cethleann.Koei.Audio
         }
 
         /// <summary>
-        /// Data blob
+        ///     Data blob
         /// </summary>
         public Memory<byte> Data { get; set; }
 

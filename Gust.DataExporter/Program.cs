@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Cethleann.Koei.ManagedFS;
+using Cethleann.ManagedFS;
 
 namespace Gust.DataExporter
 {
@@ -31,10 +31,7 @@ namespace Gust.DataExporter
                     }
 
                     var fn = entry.Filename;
-                    while (fn.StartsWith("\\") || fn.StartsWith("/"))
-                    {
-                        fn = fn.Substring(1);
-                    }
+                    while (fn.StartsWith("\\") || fn.StartsWith("/")) fn = fn.Substring(1);
 
                     var path = Path.Combine(output, fn);
                     var dir = Path.GetDirectoryName(path);
