@@ -32,6 +32,7 @@ steps:
   inputs:
     command: publish
     publishWebProjects: false
+    zipAfterPublish: false
     arguments: 'Cethleann.sln --configuration Release --self-contained -r win10-x64 --output $(Build.ArtifactStagingDirectory)'
 - task: PublishBuildArtifacts@1
   inputs:
