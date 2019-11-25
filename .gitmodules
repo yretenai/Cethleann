@@ -1,6 +1,6 @@
-[submodule "Library/DragonLib"]
+[submodule "DragonLib"]
 	path = Library/DragonLib
 	url = git@github.com:healingbrew/DragonLib.git
-[submodule "Library/GLTFSerialization"]
+[submodule "GLTFSerialization"]
 	path = Library/GLTFSerialization
 	url = git@github.com:healingbrew/GLTFSerialization.git
