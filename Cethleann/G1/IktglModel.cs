@@ -144,6 +144,7 @@ namespace Cethleann.G1
                 VertexDataType.Vector4ByteNormalized => MemoryMarshal.Cast<byte, byte>(slice.Slice(0, 4)).ToArray().Select(x => x / (float) byte.MaxValue).ToArray(),
                 VertexDataType.Vector2Half => MemoryMarshal.Cast<byte, ushort>(slice.Slice(0, 2 * 2)).ToArray().Select(x => (float) Half.ToHalf(x)).ToArray(),
                 VertexDataType.Vector4Half => MemoryMarshal.Cast<byte, ushort>(slice.Slice(0, 2 * 4)).ToArray().Select(x => (float) Half.ToHalf(x)).ToArray(),
+                VertexDataType.Vector4HalfNormalized => MemoryMarshal.Cast<byte, ushort>(slice.Slice(0, 2 * 4)).ToArray().Select(x => x / (float)ushort.MaxValue).ToArray(),
                 _ => throw new ArgumentOutOfRangeException(nameof(dataType), dataType, null)
             };
         }
@@ -159,6 +160,7 @@ namespace Cethleann.G1
                 VertexDataType.Vector4ByteNormalized => MemoryMarshal.Cast<byte, byte>(slice.Slice(0, 4)).ToArray().Select(x => (int) x).ToArray(),
                 VertexDataType.Vector2Half => MemoryMarshal.Cast<byte, short>(slice.Slice(0, 2 * 2)).ToArray().Select(x => (int) x).ToArray(),
                 VertexDataType.Vector4Half => MemoryMarshal.Cast<byte, short>(slice.Slice(0, 2 * 4)).ToArray().Select(x => (int) x).ToArray(),
+                VertexDataType.Vector4HalfNormalized => MemoryMarshal.Cast<byte, short>(slice.Slice(0, 2 * 4)).ToArray().Select(x => (int) x).ToArray(),
                 _ => throw new ArgumentOutOfRangeException(nameof(dataType), dataType, null)
             };
         }
@@ -410,11 +412,13 @@ namespace Cethleann.G1
                                 });
                                 break;
                             }
-                            case VertexSemantic.BiTangent:
+                            case VertexSemantic.BiNormal:
                             case VertexSemantic.Fog:
-                            case VertexSemantic.Unknown4:
-                            case VertexSemantic.Unknown8:
-                            case VertexSemantic.Unknown9:
+                            case VertexSemantic.PointSize:
+                            case VertexSemantic.TesselationFactor:
+                            case VertexSemantic.PositionTransform:
+                            case VertexSemantic.Depth:
+                            case VertexSemantic.Sample:
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException();
