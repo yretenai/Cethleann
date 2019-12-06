@@ -7,14 +7,16 @@ namespace Cethleann.Structure.Resource.Model
         Weight,
         Bone,
         Normal,
-        Unknown4,
+        PointSize,
         UV,
         Tangent,
-        BiTangent,
-        Unknown8,
-        Unknown9,
+        BiNormal,
+        TesselationFactor,
+        PositionTransform,
         Color,
-        Fog
+        Fog,
+        Depth,
+        Sample
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
