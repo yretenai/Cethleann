@@ -43,7 +43,7 @@ namespace Cethleann.Koei
                 {
                     stream.Read(buffer);
                     var entry = MemoryMarshal.Read<INFO0Entry>(buffer);
-                    var path = buffer.Slice(SizeHelper.SizeOf<INFO0Entry>()).ReadString();
+                    var path = buffer.Slice(SizeHelper.SizeOf<INFO0Entry>()).ReadString(returnNull: false);
                     Entries.Add((entry, path));
                 }
             }

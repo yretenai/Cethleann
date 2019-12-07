@@ -64,7 +64,7 @@ namespace Cethleann.Gust
                 var encrypted = key.Any(x => x != 0);
                 if (encrypted) Recode(filenameBlob, key);
 
-                var filename = filenameBlob.ReadString();
+                var filename = filenameBlob.ReadString(returnNull: false);
 
                 Entries.Add(new PAKEntry
                 {

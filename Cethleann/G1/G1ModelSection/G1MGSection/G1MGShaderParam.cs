@@ -32,7 +32,7 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
                     try
                     {
                         var block = data.Slice(offset + localOffset, blockHeader.Size - localOffset);
-                        var name = block.ReadString();
+                        var name = block.ReadString(returnNull: false);
                         localOffset = (name.Length + 1).Align(4);
                         var paramsBlock = block.Slice(localOffset);
                         var paramData = blockHeader.Type switch

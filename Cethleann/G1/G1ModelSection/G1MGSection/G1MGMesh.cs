@@ -26,7 +26,7 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
                 var meshes = new List<(string, ModelGeometryMesh, int[])>();
                 for (int j = 0; j < group.SubMeshCount + group.UnknownCount; ++j)
                 {
-                    var name = data.Slice(offset, 0x10).ReadString();
+                    var name = data.Slice(offset, 0x10).ReadString(returnNull: false);
                     offset += 0x10;
                     var mesh = MemoryMarshal.Read<ModelGeometryMesh>(data.Slice(offset));
                     offset += SizeHelper.SizeOf<ModelGeometryMesh>();

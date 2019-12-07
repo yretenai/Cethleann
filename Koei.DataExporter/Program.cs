@@ -226,7 +226,7 @@ namespace Koei.DataExporter
                 var blobs = new TextLocalization(data.Span);
                 if (blobs.Entries.Count == 0) return true;
 
-                var ft = pathBase + ".txt";
+                var ft = Path.ChangeExtension(pathBase, ".txt");
                 var lines = string.Join(Environment.NewLine, blobs.Entries.SelectMany((x, i) => x.Select((y, j) =>  $"{i},{j} = " + y.Replace("\\", "\\\\").Replace("\n", "\\n").Replace("\r", "\\r"))));
                 File.WriteAllText(ft, lines);
             }

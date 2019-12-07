@@ -25,7 +25,7 @@ namespace Cethleann.DataTables
             foreach (var info in tableInfo)
             {
                 var block = buffer.Slice(info.Offset);
-                entries.Add(block.ReadString());
+                entries.Add(block.ReadString(returnNull: false));
             }
 
             Entries = entries;

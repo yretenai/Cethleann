@@ -40,8 +40,7 @@ namespace Cethleann
                         set.Add(string.Empty);
                         continue;
                     }
-                    var str = buffer.Slice(header.TableOffset + rip).ReadString();
-                    set.Add(str);
+                    set.Add(buffer.Slice(header.TableOffset + rip).ReadString(returnNull: false));
                 }
                 Entries.Add(set);
             }
