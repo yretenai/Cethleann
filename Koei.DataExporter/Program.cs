@@ -42,8 +42,8 @@ namespace Koei.DataExporter
 #if DEBUG
             var strings = new StringTable(cethleann.ReadEntry(0x216C).Span);
             var bundle = new DataTable(cethleann.ReadEntry(0xE34).Span);
-            var model = new IktglModel(bundle.Entries.ElementAt(0).Span);
-            var texture = new IktglTextureGroup(bundle.Entries.ElementAt(1).Span);
+            var model = new G1Model(bundle.Entries.ElementAt(0).Span);
+            var texture = new G1TextureGroup(bundle.Entries.ElementAt(1).Span);
             SaveTextures($@"{output}\mdl\tex", texture);
             SaveModel($@"{output}\mdl\{0xE34:X4}.gltf", model, "tex");
 #endif
@@ -87,29 +87,34 @@ namespace Koei.DataExporter
                     if (TryExtractDataTable(blobBase, datablob, writeZero))
                         return 1;
                 }
-                else if (datablob.Span.GetDataType() == DataType.SCEN)
+                if (datablob.Span.GetDataType() == DataType.SCEN)
                 {
                     if (TryExtractSCEN(blobBase, datablob, writeZero))
                         return 1;
                 }
-                else if (datablob.Span.IsBundle())
+                if (datablob.Span.IsBundle())
                 {
                     if (TryExtractBundle(blobBase, datablob, writeZero))
                         return 1;
                 }
-                else if (datablob.Span.GetDataType() == DataType.KLDM)
+                if (datablob.Span.GetDataType() == DataType.KLDM)
                 {
                     if (TryExtractKLDM(blobBase, datablob, writeZero))
                         return 1;
                 }
-                else if (datablob.Span.GetDataType() == DataType.KTSR)
+                if (datablob.Span.GetDataType() == DataType.KTSR)
                 {
                     if (TryExtractKTSR(blobBase, datablob, writeZero))
                         return 1;
                 }
-                else if (datablob.Span.GetDataType() == DataType.Model)
+                if (datablob.Span.GetDataType() == DataType.Model)
                 {
                     if (TryExtractG1M(blobBase, datablob, writeZero))
+                        return 1;
+                }
+                if (datablob.Span.GetDataType() == DataType.TextLocalization19)
+                {
+                    if (TryExtractLX(blobBase, datablob, writeZero))
                         return 1;
                 }
             }
@@ -214,11 +219,33 @@ namespace Koei.DataExporter
             return true;
         }
 
+        private static bool TryExtractLX(string pathBase, Memory<byte> data, bool writeZero)
+        {
+            try
+            {
+                var blobs = new TextLocalization(data.Span);
+                if (blobs.Entries.Count == 0) return true;
+
+                var ft = pathBase + ".txt";
+                var lines = string.Join(Environment.NewLine, blobs.Entries.SelectMany((x, i) => x.Select((y, j) =>  $"{i},{j} = " + y.Replace("\\", "\\\\").Replace("\n", "\\n").Replace("\r", "\\r"))));
+                File.WriteAllText(ft, lines);
+            }
+            catch (Exception e)
+            {
+                Logger.Error("KLDM", $"Failed unpacking KLDM, {e}");
+                if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
+
+                return false;
+            }
+
+            return true;
+        }
+
         private static bool TryExtractG1M(string pathBase, Memory<byte> data, bool writeZero)
         {
             try
             {
-                var blobs = new IktglModel(data.Span, true, false);
+                var blobs = new G1Model(data.Span, true, false);
                 if (blobs.SectionRoot.Sections.Count == 0) return true;
 
                 for (var index = 0; index < blobs.SectionRoot.Sections.Count; index++)

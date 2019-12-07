@@ -8,16 +8,16 @@ namespace Cethleann.G1.G1ModelSection
     ///     F Section of G1M models
     /// </summary>
     [PublicAPI]
-    public class IktglMf : IKTGLSection
+    public class IG1MFormat : IKTGLSection
     {
         /// <summary>
-        ///     Model F Data
+        ///     Model format Data
         ///     Pay Respects.
         /// </summary>
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
         /// <param name="sectionHeader"></param>
-        public IktglMf(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
+        public IG1MFormat(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
             if (sectionHeader.Magic != DataType.ModelF) throw new InvalidOperationException("Not an G1MF stream");
 

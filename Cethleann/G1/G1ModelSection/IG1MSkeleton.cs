@@ -14,7 +14,7 @@ namespace Cethleann.G1.G1ModelSection
     ///     Skeleton Section of G1M models
     /// </summary>
     [PublicAPI]
-    public class IktglMs : IKTGLSection
+    public class IG1MSkeleton : IKTGLSection
     {
         /// <summary>
         ///     Model Skeleton Data.
@@ -22,7 +22,7 @@ namespace Cethleann.G1.G1ModelSection
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
         /// <param name="sectionHeader"></param>
-        public IktglMs(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
+        public IG1MSkeleton(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
             if (sectionHeader.Magic != DataType.ModelSkeleton) throw new InvalidOperationException("Not an G1MS stream");
 

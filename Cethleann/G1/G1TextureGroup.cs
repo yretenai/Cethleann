@@ -15,14 +15,14 @@ namespace Cethleann.G1
     ///     This is how all textures are encoded.
     /// </summary>
     [PublicAPI]
-    public class IktglTextureGroup : IKTGLSection
+    public class G1TextureGroup : IKTGLSection
     {
         /// <summary>
         ///     Parse G1T from the provided data buffer
         /// </summary>
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
-        public IktglTextureGroup(Span<byte> data, bool ignoreVersion = true)
+        public G1TextureGroup(Span<byte> data, bool ignoreVersion = true)
         {
             if (!data.Matches(DataType.TextureGroup)) throw new InvalidOperationException("Not an G1T stream");
 

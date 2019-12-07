@@ -20,12 +20,12 @@ namespace Cethleann.G1
     ///     G1Model is the main model format
     /// </summary>
     [PublicAPI]
-    public class IktglModel : IKTGLSection
+    public class G1Model : IKTGLSection
     {
         /// <summary>
         ///     Initialize with no data.
         /// </summary>
-        public IktglModel()
+        public G1Model()
         {
             Section = new ResourceSectionHeader
             {
@@ -42,7 +42,7 @@ namespace Cethleann.G1
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
         /// <param name="parse"></param>
-        public IktglModel(Span<byte> data, bool ignoreVersion = false, bool parse = true)
+        public G1Model(Span<byte> data, bool ignoreVersion = false, bool parse = true)
         {
             if (!data.Matches(DataType.Model)) throw new InvalidOperationException("Not an G1M stream");
 
@@ -60,11 +60,11 @@ namespace Cethleann.G1
                 // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
                 IKTGLSection section = sectionHeader.Magic switch
                 {
-                    DataType.ModelSkeleton => new IktglMs(dataBlock, ignoreVersion, sectionHeader),
-                    DataType.ModelF => new IktglMf(dataBlock, ignoreVersion, sectionHeader),
-                    DataType.ModelGeometry => new IktglMg(dataBlock, ignoreVersion, sectionHeader),
-                    DataType.ModelMatrix => new IktglMm(dataBlock, ignoreVersion, sectionHeader),
-                    DataType.ModelExtra => new IktglMExtra(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.ModelSkeleton => new IG1MSkeleton(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.ModelF => new IG1MFormat(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.ModelGeometry => new IG1MGeometry(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.ModelMatrix => new IG1MMatrix(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.ModelExtra => new IG1Extra(dataBlock, ignoreVersion, sectionHeader),
                     DataType.ModelCollision => null,
                     DataType.ModelCloth => null,
                     _ => throw new NotImplementedException($"Section {sectionHeader.Magic.ToFourCC(false)} not supported!")
@@ -80,8 +80,8 @@ namespace Cethleann.G1
 
         /// <summary>
         ///     Sections found in this model.
-        ///     Look for <seealso cref="IktglMg" /> for Geometry.
-        ///     Look for <seealso cref="IktglMs" /> for Skeleton.
+        ///     Look for <seealso cref="IG1MGeometry" /> for Geometry.
+        ///     Look for <seealso cref="IG1MSkeleton" /> for Skeleton.
         /// </summary>
         public List<IKTGLSection> Sections { get; } = new List<IKTGLSection>();
 
@@ -206,9 +206,9 @@ namespace Cethleann.G1
 
             scene.Nodes ??= new List<NodeId>();
 
-            var skeleton = GetSection<IktglMs>();
+            var skeleton = GetSection<IG1MSkeleton>();
 
-            var geom = GetSection<IktglMg>();
+            var geom = GetSection<IG1MGeometry>();
 
             var bones = geom.GetSection<G1MGBone>();
             var ibos = geom.GetSection<G1MGIndexBuffer>();

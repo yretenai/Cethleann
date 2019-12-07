@@ -33,7 +33,9 @@ namespace Cethleann.DataTables
             var entries = new List<Memory<byte>>();
             foreach (var info in tableInfo)
             {
-                var block = buffer.Slice(info.Offset, info.Size);
+                if (info.Offset >= buffer.Length) continue;
+                var maxSize = Math.Min(info.Size, buffer.Length - info.Offset);
+                var block = buffer.Slice(info.Offset, maxSize);
                 entries.Add(new Memory<byte>(block.ToArray()));
             }
 

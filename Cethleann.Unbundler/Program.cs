@@ -34,7 +34,11 @@ namespace Cethleann.Unbundler
                 }
 
                 var data = new Memory<byte>(File.ReadAllBytes(arg));
-                var pathBase = arg + "_contents";
+                var pathBase = arg;
+                if (!arg.EndsWith(".text"))
+                {
+                    pathBase = arg + "_contents";
+                }
                 TryExtractBlob(pathBase, data, true, true);
             }
         }
@@ -42,7 +46,7 @@ namespace Cethleann.Unbundler
         public static void TryPackG1M(string path, string dir)
         {
             var files = Directory.GetFiles(dir).OrderBy(x => int.Parse(Path.GetFileNameWithoutExtension(x).Split('_')[0], NumberStyles.Integer)).ToArray();
-            var model = new IktglModel();
+            var model = new G1Model();
             foreach (var file in files) model.SectionRoot.Sections.Add(new Memory<byte>(File.ReadAllBytes(file)));
             File.WriteAllBytes(path, model.WriteFromRoot().ToArray());
         }

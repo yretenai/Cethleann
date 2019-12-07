@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using Cethleann.Structure;
+using DragonLib;
 using DragonLib.IO;
 using JetBrains.Annotations;
 
@@ -24,35 +25,31 @@ namespace Cethleann
 
             var header = MemoryMarshal.Read<TextLocalizationHeader>(buffer);
 
-            Logger.Assert(header.Size == 0x14);
-            Logger.Assert(header.Width == 4);
-
-            var strings = new List<string>();
-            for (var i = 0; i < header.Count; ++i)
+            var offset = (int)header.TableOffset;
+            var sz = SizeHelper.SizeOf<TextLocalizationHeader>();
+            var ripHint = buffer.Slice(sz, header.Width / 4);
+            for (var i = 0; i < header.Sets; ++i)
             {
-                var pin = buffer.Slice(header.Size + header.Width * i, header.Width);
-                var offset = MemoryMarshal.Read<int>(pin);
-                int size;
-                if (i < header.Count - 1)
+                var set = new List<string>();
+                for (var j = 0; j < header.Width / 4; ++j)
                 {
-                    var peekPin = buffer.Slice(header.Size + header.Width * (i + 1), header.Width);
-                    var peekOffset = MemoryMarshal.Read<int>(peekPin);
-                    size = peekOffset - offset;
+                    var rip = MemoryMarshal.Read<int>(buffer.Slice(offset));
+                    offset += SizeHelper.SizeOf<int>();
+                    if (rip == -1 || ripHint[j] != 0)
+                    {
+                        set.Add(string.Empty);
+                        continue;
+                    }
+                    var str = buffer.Slice(header.TableOffset + rip).ReadString();
+                    set.Add(str);
                 }
-                else
-                {
-                    size = buffer.Length - offset - header.Size;
-                }
-
-                strings.Add(size == 1 ? "" : Encoding.UTF8.GetString(buffer.Slice(offset + header.Size, size - 1)).Split('\0')[0]);
+                Entries.Add(set);
             }
-
-            Entries = strings;
         }
 
         /// <summary>
         ///     List of string entries in this text blob
         /// </summary>
-        public IEnumerable<string> Entries { get; set; }
+        public List<List<string>> Entries { get; set; } = new List<List<string>>();
     }
 }
