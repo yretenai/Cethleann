@@ -1,3 +1,3 @@
 [submodule "DragonLib"]
-	path = Library/DragonLib
+	path = DragonLib
 	url = https://github.com/healingbrew/DragonLib.git

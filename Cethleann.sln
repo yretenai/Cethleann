@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Koei.DataExporter", "Koei.D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{8ABC4D50-0A23-4D29-BBE1-B1BD994D495D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonLib", "Library\DragonLib\DragonLib.csproj", "{DFB760A9-0BF2-4C75-A015-BA4787B0E20E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonLib", "DragonLib\DragonLib.csproj", "{DFB760A9-0BF2-4C75-A015-BA4787B0E20E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cethleann.Model", "Cethleann.Model\Cethleann.Model.csproj", "{3F7BAF1A-6178-46DF-9D6C-E7F779879ABE}"
 EndProject
