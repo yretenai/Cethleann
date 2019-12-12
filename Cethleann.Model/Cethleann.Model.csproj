@@ -10,7 +10,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Cethleann\Cethleann.csproj" />
-        <ProjectReference Include="..\Library\DragonLib\DragonLib.csproj" />
+        <ProjectReference Include="..\DragonLib\DragonLib.csproj" />
     </ItemGroup>
 
 </Project>

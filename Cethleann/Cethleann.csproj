@@ -17,7 +17,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Library\DragonLib\DragonLib.csproj" />
+        <ProjectReference Include="..\DragonLib\DragonLib.csproj" />
     </ItemGroup>
 
     <ItemGroup>
