@@ -137,10 +137,7 @@ namespace Cethleann.Model
         {
             var geom = model.GetSection<IG1MGeometry>();
             var gltf = model.ExportMeshes(Path.ChangeExtension(pathBase, "bin"), $"{Path.GetFileNameWithoutExtension(pathBase)}.bin", 0, 0, texBase);
-            using var file = File.OpenWrite(pathBase);
-            file.SetLength(0);
-            using var writer = new StreamWriter(file);
-            gltf.Serialize(writer);
+            File.WriteAllText(pathBase, gltf.Serialize("Cethleann"));
             using var materialInfo = File.OpenWrite(Path.ChangeExtension(pathBase, "material.txt"));
             materialInfo.SetLength(0);
             var materials = geom.GetSection<G1MGMaterial>();

@@ -551,7 +551,7 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.G1.G1Model.ExportMeshes(System.String,System.String,System.Int32,System.Int32,System.String,GLTF.Schema.GLTFRoot)">
+        <member name="M:Cethleann.G1.G1Model.ExportMeshes(System.String,System.String,System.Int32,System.Int32,System.String)">
             <summary>
                 Exports meshes to GLTF
             </summary>
@@ -560,7 +560,6 @@
             <param name="lod"></param>
             <param name="group"></param>
             <param name="texBase"></param>
-            <param name="root"></param>
             <returns></returns>
             <exception cref="T:System.ArgumentOutOfRangeException"></exception>
         </member>

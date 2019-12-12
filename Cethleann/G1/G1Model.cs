@@ -10,9 +10,8 @@ using Cethleann.Structure.Resource;
 using Cethleann.Structure.Resource.Model;
 using DragonLib;
 using DragonLib.Numerics;
-using GLTF.Schema;
+using DragonLib.GLTF;
 using JetBrains.Annotations;
-using Quaternion = GLTF.Math.Quaternion;
 
 namespace Cethleann.G1
 {
@@ -173,38 +172,23 @@ namespace Cethleann.G1
         /// <param name="lod"></param>
         /// <param name="group"></param>
         /// <param name="texBase"></param>
-        /// <param name="root"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public GLTFRoot ExportMeshes(string bufferPath, string bufferPathRoot, int lod = -1, int group = -1, string texBase = "", GLTFRoot root = null)
+        public GLTFRoot ExportMeshes(string bufferPath, string bufferPathRoot, int lod = -1, int group = -1, string texBase = "")
         {
-            if (root == null)
-                root = new GLTFRoot
-                {
-                    Asset = new Asset
-                    {
-                        Version = "2.0",
-                        Generator = "Cethleann",
-                        Copyright = "2019 (c) Koei"
-                    }
-                };
-
-            var scene = root.GetDefaultScene();
-            if (scene == null)
+            var root = new GLTFRoot
             {
-                scene = new GLTFScene();
-                root.Scenes = new List<GLTFScene>
+                Asset = new GLTFAsset
                 {
-                    scene
-                };
-                root.Scene = new SceneId
-                {
-                    Id = root.Scenes.Count - 1,
-                    Root = root
-                };
-            }
+                    Version = "2.0",
+                    Generator = "KTGL",
+                    Copyright = "2019 (c) Koei"
+                }
+            };
 
-            scene.Nodes ??= new List<NodeId>();
+            var scene = new GLTFScene();
+            root.Scenes.Add(scene);
+            root.Scene = 0;
 
             var skeleton = GetSection<IG1MSkeleton>();
 
@@ -218,47 +202,35 @@ namespace Cethleann.G1
             var meshGroups = geom.GetSection<G1MGMesh>();
             var materials = geom.GetSection<G1MGMaterial>();
 
-            root.Samplers ??= new List<Sampler>();
-            var samplerId = new SamplerId
+            var samplerId = root.Samplers.Count;
+            root.Samplers.Add(new GLTFSampler
             {
-                Root = root,
-                Id = root.Samplers.Count
-            };
-            root.Samplers.Add(new Sampler
-            {
-                WrapS = WrapMode.Repeat,
-                WrapT = WrapMode.Repeat,
-                MagFilter = MagFilterMode.Linear,
-                MinFilter = MinFilterMode.Linear
+                WrapS = GLTFWrapMode.Repeat,
+                WrapT = GLTFWrapMode.Repeat,
+                MagFilter = GLTFMagFilterMode.Linear,
+                MinFilter = GLTFMinFilterMode.Linear
             });
 
-            var materialIds = new List<MaterialId>();
-            var textureIds = new Dictionary<int, TextureId>();
-            root.Textures ??= new List<GLTFTexture>();
-            root.Materials ??= new List<GLTFMaterial>();
-            root.Images ??= new List<GLTFImage>();
+            var materialIds = new List<int>();
+            var textureIds = new Dictionary<int, int>();
             foreach (var (_, textureSet) in materials.Materials)
             {
-                materialIds.Add(new MaterialId
-                {
-                    Root = root,
-                    Id = root.Materials.Count
-                });
+                materialIds.Add(root.Materials.Count);
                 var gltfMaterial = new GLTFMaterial
                 {
                     Name = $"Material_{materialIds.Count}",
                     DoubleSided = false,
-                    PbrMetallicRoughness = new PbrMetallicRoughness()
+                    PbrMetallicRoughness = new GLTFPBRMetallicRoughness()
                 };
                 if (GetTexture(texBase, root, textureSet, textureIds, TextureKind.Color, samplerId, out var colorId, out var colorIndex))
-                    gltfMaterial.PbrMetallicRoughness.BaseColorTexture = new TextureInfo
+                    gltfMaterial.PbrMetallicRoughness.BaseColorTexture = new GLTFTextureInfo
                     {
                         Index = colorId,
                         TexCoord = colorIndex.TexCoord
                     };
 
                 if (GetTexture(texBase, root, textureSet, textureIds, TextureKind.Normal, samplerId, out var normalId, out var normalIndex))
-                    gltfMaterial.NormalTexture = new NormalTextureInfo
+                    gltfMaterial.NormalTexture = new GLTFNormalTextureInfo
                     {
                         Index = normalId,
                         TexCoord = normalIndex.TexCoord
@@ -267,22 +239,14 @@ namespace Cethleann.G1
                 root.Materials.Add(gltfMaterial);
             }
 
-            root.Buffers ??= new List<GLTFBuffer>();
             var gltfBuffer = new GLTFBuffer
             {
                 Uri = bufferPathRoot
             };
-            var gltfBufferId = new BufferId
-            {
-                Id = root.Buffers.Count,
-                Root = root
-            };
+            var gltfBufferId = root.Buffers.Count;
             root.Buffers.Add(gltfBuffer);
             var bufferChunks = new Span<byte>(new byte[] { 0x44, 0x52, 0x47, 0x4E });
-
-            root.BufferViews ??= new List<BufferView>();
-            root.Accessors ??= new List<Accessor>();
-            var vboDeconstructed = new List<Dictionary<string, AccessorId>>();
+            var vboDeconstructed = new List<Dictionary<string, int>>();
             var semanticToComponentType = new Dictionary<string, GLTFComponentType>
             {
                 { "POSITION", GLTFComponentType.Float },
@@ -432,7 +396,7 @@ namespace Cethleann.G1
                     for (var j = 0; j < size; ++j) (chunks["WEIGHTS_0"] as List<Vector4>).Add(new Vector4(1, 0, 0, 0));
                 }
 
-                var vboBuffer = new Dictionary<string, AccessorId>();
+                var vboBuffer = new Dictionary<string, int>();
                 foreach (var (semantic, data) in chunks)
                 {
                     switch (semantic)
@@ -452,7 +416,7 @@ namespace Cethleann.G1
                         _ => throw new ArgumentOutOfRangeException()
                     };
 
-                    var bufferView = new BufferView
+                    var bufferView = new GLTFBufferView
                     {
                         Buffer = gltfBufferId,
                         ByteOffset = (uint) bufferChunks.Length,
@@ -463,18 +427,9 @@ namespace Cethleann.G1
                     bufferChunks.CopyTo(temp);
                     bytes.CopyTo(temp.Slice(bufferChunks.Length));
                     bufferChunks = temp;
-                    var bufferViewId = new BufferViewId
-                    {
-                        Id = root.BufferViews.Count,
-                        Root = root
-                    };
-
-                    var accessorId = new AccessorId
-                    {
-                        Id = root.Accessors.Count,
-                        Root = root
-                    };
-                    var accessor = new Accessor
+                    var bufferViewId = root.BufferViews.Count;
+                    var accessorId = root.Accessors.Count;
+                    var accessor = new GLTFAccessor
                     {
                         BufferView = bufferViewId,
                         ComponentType = semanticToComponentType[semantic],
@@ -505,11 +460,11 @@ namespace Cethleann.G1
                 vboDeconstructed.Add(vboBuffer);
             }
 
-            var iboDeconstructed = new List<BufferViewId>();
+            var iboDeconstructed = new List<int>();
             for (var i = 0; i < ibos.Buffers.Count; ++i)
             {
                 var bytes = MemoryMarshal.Cast<ushort, byte>(ibos.Buffers[i].buffer);
-                var bufferView = new BufferView
+                var bufferView = new GLTFBufferView
                 {
                     Buffer = gltfBufferId,
                     ByteOffset = (uint) bufferChunks.Length,
@@ -519,40 +474,24 @@ namespace Cethleann.G1
                 bufferChunks.CopyTo(temp);
                 bytes.CopyTo(temp.Slice(bufferChunks.Length));
                 bufferChunks = temp;
-                var bufferViewId = new BufferViewId
-                {
-                    Id = root.BufferViews.Count,
-                    Root = root
-                };
+                var bufferViewId = root.BufferViews.Count;
                 root.BufferViews.Add(bufferView);
                 iboDeconstructed.Add(bufferViewId);
             }
 
-            root.Nodes ??= new List<Node>();
-            root.Meshes ??= new List<GLTFMesh>();
-            root.Skins ??= new List<Skin>();
-            var skinId = default(SkinId);
-            scene.Nodes.Add(new NodeId
+            var skinId = default(int?);
+            scene.Nodes.Add(root.Nodes.Count);
+            var skinNode = new GLTFNode
             {
-                Id = root.Nodes.Count,
-                Root = root
-            });
-            var skinNode = new Node
-            {
-                Name = "CethleannExport",
-                Children = new List<NodeId>()
+                Name = "CethleannExport"
             };
             root.Nodes.Add(skinNode);
-            var rootBones = new List<NodeId>();
+            var rootBones = new List<int>();
             if (skeleton != null)
             {
-                skinId = new SkinId
-                {
-                    Id = root.Skins.Count,
-                    Root = root
-                };
-                var joints = new List<NodeId>();
-                var jointsActual = new List<(Node, NodeId, ModelSkeletonBone)>();
+                skinId = root.Skins.Count;
+                var joints = new List<int>();
+                var jointsActual = new List<(GLTFNode, int, ModelSkeletonBone)>();
                 var matrices = new List<Matrix4x4>();
                 for (var index = 0; index < skeleton.Bones.Length; index++)
                 {
@@ -561,19 +500,14 @@ namespace Cethleann.G1
                     var pos = bone.Position;
                     var rot = bone.Rotation;
                     var scale = bone.Scale;
-                    var joint = new Node
+                    var joint = new GLTFNode
                     {
-                        Children = new List<NodeId>(),
-                        Translation = new GLTF.Math.Vector3(pos.X, pos.Y, pos.Z),
-                        Scale = new GLTF.Math.Vector3(scale.X, scale.Y, scale.Z),
-                        Rotation = new Quaternion(rot.X, rot.Y, rot.Z, rot.W),
+                        Translation = pos,
+                        Scale = scale,
+                        Rotation = rot,
                         Name = $"Bone_{index:x}"
                     };
-                    var jointId = new NodeId
-                    {
-                        Id = root.Nodes.Count,
-                        Root = root
-                    };
+                    var jointId = root.Nodes.Count;
                     joints.Add(jointId);
                     root.Nodes.Add(joint);
                     jointsActual.Add((joint, jointId, bone));
@@ -588,7 +522,7 @@ namespace Cethleann.G1
                 }
 
                 var bytes = MemoryMarshal.Cast<Matrix4x4, byte>(matrices.ToArray());
-                var bufferView = new BufferView
+                var bufferView = new GLTFBufferView
                 {
                     Buffer = gltfBufferId,
                     ByteOffset = (uint) bufferChunks.Length,
@@ -598,18 +532,10 @@ namespace Cethleann.G1
                 bufferChunks.CopyTo(temp);
                 bytes.CopyTo(temp.Slice(bufferChunks.Length));
                 bufferChunks = temp;
-                var bufferViewId = new BufferViewId
-                {
-                    Id = root.BufferViews.Count,
-                    Root = root
-                };
+                var bufferViewId = root.BufferViews.Count;
                 root.BufferViews.Add(bufferView);
-                var matrixId = new AccessorId
-                {
-                    Id = root.Accessors.Count,
-                    Root = root
-                };
-                root.Accessors.Add(new Accessor
+                var matrixId = root.Accessors.Count;
+                root.Accessors.Add(new GLTFAccessor
                 {
                     BufferView = bufferViewId,
                     ComponentType = GLTFComponentType.Float,
@@ -617,7 +543,7 @@ namespace Cethleann.G1
                     Count = (uint) matrices.Count
                 });
 
-                var skin = new Skin
+                var skin = new GLTFSkin
                 {
                     Name = "CethleannExportedSkeleton",
                     InverseBindMatrices = matrixId,
@@ -633,26 +559,17 @@ namespace Cethleann.G1
 
                 foreach (var (name, _, indexList) in meshes)
                 {
-                    skinNode.Children.Add(new NodeId
-                    {
-                        Id = root.Nodes.Count,
-                        Root = root
-                    });
+                    skinNode.Children.Add(root.Nodes.Count);
                     var fullname = $"{name}_Level{meshGroup.LOD}_Group{meshGroup.Group}";
-                    root.Nodes.Add(new Node
+                    root.Nodes.Add(new GLTFNode
                     {
-                        Mesh = new MeshId
-                        {
-                            Id = root.Meshes.Count,
-                            Root = root
-                        },
+                        Mesh = root.Meshes.Count,
                         Skin = skinId,
                         Name = fullname
                     });
                     var mesh = new GLTFMesh
                     {
-                        Name = fullname,
-                        Primitives = new List<MeshPrimitive>()
+                        Name = fullname
                     };
                     root.Meshes.Add(mesh);
                     foreach (var submeshIndex in indexList)
@@ -661,9 +578,9 @@ namespace Cethleann.G1
                         // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
                         var format = submesh.Format switch
                         {
-                            SubMeshFormat.Triangle => DrawMode.Triangles,
-                            SubMeshFormat.Quad => DrawMode.Triangles, // xd
-                            SubMeshFormat.Strip => DrawMode.TriangleStrip,
+                            SubMeshFormat.Triangle => GLTFDrawMode.Triangles,
+                            SubMeshFormat.Quad => GLTFDrawMode.Triangles, // xd
+                            SubMeshFormat.Strip => GLTFDrawMode.TriangleStrip,
                             _ => throw new ArgumentOutOfRangeException()
                         };
                         var ibo = iboDeconstructed[submesh.BufferIndex];
@@ -717,7 +634,7 @@ namespace Cethleann.G1
 
                             var bytes = MemoryMarshal.Cast<Vector4Short, byte>(newJoints.ToArray());
 
-                            var bufferView = new BufferView
+                            var bufferView = new GLTFBufferView
                             {
                                 Buffer = gltfBufferId,
                                 ByteOffset = (uint) bufferChunks.Length,
@@ -728,18 +645,10 @@ namespace Cethleann.G1
                             bufferChunks.CopyTo(temp);
                             bytes.CopyTo(temp.Slice(bufferChunks.Length));
                             bufferChunks = temp;
-                            var bufferViewId = new BufferViewId
-                            {
-                                Id = root.BufferViews.Count,
-                                Root = root
-                            };
+                            var bufferViewId = root.BufferViews.Count;
 
-                            var accessorId = new AccessorId
-                            {
-                                Id = root.Accessors.Count,
-                                Root = root
-                            };
-                            var accessor = new Accessor
+                            var accessorId = root.Accessors.Count;
+                            var accessor = new GLTFAccessor
                             {
                                 BufferView = bufferViewId,
                                 ComponentType = semanticToComponentType["JOINTS_0"],
@@ -752,11 +661,7 @@ namespace Cethleann.G1
                             vboAttributes["JOINTS_0"] = accessorId;
                         }
 
-                        var iboAccessor = new AccessorId
-                        {
-                            Id = root.Accessors.Count,
-                            Root = root
-                        };
+                        var iboAccessor = root.Accessors.Count;
                         // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
                         var width = submesh.Format switch
                         {
@@ -765,7 +670,7 @@ namespace Cethleann.G1
                             SubMeshFormat.Triangle => 3,
                             _ => throw new ArgumentOutOfRangeException()
                         };
-                        root.Accessors.Add(new Accessor
+                        root.Accessors.Add(new GLTFAccessor
                         {
                             BufferView = ibo,
                             ComponentType = GLTFComponentType.UnsignedShort,
@@ -773,7 +678,7 @@ namespace Cethleann.G1
                             ByteOffset = (uint) (submesh.FaceOffset * width),
                             Count = (uint) submesh.FaceCount
                         });
-                        var primitive = new MeshPrimitive
+                        var primitive = new GLTFMeshPrimitive
                         {
                             Attributes = vboAttributes,
                             Indices = iboAccessor,
@@ -796,27 +701,19 @@ namespace Cethleann.G1
             return root;
         }
 
-        private static bool GetTexture(string texBase, GLTFRoot root, ModelGeometryTextureSet[] textureSet, Dictionary<int, TextureId> textureIds, TextureKind kind, SamplerId samplerId, out TextureId texture, out ModelGeometryTextureSet set)
+        private static bool GetTexture(string texBase, GLTFRoot root, ModelGeometryTextureSet[] textureSet, Dictionary<int, int> textureIds, TextureKind kind, int samplerId, out int texture, out ModelGeometryTextureSet set)
         {
             if (textureSet.Any(x => x.Kind == kind))
             {
                 var index = textureSet.First(x => x.Kind == kind);
                 if (!textureIds.TryGetValue(index.Index, out var textureId))
                 {
-                    textureId = new TextureId
-                    {
-                        Root = root,
-                        Id = root.Textures.Count
-                    };
+                    textureId = root.Textures.Count;
                     root.Textures.Add(new GLTFTexture
                     {
                         Sampler = samplerId,
                         Name = index.Index.ToString("X4"),
-                        Source = new ImageId
-                        {
-                            Id = root.Images.Count,
-                            Root = root
-                        }
+                        Source = root.Images.Count
                     });
                     root.Images.Add(new GLTFImage
                     {
@@ -830,7 +727,7 @@ namespace Cethleann.G1
                 return true;
             }
 
-            texture = null;
+            texture = -1;
             set = default;
             return false;
         }
