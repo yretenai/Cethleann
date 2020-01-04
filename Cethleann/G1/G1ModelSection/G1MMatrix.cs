@@ -10,7 +10,7 @@ namespace Cethleann.G1.G1ModelSection
     ///     Matrix Section of G1M models
     /// </summary>
     [PublicAPI]
-    public class IG1MMatrix : IKTGLSection
+    public class G1MMatrix : IKTGLSection
     {
         /// <summary>
         ///     Model Matrix Data
@@ -18,13 +18,13 @@ namespace Cethleann.G1.G1ModelSection
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
         /// <param name="sectionHeader"></param>
-        public IG1MMatrix(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
+        public G1MMatrix(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
             if (sectionHeader.Magic != DataType.ModelMatrix) throw new InvalidOperationException("Not an G1MM stream");
 
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MM version {Section.Version.ToVersion()} is not supported!");
-            
+
             if (Section.Size == 0xC) return;
 
             var count = MemoryMarshal.Read<int>(data);

@@ -10,6 +10,7 @@ using Cethleann.DataTables;
 using Cethleann.G1;
 using Cethleann.ManagedFS;
 using DragonLib.IO;
+
 #if DEBUG
 using static Cethleann.Model.Program;
 
@@ -83,40 +84,26 @@ namespace Koei.DataExporter
             if (allTypes)
             {
                 if (!datablob.Span.IsKnown() && datablob.Span.IsDataTable())
-                {
                     if (TryExtractDataTable(blobBase, datablob, writeZero))
                         return 1;
-                }
                 if (datablob.Span.GetDataType() == DataType.SCEN)
-                {
                     if (TryExtractSCEN(blobBase, datablob, writeZero))
                         return 1;
-                }
                 if (datablob.Span.IsBundle())
-                {
                     if (TryExtractBundle(blobBase, datablob, writeZero))
                         return 1;
-                }
                 if (datablob.Span.GetDataType() == DataType.KLDM)
-                {
                     if (TryExtractKLDM(blobBase, datablob, writeZero))
                         return 1;
-                }
                 if (datablob.Span.GetDataType() == DataType.KTSR)
-                {
                     if (TryExtractKTSR(blobBase, datablob, writeZero))
                         return 1;
-                }
                 if (datablob.Span.GetDataType() == DataType.Model)
-                {
                     if (TryExtractG1M(blobBase, datablob, writeZero))
                         return 1;
-                }
                 if (datablob.Span.GetDataType() == DataType.TextLocalization19)
-                {
-                    if (TryExtractLX(blobBase, datablob, writeZero))
+                    if (TryExtractLX(blobBase, datablob))
                         return 1;
-                }
             }
 
             Console.WriteLine($@"{blobBase}");
@@ -219,7 +206,7 @@ namespace Koei.DataExporter
             return true;
         }
 
-        private static bool TryExtractLX(string pathBase, Memory<byte> data, bool writeZero)
+        private static bool TryExtractLX(string pathBase, Memory<byte> data)
         {
             try
             {
@@ -227,7 +214,7 @@ namespace Koei.DataExporter
                 if (blobs.Entries.Count == 0) return true;
 
                 var ft = Path.ChangeExtension(pathBase, ".txt");
-                var lines = string.Join(Environment.NewLine, blobs.Entries.SelectMany((x, i) => x.Select((y, j) =>  $"{i},{j} = " + y.Replace("\\", "\\\\").Replace("\n", "\\n").Replace("\r", "\\r"))));
+                var lines = string.Join(Environment.NewLine, blobs.Entries.SelectMany((x, i) => x.Select((y, j) => $"{i},{j} = " + y.Replace("\\", "\\\\").Replace("\n", "\\n").Replace("\r", "\\r"))));
                 File.WriteAllText(ft, lines);
             }
             catch (Exception e)

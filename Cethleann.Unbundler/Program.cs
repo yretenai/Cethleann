@@ -35,10 +35,7 @@ namespace Cethleann.Unbundler
 
                 var data = new Memory<byte>(File.ReadAllBytes(arg));
                 var pathBase = arg;
-                if (!arg.EndsWith(".text"))
-                {
-                    pathBase = arg + "_contents";
-                }
+                if (!arg.EndsWith(".text")) pathBase = arg + "_contents";
                 TryExtractBlob(pathBase, data, true, true);
             }
         }

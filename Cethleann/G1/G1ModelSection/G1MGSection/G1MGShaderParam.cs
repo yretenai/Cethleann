@@ -45,7 +45,7 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
                         };
                         @params.Add((blockHeader, name, paramData));
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         Logger.Error(null, e.ToString());
                         @params.Add((blockHeader, name, null));

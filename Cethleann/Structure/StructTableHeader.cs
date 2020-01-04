@@ -1,6 +1,7 @@
 ﻿namespace Cethleann.Structure
 {
-    internal struct StructTableHeader
+#pragma warning disable 1591
+    public struct StructTableHeader
     {
         public int Magic { get; set; }
         public int Count { get; set; }
@@ -19,4 +20,5 @@
         public int UnknownC { get; set; }
         public int UnknownD { get; set; }
     }
+#pragma warning restore 1591
 }

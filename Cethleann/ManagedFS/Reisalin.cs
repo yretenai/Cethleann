@@ -57,8 +57,10 @@ namespace Cethleann.ManagedFS
         public Memory<byte> ReadFile(string path)
         {
             foreach (var pak in PAKs)
+            {
                 if (pak.TryGetEntry(path, out var entry))
                     return pak.ReadEntry(entry);
+            }
 
             throw new FileNotFoundException(path);
         }

@@ -254,22 +254,22 @@
         </member>
         <member name="F:Cethleann.DataType.KTSR">
             <summary>
-                Koei Tecmo Sound Resource
+                KTGL Sound Resource
             </summary>
         </member>
         <member name="F:Cethleann.DataType.KTSC">
             <summary>
-                Koei Tecmo Sound Container
+                KTGL Sound Container
             </summary>
         </member>
         <member name="F:Cethleann.DataType.KTSS">
             <summary>
-                Koei Tecmo Sound Sample
+                KTGL Sound Sample
             </summary>
         </member>
         <member name="F:Cethleann.DataType.KOVS">
             <summary>
-                Koei Tecmo Sound Sample
+                KTGL Sound Sample
             </summary>
         </member>
         <member name="F:Cethleann.DataType.SCEN">
@@ -314,7 +314,27 @@
         </member>
         <member name="F:Cethleann.DataType.KLDM">
             <summary>
-                Koei Model Container
+                KTGL Model Container
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.ScreenLayout">
+            <summary>
+                KTGL Screen Layout Texture
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.ScreenLayoutTexture">
+            <summary>
+                KTGL Screen Layout
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.VideoSource">
+            <summary>
+                KTGL Video Source (usually encrypted)
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.Font">
+            <summary>
+                KTGL Font
             </summary>
         </member>
         <member name="F:Cethleann.DataType.TextLocalization19">
@@ -324,33 +344,32 @@
         </member>
         <member name="F:Cethleann.DataType.TextureGroup">
             <summary>
-                Koei Texture Group
+                KTGL Texture Group
             </summary>
         </member>
         <member name="F:Cethleann.DataType.Model">
             <summary>
-                Koei Model Base
+                KTGL Model Base
             </summary>
         </member>
         <member name="F:Cethleann.DataType.Animation">
             <summary>
-                Koei Animation
+                KTGL Animation
             </summary>
         </member>
         <member name="F:Cethleann.DataType.ModelGroup">
             <summary>
-                Koei Model Group
+                KTGL Model Group
             </summary>
         </member>
         <member name="F:Cethleann.DataType.EffectManager">
             <summary>
-                ASSUMPTION
-                Koei Effect Manager
+                KTGL Effect Manager
             </summary>
         </member>
         <member name="F:Cethleann.DataType.Effect">
             <summary>
-                Koei Effect
+                KTGL Effect
             </summary>
         </member>
         <member name="F:Cethleann.DataType.SEBin">
@@ -360,57 +379,57 @@
         </member>
         <member name="F:Cethleann.DataType.PostFX">
             <summary>
-                Koei PostFX Shader Bundle
+                KTGL PostFX Shader Bundle
             </summary>
         </member>
         <member name="F:Cethleann.DataType.ModelSkeleton">
             <summary>
-                Koei Model Skeleton
+                KTGL Model Skeleton
             </summary>
         </member>
-        <member name="F:Cethleann.DataType.ModelF">
+        <member name="F:Cethleann.DataType.ModelFormat">
             <summary>
-                Koei Model F?
+                KTGL Model Format
             </summary>
         </member>
         <member name="F:Cethleann.DataType.ModelGeometry">
             <summary>
-                Koei Model Geometry
+                KTGL Model Geometry
             </summary>
         </member>
         <member name="F:Cethleann.DataType.ModelMatrix">
             <summary>
-                Koei Model Matrices
+                KTGL Model Matrices
             </summary>
         </member>
         <member name="F:Cethleann.DataType.ModelExtra">
             <summary>
-                Koei Model ExtraData.
+                KTGL Model ExtraData.
             </summary>
         </member>
         <member name="F:Cethleann.DataType.ModelCollision">
             <summary>
-                Koei Collision Model.
+                KTGL Collision Model.
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.ModelClothDriver">
+            <summary>
+                KTGL Cloth Driver
             </summary>
         </member>
         <member name="F:Cethleann.DataType.ModelCloth">
             <summary>
-                Assumption.
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ModelCloth2">
-            <summary>
-                Assumption.
+                KTGL Cloth
             </summary>
         </member>
         <member name="F:Cethleann.DataType.ModelSoftbody">
             <summary>
-                Assumption.
+                KTGL Soft Body voxels
             </summary>
         </member>
         <member name="F:Cethleann.DataType.ModelHair">
             <summary>
-                Assumption.
+                KTGL Hair voxels
             </summary>
         </member>
         <member name="F:Cethleann.DataType.Compressed">
@@ -543,8 +562,8 @@
         <member name="P:Cethleann.G1.G1Model.Sections">
             <summary>
                 Sections found in this model.
-                Look for <seealso cref="T:Cethleann.G1.G1ModelSection.IG1MGeometry" /> for Geometry.
-                Look for <seealso cref="T:Cethleann.G1.G1ModelSection.IG1MSkeleton" /> for Skeleton.
+                Look for <seealso cref="T:Cethleann.G1.G1ModelSection.G1MGeometry" /> for Geometry.
+                Look for <seealso cref="T:Cethleann.G1.G1ModelSection.G1MSkeleton" /> for Skeleton.
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1Model.SupportedVersion">
@@ -577,6 +596,81 @@
             <param name="texBase"></param>
             <returns></returns>
             <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="T:Cethleann.G1.G1ModelSection.G1Extra">
+            <summary>
+                Extra Section of G1M models
+            </summary>
+        </member>
+        <member name="M:Cethleann.G1.G1ModelSection.G1Extra.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
+            <summary>
+                Extra data found in G1M models.
+            </summary>
+            <param name="data"></param>
+            <param name="ignoreVersion"></param>
+            <param name="sectionHeader"></param>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1Extra.SupportedVersion">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1Extra.Section">
+            <inheritdoc />
+        </member>
+        <member name="T:Cethleann.G1.G1ModelSection.G1MFormat">
+            <summary>
+                F Section of G1M models
+            </summary>
+        </member>
+        <member name="M:Cethleann.G1.G1ModelSection.G1MFormat.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
+            <summary>
+                Model format Data
+                Pay Respects.
+            </summary>
+            <param name="data"></param>
+            <param name="ignoreVersion"></param>
+            <param name="sectionHeader"></param>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MFormat.SupportedVersion">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MFormat.Section">
+            <inheritdoc />
+        </member>
+        <member name="T:Cethleann.G1.G1ModelSection.G1MGeometry">
+            <summary>
+                Geometry Section of G1M models
+            </summary>
+        </member>
+        <member name="M:Cethleann.G1.G1ModelSection.G1MGeometry.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
+            <summary>
+                Model Geometry
+            </summary>
+            <param name="data"></param>
+            <param name="ignoreVersion"></param>
+            <param name="sectionHeader"></param>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MGeometry.Header">
+            <summary>
+                Header info (bounding box)
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MGeometry.SubSections">
+            <summary>
+                List of geometry sections
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MGeometry.SupportedVersion">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MGeometry.Section">
+            <inheritdoc />
+        </member>
+        <member name="M:Cethleann.G1.G1ModelSection.G1MGeometry.GetSection``1">
+            <summary>
+                Gets a geometry component
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
         </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGBone">
             <summary>
@@ -741,87 +835,12 @@
                 Section header
             </summary>
         </member>
-        <member name="T:Cethleann.G1.G1ModelSection.IG1Extra">
-            <summary>
-                Extra Section of G1M models
-            </summary>
-        </member>
-        <member name="M:Cethleann.G1.G1ModelSection.IG1Extra.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
-            <summary>
-                Extra data found in G1M models.
-            </summary>
-            <param name="data"></param>
-            <param name="ignoreVersion"></param>
-            <param name="sectionHeader"></param>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.IG1Extra.SupportedVersion">
-            <inheritdoc />
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.IG1Extra.Section">
-            <inheritdoc />
-        </member>
-        <member name="T:Cethleann.G1.G1ModelSection.IG1MFormat">
-            <summary>
-                F Section of G1M models
-            </summary>
-        </member>
-        <member name="M:Cethleann.G1.G1ModelSection.IG1MFormat.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
-            <summary>
-                Model format Data
-                Pay Respects.
-            </summary>
-            <param name="data"></param>
-            <param name="ignoreVersion"></param>
-            <param name="sectionHeader"></param>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.IG1MFormat.SupportedVersion">
-            <inheritdoc />
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.IG1MFormat.Section">
-            <inheritdoc />
-        </member>
-        <member name="T:Cethleann.G1.G1ModelSection.IG1MGeometry">
-            <summary>
-                Geometry Section of G1M models
-            </summary>
-        </member>
-        <member name="M:Cethleann.G1.G1ModelSection.IG1MGeometry.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
-            <summary>
-                Model Geometry
-            </summary>
-            <param name="data"></param>
-            <param name="ignoreVersion"></param>
-            <param name="sectionHeader"></param>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.IG1MGeometry.Header">
-            <summary>
-                Header info (bounding box)
-            </summary>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.IG1MGeometry.SubSections">
-            <summary>
-                List of geometry sections
-            </summary>
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.IG1MGeometry.SupportedVersion">
-            <inheritdoc />
-        </member>
-        <member name="P:Cethleann.G1.G1ModelSection.IG1MGeometry.Section">
-            <inheritdoc />
-        </member>
-        <member name="M:Cethleann.G1.G1ModelSection.IG1MGeometry.GetSection``1">
-            <summary>
-                Gets a geometry component
-            </summary>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="T:Cethleann.G1.G1ModelSection.IG1MMatrix">
+        <member name="T:Cethleann.G1.G1ModelSection.G1MMatrix">
             <summary>
                 Matrix Section of G1M models
             </summary>
         </member>
-        <member name="M:Cethleann.G1.G1ModelSection.IG1MMatrix.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
+        <member name="M:Cethleann.G1.G1ModelSection.G1MMatrix.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
             <summary>
                 Model Matrix Data
             </summary>
@@ -829,24 +848,24 @@
             <param name="ignoreVersion"></param>
             <param name="sectionHeader"></param>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.IG1MMatrix.Matrices">
+        <member name="P:Cethleann.G1.G1ModelSection.G1MMatrix.Matrices">
             <summary>
                 List of matrices found in the file.
                 They're all weird.
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.IG1MMatrix.SupportedVersion">
+        <member name="P:Cethleann.G1.G1ModelSection.G1MMatrix.SupportedVersion">
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.IG1MMatrix.Section">
+        <member name="P:Cethleann.G1.G1ModelSection.G1MMatrix.Section">
             <inheritdoc />
         </member>
-        <member name="T:Cethleann.G1.G1ModelSection.IG1MSkeleton">
+        <member name="T:Cethleann.G1.G1ModelSection.G1MSkeleton">
             <summary>
                 Skeleton Section of G1M models
             </summary>
         </member>
-        <member name="M:Cethleann.G1.G1ModelSection.IG1MSkeleton.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
+        <member name="M:Cethleann.G1.G1ModelSection.G1MSkeleton.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
             <summary>
                 Model Skeleton Data.
             </summary>
@@ -854,25 +873,25 @@
             <param name="ignoreVersion"></param>
             <param name="sectionHeader"></param>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.IG1MSkeleton.BoneIndices">
+        <member name="P:Cethleann.G1.G1ModelSection.G1MSkeleton.BoneIndices">
             <summary>
                 Bone Remap Index
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.IG1MSkeleton.Bones">
+        <member name="P:Cethleann.G1.G1ModelSection.G1MSkeleton.Bones">
             <summary>
                 lsof bones
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.IG1MSkeleton.WorldBones">
+        <member name="P:Cethleann.G1.G1ModelSection.G1MSkeleton.WorldBones">
             <summary>
                 lsof world bones
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.IG1MSkeleton.SupportedVersion">
+        <member name="P:Cethleann.G1.G1ModelSection.G1MSkeleton.SupportedVersion">
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.IG1MSkeleton.Section">
+        <member name="P:Cethleann.G1.G1ModelSection.G1MSkeleton.Section">
             <inheritdoc />
         </member>
         <member name="T:Cethleann.G1.G1TextureGroup">
@@ -1372,6 +1391,181 @@
             <summary>
                 Disposes
             </summary>
+        </member>
+        <member name="T:Cethleann.ManagedFS.Yshtola">
+            <summary>
+                Manages TN files
+            </summary>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Yshtola.#ctor(System.String,Cethleann.ManagedFS.YshtolaSettings)">
+            <summary>
+                Initialize with standard data.
+            </summary>
+            <param name="root"></param>
+            <param name="settings"></param>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Yshtola.Settings">
+            <summary>
+                Settings to use for decryption and loading.
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Yshtola.Table">
+            <summary>
+                ID Table
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Yshtola.Root">
+            <summary>
+                Root directory, the one that contains COMMON.
+            </summary>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Yshtola.GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="M:Cethleann.ManagedFS.Yshtola.ReadEntry(Cethleann.Structure.IDTableEntry)">
+            <summary>
+                Reads a file from an ID Table entry.
+            </summary>
+            <param name="entry"></param>
+            <returns></returns>
+            <exception cref="T:System.IO.FileNotFoundException"></exception>
+        </member>
+        <member name="T:Cethleann.ManagedFS.YshtolaSettings">
+            <summary>
+                Abstract base settings
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.YshtolaSettings.Directory">
+            <summary>
+                Directory the files and ID table reside in
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.YshtolaSettings.TableName">
+            <summary>
+                ID Table name
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.YshtolaSettings.XorTruth">
+            <summary>
+                Key truth
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.YshtolaSettings.Multiplier">
+            <summary>
+                Key multiplier constant
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.YshtolaSettings.Divisor">
+            <summary>
+                Key divisor constant
+            </summary>
+        </member>
+        <member name="T:Cethleann.ManagedFS.DissidiaSettings">
+            <summary>
+                Settings specific to NT
+            </summary>
+        </member>
+        <member name="M:Cethleann.ManagedFS.DissidiaSettings.#ctor">
+            <summary>
+                Initialize with default values
+            </summary>
+        </member>
+        <member name="T:Cethleann.Ninja.Compression">
+            <summary>
+                Compression helper class for TN's fork of KTGL
+            </summary>
+        </member>
+        <member name="M:Cethleann.Ninja.Compression.Decompress(System.Span{System.Byte},System.Int32)">
+            <summary>
+                Decompresses a .gz stream.
+            </summary>
+            <param name="data"></param>
+            <param name="decompressedSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Ninja.Compression.Compress(System.Span{System.Byte},System.Int32)">
+            <summary>
+                Compresses a stream into a .gz stream.
+            </summary>
+            <param name="data"></param>
+            <param name="blockSize"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.Ninja.Encryption">
+            <summary>
+                Encryption helper for TN games.
+            </summary>
+        </member>
+        <member name="M:Cethleann.Ninja.Encryption.Xor(System.UInt32,System.Span{System.Byte},System.UInt64,System.UInt64)">
+            <summary>
+                Mutate given key truth with parameters
+            </summary>
+            <param name="length"></param>
+            <param name="truth"></param>
+            <param name="multiplier"></param>
+            <param name="divisor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Ninja.Encryption.Crypt(System.Span{System.Byte},System.Span{System.Byte})">
+            <summary>
+                En/decrypt data
+            </summary>
+            <param name="data"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.Ninja.IDTable">
+            <summary>
+                ID Table parser
+            </summary>
+        </member>
+        <member name="M:Cethleann.Ninja.IDTable.#ctor(System.Span{System.Byte},Cethleann.Structure.IDTableFlags,System.Byte[],System.UInt64,System.UInt64)">
+            <summary>
+                Initialize table with decryption constants
+            </summary>
+            <param name="data"></param>
+            <param name="flags"></param>
+            <param name="truth"></param>
+            <param name="multiplier"></param>
+            <param name="divisor"></param>
+        </member>
+        <member name="P:Cethleann.Ninja.IDTable.Entries">
+            <summary>
+                File ID table entries
+            </summary>
+        </member>
+        <member name="P:Cethleann.Ninja.IDTable.Header">
+            <summary>
+                Header of the file
+            </summary>
+        </member>
+        <member name="P:Cethleann.Ninja.IDTable.Table">
+            <summary>
+                Raw table
+            </summary>
+        </member>
+        <member name="M:Cethleann.Ninja.IDTable.Read(System.Span{System.Byte},Cethleann.Structure.IDTableEntry,System.Byte[],System.UInt64,System.UInt64)">
+            <summary>
+                Read a file with decryption constants using an id table entry
+            </summary>
+            <param name="file"></param>
+            <param name="entry"></param>
+            <param name="truth"></param>
+            <param name="multiplier"></param>
+            <param name="divisor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Ninja.IDTable.Read(System.Span{System.Byte},System.UInt32,Cethleann.Structure.IDTableFlags,System.Byte[],System.UInt64,System.UInt64)">
+            <summary>
+                Read a file with decryption constants
+            </summary>
+            <param name="file"></param>
+            <param name="size"></param>
+            <param name="flags"></param>
+            <param name="truth"></param>
+            <param name="multiplier"></param>
+            <param name="divisor"></param>
+            <returns></returns>
         </member>
         <member name="T:Cethleann.SCEN">
             <summary>

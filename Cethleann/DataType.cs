@@ -38,25 +38,25 @@ namespace Cethleann
         SPKG = 'S' << 0 | 'P' << 8 | 'K' << 16 | 'G' << 24,
 
         /// <summary>
-        ///     Koei Tecmo Sound Resource
+        ///     KTGL Sound Resource
         /// </summary>
         [FileExtension("ktsl2stbin")]
         KTSR = 'K' << 0 | 'T' << 8 | 'S' << 16 | 'R' << 24,
 
         /// <summary>
-        ///     Koei Tecmo Sound Container
+        ///     KTGL Sound Container
         /// </summary>
         [FileExtension("ktsl2asbin")]
         KTSC = 'K' << 0 | 'T' << 8 | 'S' << 16 | 'C' << 24,
 
         /// <summary>
-        ///     Koei Tecmo Sound Sample
+        ///     KTGL Sound Sample
         /// </summary>
         [FileExtension("ktss")]
         KTSS = 'K' << 0 | 'T' << 8 | 'S' << 16 | 'S' << 24,
 
         /// <summary>
-        ///     Koei Tecmo Sound Sample
+        ///     KTGL Sound Sample
         /// </summary>
         [FileExtension("kvs")]
         KOVS = 'K' << 0 | 'O' << 8 | 'V' << 16 | 'S' << 24,
@@ -110,10 +110,34 @@ namespace Cethleann
         WEBM = 0xA3DF_451A,
 
         /// <summary>
-        ///     Koei Model Container
+        ///     KTGL Model Container
         /// </summary>
         [FileExtension("kldm")]
         KLDM = 'M' << 0 | 'D' << 8 | 'L' << 16 | 'K' << 24,
+
+        /// <summary>
+        ///     KTGL Screen Layout Texture
+        /// </summary>
+        [FileExtension("kscl")]
+        ScreenLayout = 'K' << 0 | 'S' << 8 | 'C' << 16 | 'L' << 24,
+
+        /// <summary>
+        ///     KTGL Screen Layout
+        /// </summary>
+        [FileExtension("kslt")]
+        ScreenLayoutTexture = 'K' << 0 | 'S' << 8 | 'L' << 16 | 'T' << 24,
+
+        /// <summary>
+        ///     KTGL Video Source (usually encrypted)
+        /// </summary>
+        [FileExtension("kslt")]
+        VideoSource = 'G' << 0 | '1' << 8 | 'V' << 16 | 'S' << 24,
+
+        /// <summary>
+        ///     KTGL Font
+        /// </summary>
+        [FileExtension("g1n")]
+        Font = 'G' << 0 | '1' << 8 | 'N' << 16 | '_' << 24,
 
         /// <summary>
         ///     teXt Localization, version 19
@@ -122,38 +146,37 @@ namespace Cethleann
         TextLocalization19 = 'X' << 0 | 'L' << 8 | 0x13 << 16,
 
         /// <summary>
-        ///     Koei Texture Group
+        ///     KTGL Texture Group
         /// </summary>
         [FileExtension("g1t")]
         TextureGroup = 'G' << 24 | '1' << 16 | 'T' << 8 | 'G' << 0,
 
         /// <summary>
-        ///     Koei Model Base
+        ///     KTGL Model Base
         /// </summary>
         [FileExtension("g1m")]
         Model = 'G' << 24 | '1' << 16 | 'M' << 8 | '_' << 0,
 
         /// <summary>
-        ///     Koei Animation
+        ///     KTGL Animation
         /// </summary>
         [FileExtension("g2a")]
         Animation = 'G' << 24 | '2' << 16 | 'A' << 8 | '_' << 0,
 
         /// <summary>
-        ///     Koei Model Group
+        ///     KTGL Model Group
         /// </summary>
         [FileExtension("g1mg")]
         ModelGroup = 'M' << 0 | 'D' << 8 | 'L' << 16 | 'K' << 24,
 
         /// <summary>
-        ///     ASSUMPTION
-        ///     Koei Effect Manager
+        ///     KTGL Effect Manager
         /// </summary>
         [FileExtension("g1em")]
         EffectManager = 'G' << 24 | '1' << 16 | 'E' << 8 | 'M' << 0,
 
         /// <summary>
-        ///     Koei Effect
+        ///     KTGL Effect
         /// </summary>
         [FileExtension("g1fx")]
         Effect = 'G' << 24 | '1' << 16 | 'F' << 8 | 'X' << 0,
@@ -165,59 +188,58 @@ namespace Cethleann
         SEBin = 'S' << 24 | 'L' << 16 | 'O' << 8 | '_' << 0,
 
         /// <summary>
-        ///     Koei PostFX Shader Bundle
+        ///     KTGL PostFX Shader Bundle
         /// </summary>
         [FileExtension("postfx")]
         PostFX = 'K' << 24 | 'P' << 16 | 'S' << 8 | '_' << 0,
-
-
+        
         /// <summary>
-        ///     Koei Model Skeleton
+        ///     KTGL Model Skeleton
         /// </summary>
         ModelSkeleton = 'G' << 24 | '1' << 16 | 'M' << 8 | 'S' << 0,
 
         /// <summary>
-        ///     Koei Model F?
+        ///     KTGL Model Format
         /// </summary>
-        ModelF = 'G' << 24 | '1' << 16 | 'M' << 8 | 'F' << 0,
+        ModelFormat = 'G' << 24 | '1' << 16 | 'M' << 8 | 'F' << 0,
 
         /// <summary>
-        ///     Koei Model Geometry
+        ///     KTGL Model Geometry
         /// </summary>
         ModelGeometry = 'G' << 24 | '1' << 16 | 'M' << 8 | 'G' << 0,
 
         /// <summary>
-        ///     Koei Model Matrices
+        ///     KTGL Model Matrices
         /// </summary>
         ModelMatrix = 'G' << 24 | '1' << 16 | 'M' << 8 | 'M' << 0,
 
         /// <summary>
-        ///     Koei Model ExtraData.
+        ///     KTGL Model ExtraData.
         /// </summary>
         ModelExtra = 'E' << 24 | 'X' << 16 | 'T' << 8 | 'R' << 0,
 
         /// <summary>
-        ///     Koei Collision Model.
+        ///     KTGL Collision Model.
         /// </summary>
         ModelCollision = 'C' << 24 | 'O' << 16 | 'L' << 8 | 'L' << 0,
 
         /// <summary>
-        ///     Assumption.
+        ///     KTGL Cloth Driver
         /// </summary>
-        ModelCloth = 'N' << 24 | 'U' << 16 | 'N' << 8 | 'O' << 0,
+        ModelClothDriver = 'N' << 24 | 'U' << 16 | 'N' << 8 | 'O' << 0,
 
         /// <summary>
-        ///     Assumption.
+        ///     KTGL Cloth
         /// </summary>
-        ModelCloth2 = 'N' << 24 | 'U' << 16 | 'N' << 8 | 'V' << 0,
+        ModelCloth = 'N' << 24 | 'U' << 16 | 'N' << 8 | 'V' << 0,
 
         /// <summary>
-        ///     Assumption.
+        ///     KTGL Soft Body voxels
         /// </summary>
         ModelSoftbody = 'S' << 24 | 'O' << 16 | 'F' << 8 | 'T' << 0,
 
         /// <summary>
-        ///     Assumption.
+        ///     KTGL Hair voxels
         /// </summary>
         ModelHair = 'H' << 24 | 'A' << 16 | 'I' << 8 | 'R' << 0,
 

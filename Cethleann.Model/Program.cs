@@ -135,7 +135,7 @@ namespace Cethleann.Model
 
         public static void SaveModel(string pathBase, G1Model model, string texBase)
         {
-            var geom = model.GetSection<IG1MGeometry>();
+            var geom = model.GetSection<G1MGeometry>();
             var gltf = model.ExportMeshes(Path.ChangeExtension(pathBase, "bin"), $"{Path.GetFileNameWithoutExtension(pathBase)}.bin", 0, 0, texBase);
             File.WriteAllText(pathBase, gltf.Serialize("Cethleann"));
             using var materialInfo = File.OpenWrite(Path.ChangeExtension(pathBase, "material.txt"));

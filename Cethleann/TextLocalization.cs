@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
 using Cethleann.Structure;
 using DragonLib;
-using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Cethleann
@@ -25,7 +23,7 @@ namespace Cethleann
 
             var header = MemoryMarshal.Read<TextLocalizationHeader>(buffer);
 
-            var offset = (int)header.TableOffset;
+            var offset = (int) header.TableOffset;
             var sz = SizeHelper.SizeOf<TextLocalizationHeader>();
             var ripHint = buffer.Slice(sz, header.Width / 4);
             for (var i = 0; i < header.Sets; ++i)
@@ -40,8 +38,10 @@ namespace Cethleann
                         set.Add(string.Empty);
                         continue;
                     }
+
                     set.Add(buffer.Slice(header.TableOffset + rip).ReadString(returnNull: false));
                 }
+
                 Entries.Add(set);
             }
         }

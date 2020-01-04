@@ -15,7 +15,7 @@ namespace Cethleann.G1.G1ModelSection
     ///     Geometry Section of G1M models
     /// </summary>
     [PublicAPI]
-    public class IG1MGeometry : IKTGLSection
+    public class G1MGeometry : IKTGLSection
     {
         /// <summary>
         ///     Model Geometry
@@ -23,7 +23,7 @@ namespace Cethleann.G1.G1ModelSection
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
         /// <param name="sectionHeader"></param>
-        public IG1MGeometry(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
+        public G1MGeometry(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
             if (sectionHeader.Magic != DataType.ModelGeometry) throw new InvalidOperationException("Not an G1MG stream");
 

@@ -8,7 +8,7 @@ namespace Cethleann.G1.G1ModelSection
     ///     F Section of G1M models
     /// </summary>
     [PublicAPI]
-    public class IG1MFormat : IKTGLSection
+    public class G1MFormat : IKTGLSection
     {
         /// <summary>
         ///     Model format Data
@@ -17,9 +17,9 @@ namespace Cethleann.G1.G1ModelSection
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
         /// <param name="sectionHeader"></param>
-        public IG1MFormat(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
+        public G1MFormat(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (sectionHeader.Magic != DataType.ModelF) throw new InvalidOperationException("Not an G1MF stream");
+            if (sectionHeader.Magic != DataType.ModelFormat) throw new InvalidOperationException("Not an G1MF stream");
 
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MF version {Section.Version.ToVersion()} is not supported!");

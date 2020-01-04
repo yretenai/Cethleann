@@ -8,7 +8,7 @@ namespace Cethleann.G1.G1ModelSection
     ///     Extra Section of G1M models
     /// </summary>
     [PublicAPI]
-    public class IG1Extra : IKTGLSection
+    public class G1Extra : IKTGLSection
     {
         /// <summary>
         ///     Extra data found in G1M models.
@@ -16,7 +16,7 @@ namespace Cethleann.G1.G1ModelSection
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
         /// <param name="sectionHeader"></param>
-        public IG1Extra(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
+        public G1Extra(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
             if (sectionHeader.Magic != DataType.ModelExtra) throw new InvalidOperationException("Not an EXTR stream");
 

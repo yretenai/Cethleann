@@ -68,10 +68,7 @@ namespace Gust.EncFinder
                 while (true)
                 {
                     var localTablePtr = exe.Slice(functionStartPtr + tablePtr, constantPtr - tablePtr - functionStartPtr).FindPointerFromSignature(TABLE_START_SIGNATURE);
-                    if (localTablePtr == -1)
-                    {
-                        break;
-                    }
+                    if (localTablePtr == -1) break;
 
                     tablePtr += localTablePtr + 2;
                     LogNumber($"Initialization MOV Instruction {counter}", functionStartPtr + tablePtr - 2);
@@ -84,20 +81,13 @@ namespace Gust.EncFinder
                     }
 
                     if (counter >= 3)
-                    {
                         table[counter - 3] = num;
-                    }
                     else
-                    {
                         lengths[counter] = num;
-                    }
 
                     counter++;
 
-                    if (counter >= 6)
-                    {
-                        break;
-                    }
+                    if (counter >= 6) break;
                 }
 
                 if (table.Contains(0) || lengths.Contains(0))
@@ -151,13 +141,9 @@ namespace Gust.EncFinder
 
                 Logger.Log24Bit(ConsoleSwatch.COLOR_RESET, null, false, Console.Out, null, "All table entries are prime? ");
                 if (main.All(x => x.IsPrime()) && lengths.All(x => x.IsPrime()) && table.All(x => x.IsPrime()))
-                {
                     Logger.Log24Bit(ConsoleSwatch.XTermColor.GreenYellow, false, Console.Out, null, "Yes");
-                }
                 else
-                {
                     Logger.Log24Bit(ConsoleSwatch.XTermColor.Red, false, Console.Out, null, "No");
-                }
 
                 Console.WriteLine();
 

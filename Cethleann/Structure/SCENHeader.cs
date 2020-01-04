@@ -1,6 +1,7 @@
 namespace Cethleann.Structure
 {
-    internal struct SCENHeader
+#pragma warning disable 1591
+    public struct SCENHeader
     {
         public DataType Magic { get; set; }
         public int Unknown1 { get; set; }
@@ -17,4 +18,5 @@ namespace Cethleann.Structure
         public int UnknownTableOffset { get; set; }
         public int Unknown5 { get; set; }
     }
+#pragma warning restore 1591
 }

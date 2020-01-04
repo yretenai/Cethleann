@@ -41,23 +41,28 @@ namespace Cethleann.Koei
                 deflateStream.Write(block);
                 deflateStream.Flush();
                 var write = block.Length;
+                var compressed = false;
                 if (ms.Length < block.Length) // special case where the last block is too small to compress properly.
                 {
                     write = (int) ms.Position + 2;
                     block = new Span<byte>(new byte[ms.Length]);
                     ms.Position = 0;
                     ms.Read(block);
+                    compressed = true;
                 }
 
                 var absWrite = write + 4;
                 MemoryMarshal.Write(buffer.Slice(headerCursor), ref absWrite);
                 headerCursor += 4;
                 MemoryMarshal.Write(buffer.Slice(cursor), ref write);
-                buffer[cursor + 4] = 0x78;
-                buffer[cursor + 5] = 0xDA;
+                if (compressed)
+                {
+                    buffer[cursor + 4] = 0x78;
+                    buffer[cursor + 5] = 0xDA;
+                }
 
-                block.CopyTo(buffer.Slice(cursor + 6));
-                cursor = (cursor + write + 6).Align(0x80);
+                block.CopyTo(buffer.Slice(cursor + 4 + (compressed ? 2 : 0)));
+                cursor = (cursor + write + 4 + (compressed ? 2 : 0)).Align(0x80);
             }
 
             return buffer.Slice(0, cursor);

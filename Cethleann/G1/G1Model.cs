@@ -9,9 +9,8 @@ using Cethleann.G1.G1ModelSection.G1MGSection;
 using Cethleann.Structure.Resource;
 using Cethleann.Structure.Resource.Model;
 using DragonLib;
-using DragonLib.Numerics;
 using DragonLib.GLTF;
-using DragonLib.IO;
+using DragonLib.Numerics;
 using JetBrains.Annotations;
 
 namespace Cethleann.G1
@@ -60,14 +59,14 @@ namespace Cethleann.G1
                 // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
                 var section = sectionHeader.Magic switch
                 {
-                    DataType.ModelSkeleton => (IKTGLSection) new IG1MSkeleton(dataBlock, ignoreVersion, sectionHeader),
-                    DataType.ModelF => new IG1MFormat(dataBlock, ignoreVersion, sectionHeader),
-                    DataType.ModelGeometry => new IG1MGeometry(dataBlock, ignoreVersion, sectionHeader),
-                    DataType.ModelMatrix => new IG1MMatrix(dataBlock, ignoreVersion, sectionHeader),
-                    DataType.ModelExtra => new IG1Extra(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.ModelSkeleton => (IKTGLSection) new G1MSkeleton(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.ModelFormat => new G1MFormat(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.ModelGeometry => new G1MGeometry(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.ModelMatrix => new G1MMatrix(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.ModelExtra => new G1Extra(dataBlock, ignoreVersion, sectionHeader),
                     DataType.ModelCollision => null,
+                    DataType.ModelClothDriver => null,
                     DataType.ModelCloth => null,
-                    DataType.ModelCloth2 => null,
                     DataType.ModelSoftbody => null,
                     DataType.ModelHair => null,
                     _ => throw new NotImplementedException($"Section {sectionHeader.Magic.ToFourCC(false)} not supported!")
@@ -84,8 +83,8 @@ namespace Cethleann.G1
 
         /// <summary>
         ///     Sections found in this model.
-        ///     Look for <seealso cref="IG1MGeometry" /> for Geometry.
-        ///     Look for <seealso cref="IG1MSkeleton" /> for Skeleton.
+        ///     Look for <seealso cref="G1MGeometry" /> for Geometry.
+        ///     Look for <seealso cref="G1MSkeleton" /> for Skeleton.
         /// </summary>
         public List<IKTGLSection> Sections { get; } = new List<IKTGLSection>();
 
@@ -148,7 +147,7 @@ namespace Cethleann.G1
                 VertexDataType.Vector4ByteNormalized => MemoryMarshal.Cast<byte, byte>(slice.Slice(0, 4)).ToArray().Select(x => x / (float) byte.MaxValue).ToArray(),
                 VertexDataType.Vector2Half => MemoryMarshal.Cast<byte, ushort>(slice.Slice(0, 2 * 2)).ToArray().Select(x => (float) Half.ToHalf(x)).ToArray(),
                 VertexDataType.Vector4Half => MemoryMarshal.Cast<byte, ushort>(slice.Slice(0, 2 * 4)).ToArray().Select(x => (float) Half.ToHalf(x)).ToArray(),
-                VertexDataType.Vector4HalfNormalized => MemoryMarshal.Cast<byte, ushort>(slice.Slice(0, 2 * 4)).ToArray().Select(x => x / (float)ushort.MaxValue).ToArray(),
+                VertexDataType.Vector4HalfNormalized => MemoryMarshal.Cast<byte, ushort>(slice.Slice(0, 2 * 4)).ToArray().Select(x => x / (float) ushort.MaxValue).ToArray(),
                 _ => throw new ArgumentOutOfRangeException(nameof(dataType), dataType, null)
             };
         }
@@ -195,9 +194,9 @@ namespace Cethleann.G1
             root.Scenes.Add(scene);
             root.Scene = 0;
 
-            var skeleton = GetSection<IG1MSkeleton>();
+            var skeleton = GetSection<G1MSkeleton>();
 
-            var geom = GetSection<IG1MGeometry>();
+            var geom = GetSection<G1MGeometry>();
 
             var bones = geom.GetSection<G1MGBone>();
             var ibos = geom.GetSection<G1MGIndexBuffer>();
