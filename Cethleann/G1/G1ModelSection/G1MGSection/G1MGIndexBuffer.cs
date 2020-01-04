@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Cethleann.Structure.Resource.Model;
 using DragonLib;
@@ -21,8 +22,14 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
             {
                 var info = MemoryMarshal.Read<ModelGeometryIndexBuffer>(block.Slice(offset));
                 offset += SizeHelper.SizeOf<ModelGeometryIndexBuffer>();
-                var buffer = MemoryMarshal.Cast<byte, ushort>(block.Slice(offset, info.Count * 2)).ToArray();
-                offset += info.Count * 2;
+                var buffer = info.Width switch
+                {
+                    16 => MemoryMarshal.Cast<byte, ushort>(block.Slice(offset, info.Count * 2)).ToArray(),
+                    _ => null
+                };
+                offset += info.Count * (info.Width / 8);
+                offset = offset.Align(4);
+                if (buffer == null) continue;
                 Buffers.Add((info, buffer));
             }
         }

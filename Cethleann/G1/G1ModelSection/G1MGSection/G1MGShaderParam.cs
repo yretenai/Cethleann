@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Cethleann.Structure.Resource.Model;
 using DragonLib;
+using DragonLib.IO;
 using DragonLib.Numerics;
 using JetBrains.Annotations;
 
@@ -29,10 +30,11 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
                 {
                     var blockHeader = MemoryMarshal.Read<ModelGeometryShaderParam>(data.Slice(offset));
                     var localOffset = SizeHelper.SizeOf<ModelGeometryShaderParam>();
+                    var name = string.Empty;
                     try
                     {
                         var block = data.Slice(offset + localOffset, blockHeader.Size - localOffset);
-                        var name = block.ReadString(returnNull: false);
+                        name = block.ReadString(returnNull: false);
                         localOffset = (name.Length + 1).Align(4);
                         var paramsBlock = block.Slice(localOffset);
                         var paramData = blockHeader.Type switch
@@ -42,6 +44,11 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
                             _ => throw new NotSupportedException($"Can't handle ShaderParam {blockHeader.Type:F}")
                         };
                         @params.Add((blockHeader, name, paramData));
+                    }
+                    catch(Exception e)
+                    {
+                        Logger.Error(null, e.ToString());
+                        @params.Add((blockHeader, name, null));
                     }
                     finally
                     {

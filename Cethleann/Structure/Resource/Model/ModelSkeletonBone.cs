@@ -15,7 +15,7 @@ namespace Cethleann.Structure.Resource.Model
         public Vector3 Position { get; set; }
         public float Length { get; set; }
 
-        public bool HasParent() => Parent != -1;
+        public bool HasParent() => Parent > -1;
 
         public Matrix4x4 GetMatrix()
         {

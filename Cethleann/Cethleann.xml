@@ -398,6 +398,21 @@
                 Assumption.
             </summary>
         </member>
+        <member name="F:Cethleann.DataType.ModelCloth2">
+            <summary>
+                Assumption.
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.ModelSoftbody">
+            <summary>
+                Assumption.
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.ModelHair">
+            <summary>
+                Assumption.
+            </summary>
+        </member>
         <member name="F:Cethleann.DataType.Compressed">
             <summary>
                 DEFLATE Compressed File.

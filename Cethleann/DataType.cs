@@ -207,6 +207,21 @@ namespace Cethleann
         ModelCloth = 'N' << 24 | 'U' << 16 | 'N' << 8 | 'O' << 0,
 
         /// <summary>
+        ///     Assumption.
+        /// </summary>
+        ModelCloth2 = 'N' << 24 | 'U' << 16 | 'N' << 8 | 'V' << 0,
+
+        /// <summary>
+        ///     Assumption.
+        /// </summary>
+        ModelSoftbody = 'S' << 24 | 'O' << 16 | 'F' << 8 | 'T' << 0,
+
+        /// <summary>
+        ///     Assumption.
+        /// </summary>
+        ModelHair = 'H' << 24 | 'A' << 16 | 'I' << 8 | 'R' << 0,
+
+        /// <summary>
         ///     DEFLATE Compressed File.
         /// </summary>
         [FileExtension("gz")]

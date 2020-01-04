@@ -24,9 +24,12 @@ namespace Cethleann.G1.G1ModelSection
 
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MM version {Section.Version.ToVersion()} is not supported!");
+            
+            if (Section.Size == 0xC) return;
 
-            var _ = MemoryMarshal.Read<int>(data.Slice(0xC)); // count
-            Matrices = MemoryMarshal.Cast<byte, Matrix4x4>(data.Slice(0x10)).ToArray();
+            var count = MemoryMarshal.Read<int>(data);
+            if (count == 0) return;
+            Matrices = MemoryMarshal.Cast<byte, Matrix4x4>(data.Slice(0x4)).ToArray();
         }
 
         /// <summary>

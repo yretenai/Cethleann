@@ -11,6 +11,7 @@ using Cethleann.Structure.Resource.Model;
 using DragonLib;
 using DragonLib.Numerics;
 using DragonLib.GLTF;
+using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Cethleann.G1
@@ -41,7 +42,7 @@ namespace Cethleann.G1
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
         /// <param name="parse"></param>
-        public G1Model(Span<byte> data, bool ignoreVersion = false, bool parse = true)
+        public G1Model(Span<byte> data, bool ignoreVersion = true, bool parse = true)
         {
             if (!data.Matches(DataType.Model)) throw new InvalidOperationException("Not an G1M stream");
 
@@ -57,17 +58,21 @@ namespace Cethleann.G1
                 var sectionHeader = MemoryMarshal.Read<ResourceSectionHeader>(block.Span);
                 var dataBlock = block.Span.Slice(SizeHelper.SizeOf<ResourceSectionHeader>());
                 // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
-                IKTGLSection section = sectionHeader.Magic switch
+                var section = sectionHeader.Magic switch
                 {
-                    DataType.ModelSkeleton => new IG1MSkeleton(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.ModelSkeleton => (IKTGLSection) new IG1MSkeleton(dataBlock, ignoreVersion, sectionHeader),
                     DataType.ModelF => new IG1MFormat(dataBlock, ignoreVersion, sectionHeader),
                     DataType.ModelGeometry => new IG1MGeometry(dataBlock, ignoreVersion, sectionHeader),
                     DataType.ModelMatrix => new IG1MMatrix(dataBlock, ignoreVersion, sectionHeader),
                     DataType.ModelExtra => new IG1Extra(dataBlock, ignoreVersion, sectionHeader),
                     DataType.ModelCollision => null,
                     DataType.ModelCloth => null,
+                    DataType.ModelCloth2 => null,
+                    DataType.ModelSoftbody => null,
+                    DataType.ModelHair => null,
                     _ => throw new NotImplementedException($"Section {sectionHeader.Magic.ToFourCC(false)} not supported!")
                 };
+
                 Sections.Add(section);
             }
         }
@@ -423,7 +428,7 @@ namespace Cethleann.G1
                         ByteLength = (uint) bytes.Length,
                         ByteStride = (uint) (bytes.Length / (data as IList).Count)
                     };
-                    var temp = new Span<byte>(new byte[bufferChunks.Length + bytes.Length]);
+                    var temp = new Span<byte>(new byte[(bufferChunks.Length + bytes.Length).Align(4)]);
                     bufferChunks.CopyTo(temp);
                     bytes.CopyTo(temp.Slice(bufferChunks.Length));
                     bufferChunks = temp;
@@ -470,7 +475,7 @@ namespace Cethleann.G1
                     ByteOffset = (uint) bufferChunks.Length,
                     ByteLength = (uint) bytes.Length
                 };
-                var temp = new Span<byte>(new byte[bufferChunks.Length + bytes.Length]);
+                var temp = new Span<byte>(new byte[(bufferChunks.Length + bytes.Length).Align(4)]);
                 bufferChunks.CopyTo(temp);
                 bytes.CopyTo(temp.Slice(bufferChunks.Length));
                 bufferChunks = temp;
@@ -528,7 +533,7 @@ namespace Cethleann.G1
                     ByteOffset = (uint) bufferChunks.Length,
                     ByteLength = (uint) bytes.Length
                 };
-                var temp = new Span<byte>(new byte[bufferChunks.Length + bytes.Length]);
+                var temp = new Span<byte>(new byte[(bufferChunks.Length + bytes.Length).Align(4)]);
                 bufferChunks.CopyTo(temp);
                 bytes.CopyTo(temp.Slice(bufferChunks.Length));
                 bufferChunks = temp;
@@ -641,7 +646,7 @@ namespace Cethleann.G1
                                 ByteLength = (uint) bytes.Length,
                                 ByteStride = (uint) (bytes.Length / newJoints.Count)
                             };
-                            var temp = new Span<byte>(new byte[bufferChunks.Length + bytes.Length]);
+                            var temp = new Span<byte>(new byte[(bufferChunks.Length + bytes.Length).Align(4)]);
                             bufferChunks.CopyTo(temp);
                             bytes.CopyTo(temp.Slice(bufferChunks.Length));
                             bufferChunks = temp;
