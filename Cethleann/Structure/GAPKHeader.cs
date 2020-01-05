@@ -13,7 +13,7 @@ namespace Cethleann.Structure
         public int PointerTableCount { get; set; }
         public int SizeTableCount { get; set; }
         public int Unknown4 { get; set; }
-        public int PointerTablePointer  { get; set; }
+        public int PointerTablePointer { get; set; }
         public int SizeTablePointer { get; set; }
         public int IndexTablePointer { get; set; }
     }

@@ -39,19 +39,15 @@ namespace Cethleann.Unbundler
                 if (!arg.EndsWith(".text"))
                 {
                     if (Path.GetFileName(arg) == Path.GetFileNameWithoutExtension(arg))
-                    {
                         pathBase += "_contents";
-                    }
                     else
-                    {
                         pathBase = Path.Combine(Path.GetDirectoryName(arg), Path.GetFileNameWithoutExtension(arg));
-                    }
                 }
-                
+
                 TryExtractBlob(pathBase, data, true, true);
 
                 if (!Directory.Exists(pathBase) || Path.GetFileName(arg) == Path.GetFileNameWithoutExtension(arg)) continue;
-                
+
                 File.WriteAllText(Path.Combine(pathBase, "originaltype.cethleann"), Path.GetExtension(arg));
                 Logger.Info("CETH", $"Writing meta file {Path.Combine(pathBase, "originaltype.cethleann")}");
             }

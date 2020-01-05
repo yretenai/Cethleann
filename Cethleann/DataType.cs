@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using DragonLib;
+﻿using DragonLib;
 
 namespace Cethleann
 {
@@ -199,7 +198,7 @@ namespace Cethleann
         /// </summary>
         [FileExtension("postfx")]
         PostFX = 'K' << 24 | 'P' << 16 | 'S' << 8 | '_' << 0,
-        
+
         /// <summary>
         ///     KTGL Model Skeleton
         /// </summary>
@@ -261,7 +260,7 @@ namespace Cethleann
         /// </summary>
         [FileExtension(".gapk")]
         GAPK = 'G' << 0 | 'A' << 8 | 'P' << 16 | 'K' << 24,
-        
+
         /// <summary>
         ///     DEFLATE Compressed File.
         /// </summary>
