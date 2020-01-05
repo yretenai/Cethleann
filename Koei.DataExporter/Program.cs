@@ -10,7 +10,6 @@ using Cethleann.DataTables;
 using Cethleann.G1;
 using Cethleann.ManagedFS;
 using DragonLib.IO;
-
 #if DEBUG
 using static Cethleann.Model.Program;
 
@@ -78,12 +77,10 @@ namespace Koei.DataExporter
                     {
                         var oname = name + "_";
                         var i = 1;
-                        while (File.Exists($@"{pathBase}\{name}.{GetExtension(datablob.Span)}"))
-                        {
-                            name = oname + $"{i++:X}";
-                        }
+                        while (File.Exists($@"{pathBase}\{name}.{GetExtension(datablob.Span)}")) name = oname + $"{i++:X}";
                     }
                 }
+
                 TryExtractBlob($@"{pathBase}\{name}.{GetExtension(datablob.Span)}", datablob, allTypes, writeZero);
             }
         }

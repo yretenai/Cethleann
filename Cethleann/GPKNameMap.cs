@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Cethleann.Structure;
@@ -10,13 +9,13 @@ using JetBrains.Annotations;
 namespace Cethleann
 {
     /// <summary>
-    /// GAPK/GMPK NameMap/MotionMap parser
+    ///     GAPK/GMPK NameMap/MotionMap parser
     /// </summary>
     [PublicAPI]
     public class GPKNameMap
     {
         /// <summary>
-        /// Initialize with binary data
+        ///     Initialize with binary data
         /// </summary>
         /// <param name="data"></param>
         public GPKNameMap(Span<byte> data)
@@ -39,17 +38,17 @@ namespace Cethleann
         }
 
         /// <summary>
-        /// NameMap Header
+        ///     NameMap Header
         /// </summary>
         public GPKNameMapHeader Header { get; set; }
-        
+
         /// <summary>
-        /// NameMap Entries
+        ///     NameMap Entries
         /// </summary>
         public GPKNameMapEntry[] Entries { get; set; }
-        
+
         /// <summary>
-        /// Assembled Names
+        ///     Assembled Names
         /// </summary>
         public List<string> Names { get; set; } = new List<string>();
     }
