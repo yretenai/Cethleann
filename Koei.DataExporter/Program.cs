@@ -44,8 +44,8 @@ namespace Koei.DataExporter
             var bundle = new DataTable(cethleann.ReadEntry(0xE34).Span);
             var model = new G1Model(bundle.Entries.ElementAt(0).Span);
             var texture = new G1TextureGroup(bundle.Entries.ElementAt(1).Span);
-            SaveTextures($@"{output}\mdl\tex", texture);
-            SaveModel($@"{output}\mdl\{0xE34:X4}.gltf", model, "tex");
+            SaveG1T($@"{output}\mdl\tex", texture);
+            SaveG1M($@"{output}\mdl\{0xE34:X4}.gltf", model, "tex");
 #endif
             ExtractAll(output, cethleann);
         }

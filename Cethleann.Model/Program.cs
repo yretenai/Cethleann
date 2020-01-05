@@ -34,6 +34,7 @@ namespace Cethleann.Model
 
             var destination = Path.ChangeExtension(container, "gltf");
             var texDestination = Path.Combine(Path.GetDirectoryName(container), Path.GetFileNameWithoutExtension(container) + "_textures");
+            var kstlDestination = Path.Combine(Path.GetDirectoryName(container), Path.GetFileNameWithoutExtension(container));
 
             using var file = File.OpenRead(container);
             var containerData = new Span<byte>(new byte[file.Length]);
@@ -41,6 +42,7 @@ namespace Cethleann.Model
 
             var g1Model = default(G1Model);
             var g1TextureGroup = default(G1TextureGroup);
+            var kslt = default(ScreenLayoutTexture);
 
             if (containerData.GetDataType() == DataType.Model)
             {
@@ -59,21 +61,63 @@ namespace Cethleann.Model
                 var dataTable = new DataTable(containerData);
                 var g1ModelData = dataTable.Entries.FirstOrDefault(x => x.Span.GetDataType() == DataType.Model);
                 var g1TextureGroupData = dataTable.Entries.FirstOrDefault(x => x.Span.GetDataType() == DataType.TextureGroup);
+                var ksltData = dataTable.Entries.FirstOrDefault(x => x.Span.GetDataType() == DataType.ScreenLayoutTexture);
                 if (!g1ModelData.IsEmpty) g1Model = new G1Model(g1ModelData.Span);
-
                 if (!g1TextureGroupData.IsEmpty) g1TextureGroup = new G1TextureGroup(g1TextureGroupData.Span);
+                if (!ksltData.IsEmpty) kslt = new ScreenLayoutTexture(ksltData.Span);
             }
             else if (containerData.GetDataType() == DataType.TextureGroup)
             {
                 g1TextureGroup = new G1TextureGroup(containerData);
             }
+            else if (containerData.GetDataType() == DataType.ScreenLayoutTexture)
+            {
+                kslt = new ScreenLayoutTexture(containerData);
+            }
 
-            if (g1TextureGroup != null) SaveTextures(texDestination, g1TextureGroup);
+            if (g1TextureGroup != null) SaveG1T(texDestination, g1TextureGroup);
 
-            if (g1Model != null) SaveModel(destination, g1Model, Path.GetFileName(texDestination));
+            if (kslt != null) SaveKSLT(kstlDestination, kslt);
+
+            if (g1Model != null) SaveG1M(destination, g1Model, Path.GetFileName(texDestination));
         }
 
-        public static void SaveTextures(string pathBase, G1TextureGroup group)
+        private static void SaveKSLT(string pathBase, ScreenLayoutTexture kslt)
+        {
+            if (!Directory.Exists(pathBase)) Directory.CreateDirectory(pathBase);
+            for (var i = 0; i < kslt.Entries.Count; ++i)
+            {
+                var (header, blob) = kslt.Entries[i];
+                var name = kslt.Names[i];
+                var format = header.ToDXGI();
+                Logger.Info("KSLT", $@"{pathBase}\{(name ?? $"{i:X4}")}.tif");
+
+                if (format == DXGIPixelFormat.UNKNOWN)
+                {
+                    for (var dxgiFormat = DXGIPixelFormat.UNKNOWN + 1; dxgiFormat < DXGIPixelFormat.DXGI_END; ++dxgiFormat) File.WriteAllBytes($@"{pathBase}\{(name ?? $"{i:X4}")}_({dxgiFormat:G}).dds", DXGI.BuildDDS(dxgiFormat, 1, header.Width, header.Height, 1, blob.Span).ToArray());
+
+                    continue;
+                }
+
+                try
+                {
+                    var data = DXGI.DecompressDXGIFormat(blob.Span, header.Width, header.Height, format);
+                    if (TiffImage.WriteTiff($@"{pathBase}\{(name ?? $"{i:X4}")}.tif", data, header.Width, header.Height))
+                    {
+                        i += 1;
+                        continue;
+                    }
+                }
+                catch
+                {
+                    // ignored
+                }
+
+                File.WriteAllBytes($@"{pathBase}\{(name ?? $"{i:X4}")}.dds", DXGI.BuildDDS(format, 1, header.Width, header.Height, 1, blob.Span).ToArray());
+            }
+        }
+
+        public static void SaveG1T(string pathBase, G1TextureGroup group)
         {
             var i = 0;
             if (!Directory.Exists(pathBase)) Directory.CreateDirectory(pathBase);
@@ -81,6 +125,7 @@ namespace Cethleann.Model
             foreach (var (_, header, _, blob) in group.Textures)
             {
                 var (width, height, mips, format) = G1TextureGroup.UnpackWHM(header);
+                Logger.Info("G1T", $@"{pathBase}\{i:X4}.tif");
                 if (format == DXGIPixelFormat.UNKNOWN)
                 {
                     for (var dxgiFormat = DXGIPixelFormat.UNKNOWN + 1; dxgiFormat < DXGIPixelFormat.DXGI_END; ++dxgiFormat) File.WriteAllBytes($@"{pathBase}\{i:X4}_({dxgiFormat:G}).dds", DXGI.BuildDDS(dxgiFormat, mips, width, height, 1, blob.Span).ToArray());
@@ -134,10 +179,11 @@ namespace Cethleann.Model
             }
         }
 
-        public static void SaveModel(string pathBase, G1Model model, string texBase)
+        public static void SaveG1M(string pathBase, G1Model model, string texBase)
         {
             var geom = model.GetSection<G1MGeometry>();
             var gltf = model.ExportMeshes(Path.ChangeExtension(pathBase, "bin"), $"{Path.GetFileNameWithoutExtension(pathBase)}.bin", 0, 0, texBase);
+            Logger.Info("G1M", pathBase);
             File.WriteAllText(pathBase, gltf.Serialize("Cethleann"));
             using var materialInfo = File.OpenWrite(Path.ChangeExtension(pathBase, "material.txt"));
             materialInfo.SetLength(0);

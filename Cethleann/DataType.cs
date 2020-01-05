@@ -119,13 +119,13 @@ namespace Cethleann
         ///     KTGL Screen Layout Texture
         /// </summary>
         [FileExtension("kscl")]
-        ScreenLayout = 'K' << 0 | 'S' << 8 | 'C' << 16 | 'L' << 24,
+        ScreenLayout = 'K' << 24 | 'S' << 16 | 'C' << 8 | 'L' << 0,
 
         /// <summary>
         ///     KTGL Screen Layout
         /// </summary>
         [FileExtension("kslt")]
-        ScreenLayoutTexture = 'K' << 0 | 'S' << 8 | 'L' << 16 | 'T' << 24,
+        ScreenLayoutTexture = 'K' << 24 | 'S' << 16 | 'L' << 8 | 'T' << 0,
 
         /// <summary>
         ///     KTGL Video Source (usually encrypted)
