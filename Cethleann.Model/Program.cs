@@ -8,6 +8,7 @@ using Cethleann.G1.G1ModelSection.G1MGSection;
 using Cethleann.Structure.Resource.Texture;
 using DragonLib.Imaging;
 using DragonLib.Imaging.DXGI;
+using DragonLib.IO;
 
 namespace Cethleann.Model
 {
@@ -20,14 +21,14 @@ namespace Cethleann.Model
 
             if (container == null || !File.Exists(container))
             {
-                Console.WriteLine("Usage: Cethleann.Model.exe E32.bin");
-                Console.WriteLine("Usage: Cethleann.Model.exe model.g1m textureset.g1t");
+                Logger.Error("CETH", "Usage: Cethleann.Model.exe E32.bin");
+                Logger.Error("CETH", "Usage: Cethleann.Model.exe model.g1m textureset.g1t");
                 return;
             }
 
             if (set != null && !File.Exists(set))
             {
-                Console.WriteLine($"File does not exist: {set}");
+                Logger.Error("CETH", $"File does not exist: {set}");
                 set = null;
             }
 

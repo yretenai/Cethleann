@@ -1,4 +1,5 @@
-﻿using DragonLib;
+﻿using System.Runtime.CompilerServices;
+using DragonLib;
 
 namespace Cethleann
 {
@@ -161,7 +162,13 @@ namespace Cethleann
         ///     KTGL Animation
         /// </summary>
         [FileExtension("g2a")]
-        Animation = 'G' << 24 | '2' << 16 | 'A' << 8 | '_' << 0,
+        AnimationV2 = 'G' << 24 | '2' << 16 | 'A' << 8 | '_' << 0,
+
+        /// <summary>
+        ///     KTGL Animation
+        /// </summary>
+        [FileExtension("g1a")]
+        Animation = 'G' << 24 | '1' << 16 | 'A' << 8 | '_' << 0,
 
         /// <summary>
         ///     KTGL Model Group
@@ -243,6 +250,18 @@ namespace Cethleann
         /// </summary>
         ModelHair = 'H' << 24 | 'A' << 16 | 'I' << 8 | 'R' << 0,
 
+        /// <summary>
+        ///     Model Pack
+        /// </summary>
+        [FileExtension(".gmpk")]
+        GMPK = 'G' << 0 | 'M' << 8 | 'P' << 16 | 'K' << 24,
+
+        /// <summary>
+        ///     Animation Pack
+        /// </summary>
+        [FileExtension(".gapk")]
+        GAPK = 'G' << 0 | 'A' << 8 | 'P' << 16 | 'K' << 24,
+        
         /// <summary>
         ///     DEFLATE Compressed File.
         /// </summary>

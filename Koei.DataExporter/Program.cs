@@ -25,7 +25,7 @@ namespace Koei.DataExporter
         {
             if (args.Length < 2)
             {
-                Console.WriteLine("Usage: Koei.DataExporter.exe RomFS output [PatchRomFS [DLCRomFS...]]");
+                Logger.Info("KTGL", "Usage: Koei.DataExporter.exe RomFS output [PatchRomFS [DLCRomFS...]]");
                 return;
             }
 
@@ -64,12 +64,27 @@ namespace Koei.DataExporter
             }
         }
 
-        public static void TryExtractBlobs(string pathBase, List<Memory<byte>> blobs, bool allTypes, bool writeZero)
+        public static void TryExtractBlobs(string pathBase, List<Memory<byte>> blobs, bool allTypes, bool writeZero, List<string> names)
         {
             for (var index = 0; index < blobs.Count; index++)
             {
                 var datablob = blobs[index];
-                TryExtractBlob($@"{pathBase}\{index:X4}.{GetExtension(datablob.Span)}", datablob, allTypes, writeZero);
+                var name = $"{index:X4}";
+                var foundName = names?.ElementAtOrDefault(index);
+                if (foundName != null)
+                {
+                    name = foundName;
+                    if (File.Exists($@"{pathBase}\{name}.{GetExtension(datablob.Span)}"))
+                    {
+                        var oname = name + "_";
+                        var i = 1;
+                        while (File.Exists($@"{pathBase}\{name}.{GetExtension(datablob.Span)}"))
+                        {
+                            name = oname + $"{i++:X}";
+                        }
+                    }
+                }
+                TryExtractBlob($@"{pathBase}\{name}.{GetExtension(datablob.Span)}", datablob, allTypes, writeZero);
             }
         }
 
@@ -77,7 +92,7 @@ namespace Koei.DataExporter
         {
             if (datablob.Length == 0 && !writeZero)
             {
-                Console.WriteLine($"{blobBase} is zero!");
+                Logger.Info("KTGL", $"{blobBase} is zero!");
                 return 0;
             }
 
@@ -104,15 +119,74 @@ namespace Koei.DataExporter
                 if (datablob.Span.GetDataType() == DataType.TextLocalization19)
                     if (TryExtractLX(blobBase, datablob))
                         return 1;
+                if (datablob.Span.GetDataType() == DataType.GAPK)
+                    if (TryExtractGAPK(blobBase, datablob, writeZero))
+                        return 1;
+                if (datablob.Span.GetDataType() == DataType.GMPK)
+                    if (TryExtractGMPK(blobBase, datablob, writeZero))
+                        return 1;
             }
 
-            Console.WriteLine($@"{blobBase}");
+            Logger.Info("KTGL", $@"{blobBase}");
 
             var basedir = Path.GetDirectoryName(blobBase);
             if (!Directory.Exists(basedir)) Directory.CreateDirectory(basedir);
 
             File.WriteAllBytes($@"{blobBase}", datablob.ToArray());
             return 2;
+        }
+
+        private static bool TryExtractGAPK(string pathBase, Memory<byte> data, bool writeZero)
+        {
+            try
+            {
+                var blobs = new GAPK(data.Span);
+                if (blobs.Blobs.Count == 0) return true;
+
+                TryExtractBlobs(pathBase, blobs.Blobs, false, writeZero, blobs.NameMap.Names);
+            }
+            catch (Exception e)
+            {
+                Logger.Error("GAPK", $"Failed unpacking GAPK, {e}");
+                if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool TryExtractGMPK(string pathBase, Memory<byte> data, bool writeZero)
+        {
+            try
+            {
+                var blobs = new GMPK(data.Span);
+                if (blobs.Blobs.Count == 0) return true;
+
+                var nameIndex = 0;
+                var names = new List<string>();
+                foreach (var blob in blobs.Blobs)
+                {
+                    // there probably is a smart way of doing this
+                    // but this works 9 out of 10 times.
+                    if (blob.Span.GetDataType() == DataType.TextureGroup) nameIndex--;
+                    if (blob.Span.GetDataType() == DataType.SWGQ) nameIndex--;
+                    if (nameIndex >= blobs.NameMap.Names.Count) break;
+                    names.Add(blobs.NameMap.Names[nameIndex]);
+                    nameIndex++;
+                }
+
+                TryExtractBlobs(pathBase, blobs.Blobs, false, writeZero, names);
+            }
+            catch (Exception e)
+            {
+                Logger.Error("GMPK", $"Failed unpacking GMPK, {e}");
+                if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
+
+                return false;
+            }
+
+            return true;
         }
 
         // ReSharper disable once ConvertIfStatementToReturnStatement
@@ -133,7 +207,7 @@ namespace Koei.DataExporter
                 var blobs = new DataTable(data.Span);
                 if (blobs.Entries.Count == 0) return true;
 
-                TryExtractBlobs(pathBase, blobs.Entries, false, writeZero);
+                TryExtractBlobs(pathBase, blobs.Entries, false, writeZero, null);
             }
             catch (Exception e)
             {
@@ -153,7 +227,7 @@ namespace Koei.DataExporter
                 var blobs = new SCEN(data.Span);
                 if (blobs.Entries.Count == 0) return true;
 
-                TryExtractBlobs(pathBase, blobs.Entries, false, writeZero);
+                TryExtractBlobs(pathBase, blobs.Entries, false, writeZero, null);
             }
             catch (Exception e)
             {
@@ -173,7 +247,7 @@ namespace Koei.DataExporter
                 var blobs = new Bundle(data.Span);
                 if (blobs.Entries.Count == 0) return true;
 
-                TryExtractBlobs(pathBase, blobs.Entries, false, writeZero);
+                TryExtractBlobs(pathBase, blobs.Entries, false, writeZero, null);
             }
             catch (Exception e)
             {
@@ -193,7 +267,7 @@ namespace Koei.DataExporter
                 var blobs = new KLDM(data.Span);
                 if (blobs.Entries.Count == 0) return true;
 
-                TryExtractBlobs(pathBase, blobs.Entries, false, writeZero);
+                TryExtractBlobs(pathBase, blobs.Entries, false, writeZero, null);
             }
             catch (Exception e)
             {
@@ -239,12 +313,12 @@ namespace Koei.DataExporter
                 {
                     var sectionData = blobs.SectionRoot.Sections[index];
                     var magic = MemoryMarshal.Read<DataType>(sectionData.Span);
-                    TryExtractBlob($@"{pathBase}\{index}.{string.Join("", magic.ToFourCC(true).Reverse())}", sectionData, false, writeZero);
+                    TryExtractBlob($@"{pathBase}\{index:X4}.{string.Join("", magic.ToFourCC(true).Reverse())}", sectionData, false, writeZero);
                 }
             }
             catch (Exception e)
             {
-                Logger.Error("G1M_", $"Failed unpacking G1M, {e}");
+                Logger.Error("G1M", $"Failed unpacking G1M, {e}");
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;

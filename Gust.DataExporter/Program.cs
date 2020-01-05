@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Cethleann.ManagedFS;
+using DragonLib.IO;
 
 namespace Gust.DataExporter
 {
@@ -11,7 +12,7 @@ namespace Gust.DataExporter
         {
             if (args.Length < 2)
             {
-                Console.WriteLine("Usage: Gust.DataExporter.exe output PAK_directory_or_file...");
+                Logger.Error("GUST", "Usage: Gust.DataExporter.exe output PAK_directory_or_file...");
                 return;
             }
 
@@ -26,7 +27,7 @@ namespace Gust.DataExporter
                     var data = pak.ReadEntry(entry).ToArray();
                     if (data.Length == 0)
                     {
-                        Console.WriteLine($"{entry.Filename} is zero!");
+                        Logger.Error("GUST", $"{entry.Filename} is zero!");
                         continue;
                     }
 
@@ -37,7 +38,7 @@ namespace Gust.DataExporter
                     var dir = Path.GetDirectoryName(path);
                     if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
                     File.WriteAllBytes(path, data);
-                    Console.WriteLine(path);
+                    Logger.Info("GUST", path);
                 }
                 catch
                 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Cethleann.ManagedFS;
+using DragonLib.IO;
 
 namespace Ninja.DataExporter
 {
@@ -10,7 +11,7 @@ namespace Ninja.DataExporter
         {
             if (args.Length < 2)
             {
-                Console.WriteLine("Usage: Ninja.DataExporter.exe output install_directory");
+                Logger.Info("NINJA", "Usage: Ninja.DataExporter.exe output install_directory");
                 return;
             }
 
@@ -25,7 +26,7 @@ namespace Ninja.DataExporter
                     var (data, filepath) = yshtola.ReadEntry(entry);
                     if (data.Length == 0)
                     {
-                        Console.WriteLine($"{entry} is zero!");
+                        Logger.Info("NINJA", $"{entry} is zero!");
                         continue;
                     }
 
@@ -35,7 +36,7 @@ namespace Ninja.DataExporter
                     var dir = Path.GetDirectoryName(path);
                     if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
                     File.WriteAllBytes(path, data.ToArray());
-                    Console.WriteLine(path);
+                    Logger.Info("NINJA", path);
                 }
                 catch
                 {

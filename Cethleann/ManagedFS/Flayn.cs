@@ -246,7 +246,7 @@ namespace Cethleann.ManagedFS
 
                 if (Path.GetInvalidPathChars().Any(x => entry[1].Contains(x)))
                 {
-                    Logger.Error("CETH", $"Path {entry[1]} for id {id} is invalid!");
+                    Logger.Error("FLAYN", $"Path {entry[1]} for id {id} is invalid!");
                     continue;
                 }
 

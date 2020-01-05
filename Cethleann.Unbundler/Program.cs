@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Cethleann.DataTables;
 using Cethleann.G1;
+using DragonLib.IO;
 using static Koei.DataExporter.Program;
 
 namespace Cethleann.Unbundler
@@ -14,11 +15,11 @@ namespace Cethleann.Unbundler
         {
             foreach (var arg in args)
             {
-                Console.WriteLine(arg);
-                if (Directory.Exists(arg) && arg.EndsWith("_contents"))
+                Logger.Info("CETH", arg);
+                if (Directory.Exists(arg) && File.Exists(Path.Combine(arg, "originaltype.cethleann")))
                 {
-                    var originalName = arg.Substring(0, arg.Length - 9);
-                    var ext = Path.GetExtension(originalName).ToLower();
+                    var ext = File.ReadAllText(Path.Combine(arg, "originaltype.cethleann"));
+                    var originalName = arg + ext;
                     switch (ext)
                     {
                         case ".datatable":
@@ -35,8 +36,24 @@ namespace Cethleann.Unbundler
 
                 var data = new Memory<byte>(File.ReadAllBytes(arg));
                 var pathBase = arg;
-                if (!arg.EndsWith(".text")) pathBase = arg + "_contents";
+                if (!arg.EndsWith(".text"))
+                {
+                    if (Path.GetFileName(arg) == Path.GetFileNameWithoutExtension(arg))
+                    {
+                        pathBase += "_contents";
+                    }
+                    else
+                    {
+                        pathBase = Path.Combine(Path.GetDirectoryName(arg), Path.GetFileNameWithoutExtension(arg));
+                    }
+                }
+                
                 TryExtractBlob(pathBase, data, true, true);
+
+                if (!Directory.Exists(pathBase) || Path.GetFileName(arg) == Path.GetFileNameWithoutExtension(arg)) continue;
+                
+                File.WriteAllText(Path.Combine(pathBase, "originaltype.cethleann"), Path.GetExtension(arg));
+                Logger.Info("CETH", $"Writing meta file {Path.Combine(pathBase, "originaltype.cethleann")}");
             }
         }
 

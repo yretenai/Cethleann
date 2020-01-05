@@ -352,6 +352,11 @@
                 KTGL Model Base
             </summary>
         </member>
+        <member name="F:Cethleann.DataType.AnimationV2">
+            <summary>
+                KTGL Animation
+            </summary>
+        </member>
         <member name="F:Cethleann.DataType.Animation">
             <summary>
                 KTGL Animation
@@ -430,6 +435,16 @@
         <member name="F:Cethleann.DataType.ModelHair">
             <summary>
                 KTGL Hair voxels
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.GMPK">
+            <summary>
+                Model Pack
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.GAPK">
+            <summary>
+                Animation Pack
             </summary>
         </member>
         <member name="F:Cethleann.DataType.Compressed">
@@ -978,6 +993,89 @@
         <member name="P:Cethleann.G1.PackedResource.Sections">
             <summary>
                 lsof sections in the file.
+            </summary>
+        </member>
+        <member name="T:Cethleann.GAPK">
+            <summary>
+            KTGL Animation Pack
+            </summary>
+        </member>
+        <member name="P:Cethleann.GAPK.Header">
+            <summary>
+            GAPK Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.GAPK.Blobs">
+            <summary>
+            GAPK Data Blobs
+            </summary>
+        </member>
+        <member name="P:Cethleann.GAPK.NameMap">
+            <summary>
+            Name Map for the files stored within
+            </summary>
+        </member>
+        <member name="M:Cethleann.GAPK.#ctor(System.Span{System.Byte})">
+            <summary>
+            Initialize with data
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="T:Cethleann.GMPK">
+            <summary>
+            KTGL Animation Pack
+            </summary>
+        </member>
+        <member name="P:Cethleann.GMPK.Header">
+            <summary>
+            GMPK Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.GMPK.Index">
+            <summary>
+            GMPK Index
+            </summary>
+        </member>
+        <member name="P:Cethleann.GMPK.Blobs">
+            <summary>
+            GMPK Data Blobs
+            </summary>
+        </member>
+        <member name="P:Cethleann.GMPK.NameMap">
+            <summary>
+            Name Map for the files stored within
+            </summary>
+        </member>
+        <member name="M:Cethleann.GMPK.#ctor(System.Span{System.Byte})">
+            <summary>
+            Initialize with data
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="T:Cethleann.GPKNameMap">
+            <summary>
+            GAPK/GMPK NameMap/MotionMap parser
+            </summary>
+        </member>
+        <member name="M:Cethleann.GPKNameMap.#ctor(System.Span{System.Byte})">
+            <summary>
+            Initialize with binary data
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="P:Cethleann.GPKNameMap.Header">
+            <summary>
+            NameMap Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.GPKNameMap.Entries">
+            <summary>
+            NameMap Entries
+            </summary>
+        </member>
+        <member name="P:Cethleann.GPKNameMap.Names">
+            <summary>
+            Assembled Names
             </summary>
         </member>
         <member name="T:Cethleann.Gust.Compression">

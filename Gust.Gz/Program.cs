@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Cethleann.Gust;
+using DragonLib.IO;
 
 namespace Gust.Gz
 {
@@ -10,7 +11,7 @@ namespace Gust.Gz
         {
             foreach (var arg in args)
             {
-                Console.WriteLine(arg);
+                Logger.Info("GUST", arg);
                 var data = new Span<byte>(File.ReadAllBytes(arg));
                 if (arg.EndsWith(".gz"))
                     File.WriteAllBytes(arg.Substring(0, arg.Length - 3), Compression.Decompress(data).ToArray());

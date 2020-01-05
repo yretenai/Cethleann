@@ -47,7 +47,7 @@ namespace Cethleann.G1.G1ModelSection.G1MGSection
                     }
                     catch (Exception e)
                     {
-                        Logger.Error(null, e.ToString());
+                        Logger.Error("G1MG_SHADER", e.ToString());
                         @params.Add((blockHeader, name, null));
                     }
                     finally
