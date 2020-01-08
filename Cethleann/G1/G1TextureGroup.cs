@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using Cethleann.Structure.Resource;
 using Cethleann.Structure.Resource.Texture;
@@ -22,7 +23,8 @@ namespace Cethleann.G1
         /// </summary>
         /// <param name="data"></param>
         /// <param name="ignoreVersion"></param>
-        public G1TextureGroup(Span<byte> data, bool ignoreVersion = true)
+        /// <param name="metaOnly">only parse metadata</param>
+        public G1TextureGroup(Span<byte> data, bool ignoreVersion = true, bool metaOnly = false)
         {
             if (!data.Matches(DataType.TextureGroup)) throw new InvalidOperationException("Not an G1T stream");
 
@@ -52,9 +54,23 @@ namespace Cethleann.G1
                     offset += extra.Size;
                 }
 
-                if (dataHeader.Type.ToString("G") == dataHeader.Type.ToString("D")) Logger.Warn("G1T", $"Texture Type {dataHeader.Type:X} is unsupported!");
+                if (dataHeader.Type.ToString("G") == dataHeader.Type.ToString("D"))
+                {
+                    if (((int) dataHeader.Type == 0x00 || (int) dataHeader.Type == 0xFF) && i > 0) 
+                    {
+                        Logger.Error("G1T", "Detected corrupt pointer stack");
+                        throw new InvalidDataException("Pointer table corrupted, bugfix me");
+                    } 
+                    Logger.Warn("G1T", $"Texture Type {dataHeader.Type:X} at offset {(header.TableOffset + offsets[i]):X16} (entry {i}) is unsupported!");
+                }
 
-                Textures.Add((usage[i], dataHeader, extra, new Memory<byte>(imageData.Slice(offset).ToArray())));
+                var imagePixelData = Memory<byte>.Empty;
+                if (!metaOnly)
+                {
+                    imagePixelData = new Memory<byte>(imageData.Slice(offset).ToArray());
+                }
+                
+                Textures.Add((usage[i], dataHeader, extra, imagePixelData));
             }
         }
 
@@ -75,11 +91,12 @@ namespace Cethleann.G1
         /// <param name="header"></param>
         /// <param name="rewriteTextureType"></param>
         /// <returns></returns>
-        public static (int width, int height, int mips, DXGIPixelFormat format) UnpackWHM(TextureDataHeader header, Func<byte, TextureType> rewriteTextureType = null)
+        public static (int width, int height, int mips, DXGIPixelFormat format, int system) UnpackWHM(TextureDataHeader header, Func<byte, TextureType> rewriteTextureType = null)
         {
-            var width = (int) Math.Max(1, Math.Pow(2, header.PackedDimensions & 0xF));
-            var height = (int) Math.Max(1, Math.Pow(2, header.PackedDimensions >> 4));
+            var width = (int) Math.Pow(2, header.PackedDimensions & 0xF);
+            var height = (int) Math.Pow(2, header.PackedDimensions >> 4);
             var mips = header.MipCount >> 4;
+            var system = header.MipCount & 0xF;
             var type = rewriteTextureType?.Invoke((byte) header.Type) ?? header.Type;
             var format = type switch
             {
@@ -91,10 +108,7 @@ namespace Cethleann.G1
                 _ => DXGIPixelFormat.UNKNOWN
             };
 
-            if (width < 1) width = 1;
-            if (height < 1) height = width;
-
-            return (width, height, mips, format);
+            return (width, height, mips, format, system);
         }
     }
 }

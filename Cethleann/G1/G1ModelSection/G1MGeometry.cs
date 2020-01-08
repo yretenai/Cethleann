@@ -79,7 +79,17 @@ namespace Cethleann.G1.G1ModelSection
         /// <returns></returns>
         public T GetSection<T>() where T : class, IG1MGSection
         {
-            return SubSections.FirstOrDefault(x => x is T) as T;
+            return GetSections<T>().FirstOrDefault();
+        }
+        
+        /// <summary>
+        ///     Gets all geometry components matching
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public IEnumerable<T> GetSections<T>() where T : class, IG1MGSection
+        {
+            return SubSections.OfType<T>();
         }
     }
 }

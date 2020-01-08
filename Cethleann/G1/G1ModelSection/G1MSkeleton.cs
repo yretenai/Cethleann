@@ -29,10 +29,10 @@ namespace Cethleann.G1.G1ModelSection
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MS version {Section.Version.ToVersion()} is not supported!");
 
-            var header = MemoryMarshal.Read<ModelSkeletonHeader>(data);
-            Logger.Assert(header.SkeletonCount == 1, "SkeletonCount == 1");
-            BoneIndices = MemoryMarshal.Cast<byte, short>(data.Slice(SizeHelper.SizeOf<ModelSkeletonHeader>(), header.BoneTableCount)).ToArray();
-            Bones = MemoryMarshal.Cast<byte, ModelSkeletonBone>(data.Slice(header.DataOffset - SizeHelper.SizeOf<ResourceSectionHeader>(), header.BoneCount * SizeHelper.SizeOf<ModelSkeletonBone>())).ToArray();
+            Header = MemoryMarshal.Read<ModelSkeletonHeader>(data);
+            Logger.Assert(Header.SkeletonCount == 1, "SkeletonCount == 1");
+            BoneIndices = MemoryMarshal.Cast<byte, short>(data.Slice(SizeHelper.SizeOf<ModelSkeletonHeader>(), Header.BoneTableCount)).ToArray();
+            Bones = MemoryMarshal.Cast<byte, ModelSkeletonBone>(data.Slice(Header.DataOffset - SizeHelper.SizeOf<ResourceSectionHeader>(), Header.BoneCount * SizeHelper.SizeOf<ModelSkeletonBone>())).ToArray();
 
             WorldBones = new ModelSkeletonBone[Bones.Length];
             for (var index = 0; index < Bones.Length; index++)
@@ -58,6 +58,11 @@ namespace Cethleann.G1.G1ModelSection
                 WorldBones[index].Position = new Vector3(local.X + parentBone.Position.X, local.Y + parentBone.Position.Y, local.Z + parentBone.Position.Z);
             }
         }
+
+        /// <summary>
+        ///     Format Header
+        /// </summary>
+        public ModelSkeletonHeader Header { get; set; }
 
         /// <summary>
         ///     Bone Remap Index

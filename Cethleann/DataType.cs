@@ -240,6 +240,11 @@ namespace Cethleann
         ModelCloth = 'N' << 24 | 'U' << 16 | 'N' << 8 | 'V' << 0,
 
         /// <summary>
+        ///     KTGL Cloth
+        /// </summary>
+        ModelClothSurface = 'N' << 24 | 'U' << 16 | 'N' << 8 | 'S' << 0,
+
+        /// <summary>
         ///     KTGL Soft Body voxels
         /// </summary>
         ModelSoftbody = 'S' << 24 | 'O' << 16 | 'F' << 8 | 'T' << 0,

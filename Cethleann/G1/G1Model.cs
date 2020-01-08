@@ -66,6 +66,7 @@ namespace Cethleann.G1
                     DataType.ModelExtra => new G1Extra(dataBlock, ignoreVersion, sectionHeader),
                     DataType.ModelCollision => null,
                     DataType.ModelClothDriver => null,
+                    DataType.ModelClothSurface => null,
                     DataType.ModelCloth => null,
                     DataType.ModelSoftbody => null,
                     DataType.ModelHair => null,
@@ -133,7 +134,17 @@ namespace Cethleann.G1
         /// <returns></returns>
         public T GetSection<T>() where T : class, IKTGLSection
         {
-            return Sections.FirstOrDefault(x => x is T) as T;
+            return GetSections<T>().FirstOrDefault();
+        }
+        
+        /// <summary>
+        ///     Gets a specific section from the G1M model
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public IEnumerable<T> GetSections<T>() where T : class, IKTGLSection
+        {
+            return Sections.OfType<T>();
         }
 
         private float[] ReadStrideEntryFloat(VertexDataType dataType, Span<byte> slice)

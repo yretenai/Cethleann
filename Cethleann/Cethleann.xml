@@ -427,6 +427,11 @@
                 KTGL Cloth
             </summary>
         </member>
+        <member name="F:Cethleann.DataType.ModelClothSurface">
+            <summary>
+                KTGL Cloth
+            </summary>
+        </member>
         <member name="F:Cethleann.DataType.ModelSoftbody">
             <summary>
                 KTGL Soft Body voxels
@@ -600,6 +605,13 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
+        <member name="M:Cethleann.G1.G1Model.GetSections``1">
+            <summary>
+                Gets a specific section from the G1M model
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
         <member name="M:Cethleann.G1.G1Model.ExportMeshes(System.String,System.String,System.Int32,System.Int32,System.String)">
             <summary>
                 Exports meshes to GLTF
@@ -683,6 +695,13 @@
         <member name="M:Cethleann.G1.G1ModelSection.G1MGeometry.GetSection``1">
             <summary>
                 Gets a geometry component
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.G1.G1ModelSection.G1MGeometry.GetSections``1">
+            <summary>
+                Gets all geometry components matching
             </summary>
             <typeparam name="T"></typeparam>
             <returns></returns>
@@ -888,6 +907,11 @@
             <param name="ignoreVersion"></param>
             <param name="sectionHeader"></param>
         </member>
+        <member name="P:Cethleann.G1.G1ModelSection.G1MSkeleton.Header">
+            <summary>
+                Format Header
+            </summary>
+        </member>
         <member name="P:Cethleann.G1.G1ModelSection.G1MSkeleton.BoneIndices">
             <summary>
                 Bone Remap Index
@@ -915,12 +939,13 @@
                 This is how all textures are encoded.
             </summary>
         </member>
-        <member name="M:Cethleann.G1.G1TextureGroup.#ctor(System.Span{System.Byte},System.Boolean)">
+        <member name="M:Cethleann.G1.G1TextureGroup.#ctor(System.Span{System.Byte},System.Boolean,System.Boolean)">
             <summary>
                 Parse G1T from the provided data buffer
             </summary>
             <param name="data"></param>
             <param name="ignoreVersion"></param>
+            <param name="metaOnly">only parse metadata</param>
         </member>
         <member name="P:Cethleann.G1.G1TextureGroup.Textures">
             <summary>
