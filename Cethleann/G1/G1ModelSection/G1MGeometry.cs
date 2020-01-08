@@ -81,7 +81,7 @@ namespace Cethleann.G1.G1ModelSection
         {
             return GetSections<T>().FirstOrDefault();
         }
-        
+
         /// <summary>
         ///     Gets all geometry components matching
         /// </summary>

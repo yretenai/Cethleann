@@ -20,8 +20,10 @@ namespace Cethleann
         /// <param name="data"></param>
         public GPKNameMap(Span<byte> data)
         {
-            Header = MemoryMarshal.Read<GPKNameMapHeader>(data);
-            var offset = SizeHelper.SizeOf<GPKNameMapHeader>();
+            var offset = 8;
+            Name = data.Slice(0, 8).ReadString();
+            Header = MemoryMarshal.Read<GPKNameMapHeader>(data.Slice(offset));
+            offset += SizeHelper.SizeOf<GPKNameMapHeader>();
             Entries = MemoryMarshal.Cast<byte, GPKNameMapEntry>(data.Slice(offset, SizeHelper.SizeOf<GPKNameMapEntry>() * Header.Count)).ToArray();
             offset += SizeHelper.SizeOf<GPKNameMapEntry>() * Header.Count;
             var cast = MemoryMarshal.Cast<byte, short>(data.Slice(offset, Header.Count * 2 * 2));
@@ -36,6 +38,11 @@ namespace Cethleann
                 Names.Add(prefix + suffix);
             }
         }
+
+        /// <summary>
+        ///     GPK Name
+        /// </summary>
+        public string Name { get; set; }
 
         /// <summary>
         ///     NameMap Header

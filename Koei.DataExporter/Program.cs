@@ -117,7 +117,10 @@ namespace Koei.DataExporter
                     if (TryExtractLX(blobBase, datablob))
                         return 1;
                 if (datablob.Span.GetDataType() == DataType.GAPK)
-                    if (TryExtractGAPK(blobBase, datablob, writeZero))
+                    if (TryExtractGAPK(blobBase, datablob, writeZero, false))
+                        return 1;
+                if (datablob.Span.GetDataType() == DataType.GEPK)
+                    if (TryExtractGAPK(blobBase, datablob, writeZero, true))
                         return 1;
                 if (datablob.Span.GetDataType() == DataType.GMPK)
                     if (TryExtractGMPK(blobBase, datablob, writeZero))
@@ -133,14 +136,21 @@ namespace Koei.DataExporter
             return 2;
         }
 
-        private static bool TryExtractGAPK(string pathBase, Memory<byte> data, bool writeZero)
+        private static bool TryExtractGAPK(string pathBase, Memory<byte> data, bool writeZero, bool prependNames)
         {
             try
             {
                 var blobs = new GAPK(data.Span);
                 if (blobs.Blobs.Count == 0) return true;
 
-                TryExtractBlobs(pathBase, blobs.Blobs, false, writeZero, blobs.NameMap.Names);
+                var names = blobs.NameMap.Names;
+                if (prependNames)
+                {
+                    names.Insert(0, blobs.NameMap.Name ?? Path.GetFileName(pathBase));
+                    names.Insert(0, blobs.NameMap.Name ?? Path.GetFileName(pathBase));
+                }
+
+                TryExtractBlobs(pathBase, blobs.Blobs, false, writeZero, names);
             }
             catch (Exception e)
             {

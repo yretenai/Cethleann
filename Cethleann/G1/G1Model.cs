@@ -136,7 +136,7 @@ namespace Cethleann.G1
         {
             return GetSections<T>().FirstOrDefault();
         }
-        
+
         /// <summary>
         ///     Gets a specific section from the G1M model
         /// </summary>
@@ -594,7 +594,6 @@ namespace Cethleann.G1
                         var format = submesh.Format switch
                         {
                             SubMeshFormat.Triangle => GLTFDrawMode.Triangles,
-                            SubMeshFormat.Quad => GLTFDrawMode.Triangles, // xd
                             SubMeshFormat.Strip => GLTFDrawMode.TriangleStrip,
                             _ => throw new ArgumentOutOfRangeException()
                         };
@@ -680,7 +679,6 @@ namespace Cethleann.G1
                         // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
                         var width = submesh.Format switch
                         {
-                            SubMeshFormat.Quad => 1, // ok sure, i guess.
                             SubMeshFormat.Strip => 2,
                             SubMeshFormat.Triangle => 3,
                             _ => throw new ArgumentOutOfRangeException()

@@ -4,8 +4,8 @@
     public struct TextureExtraDataHeader
     {
         public int Size { get; set; }
-        public int Unknown1 { get; set; }
-        public int Unknown2 { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

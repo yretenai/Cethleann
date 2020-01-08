@@ -124,7 +124,7 @@ namespace Cethleann.Model
 
             foreach (var (_, header, _, blob) in group.Textures)
             {
-                var (width, height, mips, format) = G1TextureGroup.UnpackWHM(header);
+                var (width, height, mips, format, _) = G1TextureGroup.UnpackWHM(header);
                 Logger.Info("G1T", $@"{pathBase}\{i:X4}.tif");
                 if (format == DXGIPixelFormat.UNKNOWN)
                 {

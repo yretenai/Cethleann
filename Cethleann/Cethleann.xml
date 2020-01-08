@@ -452,6 +452,11 @@
                 Animation Pack
             </summary>
         </member>
+        <member name="F:Cethleann.DataType.GEPK">
+            <summary>
+                Effect Pack
+            </summary>
+        </member>
         <member name="F:Cethleann.DataType.Compressed">
             <summary>
                 DEFLATE Compressed File.
@@ -1087,6 +1092,11 @@
                 Initialize with binary data
             </summary>
             <param name="data"></param>
+        </member>
+        <member name="P:Cethleann.GPKNameMap.Name">
+            <summary>
+                GPK Name
+            </summary>
         </member>
         <member name="P:Cethleann.GPKNameMap.Header">
             <summary>

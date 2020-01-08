@@ -56,20 +56,18 @@ namespace Cethleann.G1
 
                 if (dataHeader.Type.ToString("G") == dataHeader.Type.ToString("D"))
                 {
-                    if (((int) dataHeader.Type == 0x00 || (int) dataHeader.Type == 0xFF) && i > 0) 
+                    if (((int) dataHeader.Type == 0x00 || (int) dataHeader.Type == 0xFF) && i > 0)
                     {
                         Logger.Error("G1T", "Detected corrupt pointer stack");
                         throw new InvalidDataException("Pointer table corrupted, bugfix me");
-                    } 
+                    }
+
                     Logger.Warn("G1T", $"Texture Type {dataHeader.Type:X} at offset {(header.TableOffset + offsets[i]):X16} (entry {i}) is unsupported!");
                 }
 
                 var imagePixelData = Memory<byte>.Empty;
-                if (!metaOnly)
-                {
-                    imagePixelData = new Memory<byte>(imageData.Slice(offset).ToArray());
-                }
-                
+                if (!metaOnly) imagePixelData = new Memory<byte>(imageData.Slice(offset).ToArray());
+
                 Textures.Add((usage[i], dataHeader, extra, imagePixelData));
             }
         }

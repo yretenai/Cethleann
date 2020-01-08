@@ -266,6 +266,13 @@ namespace Cethleann
         [FileExtension(".gapk")]
         GAPK = 'G' << 0 | 'A' << 8 | 'P' << 16 | 'K' << 24,
 
+
+        /// <summary>
+        ///     Effect Pack
+        /// </summary>
+        [FileExtension(".gepk")]
+        GEPK = 'G' << 0 | 'E' << 8 | 'P' << 16 | 'K' << 24,
+
         /// <summary>
         ///     DEFLATE Compressed File.
         /// </summary>
