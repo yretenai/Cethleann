@@ -37,7 +37,7 @@ namespace Cethleann.Audio
                 }
             }
 
-            Stream = new Memory<byte>(blob.ToArray());
+            Stream = new Memory<byte>(blob.Slice(0, Header.Size).ToArray());
         }
 
         /// <summary>
