@@ -5,7 +5,7 @@ using Cethleann.Structure;
 using DragonLib;
 using JetBrains.Annotations;
 
-namespace Cethleann
+namespace Cethleann.Text
 {
     /// <summary>
     ///     Text Localization files are used to collect text data.

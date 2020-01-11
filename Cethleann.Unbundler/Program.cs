@@ -17,7 +17,6 @@ namespace Cethleann.Unbundler
             var files = new List<string>();
             foreach (var arg in args)
             {
-                Logger.Info("CETH", arg);
                 if (!Directory.Exists(arg))
                 {
                     files.Add(arg);
@@ -26,6 +25,7 @@ namespace Cethleann.Unbundler
 
                 if (File.Exists(Path.Combine(arg, "originaltype.cethleann")))
                 {
+                    Logger.Info("CETH", arg);
                     var ext = File.ReadAllText(Path.Combine(arg, "originaltype.cethleann"));
                     var originalName = arg + ext;
                     switch (ext)

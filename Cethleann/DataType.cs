@@ -62,6 +62,12 @@ namespace Cethleann
         KOVS = 'K' << 0 | 'O' << 8 | 'V' << 16 | 'S' << 24,
 
         /// <summary>
+        ///     Ogg Vorbis
+        /// </summary>
+        [FileExtension("ogg")]
+        OGG = 'O' << 0 | 'g' << 8 | 'g' << 16 | 'S' << 24,
+
+        /// <summary>
         ///     Scene
         /// </summary>
         [FileExtension("scene")]

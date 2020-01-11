@@ -2,7 +2,6 @@
 using System.IO;
 using Cethleann;
 using Cethleann.Gust;
-using DragonLib;
 using DragonLib.IO;
 
 namespace Gust.Gz
@@ -19,16 +18,13 @@ namespace Gust.Gz
                 {
                     var buffer = Compression.Decompress(data);
                     var newName = Path.GetFileNameWithoutExtension(arg);
-                    if (newName == Path.GetFileNameWithoutExtension(newName))
-                    {
-                        newName += $".{buffer.GetDataType().GetExtension()}";
-                    }
+                    if (newName == Path.GetFileNameWithoutExtension(newName)) newName += $".{buffer.GetDataType().GetExtension()}";
                     File.WriteAllBytes(Path.Combine(Path.GetDirectoryName(arg), newName), buffer.ToArray());
                 }
                 else
                 {
                     File.WriteAllBytes(arg + ".gz", Compression.Compress(data).ToArray());
-                } 
+                }
             }
         }
     }

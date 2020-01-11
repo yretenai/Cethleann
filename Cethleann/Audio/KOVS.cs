@@ -1,0 +1,53 @@
+using System;
+using System.Runtime.InteropServices;
+using Cethleann.Structure.Resource.Audio;
+using DragonLib;
+using JetBrains.Annotations;
+
+namespace Cethleann.Audio
+{
+    /// <summary>
+    ///     Initialize and decrypt a KOVS stream
+    /// </summary>
+    [PublicAPI]
+    public class KOVS
+    {
+        /// <summary>
+        ///     Initialize KOVS data
+        /// </summary>
+        /// <param name="data"></param>
+        public KOVS(Span<byte> data)
+        {
+            Header = MemoryMarshal.Read<KTGLOggVorbisSound>(data);
+            var offset = SizeHelper.SizeOf<KTGLOggVorbisSound>();
+            var blob = data.Slice(offset, Header.Size);
+            if (blob.Length % 4 != 0)
+            {
+                var tmp = new Span<byte>(new byte[blob.Length.Align(4)]);
+                blob.CopyTo(tmp);
+                blob = tmp;
+            }
+
+            unsafe
+            {
+                var sz = Math.Min(0x100, blob.Length);
+                fixed (byte* ptr = &blob.GetPinnableReference())
+                {
+                    for (var i = 0; i < sz; ++i) *(int*) (ptr + i) ^= i;
+                }
+            }
+
+            Stream = new Memory<byte>(blob.ToArray());
+        }
+
+        /// <summary>
+        ///     KOVS Header
+        /// </summary>
+        public KTGLOggVorbisSound Header { get; set; }
+
+        /// <summary>
+        ///     Audio Stream
+        /// </summary>
+        public Memory<byte> Stream { get; set; }
+    }
+}

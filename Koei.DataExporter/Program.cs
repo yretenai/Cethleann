@@ -9,6 +9,7 @@ using Cethleann.Audio;
 using Cethleann.DataTables;
 using Cethleann.G1;
 using Cethleann.ManagedFS;
+using Cethleann.Text;
 using DragonLib.IO;
 #if DEBUG
 using static Cethleann.Model.Program;
@@ -113,6 +114,7 @@ namespace Koei.DataExporter
                     case DataType.GEPK when TryExtractGAPK(blobBase, datablob, writeZero, true):
                     case DataType.GMPK when TryExtractGMPK(blobBase, datablob, writeZero):
                     case DataType.LosslessAudio when TryExtractG1L(blobBase, datablob, writeZero):
+                    case DataType.KOVS when TryExtractKOVS(blobBase, datablob, writeZero):
                         return 1;
                 }
             }
@@ -384,6 +386,25 @@ namespace Koei.DataExporter
             catch (Exception e)
             {
                 Logger.Error("G1L", $"Failed unpacking G1L, {e}");
+                if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool TryExtractKOVS(string pathBase, Memory<byte> data, bool writeZero)
+        {
+            try
+            {
+                var blobs = new KOVS(data.Span);
+                var buffer = blobs.Stream;
+                TryExtractBlob($@"{pathBase}\{0:X4}.{GetExtension(buffer.Span)}", buffer, false, writeZero, true);
+            }
+            catch (Exception e)
+            {
+                Logger.Error("KOVS", $"Failed unpacking KOVS, {e}");
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;

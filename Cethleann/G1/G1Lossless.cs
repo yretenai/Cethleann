@@ -7,13 +7,13 @@ using JetBrains.Annotations;
 namespace Cethleann.G1
 {
     /// <summary>
-    /// Parser for G1L Files
+    ///     Parser for G1L Files
     /// </summary>
     [PublicAPI]
     public class G1Lossless
     {
         /// <summary>
-        /// Initialize with Span buffer
+        ///     Initialize with Span buffer
         /// </summary>
         /// <param name="buffer"></param>
         public G1Lossless(Span<byte> buffer)
@@ -25,12 +25,12 @@ namespace Cethleann.G1
         }
 
         /// <summary>
-        /// G1L Header
+        ///     G1L Header
         /// </summary>
         public LosslessAudioContainer Header { get; set; }
 
         /// <summary>
-        /// G1L Audio Data
+        ///     G1L Audio Data
         /// </summary>
         public Memory<byte> Audio { get; set; }
     }

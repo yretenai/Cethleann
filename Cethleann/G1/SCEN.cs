@@ -5,7 +5,7 @@ using Cethleann.Structure;
 using DragonLib.IO;
 using JetBrains.Annotations;
 
-namespace Cethleann
+namespace Cethleann.G1
 {
     /// <summary>
     ///     SCEN Container

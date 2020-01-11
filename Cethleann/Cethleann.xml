@@ -14,6 +14,27 @@
                 Underlying entry
             </summary>
         </member>
+        <member name="T:Cethleann.Audio.KOVS">
+            <summary>
+            Initialize and decrypt a KOVS stream
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.KOVS.Header">
+            <summary>
+            KOVS Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.KOVS.Stream">
+            <summary>
+            Audio Stream
+            </summary>
+        </member>
+        <member name="M:Cethleann.Audio.KOVS.#ctor(System.Span{System.Byte})">
+            <summary>
+            Initialize KOVS data
+            </summary>
+            <param name="data"></param>
+        </member>
         <member name="T:Cethleann.Audio.SoundResource">
             <summary>
                 Implements KTSR
@@ -270,6 +291,11 @@
         <member name="F:Cethleann.DataType.KOVS">
             <summary>
                 KTGL Sound Sample
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.OGG">
+            <summary>
+                Ogg Vorbis
             </summary>
         </member>
         <member name="F:Cethleann.DataType.SCEN">
@@ -1051,6 +1077,58 @@
                 lsof sections in the file.
             </summary>
         </member>
+        <member name="T:Cethleann.G1.SCEN">
+            <summary>
+                SCEN Container
+            </summary>
+        </member>
+        <member name="M:Cethleann.G1.SCEN.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize with databuffer
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="P:Cethleann.G1.SCEN.Entries">
+            <summary>
+                lsof data entries
+            </summary>
+        </member>
+        <member name="T:Cethleann.G1.ScreenLayoutTexture">
+            <summary>
+                KSLT parser
+            </summary>
+        </member>
+        <member name="M:Cethleann.G1.ScreenLayoutTexture.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize with byte data
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="P:Cethleann.G1.ScreenLayoutTexture.Header">
+            <summary>
+                KSLT Header data
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.ScreenLayoutTexture.Matrices">
+            <summary>
+                Matrix section
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.ScreenLayoutTexture.Pointers">
+            <summary>
+                Image pointers
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.ScreenLayoutTexture.Names">
+            <summary>
+                Image names
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.ScreenLayoutTexture.Entries">
+            <summary>
+                Images
+            </summary>
+        </member>
         <member name="T:Cethleann.GAPK">
             <summary>
                 KTGL Animation Pack
@@ -1726,58 +1804,6 @@
             <param name="divisor"></param>
             <returns></returns>
         </member>
-        <member name="T:Cethleann.SCEN">
-            <summary>
-                SCEN Container
-            </summary>
-        </member>
-        <member name="M:Cethleann.SCEN.#ctor(System.Span{System.Byte})">
-            <summary>
-                Initialize with databuffer
-            </summary>
-            <param name="data"></param>
-        </member>
-        <member name="P:Cethleann.SCEN.Entries">
-            <summary>
-                lsof data entries
-            </summary>
-        </member>
-        <member name="T:Cethleann.ScreenLayoutTexture">
-            <summary>
-                KSLT parser
-            </summary>
-        </member>
-        <member name="M:Cethleann.ScreenLayoutTexture.#ctor(System.Span{System.Byte})">
-            <summary>
-                Initialize with byte data
-            </summary>
-            <param name="data"></param>
-        </member>
-        <member name="P:Cethleann.ScreenLayoutTexture.Header">
-            <summary>
-                KSLT Header data
-            </summary>
-        </member>
-        <member name="P:Cethleann.ScreenLayoutTexture.Matrices">
-            <summary>
-                Matrix section
-            </summary>
-        </member>
-        <member name="P:Cethleann.ScreenLayoutTexture.Pointers">
-            <summary>
-                Image pointers
-            </summary>
-        </member>
-        <member name="P:Cethleann.ScreenLayoutTexture.Names">
-            <summary>
-                Image names
-            </summary>
-        </member>
-        <member name="P:Cethleann.ScreenLayoutTexture.Entries">
-            <summary>
-                Images
-            </summary>
-        </member>
         <member name="T:Cethleann.Structure.CompressionInfo">
             <summary>
                 Info regarding compression for a file in DATA1
@@ -1839,43 +1865,43 @@
                 2 POW value SHR 0x4 = height
             </summary>
         </member>
-        <member name="T:Cethleann.TextLocalization">
+        <member name="T:Cethleann.Text.TextLocalization">
             <summary>
                 Text Localization files are used to collect text data.
             </summary>
         </member>
-        <member name="M:Cethleann.TextLocalization.#ctor(System.Span{System.Byte})">
+        <member name="M:Cethleann.Text.TextLocalization.#ctor(System.Span{System.Byte})">
             <summary>
                 Initialize with a span buffer
             </summary>
             <param name="buffer"></param>
         </member>
-        <member name="P:Cethleann.TextLocalization.Entries">
+        <member name="P:Cethleann.Text.TextLocalization.Entries">
             <summary>
                 List of string entries in this text blob
             </summary>
         </member>
-        <member name="T:Cethleann.UTF8TBL">
+        <member name="T:Cethleann.Text.UTF8TBL">
             <summary>
                 UTF-8 texture sheet character table
             </summary>
         </member>
-        <member name="M:Cethleann.UTF8TBL.#ctor">
+        <member name="M:Cethleann.Text.UTF8TBL.#ctor">
             <summary>
             </summary>
         </member>
-        <member name="M:Cethleann.UTF8TBL.#ctor(System.Span{System.Byte})">
+        <member name="M:Cethleann.Text.UTF8TBL.#ctor(System.Span{System.Byte})">
             <summary>
                 Initialize with databuffer
             </summary>
             <param name="data"></param>
         </member>
-        <member name="P:Cethleann.UTF8TBL.Characters">
+        <member name="P:Cethleann.Text.UTF8TBL.Characters">
             <summary>
                 Chars found in the table.
             </summary>
         </member>
-        <member name="M:Cethleann.UTF8TBL.Write">
+        <member name="M:Cethleann.Text.UTF8TBL.Write">
             <summary>
                 Write table to buffer
             </summary>
