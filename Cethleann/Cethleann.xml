@@ -16,24 +16,24 @@
         </member>
         <member name="T:Cethleann.Audio.KOVS">
             <summary>
-            Initialize and decrypt a KOVS stream
-            </summary>
-        </member>
-        <member name="P:Cethleann.Audio.KOVS.Header">
-            <summary>
-            KOVS Header
-            </summary>
-        </member>
-        <member name="P:Cethleann.Audio.KOVS.Stream">
-            <summary>
-            Audio Stream
+                Initialize and decrypt a KOVS stream
             </summary>
         </member>
         <member name="M:Cethleann.Audio.KOVS.#ctor(System.Span{System.Byte})">
             <summary>
-            Initialize KOVS data
+                Initialize KOVS data
             </summary>
             <param name="data"></param>
+        </member>
+        <member name="P:Cethleann.Audio.KOVS.Header">
+            <summary>
+                KOVS Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.KOVS.Stream">
+            <summary>
+                Audio Stream
+            </summary>
         </member>
         <member name="T:Cethleann.Audio.SoundResource">
             <summary>
@@ -594,23 +594,23 @@
         </member>
         <member name="T:Cethleann.G1.G1Lossless">
             <summary>
-            Parser for G1L Files
+                Parser for G1L Files
             </summary>
         </member>
         <member name="M:Cethleann.G1.G1Lossless.#ctor(System.Span{System.Byte})">
             <summary>
-            Initialize with Span buffer
+                Initialize with Span buffer
             </summary>
             <param name="buffer"></param>
         </member>
         <member name="P:Cethleann.G1.G1Lossless.Header">
             <summary>
-            G1L Header
+                G1L Header
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1Lossless.Audio">
             <summary>
-            G1L Audio Data
+                G1L Audio Data
             </summary>
         </member>
         <member name="T:Cethleann.G1.G1Model">

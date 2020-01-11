@@ -3,7 +3,9 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>netcoreapp3.0</TargetFramework>
+        <Configurations>Release;Debug</Configurations>
         <Platforms>x64</Platforms>
+        <PublishTrimmed>true</PublishTrimmed>
         <RuntimeIdentifiers>win10-x64;osx-x64;linux-x64</RuntimeIdentifiers>
     </PropertyGroup>
 
