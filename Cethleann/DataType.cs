@@ -131,13 +131,19 @@ namespace Cethleann
         ///     KTGL Video Source (usually encrypted)
         /// </summary>
         [FileExtension("kslt")]
-        VideoSource = 'G' << 0 | '1' << 8 | 'V' << 16 | 'S' << 24,
+        VideoSource = 'G' << 24 | '1' << 16 | 'V' << 8 | 'S' << 0,
 
         /// <summary>
         ///     KTGL Font
         /// </summary>
         [FileExtension("g1n")]
-        Font = 'G' << 0 | '1' << 8 | 'N' << 16 | '_' << 24,
+        Font = 'G' << 24 | '1' << 16 | 'L' << 8 | '_' << 0,
+
+        /// <summary>
+        ///     KTGL G1L
+        /// </summary>
+        [FileExtension("g1l")]
+        LosslessAudio = 'G' << 24 | '1' << 16 | 'L' << 8 | '_' << 0,
 
         /// <summary>
         ///     teXt Localization, version 19

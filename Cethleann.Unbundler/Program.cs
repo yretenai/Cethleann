@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -13,10 +14,17 @@ namespace Cethleann.Unbundler
     {
         static void Main(string[] args)
         {
+            var files = new List<string>();
             foreach (var arg in args)
             {
                 Logger.Info("CETH", arg);
-                if (Directory.Exists(arg) && File.Exists(Path.Combine(arg, "originaltype.cethleann")))
+                if (!Directory.Exists(arg))
+                {
+                    files.Add(arg);
+                    continue;
+                }
+
+                if (File.Exists(Path.Combine(arg, "originaltype.cethleann")))
                 {
                     var ext = File.ReadAllText(Path.Combine(arg, "originaltype.cethleann"));
                     var originalName = arg + ext;
@@ -34,6 +42,12 @@ namespace Cethleann.Unbundler
                     continue;
                 }
 
+                files.AddRange(Directory.GetFiles(arg, "*", SearchOption.TopDirectoryOnly));
+            }
+
+            foreach (var arg in files)
+            {
+                Logger.Info("CETH", arg);
                 var data = new Memory<byte>(File.ReadAllBytes(arg));
                 var pathBase = arg;
                 if (!arg.EndsWith(".text"))
@@ -44,7 +58,7 @@ namespace Cethleann.Unbundler
                         pathBase = Path.Combine(Path.GetDirectoryName(arg), Path.GetFileNameWithoutExtension(arg));
                 }
 
-                TryExtractBlob(pathBase, data, true, true);
+                TryExtractBlob(pathBase, data, true, true, false);
 
                 if (!Directory.Exists(pathBase) || Path.GetFileName(arg) == Path.GetFileNameWithoutExtension(arg)) continue;
 

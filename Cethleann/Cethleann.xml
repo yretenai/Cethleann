@@ -337,6 +337,11 @@
                 KTGL Font
             </summary>
         </member>
+        <member name="F:Cethleann.DataType.LosslessAudio">
+            <summary>
+                KTGL G1L
+            </summary>
+        </member>
         <member name="F:Cethleann.DataType.TextLocalization19">
             <summary>
                 teXt Localization, version 19
@@ -560,6 +565,27 @@
             </summary>
             <param name="buffer"></param>
             <returns></returns>
+        </member>
+        <member name="T:Cethleann.G1.G1Lossless">
+            <summary>
+            Parser for G1L Files
+            </summary>
+        </member>
+        <member name="M:Cethleann.G1.G1Lossless.#ctor(System.Span{System.Byte})">
+            <summary>
+            Initialize with Span buffer
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="P:Cethleann.G1.G1Lossless.Header">
+            <summary>
+            G1L Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1Lossless.Audio">
+            <summary>
+            G1L Audio Data
+            </summary>
         </member>
         <member name="T:Cethleann.G1.G1Model">
             <summary>
