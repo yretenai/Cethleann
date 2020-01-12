@@ -44,13 +44,12 @@ namespace Koei.DataExporter
 
         private static void ExtractAll(string romfs, Flayn cethleann)
         {
-            if (!Directory.Exists($@"{romfs}\romfs")) Directory.CreateDirectory($@"{romfs}\romfs");
             for (var index = 0; index < cethleann.EntryCount; index++)
             {
                 var data = cethleann.ReadEntry(index);
                 var dt = data.Span.GetDataType();
                 var ext = GetExtension(data.Span);
-                var pathBase = $@"{romfs}\romfs\{cethleann.GetFilename(index, ext, dt)}";
+                var pathBase = $@"{romfs}\{cethleann.GetFilename(index, ext, dt)}";
                 TryExtractBlob(pathBase, data, false, false, false);
             }
         }
@@ -99,7 +98,7 @@ namespace Koei.DataExporter
                     case DataType.SCEN when TryExtractSCEN(blobBase, datablob, writeZero):
                     case DataType.KLDM when TryExtractKLDM(blobBase, datablob, writeZero):
                     case DataType.KTSR when TryExtractKTSR(blobBase, datablob, writeZero):
-                    case DataType.Model when TryExtractG1M(blobBase, datablob, writeZero):
+                    // case DataType.Model when TryExtractG1M(blobBase, datablob, writeZero):
                     case DataType.TextLocalization19 when TryExtractLX(blobBase, datablob):
                     case DataType.GAPK when TryExtractGAPK(blobBase, datablob, writeZero, false):
                     case DataType.GEPK when TryExtractGAPK(blobBase, datablob, writeZero, true):
@@ -133,7 +132,7 @@ namespace Koei.DataExporter
                 return 0;
             }
 
-            Logger.Info("KTGL", $@"{blobBase}");
+            Logger.Info("KTGL", blobBase);
             File.WriteAllBytes(blobBase, datablob.ToArray());
 
             return 2;
@@ -298,12 +297,26 @@ namespace Koei.DataExporter
                 if (blobs.Entries.Count == 0) return true;
 
                 var ft = Path.ChangeExtension(pathBase, ".txt");
+                var basedir = Path.GetDirectoryName(ft);
+                
+                if (!Directory.Exists(basedir))
+                {
+                    if (File.Exists(basedir))
+                    {
+                        Logger.Warn("LX", $@"Trying to make a directory named {basedir} but it is a file?");
+                        return false;
+                    }
+
+                    Directory.CreateDirectory(basedir);
+                }
+                
                 var lines = string.Join(Environment.NewLine, blobs.Entries.SelectMany((x, i) => x.Select((y, j) => $"{i},{j} = " + y.Replace("\\", "\\\\").Replace("\n", "\\n").Replace("\r", "\\r"))));
                 File.WriteAllText(ft, lines);
+                Logger.Info("LX", ft);
             }
             catch (Exception e)
             {
-                Logger.Error("KLDM", $"Failed unpacking KLDM, {e}");
+                Logger.Error("LX", $"Failed unpacking LX, {e}");
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;

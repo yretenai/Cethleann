@@ -1,27 +1,40 @@
 # Cethleann
 
-KTGL Soft Engine data exploration and research, specifically centered around FE: Three Houses
+KTGL Soft Engine data exploration and research, specifically centered around FE: Three Houses, the Atelier series, 
+and Dissidia NT
 
-## While this library supports writing and modifying files, support is experimental
+## While this library can write and modify files, support is experimental
 
 ### Tools
 
-#### Cethleann.DataExporter
-
-Exports files from DATA0 containers.
-
 #### Cethleann.Model
 
-Converts .bin files to .gltf+.tif files, .g1m to .gltf, and .g1t to .tif files
-
-#### Cethleann.Gz
-
-Compresses files to .gz, and decompresses gz files.
+A G1M/G1T to glTF/TIF-DDS converter, support is partial.
 
 #### Cethleann.Unbundler
 
-Unwraps .bin and .kldm files into individual assets. If provided with a folder that ends with "_contents" it will compress this folder to a .bin.
+Unbundles common KTGL files (datatables, MDLK, asset bundles, scenes)
 
-#### pfstool
+#### Gust.DataExporter
 
-A helper tool to unwrap NX PSF0 containers.
+Exports files from Gust game packs.
+
+#### Gust.EncFinder
+
+Attempts to find elixir.gz decryption values from bytecode.
+
+#### Gust.Gz
+
+Gust game decompression.
+
+#### Koei.DataExporter
+
+Exports files from INFO/DATA chunks, built with Fire Emblem in mind.
+
+#### Koei.Gz
+
+KTGL standard decompression
+
+#### Ninja.DataExporter
+
+DFFNT file decryption and decompression.
