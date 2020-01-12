@@ -118,8 +118,8 @@ namespace Cethleann
         /// <summary>
         ///     KTGL Model Container
         /// </summary>
-        [FileExtension("kldm")]
-        KLDM = 'M' << 0 | 'D' << 8 | 'L' << 16 | 'K' << 24,
+        [FileExtension("mdlk")]
+        MDLK = 'M' << 0 | 'D' << 8 | 'L' << 16 | 'K' << 24,
 
         /// <summary>
         ///     KTGL Screen Layout Texture

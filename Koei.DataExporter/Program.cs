@@ -7,6 +7,7 @@ using Cethleann;
 using Cethleann.Audio;
 using Cethleann.DataTables;
 using Cethleann.G1;
+using Cethleann.Koei;
 using Cethleann.ManagedFS;
 using Cethleann.Text;
 using DragonLib.IO;
@@ -84,6 +85,8 @@ namespace Koei.DataExporter
                 return 0;
             }
 
+            var dataType = datablob.Span.GetDataType();
+
             if (allTypes || Recursive)
             {
                 if (!datablob.Span.IsKnown() && datablob.Span.IsDataTable())
@@ -93,10 +96,10 @@ namespace Koei.DataExporter
                     if (TryExtractBundle(blobBase, datablob, writeZero))
                         return 1;
                 // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
-                switch (datablob.Span.GetDataType())
+                switch (dataType)
                 {
                     case DataType.SCEN when TryExtractSCEN(blobBase, datablob, writeZero):
-                    case DataType.KLDM when TryExtractKLDM(blobBase, datablob, writeZero):
+                    case DataType.MDLK when TryExtractMDLK(blobBase, datablob, writeZero):
                     case DataType.KTSR when TryExtractKTSR(blobBase, datablob, writeZero):
                     // case DataType.Model when TryExtractG1M(blobBase, datablob, writeZero):
                     case DataType.TextLocalization19 when TryExtractLX(blobBase, datablob):
@@ -109,6 +112,29 @@ namespace Koei.DataExporter
                 }
             }
 
+            if (dataType == DataType.Compressed || dataType == DataType.CompressedChonky)
+            {
+                try
+                {
+                    var decompressed = Compression.Decompress(datablob.Span, (int) dataType);
+                    var pathBase = blobBase;
+                    if (pathBase.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        pathBase = pathBase.Substring(0, pathBase.Length - 3);
+                    }
+
+                    var result = TryExtractBlob(pathBase, new Memory<byte>(decompressed.ToArray()), allTypes, writeZero, singleFile);
+                    
+                    if (result > 0)
+                    {
+                        return result;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.Error("KTGL", $"Failed decompressing blob, {e}");
+                }
+            }
 
             var basedir = Path.GetDirectoryName(blobBase);
             if (singleFile)
@@ -205,7 +231,7 @@ namespace Koei.DataExporter
             if (!data.IsKnown() && data.IsDataTable()) return "datatable";
             if (dt == DataType.SCEN) return "scene";
             if (data.IsBundle()) return "bundle";
-            if (dt == DataType.KLDM) return "kldm";
+            if (dt == DataType.MDLK) return "mdlk";
             return dt.GetExtension();
         }
 
@@ -269,18 +295,18 @@ namespace Koei.DataExporter
             return true;
         }
 
-        private static bool TryExtractKLDM(string pathBase, Memory<byte> data, bool writeZero)
+        private static bool TryExtractMDLK(string pathBase, Memory<byte> data, bool writeZero)
         {
             try
             {
-                var blobs = new KLDM(data.Span);
+                var blobs = new MDLK(data.Span);
                 if (blobs.Entries.Count == 0) return true;
 
                 TryExtractBlobs(pathBase, blobs.Entries, false, writeZero, null, false);
             }
             catch (Exception e)
             {
-                Logger.Error("KLDM", $"Failed unpacking KLDM, {e}");
+                Logger.Error("MDLK", $"Failed unpacking MDLK, {e}");
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;

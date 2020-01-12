@@ -3,7 +3,7 @@
 #pragma warning disable 1591
     public struct StructTableHeader
     {
-        public int Magic { get; set; }
+        public DataType Magic { get; set; }
         public int Count { get; set; }
         public int Size { get; set; }
         public int Unknown1 { get; set; }

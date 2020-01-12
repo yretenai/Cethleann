@@ -293,9 +293,10 @@ namespace Cethleann.ManagedFS
             }
 
             var temp = path;
-            if (!FileList.TryGetValue(logicalId ?? index.ToString(), out path)) path = temp ?? (ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{logicalId ?? index.ToString()}.bin" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{logicalId ?? index.ToString()}.{ext}");
-
-            return prefix + (ext.EndsWith(".gz") ? path + ".gz" : path);
+            if (!FileList.TryGetValue(logicalId ?? index.ToString(), out path)) path = temp ?? (ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{logicalId ?? index.ToString()}.{ext}" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{logicalId ?? index.ToString()}.{ext}");
+            else path = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + $".{ext}");
+            if (ext.EndsWith(".gz") && !path.EndsWith(".gz")) path += ".gz";
+            return prefix + path;
         }
 
         /// <summary>
