@@ -24,7 +24,7 @@ namespace Koei.DataExporter
             if (args.Length < 3)
             {
                 Logger.Info("KTGL", "Usage: Koei.DataExporter.exe RomFS output <recursive yes/no> [PatchRomFS [DLCRomFS...]]");
-                Logger.Info("KTGL", "Example: Koei.DataExporter.exe NCA/BaseGame/RomFS FETH yes NCA/Update/RomFS");
+                Logger.Info("KTGL", "Example: Koei.DataExporter.exe NCA/BaseGame/RomFS FETH yes NCA/Update/RomFS/patch3");
                 Logger.Warn("KTGL", "Setting recursive to YES will output a LOT of files.");
                 return;
             }
