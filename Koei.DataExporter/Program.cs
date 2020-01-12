@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -11,43 +10,35 @@ using Cethleann.G1;
 using Cethleann.ManagedFS;
 using Cethleann.Text;
 using DragonLib.IO;
-#if DEBUG
-using static Cethleann.Model.Program;
-
-#endif
+using JetBrains.Annotations;
 
 namespace Koei.DataExporter
 {
-    [SuppressMessage("ReSharper", "UnusedVariable")]
+    [PublicAPI]
     public static class Program
     {
+        public static bool Recursive { get; set; }
+
         private static void Main(string[] args)
         {
-            if (args.Length < 2)
+            if (args.Length < 3)
             {
-                Logger.Info("KTGL", "Usage: Koei.DataExporter.exe RomFS output [PatchRomFS [DLCRomFS...]]");
+                Logger.Info("KTGL", "Usage: Koei.DataExporter.exe RomFS output <recursive yes/no> [PatchRomFS [DLCRomFS...]]");
+                Logger.Info("KTGL", "Example: Koei.DataExporter.exe NCA/BaseGame/RomFS FETH yes NCA/Update/RomFS");
+                Logger.Warn("KTGL", "Setting recursive to YES will output a LOT of files.");
                 return;
             }
 
             var romfs = args.First();
             var output = args.ElementAt(1);
+            Recursive = args.ElementAt(2).ToLower()[0] == 'y';
             using var cethleann = new Flayn(romfs, GameId.FireEmblemThreeHouses);
 
-            if (args.Length > 3 && Directory.Exists(args.ElementAt(2))) cethleann.AddPatchFS(args.ElementAt(2));
+            if (args.Length > 4 && Directory.Exists(args.ElementAt(3))) cethleann.AddPatchFS(args.ElementAt(3));
 
-            foreach (var dlcromfs in args.Skip(3)) cethleann.AddDataFS(dlcromfs);
+            foreach (var dlcromfs in args.Skip(4)) cethleann.AddDataFS(dlcromfs);
             cethleann.TestDLCSanity();
-
             cethleann.LoadFileList();
-
-#if DEBUG
-            var strings = new StringTable(cethleann.ReadEntry(0x216C).Span);
-            var bundle = new DataTable(cethleann.ReadEntry(0xE34).Span);
-            var model = new G1Model(bundle.Entries.ElementAt(0).Span);
-            var texture = new G1TextureGroup(bundle.Entries.ElementAt(1).Span);
-            SaveG1T($@"{output}\mdl\tex", texture);
-            SaveG1M($@"{output}\mdl\{0xE34:X4}.gltf", model, "tex");
-#endif
             ExtractAll(output, cethleann);
         }
 
@@ -94,7 +85,7 @@ namespace Koei.DataExporter
                 return 0;
             }
 
-            if (allTypes)
+            if (allTypes || Recursive)
             {
                 if (!datablob.Span.IsKnown() && datablob.Span.IsDataTable())
                     if (TryExtractDataTable(blobBase, datablob, writeZero))
