@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Cethleann.ManagedFS;
+using DragonLib.CLI;
 using DragonLib.IO;
 
 namespace Ninja.DataExporter
@@ -8,15 +9,14 @@ namespace Ninja.DataExporter
     {
         static void Main(string[] args)
         {
-            if (args.Length < 2)
-            {
-                Logger.Info("NINJA", "Usage: Ninja.DataExporter.exe output install_directory");
-                return;
-            }
+            var flags = CommandLineFlags.ParseFlags<NinjaDataExporterFlags>(CommandLineFlags.PrintHelp, args);
 
-            var output = args[0];
-            // var _ = args[1].ToLower();
-            var yshtola = new Yshtola(args[1], new DissidiaSettings());
+            var settings = flags.Game switch
+            {
+                InstallType.Dissidia => new DissidiaSettings(),
+                _ => null
+            };
+            var yshtola = new Yshtola(flags.RootDirectory, settings);
 
             foreach (var entry in yshtola)
             {
@@ -31,7 +31,7 @@ namespace Ninja.DataExporter
 
                     while (filepath.StartsWith("\\") || filepath.StartsWith("/")) filepath = filepath.Substring(1);
 
-                    var path = Path.Combine(output, filepath);
+                    var path = Path.Combine(flags.OutputDirectory, filepath);
                     var dir = Path.GetDirectoryName(path);
                     if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
                     File.WriteAllBytes(path, data.ToArray());

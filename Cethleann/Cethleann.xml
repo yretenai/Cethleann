@@ -1038,19 +1038,19 @@
                 Section header for this section
             </summary>
         </member>
-        <member name="T:Cethleann.G1.KLDM">
+        <member name="T:Cethleann.G1.MDLK">
             <summary>
                 Decomposes a MDLK buffer to individual files
             </summary>
         </member>
-        <member name="M:Cethleann.G1.KLDM.#ctor(System.Span{System.Byte})">
+        <member name="M:Cethleann.G1.MDLK.#ctor(System.Span{System.Byte})">
             <summary>
                 Decomposes a MDLK buffer to individual files
             </summary>
             <param name="buffer"></param>
             <exception cref="T:System.IO.InvalidDataException"></exception>
         </member>
-        <member name="P:Cethleann.G1.KLDM.Entries">
+        <member name="P:Cethleann.G1.MDLK.Entries">
             <summary>
                 Usually models.
             </summary>
@@ -1610,11 +1610,12 @@
         <member name="M:Cethleann.ManagedFS.Reisalin.GetEnumerator">
             <inheritdoc />
         </member>
-        <member name="M:Cethleann.ManagedFS.Reisalin.Mount(System.String)">
+        <member name="M:Cethleann.ManagedFS.Reisalin.Mount(System.String,System.Boolean)">
             <summary>
                 Mounts a PAK
             </summary>
             <param name="path"></param>
+            <param name="a18"></param>
         </member>
         <member name="M:Cethleann.ManagedFS.Reisalin.ReadFile(System.String)">
             <summary>

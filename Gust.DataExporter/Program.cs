@@ -1,6 +1,6 @@
 ﻿using System.IO;
-using System.Linq;
 using Cethleann.ManagedFS;
+using DragonLib.CLI;
 using DragonLib.IO;
 
 namespace Gust.DataExporter
@@ -9,15 +9,10 @@ namespace Gust.DataExporter
     {
         static void Main(string[] args)
         {
-            if (args.Length < 2)
-            {
-                Logger.Error("GUST", "Usage: Gust.DataExporter.exe output PAK_directory_or_file...");
-                return;
-            }
+            var flags = CommandLineFlags.ParseFlags<GustDataExporterFlags>(CommandLineFlags.PrintHelp, args);
 
             using var reisalin = new Reisalin();
-            var output = args[0];
-            foreach (var arg in args.Skip(1)) reisalin.Mount(arg);
+            foreach (var location in flags.PAKLocations) reisalin.Mount(location, !flags.A17);
 
             foreach (var (entry, pak) in reisalin)
             {
@@ -33,7 +28,7 @@ namespace Gust.DataExporter
                     var fn = entry.Filename;
                     while (fn.StartsWith("\\") || fn.StartsWith("/")) fn = fn.Substring(1);
 
-                    var path = Path.Combine(output, fn);
+                    var path = Path.Combine(flags.OutputDirectory, fn);
                     var dir = Path.GetDirectoryName(path);
                     if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
                     File.WriteAllBytes(path, data);

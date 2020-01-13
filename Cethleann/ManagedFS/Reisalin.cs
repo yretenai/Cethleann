@@ -39,13 +39,14 @@ namespace Cethleann.ManagedFS
         ///     Mounts a PAK
         /// </summary>
         /// <param name="path"></param>
-        public void Mount(string path)
+        /// <param name="a18"></param>
+        public void Mount(string path, bool a18 = true)
         {
             if (Directory.Exists(path))
                 foreach (var file in Directory.GetFiles(path, "*.PAK"))
-                    Mount(file);
+                    Mount(file, a18);
             else
-                PAKs.Add(new PAK(path));
+                PAKs.Add(new PAK(path, a18));
         }
 
         /// <summary>

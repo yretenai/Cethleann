@@ -10,6 +10,7 @@ using Cethleann.G1;
 using Cethleann.Koei;
 using Cethleann.ManagedFS;
 using Cethleann.Text;
+using DragonLib.CLI;
 using DragonLib.IO;
 using JetBrains.Annotations;
 
@@ -22,25 +23,17 @@ namespace Koei.DataExporter
 
         private static void Main(string[] args)
         {
-            if (args.Length < 3)
-            {
-                Logger.Info("KTGL", "Usage: Koei.DataExporter.exe RomFS output <recursive yes/no> [PatchRomFS [DLCRomFS...]]");
-                Logger.Info("KTGL", "Example: Koei.DataExporter.exe NCA/BaseGame/RomFS FETH yes NCA/Update/RomFS/patch3");
-                Logger.Warn("KTGL", "Setting recursive to YES will output a LOT of files.");
-                return;
-            }
+            var flags = CommandLineFlags.ParseFlags<KoeiDataExporterFlags>(CommandLineFlags.PrintHelp, args);
 
-            var romfs = args.First();
-            var output = args.ElementAt(1);
-            Recursive = args.ElementAt(2).ToLower()[0] == 'y';
-            using var cethleann = new Flayn(romfs, GameId.FireEmblemThreeHouses);
+            Recursive = flags.Recursive;
+            using var cethleann = new Flayn(flags.BaseDirectory, GameId.FireEmblemThreeHouses);
 
-            if (args.Length > 4 && Directory.Exists(args.ElementAt(3))) cethleann.AddPatchFS(args.ElementAt(3));
+            if (flags.PatchDirectory != null) cethleann.AddPatchFS(flags.PatchDirectory);
 
-            foreach (var dlcromfs in args.Skip(4)) cethleann.AddDataFS(dlcromfs);
+            foreach (var dlcromfs in flags.DLCDirectories) cethleann.AddDataFS(dlcromfs);
             cethleann.TestDLCSanity();
             cethleann.LoadFileList();
-            ExtractAll(output, cethleann);
+            ExtractAll(flags.OutputDirectory, cethleann);
         }
 
         private static void ExtractAll(string romfs, Flayn cethleann)
@@ -113,28 +106,20 @@ namespace Koei.DataExporter
             }
 
             if (dataType == DataType.Compressed || dataType == DataType.CompressedChonky)
-            {
                 try
                 {
                     var decompressed = Compression.Decompress(datablob.Span, (int) dataType);
                     var pathBase = blobBase;
-                    if (pathBase.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        pathBase = pathBase.Substring(0, pathBase.Length - 3);
-                    }
+                    if (pathBase.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase)) pathBase = pathBase.Substring(0, pathBase.Length - 3);
 
                     var result = TryExtractBlob(pathBase, new Memory<byte>(decompressed.ToArray()), allTypes, writeZero, singleFile);
-                    
-                    if (result > 0)
-                    {
-                        return result;
-                    }
+
+                    if (result > 0) return result;
                 }
                 catch (Exception e)
                 {
                     Logger.Error("KTGL", $"Failed decompressing blob, {e}");
                 }
-            }
 
             var basedir = Path.GetDirectoryName(blobBase);
             if (singleFile)
@@ -324,7 +309,7 @@ namespace Koei.DataExporter
 
                 var ft = Path.ChangeExtension(pathBase, ".txt");
                 var basedir = Path.GetDirectoryName(ft);
-                
+
                 if (!Directory.Exists(basedir))
                 {
                     if (File.Exists(basedir))
@@ -335,7 +320,7 @@ namespace Koei.DataExporter
 
                     Directory.CreateDirectory(basedir);
                 }
-                
+
                 var lines = string.Join(Environment.NewLine, blobs.Entries.SelectMany((x, i) => x.Select((y, j) => $"{i},{j} = " + y.Replace("\\", "\\\\").Replace("\n", "\\n").Replace("\r", "\\r"))));
                 File.WriteAllText(ft, lines);
                 Logger.Info("LX", ft);
