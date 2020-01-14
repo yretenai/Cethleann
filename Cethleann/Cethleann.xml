@@ -1320,12 +1320,11 @@
             <param name="blockSize"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.Koei.Compression.Decompress(System.Span{System.Byte},System.Int32)">
+        <member name="M:Cethleann.Koei.Compression.Decompress(System.Span{System.Byte})">
             <summary>
                 Decompresses a .gz stream.
             </summary>
             <param name="data"></param>
-            <param name="blockSize"></param>
             <returns></returns>
         </member>
         <member name="M:Cethleann.Koei.Compression.Decompress(System.IO.Stream,System.Int64)">

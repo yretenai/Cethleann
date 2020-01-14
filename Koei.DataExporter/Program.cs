@@ -108,7 +108,7 @@ namespace Koei.DataExporter
             if (dataType == DataType.Compressed || dataType == DataType.CompressedChonky)
                 try
                 {
-                    var decompressed = Compression.Decompress(datablob.Span, (int) dataType);
+                    var decompressed = Compression.Decompress(datablob.Span);
                     var pathBase = blobBase;
                     if (pathBase.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase)) pathBase = pathBase.Substring(0, pathBase.Length - 3);
 

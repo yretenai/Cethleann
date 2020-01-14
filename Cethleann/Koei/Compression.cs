@@ -72,9 +72,8 @@ namespace Cethleann.Koei
         ///     Decompresses a .gz stream.
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="blockSize"></param>
         /// <returns></returns>
-        public static unsafe Span<byte> Decompress(Span<byte> data, int blockSize = (int) DataType.Compressed)
+        public static unsafe Span<byte> Decompress(Span<byte> data)
         {
             var cursor = 0;
             var compInfo = MemoryMarshal.Read<CompressionInfo>(data);
@@ -99,7 +98,7 @@ namespace Cethleann.Koei
                     {
                         using var stream = new UnmanagedMemoryStream(pinData, chunkSize - 6);
                         using var inflateStream = new DeflateStream(stream, CompressionMode.Decompress);
-                        var block = new Span<byte>(new byte[blockSize]);
+                        var block = new Span<byte>(new byte[compInfo.ChunkSize]);
                         var read = inflateStream.Read(block);
                         block.Slice(0, read).CopyTo(buffer.Slice(bufferCursor));
                         bufferCursor = (bufferCursor + read).Align(0x80);
