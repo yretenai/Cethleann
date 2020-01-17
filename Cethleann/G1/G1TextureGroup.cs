@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Runtime.InteropServices;
 using Cethleann.Structure.Resource;
 using Cethleann.Structure.Resource.Texture;
@@ -54,10 +53,7 @@ namespace Cethleann.G1
                     offset += extra.Size;
                 }
 
-                if (dataHeader.Type.ToString("G") == dataHeader.Type.ToString("D"))
-                {
-                    Logger.Warn("G1T", $"Texture Type {dataHeader.Type:X} at offset {(header.TableOffset + offsets[i]):X16} (entry {i}) is unsupported!");
-                }
+                if (dataHeader.Type.ToString("G") == dataHeader.Type.ToString("D")) Logger.Warn("G1T", $"Texture Type {dataHeader.Type:X} at offset {(header.TableOffset + offsets[i]):X16} (entry {i}) is unsupported!");
 
                 var imagePixelData = Memory<byte>.Empty;
                 if (!metaOnly) imagePixelData = new Memory<byte>(imageData.Slice(offset).ToArray());

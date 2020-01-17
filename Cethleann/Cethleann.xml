@@ -1728,6 +1728,46 @@
             <param name="blockSize"></param>
             <returns></returns>
         </member>
+        <member name="T:Cethleann.Ninja.DFFNTSave">
+            <summary>
+                Parses Dissidia NT Free Save Data
+            </summary>
+        </member>
+        <member name="M:Cethleann.Ninja.DFFNTSave.#ctor(System.Span{System.Byte},System.Span{System.Byte})">
+            <summary>
+                Parse Dissidia Save Data
+            </summary>
+            <param name="data"></param>
+            <param name="key"></param>
+        </member>
+        <member name="P:Cethleann.Ninja.DFFNTSave.Header">
+            <summary>
+                Save Data Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.Ninja.DFFNTSave.SaveData">
+            <summary>
+                JSON Save Data
+            </summary>
+        </member>
+        <member name="P:Cethleann.Ninja.DFFNTSave.TailByte">
+            <summary>
+                Last byte of the file.
+            </summary>
+        </member>
+        <member name="M:Cethleann.Ninja.DFFNTSave.Write">
+            <summary>
+                Write save data
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Ninja.DFFNTSave.Write(System.Span{System.Byte})">
+            <summary>
+                Write save data and encrypt.
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
         <member name="T:Cethleann.Ninja.Encryption">
             <summary>
                 Encryption helper for TN games.
