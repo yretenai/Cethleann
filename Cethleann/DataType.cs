@@ -188,7 +188,7 @@ namespace Cethleann
         ModelGroup = 'M' << 0 | 'D' << 8 | 'L' << 16 | 'K' << 24,
 
         /// <summary>
-        ///     KTGL Effect Manager
+        ///     KTGL Effect Model
         /// </summary>
         [FileExtension("g1em")]
         EffectManager = 'G' << 24 | '1' << 16 | 'E' << 8 | 'M' << 0,
