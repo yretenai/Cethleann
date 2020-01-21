@@ -19,21 +19,20 @@ namespace Koei.DataExporter
     [PublicAPI]
     public static class Program
     {
-        public static bool Recursive { get; set; }
+        public static KoeiDataExporterFlags Flags { get; set; } = new KoeiDataExporterFlags();
 
         private static void Main(string[] args)
         {
-            var flags = CommandLineFlags.ParseFlags<KoeiDataExporterFlags>(CommandLineFlags.PrintHelp, args);
+            Flags = CommandLineFlags.ParseFlags<KoeiDataExporterFlags>(CommandLineFlags.PrintHelp, args);
 
-            Recursive = flags.Recursive;
-            using var cethleann = new Flayn(flags.BaseDirectory, GameId.FireEmblemThreeHouses);
+            using var cethleann = new Flayn(Flags.BaseDirectory, GameId.FireEmblemThreeHouses);
 
-            if (flags.PatchDirectory != null) cethleann.AddPatchFS(flags.PatchDirectory);
+            if (Flags.PatchDirectory != null) cethleann.AddPatchFS(Flags.PatchDirectory);
 
-            foreach (var dlcromfs in flags.DLCDirectories) cethleann.AddDataFS(dlcromfs);
+            foreach (var dlcromfs in Flags.DLCDirectories) cethleann.AddDataFS(dlcromfs);
             cethleann.TestDLCSanity();
             cethleann.LoadFileList();
-            ExtractAll(flags.OutputDirectory, cethleann);
+            ExtractAll(Flags.OutputDirectory, cethleann);
         }
 
         private static void ExtractAll(string romfs, Flayn cethleann)
@@ -80,7 +79,7 @@ namespace Koei.DataExporter
 
             var dataType = datablob.Span.GetDataType();
 
-            if (allTypes || Recursive)
+            if (allTypes || Flags.Recursive)
             {
                 if (!datablob.Span.IsKnown() && datablob.Span.IsDataTable())
                     if (TryExtractDataTable(blobBase, datablob, writeZero))
@@ -94,7 +93,7 @@ namespace Koei.DataExporter
                     case DataType.SCEN when TryExtractSCEN(blobBase, datablob, writeZero):
                     case DataType.MDLK when TryExtractMDLK(blobBase, datablob, writeZero):
                     case DataType.KTSR when TryExtractKTSR(blobBase, datablob, writeZero):
-                    // case DataType.Model when TryExtractG1M(blobBase, datablob, writeZero):
+                    case DataType.Model when !Flags.Recursive && TryExtractG1M(blobBase, datablob, writeZero):
                     case DataType.TextLocalization19 when TryExtractLX(blobBase, datablob):
                     case DataType.GAPK when TryExtractGAPK(blobBase, datablob, writeZero, false):
                     case DataType.GEPK when TryExtractGAPK(blobBase, datablob, writeZero, true):

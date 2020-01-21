@@ -57,11 +57,11 @@ namespace Cethleann.Unbundler
                     else
                         pathBase = Path.Combine(Path.GetDirectoryName(arg), Path.GetFileNameWithoutExtension(arg));
                 }
-
+                
                 TryExtractBlob(pathBase, data, true, true, false);
 
                 if (!Directory.Exists(pathBase) || Path.GetFileName(arg) == Path.GetFileNameWithoutExtension(arg)) continue;
-
+                // TODO: Get TryExtractBlob to write this file with relevant file metadata.
                 File.WriteAllText(Path.Combine(pathBase, "originaltype.cethleann"), Path.GetExtension(arg));
                 Logger.Info("CETH", $"Writing meta file {Path.Combine(pathBase, "originaltype.cethleann")}");
             }
