@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using Cethleann.DataTables;
 using Cethleann.G1;
+using DragonLib.CLI;
 using DragonLib.IO;
-using static Koei.DataExporter.Program;
 
 namespace Cethleann.Unbundler
 {
@@ -14,8 +14,9 @@ namespace Cethleann.Unbundler
     {
         static void Main(string[] args)
         {
+            var flags = CommandLineFlags.ParseFlags<CethleannUnbundlerFlags>(CommandLineFlags.PrintHelp, args);
             var files = new List<string>();
-            foreach (var arg in args)
+            foreach (var arg in flags.Paths)
             {
                 if (!Directory.Exists(arg))
                 {
@@ -58,7 +59,7 @@ namespace Cethleann.Unbundler
                         pathBase = Path.Combine(Path.GetDirectoryName(arg), Path.GetFileNameWithoutExtension(arg));
                 }
 
-                TryExtractBlob(pathBase, data, true, true, false);
+                UnbundlerLogic.TryExtractBlob(pathBase, data, true, true, flags);
 
                 if (!Directory.Exists(pathBase) || Path.GetFileName(arg) == Path.GetFileNameWithoutExtension(arg)) continue;
                 // TODO: Get TryExtractBlob to write this file with relevant file metadata.

@@ -118,7 +118,7 @@
         </member>
         <member name="T:Cethleann.Audio.MSADPCMSound">
             <summary>
-                Parser for MS ADPCM Streams
+                Parser for MS ADPCM Streams (frame 0x16)
             </summary>
         </member>
         <member name="M:Cethleann.Audio.MSADPCMSound.#ctor(System.Span{System.Byte})">

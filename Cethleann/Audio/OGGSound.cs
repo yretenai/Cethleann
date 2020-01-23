@@ -19,7 +19,7 @@ namespace Cethleann.Audio
         {
             FullBuffer = new Memory<byte>(blob.ToArray());
             Header = MemoryMarshal.Read<OGGSoundHeader>(blob);
-            Data = new KTSSSound(blob.Slice(Header.HeaderSize, Header.KTSSSize));
+            Data = new Memory<byte>(blob.Slice(Header.StreamPointer, Header.StreamSize).ToArray());
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Cethleann.Audio
         /// <summary>
         ///     KTSS/KOVS Sound blob
         /// </summary>
-        public KTSSSound Data { get; set; }
+        public Memory<byte> Data { get; set; }
 
         /// <inheritdoc />
         public SoundResourceEntry Base => Header.Base;

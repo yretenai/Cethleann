@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using Cethleann.Unbundler;
 using DragonLib.CLI;
 using JetBrains.Annotations;
 
 namespace Koei.DataExporter
 {
     [UsedImplicitly]
-    public class KoeiDataExporterFlags : ICLIFlags
+    public class KoeiDataExporterFlags : UnbundlerFlags
     {
         [CLIFlag("base-dir", Positional = 0, Help = "Base RomFS Directory", IsRequired = true, Category = "DataExporter Options")]
         public string BaseDirectory { get; set; }
@@ -18,9 +19,6 @@ namespace Koei.DataExporter
 
         [UsedImplicitly]
         [CLIFlag("dlc-dirs", Positional = 3, Help = "List of DLC RomFS Directories", Category = "DataExporter Options")]
-        public List<string> DLCDirectories { get; set; } = new List<string>();
-
-        [CLIFlag("recursive", Aliases = new[] { "R" }, Help = "Recursively parse and unbundle files", Category = "DataExporter Options")]
-        public bool Recursive { get; set; }
+        public List<string> DLCDirectories { get; set; }
     }
 }

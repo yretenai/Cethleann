@@ -11,6 +11,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Cethleann.Model\Cethleann.Model.csproj" />
+        <ProjectReference Include="..\Cethleann.Unbundler\Cethleann.Unbundler.csproj" />
         <ProjectReference Include="..\Cethleann\Cethleann.csproj" />
         <ProjectReference Include="..\DragonLib\DragonLib.csproj" />
     </ItemGroup>

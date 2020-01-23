@@ -4,8 +4,8 @@ namespace Cethleann.Structure.Resource.Audio
     public struct OGGSoundHeader
     {
         public SoundResourceEntry Base { get; set; }
-        public int HeaderSize { get; set; }
-        public int KTSSSize { get; set; }
+        public int StreamPointer { get; set; }
+        public int StreamSize { get; set; }
     }
 #pragma warning restore 1591
 }
