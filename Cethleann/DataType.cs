@@ -56,7 +56,7 @@ namespace Cethleann
         KTSS = 'K' << 0 | 'T' << 8 | 'S' << 16 | 'S' << 24,
 
         /// <summary>
-        ///     KTGL Sound Sample
+        ///     KTGL Ogg Vorbis Sound
         /// </summary>
         [FileExtension("kvs")]
         KOVS = 'K' << 0 | 'O' << 8 | 'V' << 16 | 'S' << 24,
