@@ -10,13 +10,13 @@ namespace Cethleann.Audio
     ///     Initialize and decrypt a KOVS stream
     /// </summary>
     [PublicAPI]
-    public class KOVS
+    public class KOVSSound
     {
         /// <summary>
         ///     Initialize KOVS data
         /// </summary>
         /// <param name="data"></param>
-        public KOVS(Span<byte> data)
+        public KOVSSound(Span<byte> data)
         {
             Header = MemoryMarshal.Read<KTGLOggVorbisSound>(data);
             var offset = SizeHelper.SizeOf<KTGLOggVorbisSound>();

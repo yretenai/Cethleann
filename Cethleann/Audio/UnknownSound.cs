@@ -11,13 +11,13 @@ namespace Cethleann.Audio
     ///     Unknown Blob shim
     /// </summary>
     [PublicAPI]
-    public class SoundUnknown : ISoundResourceSection
+    public class UnknownSound : ISoundResourceSection
     {
         /// <summary>
         ///     Initialize with a blob
         /// </summary>
         /// <param name="blob"></param>
-        public SoundUnknown(Span<byte> blob)
+        public UnknownSound(Span<byte> blob)
         {
             Base = MemoryMarshal.Read<SoundResourceEntry>(blob);
             Logger.Warn("KTSR", $"SectionType {Base.SectionType:X} not processed");

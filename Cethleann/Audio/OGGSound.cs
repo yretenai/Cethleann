@@ -9,16 +9,16 @@ namespace Cethleann.Audio
     ///     KTSS/KOVS Container found in KTSS containers
     /// </summary>
     [PublicAPI]
-    public class SoundResourceSample : ISoundResourceSection
+    public class OGGSound : ISoundResourceSection
     {
         /// <summary>
         ///     Initialize from a blob
         /// </summary>
         /// <param name="blob"></param>
-        public SoundResourceSample(Span<byte> blob)
+        public OGGSound(Span<byte> blob)
         {
             Header = MemoryMarshal.Read<SoundResourceEntryKTSS>(blob);
-            Data = new SoundSource(blob.Slice(Header.HeaderSize, Header.KTSSSize));
+            Data = new KTSSSound(blob.Slice(Header.HeaderSize, Header.KTSSSize));
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Cethleann.Audio
         /// <summary>
         ///     KTSS/KOVS Sound blob
         /// </summary>
-        public SoundSource Data { get; set; }
+        public KTSSSound Data { get; set; }
 
         /// <inheritdoc />
         public SoundResourceEntry Base => Header.Base;

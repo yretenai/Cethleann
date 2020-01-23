@@ -12,13 +12,13 @@ namespace Cethleann.Audio
     ///     KTSS Sound Sample, or KOVS Encrypted Sound Sample
     /// </summary>
     [PublicAPI]
-    public class SoundSource
+    public class KTSSSound
     {
         /// <summary>
         ///     Initialize from a buffer.
         /// </summary>
         /// <param name="buffer"></param>
-        public SoundSource(Span<byte> buffer)
+        public KTSSSound(Span<byte> buffer)
         {
             FullBuffer = new Memory<byte>(buffer.ToArray());
             Header = MemoryMarshal.Read<SoundSampleHeader>(buffer);

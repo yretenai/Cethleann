@@ -365,17 +365,42 @@ namespace Koei.DataExporter
             try
             {
                 var blobs = new SoundResource(data.Span);
+                return TryExtractKTSR(pathBase, blobs, writeZero);
+            }
+            catch (Exception e)
+            {
+                Logger.Error("KTSR", $"Failed unpacking KTSR, {e}");
+                if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
+
+                return false;
+            }
+        }
+
+        private static bool TryExtractKTSR(string pathBase, SoundResource blobs, bool writeZero)
+        {
+            try
+            {
                 if (blobs.Entries.Count == 0) return true;
 
                 foreach (var datablob in blobs.Entries)
                 {
-                    var buffer = datablob switch
+                    if (datablob is ADPCMSound adpcm)
                     {
-                        SoundResourceSample sample => sample.Data.FullBuffer,
-                        SoundUnknown unknown => unknown.Data,
-                        _ => Memory<byte>.Empty
-                    };
-                    TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}.{GetExtension(buffer.Span)}", buffer, false, writeZero, false);
+                        foreach (var stream in adpcm.Sections)
+                        {
+                            if (stream is GCADPCMSound gcadpcm) TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}_{stream.Base.Id:X8}.kgcs", gcadpcm.FullBuffer, false, writeZero, false);
+                        }
+                    }
+                    else
+                    {
+                        var buffer = datablob switch
+                        {
+                            OGGSound sample => sample.Data.FullBuffer,
+                            UnknownSound unknown => unknown.Data,
+                            _ => Memory<byte>.Empty
+                        };
+                        TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}.{GetExtension(buffer.Span)}", buffer, false, writeZero, false);
+                    }
                 }
             }
             catch (Exception e)
@@ -387,6 +412,22 @@ namespace Koei.DataExporter
             }
 
             return true;
+        }
+
+        private static bool TryExtractKTSC(string pathBase, Memory<byte> data, bool writeZero)
+        {
+            try
+            {
+                var blobs = new SoundContainer(data.Span);
+                return TryExtractKTSR(pathBase, blobs.KTSR, writeZero);
+            }
+            catch (Exception e)
+            {
+                Logger.Error("KTSR", $"Failed unpacking KTSR, {e}");
+                if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
+
+                return false;
+            }
         }
 
         private static bool TryExtractG1L(string pathBase, Memory<byte> data, bool writeZero)
@@ -412,7 +453,7 @@ namespace Koei.DataExporter
         {
             try
             {
-                var blobs = new KOVS(data.Span);
+                var blobs = new KOVSSound(data.Span);
                 var buffer = blobs.Stream;
                 TryExtractBlob($@"{pathBase}\{0:X4}.{GetExtension(buffer.Span)}", buffer, false, writeZero, true);
             }

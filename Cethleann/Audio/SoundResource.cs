@@ -32,15 +32,9 @@ namespace Cethleann.Audio
             Logger.Assert(Header.Size == Header.CompressedSize, "Header.Size == Header.CompressedSize");
             while (offset < Header.Size)
             {
-                var header = MemoryMarshal.Read<SoundResourceEntry>(buffer.Slice(offset));
-                var sectionData = buffer.Slice(offset, header.Size);
-                var section = header.SectionType switch
-                {
-                    SoundResourceSectionType.SoundSample => (ISoundResourceSection) new SoundResourceSample(sectionData),
-                    _ => new SoundUnknown(sectionData)
-                };
+                var section = DecodeSection(buffer.Slice(offset));
                 Entries.Add(section);
-                offset += header.Size;
+                offset += section.Base.Size;
             }
         }
 
@@ -53,5 +47,23 @@ namespace Cethleann.Audio
         ///     Sound resources found in the KTSR container.
         /// </summary>
         public List<ISoundResourceSection> Entries { get; set; } = new List<ISoundResourceSection>();
+
+        /// <summary>
+        ///     Decodes KTSR Section
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public static ISoundResourceSection DecodeSection(Span<byte> buffer)
+        {
+            var header = MemoryMarshal.Read<SoundResourceEntry>(buffer);
+            var sectionData = buffer.Slice(0, header.Size);
+            return header.SectionType switch
+            {
+                SoundResourceSectionType.SoundSample => (ISoundResourceSection) new OGGSound(sectionData),
+                SoundResourceSectionType.ADPCMSound => (ISoundResourceSection) new ADPCMSound(sectionData),
+                SoundResourceSectionType.GCADPCMSound => (ISoundResourceSection) new GCADPCMSound(sectionData),
+                _ => new UnknownSound(sectionData)
+            };
+        }
     }
 }
