@@ -25,6 +25,11 @@
                 Usually 1.
             </summary>
         </member>
+        <member name="P:Cethleann.Audio.ADPCMSound.Filenames">
+            <summary>
+                Filenames (if any)
+            </summary>
+        </member>
         <member name="P:Cethleann.Audio.ADPCMSound.Base">
             <inheritdoc />
         </member>
@@ -406,7 +411,7 @@
         </member>
         <member name="F:Cethleann.DataType.KOVS">
             <summary>
-                KTGL Sound Sample
+                KTGL Ogg Vorbis Sound
             </summary>
         </member>
         <member name="F:Cethleann.DataType.OGG">

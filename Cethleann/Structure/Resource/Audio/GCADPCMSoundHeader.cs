@@ -13,8 +13,8 @@ namespace Cethleann.Structure.Resource.Audio
         public int Unknown3 { get; set; }
         public int ADPCMPointer { get; set; }
         public int ADPCMSize { get; set; }
-        public int AudioTablePointer { get; set; }
-        public int UnknownPointer { get; set; }
+        public int PointerTablePointer { get; set; }
+        public int SizeTablePointer { get; set; }
     }
 #pragma warning restore 1591
 }

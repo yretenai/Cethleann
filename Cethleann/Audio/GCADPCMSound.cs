@@ -21,11 +21,11 @@ namespace Cethleann.Audio
             FullBuffer = new Memory<byte>(blob.ToArray());
             Header = MemoryMarshal.Read<GCADPCMSoundHeader>(blob);
             Table = MemoryMarshal.Cast<byte, GCADPCMSoundInfo>(blob.Slice(Header.ADPCMPointer, Header.ADPCMSize)).ToArray();
+            var pointers = MemoryMarshal.Cast<byte, int>(blob.Slice(Header.PointerTablePointer, 4 * Header.Streams));
+            var sizes = MemoryMarshal.Cast<byte, int>(blob.Slice(Header.SizeTablePointer, 4 * Header.Streams));
             for (var i = 0; i < Header.Streams; ++i)
             {
-                var pair = MemoryMarshal.Cast<byte, int>(blob.Slice(Header.AudioTablePointer + i * 8, 8));
-                var size = pair[1] - pair[0];
-                AudioBuffers.Add(size == 0 ? Memory<byte>.Empty : new Memory<byte>(blob.Slice(pair[0], size).ToArray()));
+                AudioBuffers.Add(new Memory<byte>(blob.Slice(pointers[i], sizes[i]).ToArray()));
             }
         }
 
@@ -72,8 +72,8 @@ namespace Cethleann.Audio
             header.Unknown3 = 0;
             header.ADPCMSize = SizeHelper.SizeOf<GCADPCMSoundInfo>();
             header.ADPCMPointer = 0x38;
-            header.AudioTablePointer = 0x98;
-            header.UnknownPointer = 0x9C;
+            header.PointerTablePointer = 0x98;
+            header.SizeTablePointer = 0x9C;
 
             var buffers = new List<Memory<byte>>();
             for (var index = 0; index < AudioBuffers.Count; index++)
@@ -86,8 +86,8 @@ namespace Cethleann.Audio
                 MemoryMarshal.Write(data.Span, ref header);
                 var info = Table[index];
                 MemoryMarshal.Write(data.Span.Slice(header.ADPCMPointer), ref info);
-                BinaryPrimitives.WriteUInt32LittleEndian(data.Span.Slice(header.AudioTablePointer), 0xA0);
-                BinaryPrimitives.WriteUInt32LittleEndian(data.Span.Slice(header.AudioTablePointer + 4), (uint) buffer.Length);
+                BinaryPrimitives.WriteUInt32LittleEndian(data.Span.Slice(header.PointerTablePointer), 0xA0);
+                BinaryPrimitives.WriteUInt32LittleEndian(data.Span.Slice(header.SizeTablePointer), (uint) buffer.Length);
                 buffer.CopyTo(data.Slice(0xA0));
                 buffers.Add(data);
             }
