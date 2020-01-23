@@ -17,14 +17,15 @@ namespace Cethleann.Audio
         /// <param name="blob"></param>
         public OGGSound(Span<byte> blob)
         {
-            Header = MemoryMarshal.Read<SoundResourceEntryKTSS>(blob);
+            FullBuffer = new Memory<byte>(blob.ToArray());
+            Header = MemoryMarshal.Read<OGGSoundHeader>(blob);
             Data = new KTSSSound(blob.Slice(Header.HeaderSize, Header.KTSSSize));
         }
 
         /// <summary>
         ///     KTSS/KOVS container header
         /// </summary>
-        public SoundResourceEntryKTSS Header { get; set; }
+        public OGGSoundHeader Header { get; set; }
 
         /// <summary>
         ///     KTSS/KOVS Sound blob
@@ -33,5 +34,7 @@ namespace Cethleann.Audio
 
         /// <inheritdoc />
         public SoundResourceEntry Base => Header.Base;
+
+        public Memory<byte> FullBuffer { get; set; }
     }
 }

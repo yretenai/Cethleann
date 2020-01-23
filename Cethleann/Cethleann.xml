@@ -4,6 +4,73 @@
         <name>Cethleann</name>
     </assembly>
     <members>
+        <member name="T:Cethleann.Audio.ADPCMSound">
+            <summary>
+                Parser for General ADPCM Streams
+            </summary>
+        </member>
+        <member name="M:Cethleann.Audio.ADPCMSound.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize from a blob
+            </summary>
+            <param name="blob"></param>
+        </member>
+        <member name="P:Cethleann.Audio.ADPCMSound.Header">
+            <summary>
+                ADPCM Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.ADPCMSound.Sections">
+            <summary>
+                Usually 1.
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.ADPCMSound.Base">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.Audio.ADPCMSound.FullBuffer">
+            <inheritdoc />
+        </member>
+        <member name="T:Cethleann.Audio.GCADPCMSound">
+            <summary>
+                Parser for NGCDSP ADPCM Streams
+            </summary>
+        </member>
+        <member name="M:Cethleann.Audio.GCADPCMSound.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize from buffer
+            </summary>
+            <param name="blob"></param>
+        </member>
+        <member name="P:Cethleann.Audio.GCADPCMSound.Header">
+            <summary>
+                GCADPCM Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.GCADPCMSound.Table">
+            <summary>
+                GCADPCM Info Tables
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.GCADPCMSound.FullBuffer">
+            <summary>
+                Full sound buffer
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.GCADPCMSound.AudioBuffers">
+            <summary>
+                Full sound buffers
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.GCADPCMSound.Base">
+            <inheritdoc />
+        </member>
+        <member name="M:Cethleann.Audio.GCADPCMSound.RebuildAsIndividual">
+            <summary>
+            Rebuild multi streams as individual streams
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Cethleann.Audio.ISoundResourceSection">
             <summary>
                 Section helper
@@ -14,25 +81,121 @@
                 Underlying entry
             </summary>
         </member>
-        <member name="T:Cethleann.Audio.KOVS">
+        <member name="P:Cethleann.Audio.ISoundResourceSection.FullBuffer">
+            <summary>
+                Full Data Stream
+            </summary>
+        </member>
+        <member name="T:Cethleann.Audio.KOVSSound">
             <summary>
                 Initialize and decrypt a KOVS stream
             </summary>
         </member>
-        <member name="M:Cethleann.Audio.KOVS.#ctor(System.Span{System.Byte})">
+        <member name="M:Cethleann.Audio.KOVSSound.#ctor(System.Span{System.Byte})">
             <summary>
                 Initialize KOVS data
             </summary>
             <param name="data"></param>
         </member>
-        <member name="P:Cethleann.Audio.KOVS.Header">
+        <member name="P:Cethleann.Audio.KOVSSound.Header">
             <summary>
                 KOVS Header
             </summary>
         </member>
-        <member name="P:Cethleann.Audio.KOVS.Stream">
+        <member name="P:Cethleann.Audio.KOVSSound.Stream">
             <summary>
                 Audio Stream
+            </summary>
+        </member>
+        <member name="T:Cethleann.Audio.KTSSSound">
+            <summary>
+                KTSS Sound Sample, or KOVS Encrypted Sound Sample
+            </summary>
+        </member>
+        <member name="M:Cethleann.Audio.KTSSSound.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize from a buffer.
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="P:Cethleann.Audio.KTSSSound.Header">
+            <summary>
+                KTSS
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.KTSSSound.CodecHeader">
+            <summary>
+                KTSS Codec Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.KTSSSound.ChannelFamily">
+            <summary>
+                Channel info
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.KTSSSound.Packets">
+            <summary>
+                Codec packets
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.KTSSSound.FullBuffer">
+            <summary>
+                Full sound buffer
+            </summary>
+        </member>
+        <member name="T:Cethleann.Audio.OGGSound">
+            <summary>
+                KTSS/KOVS Container found in KTSS containers
+            </summary>
+        </member>
+        <member name="M:Cethleann.Audio.OGGSound.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize from a blob
+            </summary>
+            <param name="blob"></param>
+        </member>
+        <member name="P:Cethleann.Audio.OGGSound.Header">
+            <summary>
+                KTSS/KOVS container header
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.OGGSound.Data">
+            <summary>
+                KTSS/KOVS Sound blob
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.OGGSound.Base">
+            <inheritdoc />
+        </member>
+        <member name="T:Cethleann.Audio.SoundContainer">
+            <summary>
+                Parser for KTSC files
+            </summary>
+        </member>
+        <member name="M:Cethleann.Audio.SoundContainer.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize with blob data
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="P:Cethleann.Audio.SoundContainer.Header">
+            <summary>
+                KTSR Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.SoundContainer.Identifiers">
+            <summary>
+                ?
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.SoundContainer.Pointers">
+            <summary>
+                ?
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.SoundContainer.KTSR">
+            <summary>
+                Underlying KTSR
             </summary>
         </member>
         <member name="T:Cethleann.Audio.SoundResource">
@@ -62,83 +225,33 @@
                 Sound resources found in the KTSR container.
             </summary>
         </member>
-        <member name="T:Cethleann.Audio.SoundResourceSample">
+        <member name="M:Cethleann.Audio.SoundResource.DecodeSection(System.Span{System.Byte})">
             <summary>
-                KTSS/KOVS Container found in KTSS containers
-            </summary>
-        </member>
-        <member name="M:Cethleann.Audio.SoundResourceSample.#ctor(System.Span{System.Byte})">
-            <summary>
-                Initialize from a blob
-            </summary>
-            <param name="blob"></param>
-        </member>
-        <member name="P:Cethleann.Audio.SoundResourceSample.Header">
-            <summary>
-                KTSS/KOVS container header
-            </summary>
-        </member>
-        <member name="P:Cethleann.Audio.SoundResourceSample.Data">
-            <summary>
-                KTSS/KOVS Sound blob
-            </summary>
-        </member>
-        <member name="P:Cethleann.Audio.SoundResourceSample.Base">
-            <inheritdoc />
-        </member>
-        <member name="T:Cethleann.Audio.SoundSource">
-            <summary>
-                KTSS Sound Sample, or KOVS Encrypted Sound Sample
-            </summary>
-        </member>
-        <member name="M:Cethleann.Audio.SoundSource.#ctor(System.Span{System.Byte})">
-            <summary>
-                Initialize from a buffer.
+                Decodes KTSR Section
             </summary>
             <param name="buffer"></param>
+            <returns></returns>
         </member>
-        <member name="P:Cethleann.Audio.SoundSource.Header">
-            <summary>
-                KTSS
-            </summary>
-        </member>
-        <member name="P:Cethleann.Audio.SoundSource.CodecHeader">
-            <summary>
-                KTSS Codec Header
-            </summary>
-        </member>
-        <member name="P:Cethleann.Audio.SoundSource.ChannelFamily">
-            <summary>
-                Channel info
-            </summary>
-        </member>
-        <member name="P:Cethleann.Audio.SoundSource.Packets">
-            <summary>
-                Codec packets
-            </summary>
-        </member>
-        <member name="P:Cethleann.Audio.SoundSource.FullBuffer">
-            <summary>
-                Full sound buffer
-            </summary>
-        </member>
-        <member name="T:Cethleann.Audio.SoundUnknown">
+        <member name="T:Cethleann.Audio.UnknownSound">
             <summary>
                 Unknown Blob shim
             </summary>
         </member>
-        <member name="M:Cethleann.Audio.SoundUnknown.#ctor(System.Span{System.Byte})">
+        <member name="M:Cethleann.Audio.UnknownSound.#ctor(System.Span{System.Byte})">
             <summary>
                 Initialize with a blob
             </summary>
             <param name="blob"></param>
         </member>
-        <member name="P:Cethleann.Audio.SoundUnknown.Data">
+        <member name="P:Cethleann.Audio.UnknownSound.Data">
             <summary>
                 Data blob
             </summary>
         </member>
-        <member name="P:Cethleann.Audio.SoundUnknown.Base">
+        <member name="P:Cethleann.Audio.UnknownSound.Base">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.Audio.UnknownSound.FullBuffer">
             <inheritdoc />
         </member>
         <member name="T:Cethleann.Bundle">
@@ -400,7 +513,7 @@
         </member>
         <member name="F:Cethleann.DataType.EffectManager">
             <summary>
-                KTGL Effect Manager
+                KTGL Effect Model
             </summary>
         </member>
         <member name="F:Cethleann.DataType.Effect">

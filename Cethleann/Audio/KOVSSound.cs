@@ -18,8 +18,8 @@ namespace Cethleann.Audio
         /// <param name="data"></param>
         public KOVSSound(Span<byte> data)
         {
-            Header = MemoryMarshal.Read<KTGLOggVorbisSound>(data);
-            var offset = SizeHelper.SizeOf<KTGLOggVorbisSound>();
+            Header = MemoryMarshal.Read<KOVSHeader>(data);
+            var offset = SizeHelper.SizeOf<KOVSHeader>();
             var blob = data.Slice(offset, Header.Size);
             if (blob.Length % 4 != 0)
             {
@@ -44,7 +44,7 @@ namespace Cethleann.Audio
         /// <summary>
         ///     KOVS Header
         /// </summary>
-        public KTGLOggVorbisSound Header { get; set; }
+        public KOVSHeader Header { get; set; }
 
         /// <summary>
         ///     Audio Stream

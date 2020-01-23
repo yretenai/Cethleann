@@ -19,6 +19,7 @@ namespace Cethleann.Audio
         /// <param name="blob"></param>
         public UnknownSound(Span<byte> blob)
         {
+            FullBuffer = new Memory<byte>(blob.ToArray());
             Base = MemoryMarshal.Read<SoundResourceEntry>(blob);
             Logger.Warn("KTSR", $"SectionType {Base.SectionType:X} not processed");
             Data = new Memory<byte>(blob.Slice(SizeHelper.SizeOf<SoundResourceEntry>()).ToArray());
@@ -31,5 +32,8 @@ namespace Cethleann.Audio
 
         /// <inheritdoc />
         public SoundResourceEntry Base { get; set; }
+
+        /// <inheritdoc />
+        public Memory<byte> FullBuffer { get; set; }
     }
 }

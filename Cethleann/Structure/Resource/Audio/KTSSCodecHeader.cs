@@ -1,9 +1,9 @@
 namespace Cethleann.Structure.Resource.Audio
 {
 #pragma warning disable 1591
-    public struct SoundSampleCodecHeader
+    public struct KTSSCodecHeader
     {
-        public SoundSampleCodec Codec { get; set; }
+        public KTSSCodec Codec { get; set; }
         public byte Unknown1 { get; set; }
         public byte Unknown2 { get; set; }
         public byte Unknown3 { get; set; }

@@ -9,6 +9,7 @@ using Cethleann.DataTables;
 using Cethleann.G1;
 using Cethleann.Koei;
 using Cethleann.ManagedFS;
+using Cethleann.Structure.Resource.Audio;
 using Cethleann.Text;
 using DragonLib.CLI;
 using DragonLib.IO;
@@ -47,25 +48,26 @@ namespace Koei.DataExporter
             }
         }
 
-        public static void TryExtractBlobs(string pathBase, List<Memory<byte>> blobs, bool allTypes, bool writeZero, List<string> names, bool singleFile)
+        public static void TryExtractBlobs(string pathBase, List<Memory<byte>> blobs, bool allTypes, bool writeZero, List<string> names, bool singleFile, string extension)
         {
             for (var index = 0; index < blobs.Count; index++)
             {
                 var datablob = blobs[index];
                 var name = $"{index:X4}";
                 var foundName = names?.ElementAtOrDefault(index);
+                extension ??= GetExtension(datablob.Span);
                 if (foundName != null)
                 {
                     name = foundName;
-                    if (File.Exists($@"{pathBase}\{name}.{GetExtension(datablob.Span)}"))
+                    if (File.Exists($@"{pathBase}\{name}.{extension}"))
                     {
                         var oname = name + "_";
                         var i = 1;
-                        while (File.Exists($@"{pathBase}\{name}.{GetExtension(datablob.Span)}")) name = oname + $"{i++:X}";
+                        while (File.Exists($@"{pathBase}\{name}.{extension}")) name = oname + $"{i++:X}";
                     }
                 }
 
-                TryExtractBlob($@"{pathBase}\{name}.{GetExtension(datablob.Span)}", datablob, allTypes, writeZero, singleFile && blobs.Count == 1);
+                TryExtractBlob($@"{pathBase}\{name}.{extension}", datablob, allTypes, writeZero, singleFile && blobs.Count == 1);
             }
         }
 
@@ -93,6 +95,7 @@ namespace Koei.DataExporter
                     case DataType.SCEN when TryExtractSCEN(blobBase, datablob, writeZero):
                     case DataType.MDLK when TryExtractMDLK(blobBase, datablob, writeZero):
                     case DataType.KTSR when TryExtractKTSR(blobBase, datablob, writeZero):
+                    case DataType.KTSC when TryExtractKTSC(blobBase, datablob, writeZero):
                     case DataType.Model when !Flags.Recursive && TryExtractG1M(blobBase, datablob, writeZero):
                     case DataType.TextLocalization19 when TryExtractLX(blobBase, datablob):
                     case DataType.GAPK when TryExtractGAPK(blobBase, datablob, writeZero, false):
@@ -162,7 +165,7 @@ namespace Koei.DataExporter
                     names.Insert(0, blobs.NameMap.Name ?? Path.GetFileName(pathBase));
                 }
 
-                TryExtractBlobs(pathBase, blobs.Blobs, false, writeZero, names, false);
+                TryExtractBlobs(pathBase, blobs.Blobs, false, writeZero, names, false, null);
             }
             catch (Exception e)
             {
@@ -195,7 +198,7 @@ namespace Koei.DataExporter
                     nameIndex++;
                 }
 
-                TryExtractBlobs(pathBase, blobs.Blobs, false, writeZero, names, false);
+                TryExtractBlobs(pathBase, blobs.Blobs, false, writeZero, names, false, null);
             }
             catch (Exception e)
             {
@@ -226,7 +229,7 @@ namespace Koei.DataExporter
                 var blobs = new DataTable(data.Span);
                 if (blobs.Entries.Count == 0) return true;
 
-                TryExtractBlobs(pathBase, blobs.Entries, false, writeZero, null, false);
+                TryExtractBlobs(pathBase, blobs.Entries, false, writeZero, null, false, null);
             }
             catch (Exception e)
             {
@@ -246,7 +249,7 @@ namespace Koei.DataExporter
                 var blobs = new SCEN(data.Span);
                 if (blobs.Entries.Count == 0) return true;
 
-                TryExtractBlobs(pathBase, blobs.Entries, false, writeZero, null, false);
+                TryExtractBlobs(pathBase, blobs.Entries, false, writeZero, null, false, null);
             }
             catch (Exception e)
             {
@@ -266,7 +269,7 @@ namespace Koei.DataExporter
                 var blobs = new Bundle(data.Span);
                 if (blobs.Entries.Count == 0) return true;
 
-                TryExtractBlobs(pathBase, blobs.Entries, false, writeZero, null, false);
+                TryExtractBlobs(pathBase, blobs.Entries, false, writeZero, null, false, null);
             }
             catch (Exception e)
             {
@@ -286,7 +289,7 @@ namespace Koei.DataExporter
                 var blobs = new MDLK(data.Span);
                 if (blobs.Entries.Count == 0) return true;
 
-                TryExtractBlobs(pathBase, blobs.Entries, false, writeZero, null, false);
+                TryExtractBlobs(pathBase, blobs.Entries, false, writeZero, null, false, null);
             }
             catch (Exception e)
             {
@@ -365,42 +368,42 @@ namespace Koei.DataExporter
             try
             {
                 var blobs = new SoundResource(data.Span);
-                return TryExtractKTSR(pathBase, blobs, writeZero);
-            }
-            catch (Exception e)
-            {
-                Logger.Error("KTSR", $"Failed unpacking KTSR, {e}");
-                if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
-
-                return false;
-            }
-        }
-
-        private static bool TryExtractKTSR(string pathBase, SoundResource blobs, bool writeZero)
-        {
-            try
-            {
                 if (blobs.Entries.Count == 0) return true;
 
                 foreach (var datablob in blobs.Entries)
                 {
                     if (datablob is ADPCMSound adpcm)
                     {
-                        foreach (var stream in adpcm.Sections)
-                            if (stream is GCADPCMSound gcadpcm)
-                                TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}_{stream.Base.Id:X8}.kgcs", gcadpcm.FullBuffer, false, writeZero, false);
+                        foreach (var adcpmSection in adpcm.Sections)
+                        {
+                            if (adcpmSection is GCADPCMSound gcadpcm)
+                            {
+                                var streams = gcadpcm.RebuildAsIndividual();
+                                TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{gcadpcm.Base.Id:X8}", streams, false, writeZero, null, streams.Count == 1, "ktgcadpcm");
+                            }
+                            else
+                            {
+                                TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}.{GetExtension(adcpmSection.FullBuffer.Span)}", adcpmSection.FullBuffer, false, writeZero, false);
+                            }
+                        }
+                    } 
+                    else if (datablob is GCADPCMSound gcadpcm)
+                    {
+                        var streams = gcadpcm.RebuildAsIndividual();
+                        TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{gcadpcm.Base.Id:X8}", streams, false, writeZero, null, streams.Count == 1, "ktgcadpcm");
                     }
                     else
                     {
                         var buffer = datablob switch
                         {
                             OGGSound sample => sample.Data.FullBuffer,
-                            UnknownSound unknown => unknown.Data,
-                            _ => Memory<byte>.Empty
+                            _ => datablob.FullBuffer
                         };
                         TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}.{GetExtension(buffer.Span)}", buffer, false, writeZero, false);
                     }
                 }
+
+                return true;
             }
             catch (Exception e)
             {
@@ -409,8 +412,6 @@ namespace Koei.DataExporter
 
                 return false;
             }
-
-            return true;
         }
 
         private static bool TryExtractKTSC(string pathBase, Memory<byte> data, bool writeZero)
@@ -418,7 +419,13 @@ namespace Koei.DataExporter
             try
             {
                 var blobs = new SoundContainer(data.Span);
-                return TryExtractKTSR(pathBase, blobs.KTSR, writeZero);
+                for (var index = 0; index < blobs.KTSR.Count; index++)
+                {
+                    var ktsr = blobs.KTSR[index];
+                    TryExtractBlob($@"{pathBase}\{blobs.Identifiers[index]:X8}.{GetExtension(ktsr.Span)}", ktsr, false, writeZero, false);
+                }
+
+                return true;
             }
             catch (Exception e)
             {

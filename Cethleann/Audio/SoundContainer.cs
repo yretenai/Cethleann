@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Cethleann.Structure.Resource.Audio;
 using JetBrains.Annotations;
@@ -20,7 +21,11 @@ namespace Cethleann.Audio
             Header = MemoryMarshal.Read<SoundContainerHeader>(data);
             Identifiers = MemoryMarshal.Cast<byte, int>(data.Slice(Header.IdTablePointer, 4 * Header.Count)).ToArray();
             Pointers = MemoryMarshal.Cast<byte, int>(data.Slice(Header.PointerTablePointer, 4 * Header.Count)).ToArray();
-            KTSR = new SoundResource(data.Slice(Header.ResourcePointer));
+            foreach (var pointer in Pointers)
+            {
+                var header = MemoryMarshal.Read<SoundResourceHeader>(data.Slice(pointer));
+                KTSR.Add(new Memory<byte>(data.Slice(pointer, header.CompressedSize).ToArray()));
+            }
         }
 
         /// <summary>
@@ -41,6 +46,6 @@ namespace Cethleann.Audio
         /// <summary>
         ///     Underlying KTSR
         /// </summary>
-        public SoundResource KTSR { get; set; }
+        public List<Memory<byte>> KTSR { get; set; } = new List<Memory<byte>>();
     }
 }

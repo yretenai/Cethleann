@@ -18,6 +18,7 @@ namespace Cethleann.Audio
         /// <param name="blob"></param>
         public ADPCMSound(Span<byte> blob)
         {
+            FullBuffer = new Memory<byte>(blob.ToArray());
             Header = MemoryMarshal.Read<ADPCMSoundHeader>(blob);
             var pointers = MemoryMarshal.Cast<byte, int>(blob.Slice(Header.PointersTablePointer, 4 * Header.Count));
             foreach (var pointer in pointers) Sections.Add(SoundResource.DecodeSection(blob.Slice(pointer)));
@@ -35,5 +36,8 @@ namespace Cethleann.Audio
 
         /// <inheritdoc />
         public SoundResourceEntry Base => Header.Base;
+
+        /// <inheritdoc />
+        public Memory<byte> FullBuffer { get; set; }
     }
 }

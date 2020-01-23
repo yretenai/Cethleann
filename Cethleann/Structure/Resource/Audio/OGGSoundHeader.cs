@@ -1,7 +1,7 @@
 namespace Cethleann.Structure.Resource.Audio
 {
 #pragma warning disable 1591
-    public struct SoundResourceEntryKTSS
+    public struct OGGSoundHeader
     {
         public SoundResourceEntry Base { get; set; }
         public int HeaderSize { get; set; }

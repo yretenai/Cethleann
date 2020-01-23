@@ -5,7 +5,7 @@ namespace Cethleann.Structure.Resource.Audio
     {
         public DataType Magic { get; set; }
         public short ConsoleType { get; set; }
-        public GameId GameId { get; set; }
+        public short UnknownFlag { get; set; }
         public int Count { get; set; }
         public int IdTablePointer { get; set; }
         public int PointerTablePointer { get; set; }

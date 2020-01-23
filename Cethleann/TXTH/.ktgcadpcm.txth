@@ -1,0 +1,9 @@
+codec = NGC_DSP
+sample_rate = @0x40$4
+channels = 1
+num_samples = @0x3C$4
+start_offset = 0xA0
+coef_offset = 0x54
+coef_endianness = LE
+coef_spacing = @0x10$4
+interleave = @0x10$4
