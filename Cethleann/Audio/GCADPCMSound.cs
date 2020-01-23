@@ -20,7 +20,7 @@ namespace Cethleann.Audio
             Header = MemoryMarshal.Read<GCADPCMSoundHeader>(blob);
             var table = new ushort[Header.Channels][];
             Logger.Assert(Header.Channels == 1, "Header.Channels == 1");
-            for (var i = 0; i < Header.Channels; ++i) table[i] = MemoryMarshal.Cast<byte, ushort>(blob.Slice(SizeHelper.SizeOf<GCADPCMSoundHeader>() + 0x20 * i, 8 * 2 * 2)).ToArray();
+            for (var i = 0; i < Header.Channels; ++i) table[i] = MemoryMarshal.Cast<byte, ushort>(blob.Slice(SizeHelper.SizeOf<GCADPCMSoundHeader>() + 0x20 * i, 0x20)).ToArray();
             Table = table;
             Unknown = MemoryMarshal.Read<int>(blob.Slice(Header.UnknownPointer));
             FullBuffer = new Memory<byte>(blob.ToArray());
