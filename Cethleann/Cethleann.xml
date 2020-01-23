@@ -4,38 +4,6 @@
         <name>Cethleann</name>
     </assembly>
     <members>
-        <member name="T:Cethleann.Audio.ADPCMSound">
-            <summary>
-                Parser for General ADPCM Streams
-            </summary>
-        </member>
-        <member name="M:Cethleann.Audio.ADPCMSound.#ctor(System.Span{System.Byte})">
-            <summary>
-                Initialize from a blob
-            </summary>
-            <param name="blob"></param>
-        </member>
-        <member name="P:Cethleann.Audio.ADPCMSound.Header">
-            <summary>
-                ADPCM Header
-            </summary>
-        </member>
-        <member name="P:Cethleann.Audio.ADPCMSound.Sections">
-            <summary>
-                Usually 1.
-            </summary>
-        </member>
-        <member name="P:Cethleann.Audio.ADPCMSound.Filenames">
-            <summary>
-                Filenames (if any)
-            </summary>
-        </member>
-        <member name="P:Cethleann.Audio.ADPCMSound.Base">
-            <inheritdoc />
-        </member>
-        <member name="P:Cethleann.Audio.ADPCMSound.FullBuffer">
-            <inheritdoc />
-        </member>
         <member name="T:Cethleann.Audio.GCADPCMSound">
             <summary>
                 Parser for NGCDSP ADPCM Streams
@@ -148,6 +116,79 @@
                 Full sound buffer
             </summary>
         </member>
+        <member name="T:Cethleann.Audio.MSADPCMSound">
+            <summary>
+                Parser for MS ADPCM Streams
+            </summary>
+        </member>
+        <member name="M:Cethleann.Audio.MSADPCMSound.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize from buffer
+            </summary>
+            <param name="blob"></param>
+        </member>
+        <member name="P:Cethleann.Audio.MSADPCMSound.Header">
+            <summary>
+                ADPCM Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.MSADPCMSound.SampleRate">
+            <summary>
+                Audio Sample Rate
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.MSADPCMSound.AudioBuffers">
+            <summary>
+                Full sound buffers
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.MSADPCMSound.FullBuffer">
+            <summary>
+                Full sound buffer
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.MSADPCMSound.Base">
+            <inheritdoc />
+        </member>
+        <member name="M:Cethleann.Audio.MSADPCMSound.RebuildAsIndividual">
+            <summary>
+                Rebuild multi streams as individual streams
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.Audio.NamedSounds">
+            <summary>
+                Parser for General ADPCM Streams
+            </summary>
+        </member>
+        <member name="M:Cethleann.Audio.NamedSounds.#ctor(System.Span{System.Byte},Cethleann.Platform)">
+            <summary>
+                Initialize from a blob
+            </summary>
+            <param name="blob"></param>
+            <param name="platform"></param>
+        </member>
+        <member name="P:Cethleann.Audio.NamedSounds.Header">
+            <summary>
+                ADPCM Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.NamedSounds.Sections">
+            <summary>
+                Usually 1.
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.NamedSounds.Filenames">
+            <summary>
+                Filenames (if any)
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.NamedSounds.Base">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.Audio.NamedSounds.FullBuffer">
+            <inheritdoc />
+        </member>
         <member name="T:Cethleann.Audio.OGGSound">
             <summary>
                 KTSS/KOVS Container found in KTSS containers
@@ -211,17 +252,24 @@
                 Implements KTSR
             </summary>
         </member>
-        <member name="M:Cethleann.Audio.SoundResource.#ctor(System.IO.Stream)">
+        <member name="M:Cethleann.Audio.SoundResource.#ctor(System.IO.Stream,Cethleann.Platform)">
             <summary>
                 Initialize a KTSR from a Stream
             </summary>
             <param name="stream"></param>
+            <param name="platform"></param>
         </member>
-        <member name="M:Cethleann.Audio.SoundResource.#ctor(System.Span{System.Byte})">
+        <member name="M:Cethleann.Audio.SoundResource.#ctor(System.Span{System.Byte},Cethleann.Platform)">
             <summary>
                 Initialize a KTSR from a Span buffer
             </summary>
             <param name="buffer"></param>
+            <param name="platform"></param>
+        </member>
+        <member name="P:Cethleann.Audio.SoundResource.Platform">
+            <summary>
+                Used for platform-specific codecs
+            </summary>
         </member>
         <member name="P:Cethleann.Audio.SoundResource.Header">
             <summary>
@@ -233,11 +281,12 @@
                 Sound resources found in the KTSR container.
             </summary>
         </member>
-        <member name="M:Cethleann.Audio.SoundResource.DecodeSection(System.Span{System.Byte})">
+        <member name="M:Cethleann.Audio.SoundResource.DecodeSection(System.Span{System.Byte},Cethleann.Platform)">
             <summary>
                 Decodes KTSR Section
             </summary>
             <param name="buffer"></param>
+            <param name="platform"></param>
             <returns></returns>
         </member>
         <member name="T:Cethleann.Audio.UnknownSound">
@@ -1964,6 +2013,21 @@
             <param name="multiplier"></param>
             <param name="divisor"></param>
             <returns></returns>
+        </member>
+        <member name="T:Cethleann.Platform">
+            <summary>
+                For abstract platform info
+            </summary>
+        </member>
+        <member name="F:Cethleann.Platform.Switch">
+            <summary>
+                Source platform is the Nintendo Switch
+            </summary>
+        </member>
+        <member name="F:Cethleann.Platform.Windows">
+            <summary>
+                Source platform is Windows
+            </summary>
         </member>
         <member name="T:Cethleann.Structure.CompressionInfo">
             <summary>

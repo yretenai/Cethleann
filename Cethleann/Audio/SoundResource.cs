@@ -19,24 +19,32 @@ namespace Cethleann.Audio
         ///     Initialize a KTSR from a Stream
         /// </summary>
         /// <param name="stream"></param>
-        public SoundResource(Stream stream) : this(stream.ToSpan()) { }
+        /// <param name="platform"></param>
+        public SoundResource(Stream stream, Platform platform) : this(stream.ToSpan(), platform) { }
 
         /// <summary>
         ///     Initialize a KTSR from a Span buffer
         /// </summary>
         /// <param name="buffer"></param>
-        public SoundResource(Span<byte> buffer)
+        /// <param name="platform"></param>
+        public SoundResource(Span<byte> buffer, Platform platform)
         {
+            Platform = platform;
             Header = MemoryMarshal.Read<SoundResourceHeader>(buffer);
             var offset = SizeHelper.SizeOf<SoundResourceHeader>().Align(0x40);
             Logger.Assert(Header.Size == Header.CompressedSize, "Header.Size == Header.CompressedSize");
             while (offset < Header.Size)
             {
-                var section = DecodeSection(buffer.Slice(offset));
+                var section = DecodeSection(buffer.Slice(offset), platform);
                 Entries.Add(section);
                 offset += section.Base.Size;
             }
         }
+
+        /// <summary>
+        ///     Used for platform-specific codecs
+        /// </summary>
+        public Platform Platform { get; set; }
 
         /// <summary>
         ///     KTSR Header
@@ -52,16 +60,18 @@ namespace Cethleann.Audio
         ///     Decodes KTSR Section
         /// </summary>
         /// <param name="buffer"></param>
+        /// <param name="platform"></param>
         /// <returns></returns>
-        public static ISoundResourceSection DecodeSection(Span<byte> buffer)
+        public static ISoundResourceSection DecodeSection(Span<byte> buffer, Platform platform)
         {
             var header = MemoryMarshal.Read<SoundResourceEntry>(buffer);
             var sectionData = buffer.Slice(0, header.Size);
             return header.SectionType switch
             {
                 SoundResourceSectionType.SoundSample => (ISoundResourceSection) new OGGSound(sectionData),
-                SoundResourceSectionType.ADPCMSound => (ISoundResourceSection) new ADPCMSound(sectionData),
-                SoundResourceSectionType.GCADPCMSound => (ISoundResourceSection) new GCADPCMSound(sectionData),
+                SoundResourceSectionType.ADPCMSound => (ISoundResourceSection) new NamedSounds(sectionData, platform),
+                SoundResourceSectionType.GCADPCMSound when platform == Platform.Switch => (ISoundResourceSection) new GCADPCMSound(sectionData),
+                SoundResourceSectionType.GCADPCMSound when platform == Platform.Windows => (ISoundResourceSection) new MSADPCMSound(sectionData),
                 _ => new UnknownSound(sectionData)
             };
         }
