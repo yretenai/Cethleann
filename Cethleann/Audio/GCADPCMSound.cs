@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using Cethleann.Structure.Resource.Audio;
 using DragonLib;
+using DragonLib.IO;
 
 namespace Cethleann.Audio
 {
@@ -18,6 +19,7 @@ namespace Cethleann.Audio
         {
             Header = MemoryMarshal.Read<GCADPCMSoundHeader>(blob);
             var table = new ushort[Header.Channels][];
+            Logger.Assert(Header.Channels == 1, "Header.Channels == 1");
             for (var i = 0; i < Header.Channels; ++i) table[i] = MemoryMarshal.Cast<byte, ushort>(blob.Slice(SizeHelper.SizeOf<GCADPCMSoundHeader>() + 0x20 * i, 8 * 2 * 2)).ToArray();
             Table = table;
             Unknown = MemoryMarshal.Read<int>(blob.Slice(Header.UnknownPointer));
