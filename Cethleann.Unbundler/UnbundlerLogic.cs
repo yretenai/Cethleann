@@ -97,7 +97,7 @@ namespace Cethleann.Unbundler
                 blobBase = $@"{basedir}{Path.GetExtension(blobBase)}";
                 basedir = Path.GetDirectoryName(blobBase);
             }
-            
+
             if (!Directory.Exists(basedir))
             {
                 if (File.Exists(basedir))
