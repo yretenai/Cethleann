@@ -57,7 +57,7 @@ namespace Cethleann.Unbundler
                     else
                         pathBase = Path.Combine(Path.GetDirectoryName(arg), Path.GetFileNameWithoutExtension(arg));
                 }
-                
+
                 TryExtractBlob(pathBase, data, true, true, false);
 
                 if (!Directory.Exists(pathBase) || Path.GetFileName(arg) == Path.GetFileNameWithoutExtension(arg)) continue;

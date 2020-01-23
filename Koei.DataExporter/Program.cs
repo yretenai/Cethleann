@@ -387,9 +387,8 @@ namespace Koei.DataExporter
                     if (datablob is ADPCMSound adpcm)
                     {
                         foreach (var stream in adpcm.Sections)
-                        {
-                            if (stream is GCADPCMSound gcadpcm) TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}_{stream.Base.Id:X8}.kgcs", gcadpcm.FullBuffer, false, writeZero, false);
-                        }
+                            if (stream is GCADPCMSound gcadpcm)
+                                TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}_{stream.Base.Id:X8}.kgcs", gcadpcm.FullBuffer, false, writeZero, false);
                     }
                     else
                     {
