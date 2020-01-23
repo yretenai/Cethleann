@@ -383,14 +383,14 @@ namespace Koei.DataExporter
                             }
                             else
                             {
-                                TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}.{GetExtension(adcpmSection.FullBuffer.Span)}", adcpmSection.FullBuffer, false, writeZero, false);
+                                TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}_{adcpmSection.Base.Id:X8}.{GetExtension(adcpmSection.FullBuffer.Span)}", adcpmSection.FullBuffer, false, writeZero, false);
                             }
                         }
-                    } 
+                    }
                     else if (datablob is GCADPCMSound gcadpcm)
                     {
                         var streams = gcadpcm.RebuildAsIndividual();
-                        TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{gcadpcm.Base.Id:X8}", streams, false, writeZero, null, streams.Count == 1, "ktgcadpcm");
+                        TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}", streams, false, writeZero, null, streams.Count == 1, "ktgcadpcm");
                     }
                     else
                     {
