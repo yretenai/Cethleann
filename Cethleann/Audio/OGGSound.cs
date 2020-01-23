@@ -35,6 +35,7 @@ namespace Cethleann.Audio
         /// <inheritdoc />
         public SoundResourceEntry Base => Header.Base;
 
+        /// <inheritdoc />
         public Memory<byte> FullBuffer { get; set; }
     }
 }

@@ -52,14 +52,14 @@
                 GCADPCM Info Tables
             </summary>
         </member>
-        <member name="P:Cethleann.Audio.GCADPCMSound.FullBuffer">
-            <summary>
-                Full sound buffer
-            </summary>
-        </member>
         <member name="P:Cethleann.Audio.GCADPCMSound.AudioBuffers">
             <summary>
                 Full sound buffers
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.GCADPCMSound.FullBuffer">
+            <summary>
+                Full sound buffer
             </summary>
         </member>
         <member name="P:Cethleann.Audio.GCADPCMSound.Base">
@@ -67,7 +67,7 @@
         </member>
         <member name="M:Cethleann.Audio.GCADPCMSound.RebuildAsIndividual">
             <summary>
-            Rebuild multi streams as individual streams
+                Rebuild multi streams as individual streams
             </summary>
             <returns></returns>
         </member>
@@ -165,6 +165,9 @@
             </summary>
         </member>
         <member name="P:Cethleann.Audio.OGGSound.Base">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.Audio.OGGSound.FullBuffer">
             <inheritdoc />
         </member>
         <member name="T:Cethleann.Audio.SoundContainer">
