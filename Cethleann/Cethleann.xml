@@ -313,158 +313,158 @@
         </member>
         <member name="T:Cethleann.Audio.WaveBinaryData">
             <summary>
-            Binary WAVE Data
+                Binary WAVE Data
             </summary>
         </member>
         <member name="M:Cethleann.Audio.WaveBinaryData.#ctor(System.Span{System.Byte})">
             <summary>
-            Initialize with buffer
+                Initialize with buffer
             </summary>
             <param name="buffer"></param>
         </member>
         <member name="P:Cethleann.Audio.WaveBinaryData.Data">
             <summary>
-            Very Large, Very Chonky WAVE stream
+                Very Large, Very Chonky WAVE stream
             </summary>
         </member>
         <member name="P:Cethleann.Audio.WaveBinaryData.Header">
             <summary>
-            Underlying header
+                Underlying header
             </summary>
         </member>
         <member name="M:Cethleann.Audio.WaveBinaryData.ReconstructWave(Cethleann.Structure.WHD.WBHEntry[])">
             <summary>
-            Reconstruct a stream from WBH data.
+                Reconstruct a stream from WBH data.
             </summary>
             <param name="entries"></param>
             <returns></returns>
         </member>
         <member name="T:Cethleann.Audio.WaveBinaryHeader">
             <summary>
-            Binary Wave Headers
+                Binary Wave Headers
             </summary>
         </member>
         <member name="M:Cethleann.Audio.WaveBinaryHeader.#ctor(System.Span{System.Byte},System.Boolean)">
             <summary>
-            Initialize with buffer data
+                Initialize with buffer data
             </summary>
             <param name="buffer"></param>
             <param name="alternateNames"></param>
         </member>
         <member name="P:Cethleann.Audio.WaveBinaryHeader.Header">
             <summary>
-            Underlying header
+                Underlying header
             </summary>
         </member>
         <member name="P:Cethleann.Audio.WaveBinaryHeader.Soundbank">
             <summary>
-            Specific soundbank
+                Specific soundbank
             </summary>
         </member>
         <member name="T:Cethleann.Audio.WaveHeaderData">
             <summary>
-            WHD File parser
+                WHD File parser
             </summary>
         </member>
         <member name="M:Cethleann.Audio.WaveHeaderData.#ctor(System.Span{System.Byte},System.Boolean)">
             <summary>
-            Parse with buffer data
+                Parse with buffer data
             </summary>
             <param name="buffer"></param>
             <param name="alternateNames"></param>
         </member>
         <member name="P:Cethleann.Audio.WaveHeaderData.RTRPK">
             <summary>
-            Underlying RTRPK PAK
+                Underlying RTRPK PAK
             </summary>
         </member>
         <member name="P:Cethleann.Audio.WaveHeaderData.WBH">
             <summary>
-            WAVE Header data
+                WAVE Header data
             </summary>
         </member>
         <member name="P:Cethleann.Audio.WaveHeaderData.WBD">
             <summary>
-            WAVE Stream data
+                WAVE Stream data
             </summary>
         </member>
         <member name="T:Cethleann.Audio.WBH.HDDB">
             <summary>
-            HDDB File Name Table
+                HDDB File Name Table
             </summary>
         </member>
         <member name="M:Cethleann.Audio.WBH.HDDB.#ctor(System.Span{System.Byte},System.Int32)">
             <summary>
-            Initialize with buffer and count
+                Initialize with buffer and count
             </summary>
             <param name="buffer"></param>
             <param name="count"></param>
         </member>
         <member name="P:Cethleann.Audio.WBH.HDDB.Header">
             <summary>
-            Underlying Header
+                Underlying Header
             </summary>
         </member>
         <member name="P:Cethleann.Audio.WBH.HDDB.Name">
             <summary>
-            Filename
+                Filename
             </summary>
         </member>
         <member name="P:Cethleann.Audio.WBH.HDDB.Entries">
             <summary>
-            Lsof tags 
+                Lsof tags
             </summary>
         </member>
         <member name="T:Cethleann.Audio.WBH.IWBHSoundbank">
             <summary>
-            Abstract interface for WBH soundbanks
+                Abstract interface for WBH soundbanks
             </summary>
         </member>
         <member name="P:Cethleann.Audio.WBH.IWBHSoundbank.Entries">
             <summary>
-            Get audio stream info entries
+                Get audio stream info entries
             </summary>
         </member>
         <member name="P:Cethleann.Audio.WBH.IWBHSoundbank.Names">
             <summary>
-            Get audio stream names
+                Get audio stream names
             </summary>
         </member>
         <member name="T:Cethleann.Audio.WBH.KWB2">
             <summary>
-            KWB2 MSADPCM Soundbank
+                KWB2 MSADPCM Soundbank
             </summary>
         </member>
         <member name="F:Cethleann.Audio.WBH.KWB2.KWBEntries">
             <summary>
-            KWB2 Entries
+                KWB2 Entries
             </summary>
         </member>
         <member name="M:Cethleann.Audio.WBH.KWB2.#ctor(System.Span{System.Byte},System.Boolean)">
             <summary>
-            Initialize with buffer data.
+                Initialize with buffer data.
             </summary>
             <param name="data"></param>
             <param name="alternateNames"></param>
         </member>
         <member name="P:Cethleann.Audio.WBH.KWB2.NameDatabase">
             <summary>
-            Filename database
+                Filename database
             </summary>
         </member>
         <member name="P:Cethleann.Audio.WBH.KWB2.Header">
             <summary>
-            Underlying header
+                Underlying header
             </summary>
         </member>
         <member name="P:Cethleann.Audio.WBH.KWB2.NameIndex">
             <summary>
-            Used to lookup names
+                Used to lookup names
             </summary>
         </member>
         <member name="P:Cethleann.Audio.WBH.KWB2.SecondaryNameIndex">
             <summary>
-            Used to lookup names
+                Used to lookup names
             </summary>
         </member>
         <member name="P:Cethleann.Audio.WBH.KWB2.Entries">

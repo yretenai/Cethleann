@@ -9,13 +9,13 @@ using JetBrains.Annotations;
 namespace Cethleann.Audio.WBH
 {
     /// <summary>
-    /// HDDB File Name Table
+    ///     HDDB File Name Table
     /// </summary>
     [PublicAPI]
     public class HDDB
     {
         /// <summary>
-        /// Initialize with buffer and count
+        ///     Initialize with buffer and count
         /// </summary>
         /// <param name="buffer"></param>
         /// <param name="count"></param>
@@ -41,17 +41,17 @@ namespace Cethleann.Audio.WBH
         }
 
         /// <summary>
-        /// Underlying Header
+        ///     Underlying Header
         /// </summary>
         public HDDBHeader Header { get; set; }
-        
+
         /// <summary>
-        /// Filename
+        ///     Filename
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Lsof tags 
+        ///     Lsof tags
         /// </summary>
         public List<string[]> Entries { get; set; } = new List<string[]>();
     }

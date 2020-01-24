@@ -9,12 +9,12 @@ using DragonLib;
 namespace Cethleann.Audio
 {
     /// <summary>
-    /// Binary WAVE Data
+    ///     Binary WAVE Data
     /// </summary>
     public class WaveBinaryData
     {
         /// <summary>
-        /// Initialize with buffer
+        ///     Initialize with buffer
         /// </summary>
         /// <param name="buffer"></param>
         public WaveBinaryData(Span<byte> buffer)
@@ -24,17 +24,17 @@ namespace Cethleann.Audio
         }
 
         /// <summary>
-        /// Very Large, Very Chonky WAVE stream
+        ///     Very Large, Very Chonky WAVE stream
         /// </summary>
         public Memory<byte> Data { get; set; }
 
         /// <summary>
-        /// Underlying header
+        ///     Underlying header
         /// </summary>
         public ResourceSectionHeader Header { get; set; }
 
         /// <summary>
-        /// Reconstruct a stream from WBH data.
+        ///     Reconstruct a stream from WBH data.
         /// </summary>
         /// <param name="entries"></param>
         /// <returns></returns>

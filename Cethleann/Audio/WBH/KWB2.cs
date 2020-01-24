@@ -9,17 +9,17 @@ using DragonLib.IO;
 namespace Cethleann.Audio.WBH
 {
     /// <summary>
-    /// KWB2 MSADPCM Soundbank
+    ///     KWB2 MSADPCM Soundbank
     /// </summary>
     public class KWB2 : IWBHSoundbank
     {
         /// <summary>
-        /// KWB2 Entries
+        ///     KWB2 Entries
         /// </summary>
         public List<(KWB2Entry Header, KWB2Stream[] Streams)> KWBEntries = new List<(KWB2Entry, KWB2Stream[])>();
 
         /// <summary>
-        /// Initialize with buffer data.
+        ///     Initialize with buffer data.
         /// </summary>
         /// <param name="data"></param>
         /// <param name="alternateNames"></param>
@@ -47,22 +47,22 @@ namespace Cethleann.Audio.WBH
         }
 
         /// <summary>
-        /// Filename database
+        ///     Filename database
         /// </summary>
         public HDDB NameDatabase { get; set; }
-        
+
         /// <summary>
-        /// Underlying header
+        ///     Underlying header
         /// </summary>
         public KWB2Header Header { get; set; }
-        
+
         /// <summary>
-        /// Used to lookup names
+        ///     Used to lookup names
         /// </summary>
         public int NameIndex { get; set; }
-        
+
         /// <summary>
-        /// Used to lookup names
+        ///     Used to lookup names
         /// </summary>
         public int SecondaryNameIndex { get; set; } = 1;
 

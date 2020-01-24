@@ -7,12 +7,12 @@ using DragonLib;
 namespace Cethleann.Audio
 {
     /// <summary>
-    /// Binary Wave Headers
+    ///     Binary Wave Headers
     /// </summary>
     public class WaveBinaryHeader
     {
         /// <summary>
-        /// Initialize with buffer data
+        ///     Initialize with buffer data
         /// </summary>
         /// <param name="buffer"></param>
         /// <param name="alternateNames"></param>
@@ -28,12 +28,12 @@ namespace Cethleann.Audio
         }
 
         /// <summary>
-        /// Underlying header
+        ///     Underlying header
         /// </summary>
         public WBHHeader Header { get; set; }
-        
+
         /// <summary>
-        /// Specific soundbank
+        ///     Specific soundbank
         /// </summary>
         public IWBHSoundbank Soundbank { get; set; }
     }
