@@ -38,7 +38,12 @@ namespace Cethleann.Audio.WBH
             var pointers = MemoryMarshal.Cast<byte, int>(data.Slice(SizeHelper.SizeOf<KWB2Header>(), 4 * Header.Count));
             for (var i = 0; i < Header.Count; ++i)
             {
-                if (pointers[i] == 0) continue;
+                if (pointers[i] == 0)
+                {
+                    KWBEntries.Add((default, new KWB2Stream[0]));
+                    continue;
+                }
+
                 var entry = MemoryMarshal.Read<KWB2Entry>(data.Slice(pointers[i]));
                 var streams = MemoryMarshal.Cast<byte, KWB2Stream>(data.Slice(pointers[i] + SizeHelper.SizeOf<KWB2Entry>(), entry.Count * SizeHelper.SizeOf<KWB2Stream>())).ToArray();
                 Logger.Assert(streams.All(x => x.Unknown2 == 0x1), "streams.All(x => x.Unknown2 == 0x1)", pointers[i].ToString("X"));
