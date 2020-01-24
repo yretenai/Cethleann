@@ -204,7 +204,7 @@ namespace Cethleann.Unbundler
             }
             catch (Exception e)
             {
-                Logger.Error("RTRPK", $"Failed unpacking RTRPK, {e}");
+                Logger.Error("WHD", $"Failed unpacking WHD, {e}");
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;

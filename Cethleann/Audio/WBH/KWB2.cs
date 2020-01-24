@@ -54,7 +54,7 @@ namespace Cethleann.Audio.WBH
                 }
 
                 var entry = MemoryMarshal.Read<KWB2Entry>(data.Slice(pointers[i]));
-                var streams = MemoryMarshal.Cast<byte, KWB2PCMStream>(data.Slice(pointers[i] + entry.BlockOffset, entry.BlockSize)).ToArray();
+                var streams = MemoryMarshal.Cast<byte, KWB2PCMStream>(data.Slice(pointers[i] + entry.BlockOffset, entry.BlockSize * entry.Header.Streams)).ToArray();
                 KWBEntries.Add((entry, streams));
             }
         }
