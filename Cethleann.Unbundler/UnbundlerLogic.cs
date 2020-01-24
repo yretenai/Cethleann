@@ -71,6 +71,8 @@ namespace Cethleann.Unbundler
                     case DataType.GMPK when TryExtractGMPK(blobBase, datablob, flags):
                     case DataType.LosslessAudio when TryExtractG1L(blobBase, datablob, flags):
                     case DataType.KOVS when TryExtractKOVS(blobBase, datablob, flags):
+                    case DataType.RTRPK when TryExtractRTRPK(blobBase, datablob, flags):
+                    case DataType.WHD when TryExtractWHD(blobBase, datablob, flags):
                         return 1;
                 }
             }
@@ -111,8 +113,15 @@ namespace Cethleann.Unbundler
 
             if (File.Exists(blobBase))
             {
-                Logger.Warn("KTGL", $@"{blobBase} already exists!");
-                return 0;
+                if (flags.Overwrite)
+                {
+                    File.Delete(blobBase);
+                }
+                else
+                {
+                    Logger.Warn("KTGL", $@"{blobBase} already exists!");
+                    return 0;
+                }
             }
 
             Logger.Info("KTGL", blobBase);
@@ -140,6 +149,52 @@ namespace Cethleann.Unbundler
             catch (Exception e)
             {
                 Logger.Error("GAPK", $"Failed unpacking GAPK, {e}");
+                if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool TryExtractRTRPK(string pathBase, Memory<byte> data, UnbundlerFlags flags)
+        {
+            try
+            {
+                var blobs = new RTRPK(data.Span);
+                if (blobs.Entries.Count == 0) return true;
+
+                TryExtractBlobs(pathBase, blobs.Entries, false, null, false, null, flags);
+            }
+            catch (Exception e)
+            {
+                Logger.Error("RTRPK", $"Failed unpacking RTRPK, {e}");
+                if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool TryExtractWHD(string pathBase, Memory<byte> data, UnbundlerFlags flags)
+        {
+            try
+            {
+                var blobs = new WaveHeaderData(data.Span, flags.WBHAlternateNames);
+                if (blobs.WBH.Soundbank.Entries.Count == 0) return true;
+
+                var names = blobs.WBH.Soundbank.Names;
+                for (var index = 0; index < blobs.WBH.Soundbank.Entries.Count; index++)
+                {
+                    var stream = blobs.WBH.Soundbank.Entries[index];
+                    var wav = blobs.WBD.ReconstructWave(stream);
+                    TryExtractBlob($@"{pathBase}\{(names?.ElementAtOrDefault(index) ?? index.ToString("X8"))}.wav", wav, false, false, flags);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error("RTRPK", $"Failed unpacking RTRPK, {e}");
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;

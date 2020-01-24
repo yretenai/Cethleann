@@ -311,6 +311,168 @@
         <member name="P:Cethleann.Audio.UnknownSound.FullBuffer">
             <inheritdoc />
         </member>
+        <member name="T:Cethleann.Audio.WaveBinaryData">
+            <summary>
+            Binary WAVE Data
+            </summary>
+        </member>
+        <member name="M:Cethleann.Audio.WaveBinaryData.#ctor(System.Span{System.Byte})">
+            <summary>
+            Initialize with buffer
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="P:Cethleann.Audio.WaveBinaryData.Data">
+            <summary>
+            Very Large, Very Chonky WAVE stream
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.WaveBinaryData.Header">
+            <summary>
+            Underlying header
+            </summary>
+        </member>
+        <member name="M:Cethleann.Audio.WaveBinaryData.ReconstructWave(Cethleann.Structure.WHD.WBHEntry[])">
+            <summary>
+            Reconstruct a stream from WBH data.
+            </summary>
+            <param name="entries"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.Audio.WaveBinaryHeader">
+            <summary>
+            Binary Wave Headers
+            </summary>
+        </member>
+        <member name="M:Cethleann.Audio.WaveBinaryHeader.#ctor(System.Span{System.Byte},System.Boolean)">
+            <summary>
+            Initialize with buffer data
+            </summary>
+            <param name="buffer"></param>
+            <param name="alternateNames"></param>
+        </member>
+        <member name="P:Cethleann.Audio.WaveBinaryHeader.Header">
+            <summary>
+            Underlying header
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.WaveBinaryHeader.Soundbank">
+            <summary>
+            Specific soundbank
+            </summary>
+        </member>
+        <member name="T:Cethleann.Audio.WaveHeaderData">
+            <summary>
+            WHD File parser
+            </summary>
+        </member>
+        <member name="M:Cethleann.Audio.WaveHeaderData.#ctor(System.Span{System.Byte},System.Boolean)">
+            <summary>
+            Parse with buffer data
+            </summary>
+            <param name="buffer"></param>
+            <param name="alternateNames"></param>
+        </member>
+        <member name="P:Cethleann.Audio.WaveHeaderData.RTRPK">
+            <summary>
+            Underlying RTRPK PAK
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.WaveHeaderData.WBH">
+            <summary>
+            WAVE Header data
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.WaveHeaderData.WBD">
+            <summary>
+            WAVE Stream data
+            </summary>
+        </member>
+        <member name="T:Cethleann.Audio.WBH.HDDB">
+            <summary>
+            HDDB File Name Table
+            </summary>
+        </member>
+        <member name="M:Cethleann.Audio.WBH.HDDB.#ctor(System.Span{System.Byte},System.Int32)">
+            <summary>
+            Initialize with buffer and count
+            </summary>
+            <param name="buffer"></param>
+            <param name="count"></param>
+        </member>
+        <member name="P:Cethleann.Audio.WBH.HDDB.Header">
+            <summary>
+            Underlying Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.WBH.HDDB.Name">
+            <summary>
+            Filename
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.WBH.HDDB.Entries">
+            <summary>
+            Lsof tags 
+            </summary>
+        </member>
+        <member name="T:Cethleann.Audio.WBH.IWBHSoundbank">
+            <summary>
+            Abstract interface for WBH soundbanks
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.WBH.IWBHSoundbank.Entries">
+            <summary>
+            Get audio stream info entries
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.WBH.IWBHSoundbank.Names">
+            <summary>
+            Get audio stream names
+            </summary>
+        </member>
+        <member name="T:Cethleann.Audio.WBH.KWB2">
+            <summary>
+            KWB2 MSADPCM Soundbank
+            </summary>
+        </member>
+        <member name="F:Cethleann.Audio.WBH.KWB2.KWBEntries">
+            <summary>
+            KWB2 Entries
+            </summary>
+        </member>
+        <member name="M:Cethleann.Audio.WBH.KWB2.#ctor(System.Span{System.Byte},System.Boolean)">
+            <summary>
+            Initialize with buffer data.
+            </summary>
+            <param name="data"></param>
+            <param name="alternateNames"></param>
+        </member>
+        <member name="P:Cethleann.Audio.WBH.KWB2.NameDatabase">
+            <summary>
+            Filename database
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.WBH.KWB2.Header">
+            <summary>
+            Underlying header
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.WBH.KWB2.NameIndex">
+            <summary>
+            Used to lookup names
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.WBH.KWB2.SecondaryNameIndex">
+            <summary>
+            Used to lookup names
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.WBH.KWB2.Entries">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.Audio.WBH.KWB2.Names">
+            <inheritdoc />
+        </member>
         <member name="T:Cethleann.Bundle">
             <summary>
                 Koei Engine Bundle, apparently because DataTable is too boring.
@@ -656,6 +818,35 @@
         <member name="F:Cethleann.DataType.GEPK">
             <summary>
                 Effect Pack
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.RTRPK">
+            <summary>
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.RIFF">
+            <summary>
+                Wave Header Data
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.WHD">
+            <summary>
+                Wave Header Data
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.HDDB">
+            <summary>
+                HDDB
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.WBH">
+            <summary>
+                Wave Binary Header
+            </summary>
+        </member>
+        <member name="F:Cethleann.DataType.WBD">
+            <summary>
+                Wave Binary Data
             </summary>
         </member>
         <member name="F:Cethleann.DataType.Compressed">
@@ -2027,6 +2218,27 @@
         <member name="F:Cethleann.Platform.Windows">
             <summary>
                 Source platform is Windows
+            </summary>
+        </member>
+        <member name="T:Cethleann.RTRPK">
+            <summary>
+                RPRPK Packed files
+            </summary>
+        </member>
+        <member name="M:Cethleann.RTRPK.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize with a buffer
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="P:Cethleann.RTRPK.Header">
+            <summary>
+                Underlying Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.RTRPK.Entries">
+            <summary>
+                Data Streams found in the PAK
             </summary>
         </member>
         <member name="T:Cethleann.Structure.CompressionInfo">

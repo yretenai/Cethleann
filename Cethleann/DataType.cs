@@ -285,6 +285,42 @@ namespace Cethleann
         [FileExtension(".gepk")]
         GEPK = 'G' << 0 | 'E' << 8 | 'P' << 16 | 'K' << 24,
 
+
+        /// <summary>
+        /// </summary>
+        [FileExtension(".rtrpk")]
+        RTRPK = 'R' << 0 | 'T' << 8 | 'P' << 16 | 'K' << 24,
+
+        /// <summary>
+        ///     Wave Header Data
+        /// </summary>
+        [FileExtension(".wave")]
+        RIFF = 'R' << 0 | 'I' << 8 | 'F' << 16 | 'F' << 24,
+
+        /// <summary>
+        ///     Wave Header Data
+        /// </summary>
+        [FileExtension(".sed")]
+        WHD = 'W' << 0 | 'H' << 8 | 'D' << 16 | '1' << 24,
+
+        /// <summary>
+        ///     HDDB
+        /// </summary>
+        [FileExtension(".hdb")]
+        HDDB = 'H' << 0 | 'D' << 8 | 'D' << 16 | 'B' << 24,
+
+        /// <summary>
+        ///     Wave Binary Header
+        /// </summary>
+        [FileExtension("wbh")]
+        WBH = 'W' << 24 | 'B' << 16 | 'H' << 8 | '_' << 0,
+
+        /// <summary>
+        ///     Wave Binary Data
+        /// </summary>
+        [FileExtension("wbd")]
+        WBD = 'W' << 24 | 'B' << 16 | 'D' << 8 | '_' << 0,
+
         /// <summary>
         ///     DEFLATE Compressed File.
         /// </summary>
