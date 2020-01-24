@@ -28,10 +28,7 @@ namespace Cethleann.Unbundler
                 {
                     Logger.Info("CETH", arg);
                     var ext = ".datatable";
-                    if (File.Exists(Path.Combine(arg, "originaltype.cethleann")))
-                    {
-                        ext = File.ReadAllText(Path.Combine(arg, "originaltype.cethleann"));
-                    }
+                    if (File.Exists(Path.Combine(arg, "originaltype.cethleann"))) ext = File.ReadAllText(Path.Combine(arg, "originaltype.cethleann"));
                     var originalName = arg + ext;
                     switch (ext)
                     {
@@ -63,7 +60,7 @@ namespace Cethleann.Unbundler
                         pathBase = Path.Combine(Path.GetDirectoryName(arg), Path.GetFileNameWithoutExtension(arg));
                 }
 
-                UnbundlerLogic.TryExtractBlob(pathBase, data, true, true, flags);
+                UnbundlerLogic.TryExtractBlob(pathBase, data, true, flags);
 
                 if (!Directory.Exists(pathBase) || Path.GetFileName(arg) == Path.GetFileNameWithoutExtension(arg)) continue;
                 // TODO: Get TryExtractBlob to write this file with relevant file metadata.

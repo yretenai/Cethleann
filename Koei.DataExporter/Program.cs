@@ -33,7 +33,7 @@ namespace Koei.DataExporter
                 var dt = data.Span.GetDataType();
                 var ext = UnbundlerLogic.GetExtension(data.Span);
                 var pathBase = $@"{romfs}\{cethleann.GetFilename(index, ext, dt)}";
-                UnbundlerLogic.TryExtractBlob(pathBase, data, false, false, Flags);
+                UnbundlerLogic.TryExtractBlob(pathBase, data, false, Flags);
             }
         }
     }

@@ -36,18 +36,24 @@ namespace Cethleann.Unbundler
                     }
                 }
 
-                TryExtractBlob($@"{pathBase}\{name}.{extension}", datablob, allTypes, singleFile && blobs.Count == 1, flags);
+                var path = $@"{pathBase}\{name}.{extension}"; 
+                if (singleFile && blobs.Count == 1)
+                {
+                    path = Path.Combine(Path.GetDirectoryName(pathBase), $"{name}.{extension}");
+                }
+
+                TryExtractBlob(path, datablob, allTypes, flags);
             }
         }
 
-        public static int TryExtractBlob(string blobBase, Memory<byte> datablob, bool allTypes, bool singleFile, UnbundlerFlags flags)
+        public static int TryExtractBlob(string blobBase, Memory<byte> datablob, bool allTypes, UnbundlerFlags flags)
         {
             if (datablob.Length == 0 && !flags.WriteZero)
             {
                 Logger.Info("KTGL", $"{blobBase} is zero!");
                 return 0;
             }
-
+            
             var dataType = datablob.Span.GetDataType();
 
             if (allTypes || flags.Recursive)
@@ -85,7 +91,7 @@ namespace Cethleann.Unbundler
                     var pathBase = blobBase;
                     if (pathBase.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase)) pathBase = pathBase.Substring(0, pathBase.Length - 3);
 
-                    var result = TryExtractBlob(pathBase, new Memory<byte>(decompressed.ToArray()), allTypes, singleFile, flags);
+                    var result = TryExtractBlob(pathBase, new Memory<byte>(decompressed.ToArray()), allTypes, flags);
 
                     if (result > 0) return result;
                 }
@@ -95,12 +101,6 @@ namespace Cethleann.Unbundler
                 }
 
             var basedir = Path.GetDirectoryName(blobBase);
-            if (singleFile)
-            {
-                blobBase = $@"{basedir}{Path.GetExtension(blobBase)}";
-                basedir = Path.GetDirectoryName(blobBase);
-            }
-
             if (!Directory.Exists(basedir))
             {
                 if (File.Exists(basedir))
@@ -117,6 +117,18 @@ namespace Cethleann.Unbundler
                 if (flags.Overwrite)
                 {
                     File.Delete(blobBase);
+                }
+                if (flags.KeepBoth)
+                {
+                    var filename = Path.GetFileNameWithoutExtension(blobBase);
+                    var ext = Path.GetExtension(blobBase);
+                    var i = 1;
+                    while (File.Exists(Path.Combine(basedir, $"{filename}_{i}{ext}")))
+                    {
+                        i += 1;
+                    }
+
+                    blobBase = Path.Combine(basedir, $"{filename}_{i}{ext}");
                 }
                 else
                 {
@@ -193,9 +205,9 @@ namespace Cethleann.Unbundler
                     {
                         var stream = streams[streamIndex];
                         var wav = blobs.WBD.ReconstructWave(stream);
-                        var name = $@"{pathBase}\{(names?.ElementAtOrDefault(index)?.SanitizeDirname() ?? index.ToString("X8"))}";
+                        var name = $@"{pathBase}\{(names?.ElementAtOrDefault(index)?.SanitizeDirname() ?? index.ToString("X8"))}".Trim();
                         if (streams.Length > 1) name += $@"\{streamIndex:X8}";
-                        TryExtractBlob($@"{name}.wav", wav, false, false, flags);
+                        TryExtractBlob($@"{name}.wav", wav, false, flags);
                     }
                 }
             }
@@ -381,7 +393,7 @@ namespace Cethleann.Unbundler
                 {
                     var sectionData = blobs.SectionRoot.Sections[index];
                     var magic = MemoryMarshal.Read<DataType>(sectionData.Span);
-                    TryExtractBlob($@"{pathBase}\{index:X4}.{string.Join("", magic.ToFourCC(true).Reverse())}", sectionData, false, false, flags);
+                    TryExtractBlob($@"{pathBase}\{index:X4}.{string.Join("", magic.ToFourCC(true).Reverse())}", sectionData, false, flags);
                 }
             }
             catch (Exception e)
@@ -425,7 +437,7 @@ namespace Cethleann.Unbundler
                                         break;
                                     }
                                     default:
-                                        TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}_{adcpmSection.Base.Id:X8}.{GetExtension(adcpmSection.FullBuffer.Span)}", adcpmSection.FullBuffer, false, false, flags);
+                                        TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}_{adcpmSection.Base.Id:X8}.{GetExtension(adcpmSection.FullBuffer.Span)}", adcpmSection.FullBuffer, false, flags);
                                         break;
                                 }
                             }
@@ -451,7 +463,7 @@ namespace Cethleann.Unbundler
                                 OGGSound sample => sample.Data,
                                 _ => datablob.FullBuffer
                             };
-                            TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}.{GetExtension(buffer.Span)}", buffer, false, false, flags);
+                            TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}.{GetExtension(buffer.Span)}", buffer, false, flags);
                             break;
                         }
                     }
@@ -476,7 +488,7 @@ namespace Cethleann.Unbundler
                 for (var index = 0; index < blobs.KTSR.Count; index++)
                 {
                     var ktsr = blobs.KTSR[index];
-                    TryExtractBlob($@"{pathBase}\{blobs.Identifiers[index]:X8}.{GetExtension(ktsr.Span)}", ktsr, false, false, flags);
+                    TryExtractBlob($@"{pathBase}\{blobs.Identifiers[index]:X8}.{GetExtension(ktsr.Span)}", ktsr, false, flags);
                 }
 
                 return true;
@@ -496,7 +508,7 @@ namespace Cethleann.Unbundler
             {
                 var blobs = new G1Lossless(data.Span);
                 var buffer = blobs.Audio;
-                TryExtractBlob($@"{pathBase}\{0:X4}.{GetExtension(buffer.Span)}", buffer, false, true, flags);
+                TryExtractBlob(Path.ChangeExtension(pathBase, "kvs"), buffer, false, flags);
             }
             catch (Exception e)
             {
@@ -515,7 +527,7 @@ namespace Cethleann.Unbundler
             {
                 var blobs = new KOVSSound(data.Span);
                 var buffer = blobs.Stream;
-                TryExtractBlob($@"{pathBase}\{0:X4}.{GetExtension(buffer.Span)}", buffer, false, true, flags);
+                TryExtractBlob(Path.ChangeExtension(pathBase, "ogg"), buffer, false, flags);
             }
             catch (Exception e)
             {

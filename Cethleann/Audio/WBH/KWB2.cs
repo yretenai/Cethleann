@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
 using Cethleann.Structure.WHD;
 using DragonLib;
-using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Cethleann.Audio.WBH
@@ -39,7 +36,7 @@ namespace Cethleann.Audio.WBH
             Header = MemoryMarshal.Read<KWB2Header>(data);
 
             if (Header.HDDBPointer > 0) NameDatabase = new HDDB(data.Slice(Header.HDDBPointer), Header.Count);
-            
+
             var pointers = MemoryMarshal.Cast<byte, int>(data.Slice(SizeHelper.SizeOf<KWB2Header>(), 4 * Header.Count));
             for (var i = 0; i < Header.Count; ++i)
             {
@@ -55,6 +52,7 @@ namespace Cethleann.Audio.WBH
                     KWBEntries.Add((default, new KWB2PCMStream[0]));
                     continue;
                 }
+
                 var entry = MemoryMarshal.Read<KWB2Entry>(data.Slice(pointers[i]));
                 var streams = MemoryMarshal.Cast<byte, KWB2PCMStream>(data.Slice(pointers[i] + entry.BlockOffset, entry.BlockSize)).ToArray();
                 KWBEntries.Add((entry, streams));
@@ -91,7 +89,7 @@ namespace Cethleann.Audio.WBH
             {
                 KWB2PCMCodec.MSADPCM => WBHCodec.MSADPCM,
                 KWB2PCMCodec.PCM16 => WBHCodec.PCM,
-                _ => WBHCodec.MSADPCM,
+                _ => WBHCodec.MSADPCM
             },
             Frequency = y.SampleRate,
             BlockAlign = y.FrameSize
