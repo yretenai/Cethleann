@@ -24,10 +24,14 @@ namespace Cethleann.Unbundler
                     continue;
                 }
 
-                if (File.Exists(Path.Combine(arg, "originaltype.cethleann")))
+                if (flags.Bundle)
                 {
                     Logger.Info("CETH", arg);
-                    var ext = File.ReadAllText(Path.Combine(arg, "originaltype.cethleann"));
+                    var ext = ".datatable";
+                    if (File.Exists(Path.Combine(arg, "originaltype.cethleann")))
+                    {
+                        ext = File.ReadAllText(Path.Combine(arg, "originaltype.cethleann"));
+                    }
                     var originalName = arg + ext;
                     switch (ext)
                     {

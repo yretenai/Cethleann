@@ -8,6 +8,7 @@ using Cethleann.DataTables;
 using Cethleann.G1;
 using Cethleann.Koei;
 using Cethleann.Text;
+using DragonLib;
 using DragonLib.IO;
 using JetBrains.Annotations;
 
@@ -26,7 +27,7 @@ namespace Cethleann.Unbundler
                 extension ??= GetExtension(datablob.Span);
                 if (foundName != null)
                 {
-                    name = foundName;
+                    name = foundName.SanitizeFilename();
                     if (File.Exists($@"{pathBase}\{name}.{extension}"))
                     {
                         var oname = name + "_";
@@ -192,7 +193,7 @@ namespace Cethleann.Unbundler
                     {
                         var stream = streams[streamIndex];
                         var wav = blobs.WBD.ReconstructWave(stream);
-                        var name = $@"{pathBase}\{(names?.ElementAtOrDefault(index) ?? index.ToString("X8"))}";
+                        var name = $@"{pathBase}\{(names?.ElementAtOrDefault(index)?.SanitizeDirname() ?? index.ToString("X8"))}";
                         if (streams.Length > 1) name += $@"\{streamIndex:X8}";
                         TryExtractBlob($@"{name}.wav", wav, false, false, flags);
                     }

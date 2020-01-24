@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using Cethleann.Structure.WHD;
 using DragonLib;
 using DragonLib.IO;
@@ -19,7 +21,7 @@ namespace Cethleann.Audio.WBH
         ///     KWB2 Entries
         /// </summary>
         // ReSharper disable once InconsistentNaming
-        public List<(KWB2Entry Header, KWB2Stream[] Streams)> KWBEntries = new List<(KWB2Entry, KWB2Stream[])>();
+        public List<(KWB2Entry Header, KWB2PCMStream[] Streams)> KWBEntries = new List<(KWB2Entry, KWB2PCMStream[])>();
 
         /// <summary>
         ///     Initialize with buffer data.
@@ -35,23 +37,28 @@ namespace Cethleann.Audio.WBH
             }
 
             Header = MemoryMarshal.Read<KWB2Header>(data);
+
+            if (Header.HDDBPointer > 0) NameDatabase = new HDDB(data.Slice(Header.HDDBPointer), Header.Count);
+            
             var pointers = MemoryMarshal.Cast<byte, int>(data.Slice(SizeHelper.SizeOf<KWB2Header>(), 4 * Header.Count));
             for (var i = 0; i < Header.Count; ++i)
             {
                 if (pointers[i] == 0)
                 {
-                    KWBEntries.Add((default, new KWB2Stream[0]));
+                    KWBEntries.Add((default, new KWB2PCMStream[0]));
                     continue;
                 }
 
+                var kwbHeader = MemoryMarshal.Read<KWB2EntryHeader>(data.Slice(pointers[i]));
+                if (kwbHeader.Codec != KWB2Codec.WAVE)
+                {
+                    KWBEntries.Add((default, new KWB2PCMStream[0]));
+                    continue;
+                }
                 var entry = MemoryMarshal.Read<KWB2Entry>(data.Slice(pointers[i]));
-                var streams = MemoryMarshal.Cast<byte, KWB2Stream>(data.Slice(pointers[i] + SizeHelper.SizeOf<KWB2Entry>(), entry.Count * SizeHelper.SizeOf<KWB2Stream>())).ToArray();
-                Logger.Assert(streams.All(x => x.Unknown2 == 0x1), "streams.All(x => x.Unknown2 == 0x1)", pointers[i].ToString("X"));
-                Logger.Assert(streams.All(x => x.FrameSize == 0x16), "streams.All(x=> x.FrameSize == 0x16)", pointers[i].ToString("X"));
+                var streams = MemoryMarshal.Cast<byte, KWB2PCMStream>(data.Slice(pointers[i] + entry.BlockOffset, entry.BlockSize)).ToArray();
                 KWBEntries.Add((entry, streams));
             }
-
-            if (Header.HDDBPointer > 0) NameDatabase = new HDDB(data.Slice(Header.HDDBPointer), Header.Count);
         }
 
         /// <summary>
@@ -80,7 +87,12 @@ namespace Cethleann.Audio.WBH
             Offset = y.Offset,
             Size = y.Size,
             Samples = y.SampleCount,
-            Codec = WBHCodec.MSADPCM,
+            Codec = y.Codec switch
+            {
+                KWB2PCMCodec.MSADPCM => WBHCodec.MSADPCM,
+                KWB2PCMCodec.PCM16 => WBHCodec.PCM,
+                _ => WBHCodec.MSADPCM,
+            },
             Frequency = y.SampleRate,
             BlockAlign = y.FrameSize
         }).ToArray()).ToList();

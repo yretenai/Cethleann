@@ -1,10 +1,10 @@
 namespace Cethleann.Structure.WHD
 {
 #pragma warning disable 1591
-    public struct KWB2Stream
+    public struct KWB2PCMStream
     {
         public ushort SampleRate { get; set; }
-        public byte Unknown1 { get; set; }
+        public KWB2PCMCodec Codec { get; set; }
         public byte Unknown2 { get; set; }
         public short FrameSize { get; set; }
         public short Unknown3 { get; set; }
