@@ -5,17 +5,20 @@ using System.Runtime.InteropServices;
 using Cethleann.Structure.WHD;
 using DragonLib;
 using DragonLib.IO;
+using JetBrains.Annotations;
 
 namespace Cethleann.Audio.WBH
 {
     /// <summary>
     ///     KWB2 MSADPCM Soundbank
     /// </summary>
+    [PublicAPI]
     public class KWB2 : IWBHSoundbank
     {
         /// <summary>
         ///     KWB2 Entries
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public List<(KWB2Entry Header, KWB2Stream[] Streams)> KWBEntries = new List<(KWB2Entry, KWB2Stream[])>();
 
         /// <summary>

@@ -76,9 +76,8 @@ namespace Cethleann.Audio
             header.SizeTablePointer = 0x40;
 
             var buffers = new List<Memory<byte>>();
-            for (var index = 0; index < AudioBuffers.Count; index++)
+            foreach (var buffer in AudioBuffers)
             {
-                var buffer = AudioBuffers[index];
                 var data = new Memory<byte>(new byte[(0x50 + buffer.Length).Align(0x10)]);
                 var @base = header.Base;
                 @base.Size = data.Length;

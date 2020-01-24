@@ -187,9 +187,15 @@ namespace Cethleann.Unbundler
                 var names = blobs.WBH.Soundbank.Names;
                 for (var index = 0; index < blobs.WBH.Soundbank.Entries.Count; index++)
                 {
-                    var stream = blobs.WBH.Soundbank.Entries[index];
-                    var wav = blobs.WBD.ReconstructWave(stream);
-                    TryExtractBlob($@"{pathBase}\{(names?.ElementAtOrDefault(index) ?? index.ToString("X8"))}.wav", wav, false, false, flags);
+                    var streams = blobs.WBH.Soundbank.Entries[index];
+                    for (var streamIndex = 0; streamIndex < streams.Length; streamIndex++)
+                    {
+                        var stream = streams[streamIndex];
+                        var wav = blobs.WBD.ReconstructWave(stream);
+                        var name = $@"{pathBase}\{(names?.ElementAtOrDefault(index) ?? index.ToString("X8"))}";
+                        if (streams.Length > 1) name += $@"\{streamIndex:X8}";
+                        TryExtractBlob($@"{name}.wav", wav, false, false, flags);
+                    }
                 }
             }
             catch (Exception e)
@@ -397,44 +403,56 @@ namespace Cethleann.Unbundler
 
                 foreach (var datablob in blobs.Entries)
                 {
-                    if (datablob is NamedSounds adpcm)
+                    switch (datablob)
                     {
-                        foreach (var adcpmSection in adpcm.Sections)
+                        case NamedSounds adpcm:
                         {
-                            if (adcpmSection is GCADPCMSound gcadpcm)
+                            foreach (var adcpmSection in adpcm.Sections)
                             {
-                                var streams = gcadpcm.RebuildAsIndividual();
-                                TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{gcadpcm.Base.Id:X8}", streams, false, null, streams.Count == 1, "ktgcadpcm", flags);
+                                switch (adcpmSection)
+                                {
+                                    case GCADPCMSound gcadpcm:
+                                    {
+                                        var streams = gcadpcm.RebuildAsIndividual();
+                                        TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{gcadpcm.Base.Id:X8}", streams, false, null, streams.Count == 1, "ktgcadpcm", flags);
+                                        break;
+                                    }
+                                    case MSADPCMSound msadpcm:
+                                    {
+                                        var streams = msadpcm.RebuildAsIndividual();
+                                        TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{msadpcm.Base.Id:X8}", streams, false, null, streams.Count == 1, "ktmsadpcm", flags);
+                                        break;
+                                    }
+                                    default:
+                                        TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}_{adcpmSection.Base.Id:X8}.{GetExtension(adcpmSection.FullBuffer.Span)}", adcpmSection.FullBuffer, false, false, flags);
+                                        break;
+                                }
                             }
-                            else if (adcpmSection is MSADPCMSound msadpcm)
-                            {
-                                var streams = msadpcm.RebuildAsIndividual();
-                                TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{msadpcm.Base.Id:X8}", streams, false, null, streams.Count == 1, "ktmsadpcm", flags);
-                            }
-                            else
-                            {
-                                TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}_{adcpmSection.Base.Id:X8}.{GetExtension(adcpmSection.FullBuffer.Span)}", adcpmSection.FullBuffer, false, false, flags);
-                            }
+
+                            break;
                         }
-                    }
-                    else if (datablob is GCADPCMSound gcadpcm)
-                    {
-                        var streams = gcadpcm.RebuildAsIndividual();
-                        TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}", streams, false, null, streams.Count == 1, "ktgcadpcm", flags);
-                    }
-                    else if (datablob is MSADPCMSound msadpcm)
-                    {
-                        var streams = msadpcm.RebuildAsIndividual();
-                        TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}", streams, false, null, streams.Count == 1, "ktmsadpcm", flags);
-                    }
-                    else
-                    {
-                        var buffer = datablob switch
+                        case GCADPCMSound gcadpcm:
                         {
-                            OGGSound sample => sample.Data,
-                            _ => datablob.FullBuffer
-                        };
-                        TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}.{GetExtension(buffer.Span)}", buffer, false, false, flags);
+                            var streams = gcadpcm.RebuildAsIndividual();
+                            TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}", streams, false, null, streams.Count == 1, "ktgcadpcm", flags);
+                            break;
+                        }
+                        case MSADPCMSound msadpcm:
+                        {
+                            var streams = msadpcm.RebuildAsIndividual();
+                            TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}", streams, false, null, streams.Count == 1, "ktmsadpcm", flags);
+                            break;
+                        }
+                        default:
+                        {
+                            var buffer = datablob switch
+                            {
+                                OGGSound sample => sample.Data,
+                                _ => datablob.FullBuffer
+                            };
+                            TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}.{GetExtension(buffer.Span)}", buffer, false, false, flags);
+                            break;
+                        }
                     }
                 }
 

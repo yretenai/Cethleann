@@ -332,11 +332,11 @@
                 Underlying header
             </summary>
         </member>
-        <member name="M:Cethleann.Audio.WaveBinaryData.ReconstructWave(Cethleann.Structure.WHD.WBHEntry[])">
+        <member name="M:Cethleann.Audio.WaveBinaryData.ReconstructWave(Cethleann.Structure.WHD.WBHEntry)">
             <summary>
                 Reconstruct a stream from WBH data.
             </summary>
-            <param name="entries"></param>
+            <param name="entry"></param>
             <returns></returns>
         </member>
         <member name="T:Cethleann.Audio.WaveBinaryHeader">
