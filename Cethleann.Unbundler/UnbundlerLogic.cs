@@ -36,11 +36,8 @@ namespace Cethleann.Unbundler
                     }
                 }
 
-                var path = $@"{pathBase}\{name}.{extension}"; 
-                if (singleFile && blobs.Count == 1)
-                {
-                    path = Path.Combine(Path.GetDirectoryName(pathBase), $"{name}.{extension}");
-                }
+                var path = $@"{pathBase}\{name}.{extension}";
+                if (singleFile && blobs.Count == 1) path = Path.Combine(Path.GetDirectoryName(pathBase), $"{name}.{extension}");
 
                 TryExtractBlob(path, datablob, allTypes, flags);
             }
@@ -53,7 +50,7 @@ namespace Cethleann.Unbundler
                 Logger.Info("KTGL", $"{blobBase} is zero!");
                 return 0;
             }
-            
+
             var dataType = datablob.Span.GetDataType();
 
             if (allTypes || flags.Recursive)
@@ -114,22 +111,16 @@ namespace Cethleann.Unbundler
 
             if (File.Exists(blobBase))
             {
-                if (flags.Overwrite)
-                {
-                    File.Delete(blobBase);
-                }
                 if (flags.KeepBoth)
                 {
                     var filename = Path.GetFileNameWithoutExtension(blobBase);
                     var ext = Path.GetExtension(blobBase);
                     var i = 1;
-                    while (File.Exists(Path.Combine(basedir, $"{filename}_{i}{ext}")))
-                    {
-                        i += 1;
-                    }
+                    while (File.Exists(Path.Combine(basedir, $"{filename}_{i}{ext}"))) i += 1;
 
                     blobBase = Path.Combine(basedir, $"{filename}_{i}{ext}");
                 }
+                else if (flags.Overwrite) File.Delete(blobBase);
                 else
                 {
                     Logger.Warn("KTGL", $@"{blobBase} already exists!");
