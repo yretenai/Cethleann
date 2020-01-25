@@ -38,9 +38,15 @@
         <member name="P:Cethleann.Audio.GCADPCMSound.Base">
             <inheritdoc />
         </member>
-        <member name="M:Cethleann.Audio.GCADPCMSound.RebuildAsIndividual">
+        <member name="M:Cethleann.Audio.GCADPCMSound.ReconstructAsIndividual">
             <summary>
                 Rebuild multi streams as individual streams
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Audio.GCADPCMSound.ReconstructWave(System.Boolean)">
+            <summary>
+            Reconstructs stream to a WAV
             </summary>
             <returns></returns>
         </member>
@@ -57,6 +63,33 @@
         <member name="P:Cethleann.Audio.ISoundResourceSection.FullBuffer">
             <summary>
                 Full Data Stream
+            </summary>
+        </member>
+        <member name="T:Cethleann.Audio.KoeiWaveBank">
+            <summary>
+                WHD File parser
+            </summary>
+        </member>
+        <member name="M:Cethleann.Audio.KoeiWaveBank.#ctor(System.Span{System.Byte},System.Boolean)">
+            <summary>
+                Parse with buffer data
+            </summary>
+            <param name="buffer"></param>
+            <param name="alternateNames"></param>
+        </member>
+        <member name="P:Cethleann.Audio.KoeiWaveBank.RTRPK">
+            <summary>
+                Underlying RTRPK PAK
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.KoeiWaveBank.WBH">
+            <summary>
+                WAVE Header data
+            </summary>
+        </member>
+        <member name="P:Cethleann.Audio.KoeiWaveBank.WBD">
+            <summary>
+                WAVE Stream data
             </summary>
         </member>
         <member name="T:Cethleann.Audio.KOVSSound">
@@ -118,7 +151,7 @@
         </member>
         <member name="T:Cethleann.Audio.MSADPCMSound">
             <summary>
-                Parser for MS ADPCM Streams (frame 0x16)
+                Parser for MS ADPCM Streams
             </summary>
         </member>
         <member name="M:Cethleann.Audio.MSADPCMSound.#ctor(System.Span{System.Byte})">
@@ -132,9 +165,9 @@
                 ADPCM Header
             </summary>
         </member>
-        <member name="P:Cethleann.Audio.MSADPCMSound.SampleRate">
+        <member name="P:Cethleann.Audio.MSADPCMSound.Info">
             <summary>
-                Audio Sample Rate
+                ADPCM Setup Info
             </summary>
         </member>
         <member name="P:Cethleann.Audio.MSADPCMSound.AudioBuffers">
@@ -150,9 +183,15 @@
         <member name="P:Cethleann.Audio.MSADPCMSound.Base">
             <inheritdoc />
         </member>
-        <member name="M:Cethleann.Audio.MSADPCMSound.RebuildAsIndividual">
+        <member name="M:Cethleann.Audio.MSADPCMSound.ReconstructAsIndividual">
             <summary>
                 Rebuild multi streams as individual streams
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Audio.MSADPCMSound.ReconstructWave(System.Boolean)">
+            <summary>
+            Reconstructs stream to a WAV
             </summary>
             <returns></returns>
         </member>
@@ -311,81 +350,55 @@
         <member name="P:Cethleann.Audio.UnknownSound.FullBuffer">
             <inheritdoc />
         </member>
-        <member name="T:Cethleann.Audio.WaveBinaryData">
+        <member name="T:Cethleann.Audio.WaveBankData">
             <summary>
-                Binary WAVE Data
+                Wave Bank Data
             </summary>
         </member>
-        <member name="M:Cethleann.Audio.WaveBinaryData.#ctor(System.Span{System.Byte})">
+        <member name="M:Cethleann.Audio.WaveBankData.#ctor(System.Span{System.Byte})">
             <summary>
                 Initialize with buffer
             </summary>
             <param name="buffer"></param>
         </member>
-        <member name="P:Cethleann.Audio.WaveBinaryData.Data">
+        <member name="P:Cethleann.Audio.WaveBankData.Data">
             <summary>
                 Very Large, Very Chonky WAVE stream
             </summary>
         </member>
-        <member name="P:Cethleann.Audio.WaveBinaryData.Header">
+        <member name="P:Cethleann.Audio.WaveBankData.Header">
             <summary>
                 Underlying header
             </summary>
         </member>
-        <member name="M:Cethleann.Audio.WaveBinaryData.ReconstructWave(Cethleann.Structure.WHD.WBHEntry)">
+        <member name="M:Cethleann.Audio.WaveBankData.ReconstructWave(Cethleann.Structure.WHD.WBHEntry,System.Boolean)">
             <summary>
                 Reconstruct a stream from WBH data.
             </summary>
             <param name="entry"></param>
+            <param name="convertToPcm"></param>
             <returns></returns>
         </member>
-        <member name="T:Cethleann.Audio.WaveBinaryHeader">
+        <member name="T:Cethleann.Audio.WaveBankHeader">
             <summary>
-                Binary Wave Headers
+                Wave Bank Headers
             </summary>
         </member>
-        <member name="M:Cethleann.Audio.WaveBinaryHeader.#ctor(System.Span{System.Byte},System.Boolean)">
+        <member name="M:Cethleann.Audio.WaveBankHeader.#ctor(System.Span{System.Byte},System.Boolean)">
             <summary>
                 Initialize with buffer data
             </summary>
             <param name="buffer"></param>
             <param name="alternateNames"></param>
         </member>
-        <member name="P:Cethleann.Audio.WaveBinaryHeader.Header">
+        <member name="P:Cethleann.Audio.WaveBankHeader.Header">
             <summary>
                 Underlying header
             </summary>
         </member>
-        <member name="P:Cethleann.Audio.WaveBinaryHeader.Soundbank">
+        <member name="P:Cethleann.Audio.WaveBankHeader.Soundbank">
             <summary>
                 Specific soundbank
-            </summary>
-        </member>
-        <member name="T:Cethleann.Audio.WaveHeaderData">
-            <summary>
-                WHD File parser
-            </summary>
-        </member>
-        <member name="M:Cethleann.Audio.WaveHeaderData.#ctor(System.Span{System.Byte},System.Boolean)">
-            <summary>
-                Parse with buffer data
-            </summary>
-            <param name="buffer"></param>
-            <param name="alternateNames"></param>
-        </member>
-        <member name="P:Cethleann.Audio.WaveHeaderData.RTRPK">
-            <summary>
-                Underlying RTRPK PAK
-            </summary>
-        </member>
-        <member name="P:Cethleann.Audio.WaveHeaderData.WBH">
-            <summary>
-                WAVE Header data
-            </summary>
-        </member>
-        <member name="P:Cethleann.Audio.WaveHeaderData.WBD">
-            <summary>
-                WAVE Stream data
             </summary>
         </member>
         <member name="T:Cethleann.Audio.WBH.HDDB">
@@ -841,12 +854,12 @@
         </member>
         <member name="F:Cethleann.DataType.WBH">
             <summary>
-                Wave Binary Header
+                Wave Bank Header
             </summary>
         </member>
         <member name="F:Cethleann.DataType.WBD">
             <summary>
-                Wave Binary Data
+                Wave Bank Data
             </summary>
         </member>
         <member name="F:Cethleann.DataType.Compressed">

@@ -310,13 +310,13 @@ namespace Cethleann
         HDDB = 'H' << 0 | 'D' << 8 | 'D' << 16 | 'B' << 24,
 
         /// <summary>
-        ///     Wave Binary Header
+        ///     Wave Bank Header
         /// </summary>
         [FileExtension("wbh")]
         WBH = 'W' << 24 | 'B' << 16 | 'H' << 8 | '_' << 0,
 
         /// <summary>
-        ///     Wave Binary Data
+        ///     Wave Bank Data
         /// </summary>
         [FileExtension("wbd")]
         WBD = 'W' << 24 | 'B' << 16 | 'D' << 8 | '_' << 0,

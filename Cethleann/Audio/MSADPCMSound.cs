@@ -3,12 +3,14 @@ using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Cethleann.Structure.Resource.Audio;
+using Cethleann.Structure.WHD;
 using DragonLib;
+using DragonLib.Audio;
 
 namespace Cethleann.Audio
 {
     /// <summary>
-    ///     Parser for MS ADPCM Streams (frame 0x16)
+    ///     Parser for MS ADPCM Streams
     /// </summary>
     public class MSADPCMSound : ISoundResourceSection
     {
@@ -20,10 +22,10 @@ namespace Cethleann.Audio
         {
             FullBuffer = new Memory<byte>(blob.ToArray());
             Header = MemoryMarshal.Read<ADPCMSoundHeader>(blob);
-            SampleRate = MemoryMarshal.Read<int>(blob.Slice(Header.ADPCMPointer, Header.ADPCMSize));
-            var pointers = MemoryMarshal.Cast<byte, int>(blob.Slice(Header.PointerTablePointer, 4 * Header.Channels));
-            var sizes = MemoryMarshal.Cast<byte, int>(blob.Slice(Header.SizeTablePointer, 4 * Header.Channels));
-            for (var i = 0; i < Header.Channels; ++i) AudioBuffers.Add(new Memory<byte>(blob.Slice(pointers[i], sizes[i]).ToArray()));
+            Info = MemoryMarshal.Read<MSADPCMSoundInfo>(blob.Slice(Header.ADPCMPointer, Header.ADPCMSize));
+            var pointers = MemoryMarshal.Cast<byte, int>(blob.Slice(Header.PointerTablePointer, 4 * Header.Streams));
+            var sizes = MemoryMarshal.Cast<byte, int>(blob.Slice(Header.SizeTablePointer, 4 * Header.Streams));
+            for (var i = 0; i < Header.Streams; ++i) AudioBuffers.Add(new Memory<byte>(blob.Slice(pointers[i], sizes[i]).ToArray()));
         }
 
         /// <summary>
@@ -32,9 +34,9 @@ namespace Cethleann.Audio
         public ADPCMSoundHeader Header { get; set; }
 
         /// <summary>
-        ///     Audio Sample Rate
+        ///     ADPCM Setup Info
         /// </summary>
-        public int SampleRate { get; set; }
+        public MSADPCMSoundInfo Info { get; set; }
 
         /// <summary>
         ///     Full sound buffers
@@ -53,9 +55,9 @@ namespace Cethleann.Audio
         ///     Rebuild multi streams as individual streams
         /// </summary>
         /// <returns></returns>
-        public List<Memory<byte>> RebuildAsIndividual()
+        public List<Memory<byte>> ReconstructAsIndividual()
         {
-            switch (Header.Channels)
+            switch (Header.Streams)
             {
                 case 0:
                     return new List<Memory<byte>>();
@@ -67,7 +69,7 @@ namespace Cethleann.Audio
             }
 
             var header = Header;
-            header.Channels = 1;
+            header.Streams = 1;
             header.Unknown2 = -1;
             header.Unknown3 = 0;
             header.ADPCMSize = 4;
@@ -83,7 +85,7 @@ namespace Cethleann.Audio
                 @base.Size = data.Length;
                 header.Base = @base;
                 MemoryMarshal.Write(data.Span, ref header);
-                BinaryPrimitives.WriteInt32LittleEndian(data.Span.Slice(header.ADPCMPointer), SampleRate);
+                BinaryPrimitives.WriteInt32LittleEndian(data.Span.Slice(header.ADPCMPointer), Header.SampleRate);
                 BinaryPrimitives.WriteUInt32LittleEndian(data.Span.Slice(header.PointerTablePointer), 0x50);
                 BinaryPrimitives.WriteUInt32LittleEndian(data.Span.Slice(header.SizeTablePointer), (uint) buffer.Length);
                 buffer.CopyTo(data.Slice(0x50));
@@ -91,6 +93,38 @@ namespace Cethleann.Audio
             }
 
             return buffers;
+        }
+
+        /// <summary>
+        ///     Reconstructs stream to a WAV
+        /// </summary>
+        /// <returns></returns>
+        public List<Memory<byte>> ReconstructWave(bool convertPcm)
+        {
+            var streams = new List<Memory<byte>>();
+            foreach (var buffer in AudioBuffers)
+            {
+                var data = buffer.Span;
+                var codec = 0x0002;
+                var blockAlign = Info.FrameSize;
+                if (convertPcm)
+                {
+                    data = MSADPCM.Decode(data, blockAlign);
+                    codec = 0x0001;
+                    blockAlign = 0x2;
+                }
+
+
+                streams.Add(new Memory<byte>(PCM.ConstructWAVE((short) codec, 1, Header.SampleRate, blockAlign, (WAVECodec) codec switch
+                {
+                    WAVECodec.PCM => 16,
+                    WAVECodec.MSADPCM => 4,
+                    WAVECodec.GCADPCM => 4,
+                    _ => 4
+                }, data).ToArray()));
+            }
+
+            return streams;
         }
     }
 }

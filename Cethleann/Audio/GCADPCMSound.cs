@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Cethleann.Structure.Resource.Audio;
 using DragonLib;
+using DragonLib.Audio;
 
 namespace Cethleann.Audio
 {
@@ -21,9 +22,9 @@ namespace Cethleann.Audio
             FullBuffer = new Memory<byte>(blob.ToArray());
             Header = MemoryMarshal.Read<ADPCMSoundHeader>(blob);
             Table = MemoryMarshal.Cast<byte, GCADPCMSoundInfo>(blob.Slice(Header.ADPCMPointer, Header.ADPCMSize)).ToArray();
-            var pointers = MemoryMarshal.Cast<byte, int>(blob.Slice(Header.PointerTablePointer, 4 * Header.Channels));
-            var sizes = MemoryMarshal.Cast<byte, int>(blob.Slice(Header.SizeTablePointer, 4 * Header.Channels));
-            for (var i = 0; i < Header.Channels; ++i) AudioBuffers.Add(new Memory<byte>(blob.Slice(pointers[i], sizes[i]).ToArray()));
+            var pointers = MemoryMarshal.Cast<byte, int>(blob.Slice(Header.PointerTablePointer, 4 * Header.Streams));
+            var sizes = MemoryMarshal.Cast<byte, int>(blob.Slice(Header.SizeTablePointer, 4 * Header.Streams));
+            for (var i = 0; i < Header.Streams; ++i) AudioBuffers.Add(new Memory<byte>(blob.Slice(pointers[i], sizes[i]).ToArray()));
         }
 
         /// <summary>
@@ -53,9 +54,9 @@ namespace Cethleann.Audio
         ///     Rebuild multi streams as individual streams
         /// </summary>
         /// <returns></returns>
-        public List<Memory<byte>> RebuildAsIndividual()
+        public List<Memory<byte>> ReconstructAsIndividual()
         {
-            switch (Header.Channels)
+            switch (Header.Streams)
             {
                 case 0:
                     return new List<Memory<byte>>();
@@ -67,7 +68,7 @@ namespace Cethleann.Audio
             }
 
             var header = Header;
-            header.Channels = 1;
+            header.Streams = 1;
             header.Unknown2 = -1;
             header.Unknown3 = 0;
             header.ADPCMSize = SizeHelper.SizeOf<GCADPCMSoundInfo>();
@@ -93,6 +94,29 @@ namespace Cethleann.Audio
             }
 
             return buffers;
+        }
+
+        /// <summary>
+        ///     Reconstructs stream to a WAV
+        /// </summary>
+        /// <returns></returns>
+        public List<Memory<byte>> ReconstructWave(bool convertPcm)
+        {
+            // TODO: BFWAV?
+            if (!convertPcm) return ReconstructAsIndividual();
+
+            var streams = new List<Memory<byte>>();
+            for (var index = 0; index < AudioBuffers.Count; index++)
+            {
+                var buffer = AudioBuffers[index];
+                var coeffs = new Span<GCADPCMCoefficient>(new[] { Table[index].Coefficient1, Table[index].Coefficient2 });
+                var data = buffer.Span;
+                data = GCADPCM.Decode(data, MemoryMarshal.Cast<GCADPCMCoefficient, short>(coeffs).ToArray(), Table[index].SampleCount);
+
+                streams.Add(new Memory<byte>(PCM.ConstructWAVE(0x0001, 1, Header.SampleRate, 0x2, 16, data).ToArray()));
+            }
+
+            return streams;
         }
     }
 }

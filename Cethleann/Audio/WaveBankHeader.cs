@@ -7,16 +7,16 @@ using DragonLib;
 namespace Cethleann.Audio
 {
     /// <summary>
-    ///     Binary Wave Headers
+    ///     Wave Bank Headers
     /// </summary>
-    public class WaveBinaryHeader
+    public class WaveBankHeader
     {
         /// <summary>
         ///     Initialize with buffer data
         /// </summary>
         /// <param name="buffer"></param>
         /// <param name="alternateNames"></param>
-        public WaveBinaryHeader(Span<byte> buffer, bool alternateNames)
+        public WaveBankHeader(Span<byte> buffer, bool alternateNames)
         {
             Header = MemoryMarshal.Read<WBHHeader>(buffer);
             var data = buffer.Slice(SizeHelper.SizeOf<WBHHeader>() - 4);

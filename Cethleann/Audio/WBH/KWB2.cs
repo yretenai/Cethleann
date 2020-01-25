@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Cethleann.Structure.Resource.Audio;
 using Cethleann.Structure.WHD;
 using DragonLib;
 using JetBrains.Annotations;
@@ -18,7 +19,7 @@ namespace Cethleann.Audio.WBH
         ///     KWB2 Entries
         /// </summary>
         // ReSharper disable once InconsistentNaming
-        public List<(KWB2Entry Header, KWB2PCMStream[] Streams)> KWBEntries = new List<(KWB2Entry, KWB2PCMStream[])>();
+        public List<(KWB2Entry Header, object[] Streams)> KWBEntries = new List<(KWB2Entry, object[])>();
 
         /// <summary>
         ///     Initialize with buffer data.
@@ -42,20 +43,37 @@ namespace Cethleann.Audio.WBH
             {
                 if (pointers[i] == 0)
                 {
-                    KWBEntries.Add((default, new KWB2PCMStream[0]));
+                    KWBEntries.Add((default, new object[0]));
                     continue;
                 }
 
-                var kwbHeader = MemoryMarshal.Read<KWB2EntryHeader>(data.Slice(pointers[i]));
-                if (kwbHeader.Codec != KWB2Codec.WAVE)
-                {
-                    KWBEntries.Add((default, new KWB2PCMStream[0]));
-                    continue;
-                }
+                var kwbHeader = MemoryMarshal.Read<KWB2Entry>(data.Slice(pointers[i]));
 
                 var entry = MemoryMarshal.Read<KWB2Entry>(data.Slice(pointers[i]));
-                var streams = MemoryMarshal.Cast<byte, KWB2PCMStream>(data.Slice(pointers[i] + entry.BlockOffset, entry.BlockSize * entry.Header.Streams)).ToArray();
-                KWBEntries.Add((entry, streams));
+                var offset = 0x2c;
+                var size = 0x48;
+                if (kwbHeader.Version >= 0xC000)
+                {
+                    offset = entry.BlockOffset;
+                    size = entry.BlockSize;
+                }
+
+                var entries = new object[entry.Streams];
+                for (var j = 0; j < entry.Streams; ++j)
+                {
+                    var chunk = data.Slice(pointers[i] + offset, size);
+                    var baseHeader = MemoryMarshal.Read<KWB2PCMStream>(chunk);
+                    entries[j] = baseHeader.Codec switch
+                    {
+                        KWB2PCMCodec.PCM16 => baseHeader,
+                        KWB2PCMCodec.MSADPCM => MemoryMarshal.Read<KWB2MSADPCMStream>(chunk),
+                        KWB2PCMCodec.GCADPCM => MemoryMarshal.Read<KWB2GCADPCMStream>(chunk),
+                        _ => baseHeader
+                    };
+                    offset += entry.BlockSize;
+                }
+
+                KWBEntries.Add((entry, entries));
             }
         }
 
@@ -80,19 +98,37 @@ namespace Cethleann.Audio.WBH
         public int SecondaryNameIndex { get; set; } = 1;
 
         /// <inheritdoc />
-        public List<WBHEntry[]> Entries => KWBEntries.Select(x => x.Streams.Select(y => new WBHEntry
+        public List<WBHEntry[]> Entries => KWBEntries.Select(x => x.Streams.Select(y =>
         {
-            Offset = y.Offset,
-            Size = y.Size,
-            Samples = y.SampleCount,
-            Codec = y.Codec switch
+            var kwb = y switch
             {
-                KWB2PCMCodec.MSADPCM => WBHCodec.MSADPCM,
-                KWB2PCMCodec.PCM16 => WBHCodec.PCM,
-                _ => WBHCodec.MSADPCM
-            },
-            Frequency = y.SampleRate,
-            BlockAlign = y.FrameSize
+                KWB2PCMStream s => s,
+                KWB2MSADPCMStream s => s.Base,
+                KWB2GCADPCMStream s => s.Base,
+                _ => default
+            };
+
+            var setup = default(object);
+
+            if (y is KWB2GCADPCMStream gcadpcmStream) setup = MemoryMarshal.Cast<GCADPCMCoefficient, short>(new Span<GCADPCMCoefficient>(new[] { gcadpcmStream.Coefficient1, gcadpcmStream.Coefficient2 })).ToArray();
+
+            return new WBHEntry
+            {
+                Offset = kwb.Offset,
+                Size = kwb.Size,
+                Samples = kwb.SampleCount,
+                Codec = kwb.Codec switch
+                {
+                    KWB2PCMCodec.MSADPCM => WAVECodec.MSADPCM,
+                    KWB2PCMCodec.PCM16 => WAVECodec.PCM,
+                    KWB2PCMCodec.GCADPCM => WAVECodec.GCADPCM,
+                    _ => WAVECodec.PCM
+                },
+                Frequency = kwb.SampleRate,
+                BlockAlign = kwb.FrameSize,
+                Channels = kwb.Channels,
+                Setup = setup
+            };
         }).ToArray()).ToList();
 
         /// <inheritdoc />

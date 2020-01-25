@@ -3,7 +3,9 @@ namespace Cethleann.Structure.WHD
 #pragma warning disable 1591
     public struct KWB2Entry
     {
-        public KWB2EntryHeader Header { get; set; }
+        public ushort Version { get; set; }
+        public byte Unknown3 { get; set; }
+        public byte Streams { get; set; }
         public int Unknown4 { get; set; }
         public float Unknown5 { get; set; }
         public float Unknown6 { get; set; }

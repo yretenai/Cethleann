@@ -7,18 +7,18 @@ namespace Cethleann.Audio
     ///     WHD File parser
     /// </summary>
     [PublicAPI]
-    public class WaveHeaderData
+    public class KoeiWaveBank
     {
         /// <summary>
         ///     Parse with buffer data
         /// </summary>
         /// <param name="buffer"></param>
         /// <param name="alternateNames"></param>
-        public WaveHeaderData(Span<byte> buffer, bool alternateNames)
+        public KoeiWaveBank(Span<byte> buffer, bool alternateNames)
         {
             RTRPK = new RTRPK(buffer);
-            WBH = new WaveBinaryHeader(RTRPK.Entries[0].Span, alternateNames);
-            WBD = new WaveBinaryData(RTRPK.Entries[1].Span);
+            WBH = new WaveBankHeader(RTRPK.Entries[0].Span, alternateNames);
+            WBD = new WaveBankData(RTRPK.Entries[1].Span);
         }
 
         /// <summary>
@@ -29,11 +29,11 @@ namespace Cethleann.Audio
         /// <summary>
         ///     WAVE Header data
         /// </summary>
-        public WaveBinaryHeader WBH { get; set; }
+        public WaveBankHeader WBH { get; set; }
 
         /// <summary>
         ///     WAVE Stream data
         /// </summary>
-        public WaveBinaryData WBD { get; set; }
+        public WaveBankData WBD { get; set; }
     }
 }

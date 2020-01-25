@@ -19,6 +19,12 @@ namespace Cethleann.Unbundler
         [CLIFlag("wbh-alt", Help = "Alternate names for WBH streams", Category = "Unbundler Options")]
         public bool WBHAlternateNames { get; set; }
 
+        [CLIFlag("pcm", Default = true, Aliases = new[] { "p" }, Help = "Convert ADPCM streams to PCM", Category = "Unbundler Options")]
+        public bool ConvertADPCM { get; set; }
+
+        [CLIFlag("ktsr-raw", Help = "Output Raw KTSR streams", Category = "Unbundler Options")]
+        public bool RawKTSR { get; set; }
+
         [CLIFlag("platform", Default = Platform.Switch, Aliases = new[] { "p" }, Help = "Target Platform", Category = "Unbundler Options")]
         public Platform Platform { get; set; }
     }
