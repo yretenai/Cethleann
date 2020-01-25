@@ -83,7 +83,7 @@ namespace Cethleann.G1
         public static (int width, int height, TexturePackedInfo info, DXGIPixelFormat format) UnpackWHM(TextureDataHeader header, Func<byte, TextureType> rewriteTextureType = null)
         {
             var dimensions = BitPacked.Unpack<TexturePackedSize>(header.PackedDimensions);
-            var info = BitPacked.Unpack<TexturePackedInfo>(header.PackedDimensions);
+            var info = BitPacked.Unpack<TexturePackedInfo>(header.PackedInfo);
             var width = (int) Math.Pow(2, dimensions.Width);
             var height = (int) Math.Pow(2, dimensions.Height);
             var type = rewriteTextureType?.Invoke((byte) header.Type) ?? header.Type;
