@@ -95,7 +95,13 @@ namespace Cethleann.Structure
         ///     Rig B?
         /// </summary>
         [FileExtension("rig")]
-        RIGB = 'R' << 24 | 'I' << 16 | 'G' << 8 | 'B' << 0,
+        RIGB = 'R' << 0 | 'I' << 8 | 'G' << 16 | 'B' << 24,
+
+        /// <summary>
+        ///     the fuck?
+        /// </summary>
+        [FileExtension("ertr")]
+        ERTR = 'E' << 24 | 'R' << 16 | 'T' << 8 | 'R' << 0,
 
         /// <summary>
         ///     DATD
@@ -234,6 +240,7 @@ namespace Cethleann.Structure
         /// <summary>
         ///     KTGL Model ExtraData.
         /// </summary>
+        [FileExtension("extra")]
         ModelExtra = 'E' << 24 | 'X' << 16 | 'T' << 8 | 'R' << 0,
 
         /// <summary>

@@ -623,6 +623,13 @@
             <param name="value"></param>
             <returns></returns>
         </member>
+        <member name="M:Cethleann.Extensions.ToVersionI(System.Int32)">
+            <summary>
+                Converts a version tag to a number.
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
         <member name="M:Cethleann.Extensions.GetExtension(Cethleann.Structure.DataType)">
             <summary>
                 Returns determined string extension for this magic.
@@ -681,6 +688,32 @@
             </summary>
             <param name="buffer"></param>
             <returns></returns>
+        </member>
+        <member name="T:Cethleann.G1.G1Animation">
+            <summary>
+                Parser for G1A Files
+            </summary>
+        </member>
+        <member name="M:Cethleann.G1.G1Animation.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize with buffer
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="P:Cethleann.G1.G1Animation.Section">
+            <summary>
+                GResource
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1Animation.Header">
+            <summary>
+                Underlying Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G1Animation.Splines">
+            <summary>
+                Animation Spline Track Data
+            </summary>
         </member>
         <member name="T:Cethleann.G1.G1Lossless">
             <summary>
@@ -1112,6 +1145,42 @@
             <param name="header"></param>
             <param name="rewriteTextureType"></param>
             <returns></returns>
+        </member>
+        <member name="T:Cethleann.G1.G2Animation">
+            <summary>
+                Parser for G2A Files
+            </summary>
+        </member>
+        <member name="M:Cethleann.G1.G2Animation.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize with buffer
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="P:Cethleann.G1.G2Animation.Section">
+            <summary>
+                GResource
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G2Animation.Header">
+            <summary>
+                Underlying Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G2Animation.Unknown1">
+            <summary>
+                V50 + Only!
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G2Animation.Splines">
+            <summary>
+                Animation Spline Track Data
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.G2Animation.QuantizedData">
+            <summary>
+                Animation Interpolation Data
+            </summary>
         </member>
         <member name="T:Cethleann.G1.IKTGLSection">
             <summary>

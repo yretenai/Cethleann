@@ -25,25 +25,25 @@ namespace Cethleann.Unbundler
                 var datablob = blobs[index];
                 var name = $"{index:X4}";
                 var foundName = names?.ElementAtOrDefault(index);
-                extension ??= GetExtension(datablob.Span);
+                var ext = extension ?? GetExtension(datablob.Span);
                 if (foundName != null)
                 {
                     name = foundName.SanitizeFilename();
-                    if (File.Exists($@"{pathBase}\{name}.{extension}"))
+                    if (File.Exists($@"{pathBase}\{name}.{ext}"))
                     {
                         var oname = name + "_";
                         var i = 1;
-                        while (File.Exists($@"{pathBase}\{name}.{extension}")) name = oname + $"{i++:X}";
+                        while (File.Exists($@"{pathBase}\{name}.{ext}")) name = oname + $"{i++:X}";
                     }
                 }
 
-                var path = $@"{pathBase}\{name}.{extension}";
+                var path = $@"{pathBase}\{name}.{ext}";
                 if (singleFile && blobs.Count == 1)
                 {
                     if (useDirnameAsName)
-                        path = pathBase + $".{extension}";
+                        path = pathBase + $".{ext}";
                     else
-                        path = Path.Combine(Path.GetDirectoryName(pathBase), $"{name}.{extension}");
+                        path = Path.Combine(Path.GetDirectoryName(pathBase), $"{name}.{ext}");
                 }
 
                 TryExtractBlob(path, datablob, allTypes, flags);

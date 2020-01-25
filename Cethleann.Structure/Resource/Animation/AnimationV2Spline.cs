@@ -4,6 +4,6 @@ namespace Cethleann.Structure.Resource.Animation
     {
         public AnimationV2SplineType Type { get; set; }
         public short KeyframeCount { get; set; }
-        public int FirstMatrixIndex { get; set; }
+        public int QuantizedIndex { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 namespace Cethleann.Structure.Resource.Animation
 {
-    public enum AnimationV1SplineTransform
+    public enum AnimationV1SplineType
     {
         WorldS = 0x1,
         WorldR = 0x2,

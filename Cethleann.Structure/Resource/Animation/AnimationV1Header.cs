@@ -12,7 +12,7 @@ namespace Cethleann.Structure.Resource.Animation
         public int Reserved4 { get; set; }
         public int Reserved5 { get; set; }
         public int Reserved6 { get; set; }
-        public int BoneCount { get; set; }
-        public int MaxBoneId { get; set; }
+        public short Count { get; set; }
+        public short MaxBoneId { get; set; }
     }
 }

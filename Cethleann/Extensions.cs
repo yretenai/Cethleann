@@ -52,6 +52,17 @@ namespace Cethleann
         }
 
         /// <summary>
+        ///     Converts a version tag to a number.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static int ToVersionI(this int value)
+        {
+            value -= 0x30303030;
+            return (value & 0xFF) + (((value >> 8) & 0xFF) * 10) + (((value >> 16) & 0xFF) * 100) + (((value >> 24) & 0xFF) * 1000);
+        }
+
+        /// <summary>
         ///     Returns determined string extension for this magic.
         /// </summary>
         /// <param name="magic"></param>
