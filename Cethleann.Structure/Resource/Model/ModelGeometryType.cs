@@ -1,7 +1,6 @@
 ﻿namespace Cethleann.Structure.Resource.Model
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public enum ModelGeometryType : short
+public enum ModelGeometryType : short
     {
         Socket = 0x1,
         Material = 0x2,
@@ -13,5 +12,4 @@
         SubMesh = 0x8,
         Mesh = 0x9
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

@@ -1,7 +1,6 @@
 namespace Cethleann.Structure.Resource.Texture
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public struct KSLTHeader
+public struct KSLTHeader
     {
         public DataType Magic { get; set; }
         public int Version { get; set; }
@@ -20,5 +19,4 @@ namespace Cethleann.Structure.Resource.Texture
         public int Unknown8 { get; set; }
         public int Unknown9 { get; set; }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

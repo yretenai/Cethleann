@@ -1,7 +1,6 @@
 namespace Cethleann.Structure.Resource.Model
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public enum VertexDataType : ushort
+public enum VertexDataType : ushort
     {
         Vector2Single = 0x0001,
         Vector3Single = 0x0002,
@@ -12,5 +11,4 @@ namespace Cethleann.Structure.Resource.Model
         Vector4Half = 0x000B,
         Vector4ByteNormalized = 0x000D
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

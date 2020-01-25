@@ -1,7 +1,6 @@
 ﻿namespace Cethleann.Structure.Resource.Texture
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public struct TextureDataHeader
+public struct TextureDataHeader
     {
         /// <summary>
         ///     SHR 4
@@ -24,5 +23,4 @@
 
         public TextureFlags Flags { get; set; }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

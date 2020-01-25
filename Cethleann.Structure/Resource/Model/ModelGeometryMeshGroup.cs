@@ -1,7 +1,6 @@
 namespace Cethleann.Structure.Resource.Model
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public struct ModelGeometryMeshGroup
+public struct ModelGeometryMeshGroup
     {
         public int LOD { get; set; }
         public int Group { get; set; }
@@ -13,5 +12,4 @@ namespace Cethleann.Structure.Resource.Model
         public int Unknown6 { get; set; }
         public int Unknown7 { get; set; }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

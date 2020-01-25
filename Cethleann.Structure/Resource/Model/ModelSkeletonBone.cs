@@ -6,8 +6,7 @@ using Vector3 = DragonLib.Numerics.Vector3;
 
 namespace Cethleann.Structure.Resource.Model
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public struct ModelSkeletonBone
+public struct ModelSkeletonBone
     {
         public Vector3 Scale { get; set; }
         public int Parent { get; set; }
@@ -25,5 +24,4 @@ namespace Cethleann.Structure.Resource.Model
             return (matrixT * matrixR * matrixS).ToDragon();
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

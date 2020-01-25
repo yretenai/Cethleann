@@ -2,8 +2,7 @@ using DragonLib.Imaging.DXGI;
 
 namespace Cethleann.Structure.Resource.Texture
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public struct KSLTImage
+public struct KSLTImage
     {
         public KSLTFormat Format { get; set; }
         public short Width { get; set; }
@@ -36,5 +35,4 @@ namespace Cethleann.Structure.Resource.Texture
             };
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

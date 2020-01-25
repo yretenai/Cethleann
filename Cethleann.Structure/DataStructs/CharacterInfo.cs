@@ -1,7 +1,6 @@
 ﻿using DragonLib.Numerics;
 using JetBrains.Annotations;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace Cethleann.Structure.DataStructs
 {
     [PublicAPI]
@@ -75,4 +74,3 @@ namespace Cethleann.Structure.DataStructs
         public byte Unknown_X4B { get; set; } // always zero? tbh probably padding byte.
     }
 }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
