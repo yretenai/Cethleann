@@ -2,7 +2,7 @@
 
 namespace Cethleann.Structure.Resource.Model
 {
-public struct ModelGeometrySocket
+    public struct ModelGeometrySocket
     {
         public int BoneId { get; set; }
         public float Weight { get; set; }

@@ -1,6 +1,6 @@
 namespace Cethleann.Structure.Resource.Model
 {
-public enum TextureKind : short
+    public enum TextureKind : short
     {
         Color = 1,
         Normal = 3,

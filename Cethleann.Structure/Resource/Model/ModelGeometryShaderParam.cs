@@ -1,6 +1,6 @@
 ﻿namespace Cethleann.Structure.Resource.Model
 {
-public struct ModelGeometryShaderParam
+    public struct ModelGeometryShaderParam
     {
         public int Size { get; set; }
         public int Unknown1 { get; set; }

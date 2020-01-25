@@ -6,7 +6,7 @@ using Vector3 = DragonLib.Numerics.Vector3;
 
 namespace Cethleann.Structure.Resource.Model
 {
-public struct ModelSkeletonBone
+    public struct ModelSkeletonBone
     {
         public Vector3 Scale { get; set; }
         public int Parent { get; set; }

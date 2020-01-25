@@ -1,6 +1,6 @@
 namespace Cethleann.Structure.Resource.Model
 {
-public struct ModelGeometryAttribute
+    public struct ModelGeometryAttribute
     {
         public short Index { get; set; }
         public short Offset { get; set; }

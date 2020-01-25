@@ -1,6 +1,6 @@
 ﻿namespace Cethleann.Structure.DataStructs
 {
-public enum FactionHouse : ushort
+    public enum FactionHouse : ushort
     {
         Church = 0x0060,
         BlackEagles = 0x01C8,

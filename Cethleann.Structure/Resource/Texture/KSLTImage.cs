@@ -2,7 +2,7 @@ using DragonLib.Imaging.DXGI;
 
 namespace Cethleann.Structure.Resource.Texture
 {
-public struct KSLTImage
+    public struct KSLTImage
     {
         public KSLTFormat Format { get; set; }
         public short Width { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace Cethleann.Structure.Resource.Texture
 {
-public enum TextureType : byte
+    public enum TextureType : byte
     {
         R8G8B8A8 = 0x1,
         B8G8R8A8 = 0x2,

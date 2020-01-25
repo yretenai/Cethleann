@@ -1,6 +1,6 @@
 namespace Cethleann.Structure.Resource.Model
 {
-public struct ModelGeometryMeshGroup
+    public struct ModelGeometryMeshGroup
     {
         public int LOD { get; set; }
         public int Group { get; set; }

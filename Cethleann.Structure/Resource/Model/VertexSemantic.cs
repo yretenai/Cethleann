@@ -1,6 +1,6 @@
 namespace Cethleann.Structure.Resource.Model
 {
-public enum VertexSemantic : byte
+    public enum VertexSemantic : byte
     {
         Position = 0,
         Weight,

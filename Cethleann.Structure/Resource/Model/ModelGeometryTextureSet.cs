@@ -1,6 +1,6 @@
 ﻿namespace Cethleann.Structure.Resource.Model
 {
-public struct ModelGeometryTextureSet
+    public struct ModelGeometryTextureSet
     {
         public short Index { get; set; }
         public short TexCoord { get; set; }

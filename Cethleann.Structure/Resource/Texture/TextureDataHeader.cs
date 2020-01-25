@@ -1,6 +1,6 @@
 ﻿namespace Cethleann.Structure.Resource.Texture
 {
-public struct TextureDataHeader
+    public struct TextureDataHeader
     {
         /// <summary>
         ///     SHR 4

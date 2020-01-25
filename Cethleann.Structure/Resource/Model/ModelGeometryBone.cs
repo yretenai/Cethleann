@@ -1,6 +1,6 @@
 namespace Cethleann.Structure.Resource.Model
 {
-public struct ModelGeometryBone
+    public struct ModelGeometryBone
     {
         public int Index { get; set; }
         public int Unknown1 { get; set; }

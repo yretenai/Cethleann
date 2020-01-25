@@ -2,7 +2,7 @@
 
 namespace Cethleann.Structure.Resource.Texture
 {
-[Flags]
+    [Flags]
     public enum TextureFlags : ushort
     {
         ExtraData = 0x1000

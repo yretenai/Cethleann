@@ -1,6 +1,6 @@
 namespace Cethleann.Structure.Resource.Model
 {
-public enum VertexDataType : ushort
+    public enum VertexDataType : ushort
     {
         Vector2Single = 0x0001,
         Vector3Single = 0x0002,

@@ -1,6 +1,6 @@
 ﻿namespace Cethleann.Structure.Resource.Model
 {
-public struct ModelSkeletonHeader
+    public struct ModelSkeletonHeader
     {
         public int DataOffset { get; set; }
         public int SkeletonCount { get; set; }

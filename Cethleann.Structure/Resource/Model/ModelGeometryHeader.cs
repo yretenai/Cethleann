@@ -2,7 +2,7 @@
 
 namespace Cethleann.Structure.Resource.Model
 {
-public struct ModelGeometryHeader
+    public struct ModelGeometryHeader
     {
         public int ModelType { get; set; }
         public float BoundingBoxWeight { get; set; }
