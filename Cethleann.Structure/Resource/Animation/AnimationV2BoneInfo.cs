@@ -6,10 +6,10 @@ namespace Cethleann.Structure.Resource.Animation
     {
         [BitField(2)]
         public byte SplineCount { get; set; }
-        
+
         [BitField(10)]
         public short BoneId { get; set; }
-        
+
         [BitField(20)]
         public int DataOffset { get; set; }
     }

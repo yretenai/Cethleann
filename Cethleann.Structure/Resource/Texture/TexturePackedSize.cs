@@ -6,7 +6,7 @@ namespace Cethleann.Structure.Resource.Texture
     {
         [BitField(4)]
         public byte Width { get; set; }
-        
+
         [BitField(4)]
         public byte Height { get; set; }
     }

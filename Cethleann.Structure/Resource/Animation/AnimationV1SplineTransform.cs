@@ -10,4 +10,4 @@ namespace Cethleann.Structure.Resource.Animation
         WorldRST = 0x6,
         WorldRS = 0x8
     }
-}    
+}

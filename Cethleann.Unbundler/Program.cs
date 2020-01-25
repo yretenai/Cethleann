@@ -5,8 +5,6 @@ using System.IO;
 using System.Linq;
 using Cethleann.DataTables;
 using Cethleann.G1;
-using Cethleann.Structure.Resource.Animation;
-using DragonLib;
 using DragonLib.CLI;
 using DragonLib.IO;
 
