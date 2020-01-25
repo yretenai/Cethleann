@@ -76,7 +76,7 @@ namespace Cethleann.G1
         /// <summary>
         ///     Animation Spline Track Data
         /// </summary>
-        public List<(AnimationV2BoneInfo info, List<(AnimationV2Spline spline, short[] timing)> Data)> Splines { get; set; } = new List<(AnimationV2BoneInfo, List<(AnimationV2Spline, short[])>)>();
+        public List<(AnimationV2BoneInfo info, List<(AnimationV2Spline Info, short[] Timing)> Data)> Splines { get; set; } = new List<(AnimationV2BoneInfo, List<(AnimationV2Spline, short[])>)>();
 
         /// <summary>
         ///     Animation Interpolation Data
