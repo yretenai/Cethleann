@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using Cethleann.Structure;
 using DragonLib;
 
 namespace Cethleann

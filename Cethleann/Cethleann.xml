@@ -46,7 +46,7 @@
         </member>
         <member name="M:Cethleann.Audio.GCADPCMSound.ReconstructWave(System.Boolean)">
             <summary>
-            Reconstructs stream to a WAV
+                Reconstructs stream to a WAV
             </summary>
             <returns></returns>
         </member>
@@ -191,7 +191,7 @@
         </member>
         <member name="M:Cethleann.Audio.MSADPCMSound.ReconstructWave(System.Boolean)">
             <summary>
-            Reconstructs stream to a WAV
+                Reconstructs stream to a WAV
             </summary>
             <returns></returns>
         </member>
@@ -588,290 +588,6 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
-        <member name="T:Cethleann.DataType">
-            <summary>
-                Magic Values for most files
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.None">
-            <summary>
-                Used as a dummy
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.StructTable">
-            <summary>
-                <seealso cref="F:Cethleann.DataType.StructTable" />
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.SARC">
-            <summary>
-                S-Archive?
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ElixirArchive">
-            <summary>
-                Elixir Archive
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.SPKG">
-            <summary>
-                S-Package?
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.KTSR">
-            <summary>
-                KTGL Sound Resource
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.KTSC">
-            <summary>
-                KTGL Sound Container
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.KTSS">
-            <summary>
-                KTGL Sound Sample
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.KOVS">
-            <summary>
-                KTGL Ogg Vorbis Sound
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.OGG">
-            <summary>
-                Ogg Vorbis
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.SCEN">
-            <summary>
-                Scene
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.SPK3">
-            <summary>
-                Shader Pack?
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.SWGQ">
-            <summary>
-                Shader Pack?
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.River">
-            <summary>
-                River?
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.RIGB">
-            <summary>
-                Rig B?
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.DATD">
-            <summary>
-                DATD
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.LCD0">
-            <summary>
-                LCD 0
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.WEBM">
-            <summary>
-                WebM Video Container
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.MDLK">
-            <summary>
-                KTGL Model Container
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ScreenLayout">
-            <summary>
-                KTGL Screen Layout Texture
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ScreenLayoutTexture">
-            <summary>
-                KTGL Screen Layout
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.VideoSource">
-            <summary>
-                KTGL Video Source (usually encrypted)
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.Font">
-            <summary>
-                KTGL Font
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.LosslessAudio">
-            <summary>
-                KTGL G1L
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.TextLocalization19">
-            <summary>
-                teXt Localization, version 19
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.TextureGroup">
-            <summary>
-                KTGL Texture Group
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.Model">
-            <summary>
-                KTGL Model Base
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.AnimationV2">
-            <summary>
-                KTGL Animation
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.Animation">
-            <summary>
-                KTGL Animation
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ModelGroup">
-            <summary>
-                KTGL Model Group
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.EffectManager">
-            <summary>
-                KTGL Effect Model
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.Effect">
-            <summary>
-                KTGL Effect
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.SEBin">
-            <summary>
-                Sound E Bin
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.PostFX">
-            <summary>
-                KTGL PostFX Shader Bundle
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ModelSkeleton">
-            <summary>
-                KTGL Model Skeleton
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ModelFormat">
-            <summary>
-                KTGL Model Format
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ModelGeometry">
-            <summary>
-                KTGL Model Geometry
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ModelMatrix">
-            <summary>
-                KTGL Model Matrices
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ModelExtra">
-            <summary>
-                KTGL Model ExtraData.
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ModelCollision">
-            <summary>
-                KTGL Collision Model.
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ModelClothDriver">
-            <summary>
-                KTGL Cloth Driver
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ModelCloth">
-            <summary>
-                KTGL Cloth
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ModelClothSurface">
-            <summary>
-                KTGL Cloth
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ModelSoftbody">
-            <summary>
-                KTGL Soft Body voxels
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.ModelHair">
-            <summary>
-                KTGL Hair voxels
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.GMPK">
-            <summary>
-                Model Pack
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.GAPK">
-            <summary>
-                Animation Pack
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.GEPK">
-            <summary>
-                Effect Pack
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.RTRPK">
-            <summary>
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.RIFF">
-            <summary>
-                Wave Header Data
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.WHD">
-            <summary>
-                Wave Header Data
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.HDDB">
-            <summary>
-                HDDB
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.WBH">
-            <summary>
-                Wave Bank Header
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.WBD">
-            <summary>
-                Wave Bank Data
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.Compressed">
-            <summary>
-                DEFLATE Compressed File.
-            </summary>
-        </member>
-        <member name="F:Cethleann.DataType.CompressedChonky">
-            <summary>
-                DEFLATE Compressed File.
-            </summary>
-        </member>
         <member name="T:Cethleann.Extensions">
             <summary>
                 Series of helper for FETH.
@@ -885,7 +601,7 @@
             <param name="onlyAlphaNum"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.Extensions.ToFourCC(Cethleann.DataType,System.Boolean)">
+        <member name="M:Cethleann.Extensions.ToFourCC(Cethleann.Structure.DataType,System.Boolean)">
             <summary>
                 Converts a DataType to a FourCC
             </summary>
@@ -907,14 +623,14 @@
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.Extensions.GetExtension(Cethleann.DataType)">
+        <member name="M:Cethleann.Extensions.GetExtension(Cethleann.Structure.DataType)">
             <summary>
                 Returns determined string extension for this magic.
             </summary>
             <param name="magic"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.Extensions.IsKnown(Cethleann.DataType)">
+        <member name="M:Cethleann.Extensions.IsKnown(Cethleann.Structure.DataType)">
             <summary>
                 True if the magic values are known
             </summary>
@@ -928,7 +644,7 @@
             <param name="span"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.Extensions.Matches(System.Span{System.Byte},Cethleann.DataType)">
+        <member name="M:Cethleann.Extensions.Matches(System.Span{System.Byte},Cethleann.Structure.DataType)">
             <summary>
                 True if the magic value matches the first 4 bytes of the span.
             </summary>
@@ -936,7 +652,7 @@
             <param name="magic"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.Extensions.Matches(Cethleann.DataType,System.Span{System.Byte})">
+        <member name="M:Cethleann.Extensions.Matches(Cethleann.Structure.DataType,System.Span{System.Byte})">
             <summary>
                 True if the magic value matches the first 4 bytes of the span.
             </summary>
@@ -946,7 +662,7 @@
         </member>
         <member name="M:Cethleann.Extensions.GetDataType(System.Span{System.Byte})">
             <summary>
-                Gets <seealso cref="T:Cethleann.DataType" /> from a Span.
+                Gets <seealso cref="T:Cethleann.Structure.DataType" /> from a Span.
             </summary>
             <param name="span"></param>
             <returns></returns>
@@ -1854,7 +1570,7 @@
                 Management class for DATA0 and INFO0 files.
             </summary>
         </member>
-        <member name="M:Cethleann.ManagedFS.Flayn.#ctor(System.String,Cethleann.GameId)">
+        <member name="M:Cethleann.ManagedFS.Flayn.#ctor(System.String,Cethleann.Structure.GameId)">
             <summary>
                 Loads data
             </summary>
@@ -1953,7 +1669,7 @@
                 Loads a filelist from a csv file
             </summary>
         </member>
-        <member name="M:Cethleann.ManagedFS.Flayn.GetFilename(System.Int32,System.String,Cethleann.DataType)">
+        <member name="M:Cethleann.ManagedFS.Flayn.GetFilename(System.Int32,System.String,Cethleann.Structure.DataType)">
             <summary>
                 Attempts to get a valid filename/filepath.
             </summary>
@@ -2252,67 +1968,6 @@
         <member name="P:Cethleann.RTRPK.Entries">
             <summary>
                 Data Streams found in the PAK
-            </summary>
-        </member>
-        <member name="T:Cethleann.Structure.CompressionInfo">
-            <summary>
-                Info regarding compression for a file in DATA1
-            </summary>
-        </member>
-        <member name="P:Cethleann.Structure.CompressionInfo.ChunkSize">
-            <summary>
-                usually 0x0001_0000, sometimes 0xFFFF_FFFF for dynamically sized.
-            </summary>
-        </member>
-        <member name="P:Cethleann.Structure.CompressionInfo.ChunkCount">
-            <summary>
-                Number of chunks
-            </summary>
-        </member>
-        <member name="P:Cethleann.Structure.CompressionInfo.Size">
-            <summary>
-                Compressed (read: bytes to read in this file) size of this file.
-            </summary>
-        </member>
-        <member name="T:Cethleann.Structure.DATA0Entry">
-            <summary>
-                An entry in DATA0
-            </summary>
-        </member>
-        <member name="P:Cethleann.Structure.DATA0Entry.Offset">
-            <summary>
-                Offset in DATA1
-            </summary>
-        </member>
-        <member name="P:Cethleann.Structure.DATA0Entry.UncompressedSize">
-            <summary>
-                Uncompressed (read: bytes to expect from decompression) size of this file.
-            </summary>
-        </member>
-        <member name="P:Cethleann.Structure.DATA0Entry.CompressedSize">
-            <summary>
-                Compressed (read: bytes to read in this file) size of this file.
-            </summary>
-        </member>
-        <member name="P:Cethleann.Structure.DATA0Entry.IsCompressed">
-            <summary>
-                True if the file is compressed with ZLIB
-            </summary>
-        </member>
-        <member name="T:Cethleann.Structure.INFO1Entry">
-            <summary>
-                All assumed
-            </summary>
-        </member>
-        <member name="P:Cethleann.Structure.Resource.Texture.TextureDataHeader.MipCount">
-            <summary>
-                SHR 4
-            </summary>
-        </member>
-        <member name="P:Cethleann.Structure.Resource.Texture.TextureDataHeader.PackedDimensions">
-            <summary>
-                2 POW value AND 0xF = width
-                2 POW value SHR 0x4 = height
             </summary>
         </member>
         <member name="T:Cethleann.Text.TextLocalization">

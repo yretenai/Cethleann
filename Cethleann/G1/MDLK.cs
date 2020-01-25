@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using Cethleann.Structure;
 using Cethleann.Structure.Resource;
 using JetBrains.Annotations;
 

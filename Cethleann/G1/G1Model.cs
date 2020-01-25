@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Cethleann.G1.G1ModelSection;
 using Cethleann.G1.G1ModelSection.G1MGSection;
+using Cethleann.Structure;
 using Cethleann.Structure.Resource;
 using Cethleann.Structure.Resource.Model;
 using DragonLib;

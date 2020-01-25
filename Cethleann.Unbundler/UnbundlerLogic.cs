@@ -7,6 +7,7 @@ using Cethleann.Audio;
 using Cethleann.DataTables;
 using Cethleann.G1;
 using Cethleann.Koei;
+using Cethleann.Structure;
 using Cethleann.Text;
 using DragonLib;
 using DragonLib.IO;

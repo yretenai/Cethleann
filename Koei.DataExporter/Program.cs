@@ -1,5 +1,6 @@
 ﻿using Cethleann;
 using Cethleann.ManagedFS;
+using Cethleann.Structure;
 using Cethleann.Unbundler;
 using DragonLib.CLI;
 using JetBrains.Annotations;

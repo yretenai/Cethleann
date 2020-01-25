@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Cethleann.Structure;
 using Cethleann.Structure.Resource;
 using Cethleann.Structure.Resource.Texture;
 using DragonLib;
@@ -79,12 +80,12 @@ namespace Cethleann.G1
         /// <param name="header"></param>
         /// <param name="rewriteTextureType"></param>
         /// <returns></returns>
-        public static (int width, int height, int mips, DXGIPixelFormat format, int system) UnpackWHM(TextureDataHeader header, Func<byte, TextureType> rewriteTextureType = null)
+        public static (int width, int height, TexturePackedInfo info, DXGIPixelFormat format) UnpackWHM(TextureDataHeader header, Func<byte, TextureType> rewriteTextureType = null)
         {
-            var width = (int) Math.Pow(2, header.PackedDimensions & 0xF);
-            var height = (int) Math.Pow(2, header.PackedDimensions >> 4);
-            var mips = header.MipCount >> 4;
-            var system = header.MipCount & 0xF;
+            var dimensions = BitPacked.Unpack<TexturePackedSize>(header.PackedDimensions);
+            var info = BitPacked.Unpack<TexturePackedInfo>(header.PackedDimensions);
+            var width = (int) Math.Pow(2, dimensions.Width);
+            var height = (int) Math.Pow(2, dimensions.Height);
             var type = rewriteTextureType?.Invoke((byte) header.Type) ?? header.Type;
             var format = type switch
             {
@@ -96,7 +97,7 @@ namespace Cethleann.G1
                 _ => DXGIPixelFormat.UNKNOWN
             };
 
-            return (width, height, mips, format, system);
+            return (width, height, info, format);
         }
     }
 }

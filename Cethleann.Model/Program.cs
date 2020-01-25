@@ -5,6 +5,7 @@ using Cethleann.DataTables;
 using Cethleann.G1;
 using Cethleann.G1.G1ModelSection;
 using Cethleann.G1.G1ModelSection.G1MGSection;
+using Cethleann.Structure;
 using Cethleann.Structure.Resource.Texture;
 using DragonLib.Imaging;
 using DragonLib.Imaging.DXGI;
@@ -124,11 +125,11 @@ namespace Cethleann.Model
 
             foreach (var (_, header, _, blob) in group.Textures)
             {
-                var (width, height, mips, format, _) = G1TextureGroup.UnpackWHM(header);
+                var (width, height, info, format) = G1TextureGroup.UnpackWHM(header);
                 Logger.Info("G1T", $@"{pathBase}\{i:X4}.tif");
                 if (format == DXGIPixelFormat.UNKNOWN)
                 {
-                    for (var dxgiFormat = DXGIPixelFormat.UNKNOWN + 1; dxgiFormat < DXGIPixelFormat.DXGI_END; ++dxgiFormat) File.WriteAllBytes($@"{pathBase}\{i:X4}_({dxgiFormat:G}).dds", DXGI.BuildDDS(dxgiFormat, mips, width, height, 1, blob.Span).ToArray());
+                    for (var dxgiFormat = DXGIPixelFormat.UNKNOWN + 1; dxgiFormat < DXGIPixelFormat.DXGI_END; ++dxgiFormat) File.WriteAllBytes($@"{pathBase}\{i:X4}_({dxgiFormat:G}).dds", DXGI.BuildDDS(dxgiFormat, info.Mips, width, height, 1, blob.Span).ToArray());
 
                     continue;
                 }
@@ -150,7 +151,7 @@ namespace Cethleann.Model
                 else
                 {
                     var localSize = size;
-                    for (var j = 1; j < mips; j++)
+                    for (var j = 1; j < info.Mips; j++)
                     {
                         localSize /= 4;
                         size += localSize;
@@ -174,7 +175,7 @@ namespace Cethleann.Model
                         // ignored
                     }
 
-                File.WriteAllBytes($@"{pathBase}\{i:X4}.dds", DXGI.BuildDDS(format, frames != 0 ? 0 : mips, width, height, frames, blob.Span).ToArray());
+                File.WriteAllBytes($@"{pathBase}\{i:X4}.dds", DXGI.BuildDDS(format, frames != 0 ? 0 : info.Mips, width, height, frames, blob.Span).ToArray());
                 i += 1;
             }
         }

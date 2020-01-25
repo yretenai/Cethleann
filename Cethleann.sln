@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninja.DataExporter", "Ninja
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dissidia.SaveDecrypt", "Dissidia.SaveDecrypt\Dissidia.SaveDecrypt.csproj", "{A78E24FA-0D7F-4095-8348-4EB9FED993E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cethleann.Structure", "Cethleann.Structure\Cethleann.Structure.csproj", "{6EA7334B-D2F1-486E-A5C7-337FABF7B7D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -77,6 +79,10 @@ Global
 		{A78E24FA-0D7F-4095-8348-4EB9FED993E4}.Debug|x64.Build.0 = Debug|Any CPU
 		{A78E24FA-0D7F-4095-8348-4EB9FED993E4}.Release|x64.ActiveCfg = Release|Any CPU
 		{A78E24FA-0D7F-4095-8348-4EB9FED993E4}.Release|x64.Build.0 = Release|Any CPU
+		{6EA7334B-D2F1-486E-A5C7-337FABF7B7D8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6EA7334B-D2F1-486E-A5C7-337FABF7B7D8}.Debug|x64.Build.0 = Debug|Any CPU
+		{6EA7334B-D2F1-486E-A5C7-337FABF7B7D8}.Release|x64.ActiveCfg = Release|Any CPU
+		{6EA7334B-D2F1-486E-A5C7-337FABF7B7D8}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

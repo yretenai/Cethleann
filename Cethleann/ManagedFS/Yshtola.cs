@@ -60,10 +60,10 @@ namespace Cethleann.ManagedFS
         /// <exception cref="FileNotFoundException"></exception>
         public (Memory<byte> Data, string Path) ReadEntry(IDTableEntry entry)
         {
-            var path = Path.Combine(Root, entry.Path(Table));
+            var path = Path.Combine(Root, entry.Path(Table.Table, Table.Header.Offset));
             if (!File.Exists(path)) throw new FileNotFoundException(path);
 
-            return (new Memory<byte>(Table.Read(File.ReadAllBytes(path), entry, Settings.XorTruth, Settings.Multiplier, Settings.Divisor).ToArray()), entry.OriginalPath(Table));
+            return (new Memory<byte>(Table.Read(File.ReadAllBytes(path), entry, Settings.XorTruth, Settings.Multiplier, Settings.Divisor).ToArray()), entry.OriginalPath(Table.Table, Table.Header.Offset));
         }
     }
 

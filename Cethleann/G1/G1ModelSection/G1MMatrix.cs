@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Cethleann.Structure;
 using Cethleann.Structure.Resource;
 using DragonLib.Numerics;
 using JetBrains.Annotations;
