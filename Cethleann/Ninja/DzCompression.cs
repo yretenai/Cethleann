@@ -53,6 +53,7 @@ namespace Cethleann.Ninja
                 else
                 {
                     chunk.Slice(4).CopyTo(buffer.Slice(decPtr));
+                    decPtr += chunk.Length - 4;
                 }
             }
 
