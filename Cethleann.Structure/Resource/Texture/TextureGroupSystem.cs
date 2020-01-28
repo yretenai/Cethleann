@@ -24,9 +24,12 @@ namespace Cethleann.Structure.Resource.Texture
         Playstation4 = 0xB,
         XboxOne = 0xC,
         
-        // ?? = 0xD,
-        // ?? = 0xE,
-        // ?? = 0xF,
+        // Assumption
+        Arcade = 0xD,
+        // Assumption
+        Playstation5 = 0xE,
+        // Assumption
+        XboxScarlett = 0xF,
         Switch = 0x10
     }
 }
