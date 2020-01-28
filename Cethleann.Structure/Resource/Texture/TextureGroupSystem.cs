@@ -7,8 +7,9 @@ namespace Cethleann.Structure.Resource.Texture
     [PublicAPI]
     public enum TextureGroupSystem : uint
     {
-        Playstation2 = 0x0
+        Playstation2 = 0x0,
         Playstation3 = 0x1,
+        
         // ?? = 0x2,
         // ?? = 0x3,
         // ?? = 0x4,
