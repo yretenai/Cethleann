@@ -34,18 +34,25 @@ namespace Cethleann.Ninja
             {
                 var chunk = data.Slice(ptr, sizes[i]);
                 var blockSize = MemoryMarshal.Read<int>(chunk);
-                var compressedChunk = chunk.Slice(6, blockSize - 2);
                 ptr += sizes[i].Align(align);
-                unsafe
+                if (blockSize > 0)
                 {
-                    fixed (byte* pin = &compressedChunk.GetPinnableReference())
+                    var compressedChunk = chunk.Slice(6, blockSize - 2);
+                    unsafe
                     {
-                        using var stream = new UnmanagedMemoryStream(pin, data.Length);
-                        using var inflate = new DeflateStream(stream, CompressionMode.Decompress, true);
-                        var decChunk = buffer.Slice(decPtr);
-                        var r = inflate.Read(decChunk);;
-                        decPtr += r;
+                        fixed (byte* pin = &compressedChunk.GetPinnableReference())
+                        {
+                            using var stream = new UnmanagedMemoryStream(pin, data.Length);
+                            using var inflate = new DeflateStream(stream, CompressionMode.Decompress, true);
+                            var decChunk = buffer.Slice(decPtr);
+                            var r = inflate.Read(decChunk);
+                            decPtr += r;
+                        }
                     }
+                }
+                else
+                {
+                    chunk.Slice(4).CopyTo(buffer.Slice(decPtr));
                 }
             }
 

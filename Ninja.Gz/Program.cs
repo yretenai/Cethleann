@@ -4,7 +4,7 @@ using Cethleann;
 using Cethleann.Ninja;
 using DragonLib.IO;
 
-namespace Ninja.Dz
+namespace Ninja.Gz
 {
     static class Program
     {

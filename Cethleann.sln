@@ -31,7 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cethleann.Structure", "Ceth
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cethleann.Prototype", "Cethleann.Prototype\Cethleann.Prototype.csproj", "{8AF4B89F-A020-407A-A846-F6C36035CF59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninja.Dz", "Ninja.Dz\Ninja.Dz.csproj", "{B1FE941B-CCD5-43F0-B9E9-882F936C98BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninja.Gz", "Ninja.Gz\Ninja.Gz.csproj", "{B1FE941B-CCD5-43F0-B9E9-882F936C98BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
