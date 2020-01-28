@@ -17,7 +17,7 @@ namespace Cethleann.Structure.Resource.Texture
         Vita = 0x6,
         Android = 0x7,
         iOS = 0x8,
-
+        WiiU = 0x9,
         Windows = 0xA,
 
         // Also bad PC ports
