@@ -31,30 +31,33 @@ namespace Cethleann.G1
             Section = MemoryMarshal.Read<ResourceSectionHeader>(data);
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1T version {Section.Version.ToVersion()} is not supported!");
 
-            var header = MemoryMarshal.Read<TextureGroupHeader>(data.Slice(SizeHelper.SizeOf<ResourceSectionHeader>()));
-            var blobSize = sizeof(int) * header.EntrySize;
+            Header = MemoryMarshal.Read<TextureGroupHeader>(data.Slice(SizeHelper.SizeOf<ResourceSectionHeader>()));
+            var blobSize = sizeof(int) * Header.EntrySize;
             var usage = MemoryMarshal.Cast<byte, TextureUsage>(data.Slice(SizeHelper.SizeOf<ResourceSectionHeader>() + SizeHelper.SizeOf<TextureGroupHeader>(), blobSize));
-            var offsets = MemoryMarshal.Cast<byte, int>(data.Slice(header.TableOffset, blobSize));
+            var offsets = MemoryMarshal.Cast<byte, int>(data.Slice(Header.TableOffset, blobSize));
 
-            for (var i = 0; i < header.EntrySize; i++)
+            for (var i = 0; i < Header.EntrySize; i++)
             {
-                var nextOffset = data.Length - header.TableOffset - offsets[i];
-                if (i < header.EntrySize - 1) nextOffset = offsets[i + 1] - offsets[i];
-                var imageData = data.Slice(header.TableOffset + offsets[i], nextOffset);
+                var nextOffset = data.Length - Header.TableOffset - offsets[i];
+                if (i < Header.EntrySize - 1) nextOffset = offsets[i + 1] - offsets[i];
+                var imageData = data.Slice(Header.TableOffset + offsets[i], nextOffset);
                 var dataHeader = MemoryMarshal.Read<TextureDataHeader>(imageData);
                 var offset = SizeHelper.SizeOf<TextureDataHeader>();
-                var extra = new TextureExtraDataHeader
+                var extra = new TextureDataHeaderExtended
                 {
                     Size = 0xC
                 };
 
                 if (dataHeader.Flags.HasFlag(TextureFlags.ExtraData))
                 {
-                    extra = MemoryMarshal.Read<TextureExtraDataHeader>(imageData.Slice(offset));
+                    var extraData = new Span<byte>(new byte[SizeHelper.SizeOf<TextureDataHeaderExtended>()]);
+                    var size = MemoryMarshal.Read<int>(imageData.Slice(offset));
+                    imageData.Slice(offset, size).CopyTo(extraData);
+                    extra = MemoryMarshal.Read<TextureDataHeaderExtended>(extraData);
                     offset += extra.Size;
                 }
 
-                if (dataHeader.Type.ToString("G") == dataHeader.Type.ToString("D")) Logger.Warn("G1T", $"Texture Type {dataHeader.Type:X} at offset {(header.TableOffset + offsets[i]):X16} (entry {i}) is unsupported!");
+                if (dataHeader.Type.ToString("G") == dataHeader.Type.ToString("D")) Logger.Warn("G1T", $"Texture Type {dataHeader.Type:X} at offset {(Header.TableOffset + offsets[i]):X16} (entry {i}) is unsupported!");
 
                 var imagePixelData = Memory<byte>.Empty;
                 if (!metaOnly) imagePixelData = new Memory<byte>(imageData.Slice(offset).ToArray());
@@ -64,9 +67,14 @@ namespace Cethleann.G1
         }
 
         /// <summary>
+        ///  G1TG Header
+        /// </summary>
+        public TextureGroupHeader Header { get; set; }
+
+        /// <summary>
         ///     List of textures found in this bundle
         /// </summary>
-        public List<(TextureUsage usage, TextureDataHeader header, TextureExtraDataHeader extra, Memory<byte> blob)> Textures { get; } = new List<(TextureUsage, TextureDataHeader, TextureExtraDataHeader, Memory<byte>)>();
+        public List<(TextureUsage usage, TextureDataHeader header, TextureDataHeaderExtended extended, Memory<byte> blob)> Textures { get; } = new List<(TextureUsage, TextureDataHeader, TextureDataHeaderExtended, Memory<byte>)>();
 
         /// <inheritdoc />
         public int SupportedVersion { get; } = 60;

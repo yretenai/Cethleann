@@ -1127,6 +1127,11 @@
             <param name="ignoreVersion"></param>
             <param name="metaOnly">only parse metadata</param>
         </member>
+        <member name="P:Cethleann.G1.G1TextureGroup.Header">
+            <summary>
+             G1TG Header
+            </summary>
+        </member>
         <member name="P:Cethleann.G1.G1TextureGroup.Textures">
             <summary>
                 List of textures found in this bundle

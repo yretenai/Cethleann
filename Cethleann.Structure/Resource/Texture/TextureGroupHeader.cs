@@ -4,7 +4,7 @@
     {
         public int TableOffset { get; set; }
         public int EntrySize { get; set; }
-        public int Unknown1 { get; set; }
+        public TextureGroupSystem System { get; set; }
         public int Unknown2 { get; set; }
     }
 }
