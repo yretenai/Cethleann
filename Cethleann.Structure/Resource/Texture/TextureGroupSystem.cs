@@ -13,7 +13,7 @@ namespace Cethleann.Structure.Resource.Texture
         // ?? = 0x2,
         // ?? = 0x3,
         // ?? = 0x4,
-        ThreeDS = 0x5,
+        Nintendo3DS = 0x5,
         Vita = 0x6,
         Android = 0x7,
         iOS = 0x8,
