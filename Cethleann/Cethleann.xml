@@ -1129,7 +1129,7 @@
         </member>
         <member name="P:Cethleann.G1.G1TextureGroup.Header">
             <summary>
-             G1TG Header
+                G1TG Header
             </summary>
         </member>
         <member name="P:Cethleann.G1.G1TextureGroup.Textures">
@@ -1932,6 +1932,27 @@
             <param name="key"></param>
             <returns></returns>
         </member>
+        <member name="T:Cethleann.Ninja.DzCompression">
+            <summary>
+                Compression helper class for TN's fork of KTGL
+            </summary>
+        </member>
+        <member name="M:Cethleann.Ninja.DzCompression.Decompress(System.Span{System.Byte},System.Int32)">
+            <summary>
+                Decompresses a .dz stream.
+            </summary>
+            <param name="data"></param>
+            <param name="align"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Ninja.DzCompression.Compress(System.Span{System.Byte},System.Int32)">
+            <summary>
+                Compresses a stream into a .gz stream.
+            </summary>
+            <param name="data"></param>
+            <param name="blockSize"></param>
+            <returns></returns>
+        </member>
         <member name="T:Cethleann.Ninja.Encryption">
             <summary>
                 Encryption helper for TN games.
@@ -2006,6 +2027,29 @@
             <param name="truth"></param>
             <param name="multiplier"></param>
             <param name="divisor"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.OId">
+            <summary>
+                Object ID / Bone ID list
+            </summary>
+        </member>
+        <member name="M:Cethleann.OId.#ctor(System.Span{System.Byte},System.Text.Encoding)">
+            <summary>
+                Initialize with buffer
+            </summary>
+            <param name="buffer"></param>
+            <param name="encoding"></param>
+        </member>
+        <member name="P:Cethleann.OId.Names">
+            <summary>
+                lsof string names
+            </summary>
+        </member>
+        <member name="M:Cethleann.OId.Write">
+            <summary>
+                Write to buffer
+            </summary>
             <returns></returns>
         </member>
         <member name="T:Cethleann.Platform">

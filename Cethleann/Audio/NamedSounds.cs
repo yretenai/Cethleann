@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Cethleann.Structure.Resource.Audio;
 using DragonLib;
+using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Cethleann.Audio
@@ -22,8 +23,17 @@ namespace Cethleann.Audio
         {
             FullBuffer = new Memory<byte>(blob.ToArray());
             Header = MemoryMarshal.Read<NamedSoundHeader>(blob);
-            Filenames = new List<string>(Header.Count);
+            Logger.Assert(Header.Count == 1, "Header.Count == 1");
             var offset = SizeHelper.SizeOf<NamedSoundHeader>();
+            Filenames = new List<string>(Header.Count);
+            for (var i = 0; i < Header.Count; ++i)
+            {
+                var pointer = MemoryMarshal.Read<int>(blob.Slice(offset));
+                Filenames.Add(blob.Slice(pointer).ReadString());
+                offset += 4;
+            }
+
+            offset = Header.PointersTablePointer;
             for (var i = 0; i < Header.Count; ++i)
             {
                 var name = blob.Slice(offset).ReadString(null, false);

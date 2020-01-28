@@ -38,10 +38,19 @@ namespace Cethleann.G1
 
             for (var i = 0; i < Header.EntrySize; i++)
             {
+                var dataHeader = MemoryMarshal.Read<TextureDataHeader>(data.Slice(Header.TableOffset + offsets[i]));
                 var nextOffset = data.Length - Header.TableOffset - offsets[i];
-                if (i < Header.EntrySize - 1) nextOffset = offsets[i + 1] - offsets[i];
+                if (i < Header.EntrySize - 1)
+                {
+                    nextOffset = offsets[i + 1] - offsets[i];
+                    if (dataHeader.Type == TextureType.BrokenETC1)
+                    {
+                        nextOffset *= 2;
+                        offsets[i + 1] = nextOffset;
+                    }
+                }
+
                 var imageData = data.Slice(Header.TableOffset + offsets[i], nextOffset);
-                var dataHeader = MemoryMarshal.Read<TextureDataHeader>(imageData);
                 var offset = SizeHelper.SizeOf<TextureDataHeader>();
                 var extra = new TextureDataHeaderExtended
                 {
@@ -67,7 +76,7 @@ namespace Cethleann.G1
         }
 
         /// <summary>
-        ///  G1TG Header
+        ///     G1TG Header
         /// </summary>
         public TextureGroupHeader Header { get; set; }
 

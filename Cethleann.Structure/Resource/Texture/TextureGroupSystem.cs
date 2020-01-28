@@ -12,11 +12,13 @@ namespace Cethleann.Structure.Resource.Texture
         ThreeDS = 0x5,
         Vita = 0x6,
         Mobile = 0x7,
+
         // Assumption
         XboxOne = 0x9,
         Windows = 0xA,
+
         // Also bad PC ports
         Playstation4 = 0xB,
-        Switch = 0x10,
+        Switch = 0x10
     }
 }

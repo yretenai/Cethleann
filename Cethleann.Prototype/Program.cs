@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.IO;
+using JetBrains.Annotations;
 
 namespace Cethleann.Prototype
 {
@@ -9,6 +10,8 @@ namespace Cethleann.Prototype
         {
 #if DEBUG
             // :-)
+            var oid = new OId(File.ReadAllBytes(@"PC00A_MODELOid.bin"));
+            File.WriteAllLines(@"PC00A_MODELOid.txt", oid.Names);
 #endif
         }
     }
