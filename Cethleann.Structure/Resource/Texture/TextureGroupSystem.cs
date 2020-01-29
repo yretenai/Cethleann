@@ -7,27 +7,30 @@ namespace Cethleann.Structure.Resource.Texture
     [PublicAPI]
     public enum TextureGroupSystem : uint
     {
-        // Or WiiU?
-        Playstation3 = 0x1,
-        // ?? = 0x2,
-        // ?? = 0x3,
-        // ?? = 0x4,
-        ThreeDS = 0x5,
-        Vita = 0x6,
+        PS2 = 0x0,
+        PS3 = 0x1,
+        X360 = 0x2,
+        NWii = 0x3,
+        NDS = 0x4,
+        N3DS = 0x5,
+        PSVita = 0x6,
         Android = 0x7,
         iOS = 0x8,
-
-        // Assumption
-        XboxOne = 0x9,
+        NWiiU = 0x9,
         Windows = 0xA,
 
         // Also bad PC ports
-        Playstation4 = 0xB,
+        PS4 = 0xB,
+        XOne = 0xC,
         
-        // ?? = 0xC,
-        // ?? = 0xD,
-        // ?? = 0xE,
-        // ?? = 0xF,
+        // Assumption
+        Arcade = 0xD,
+        
+        // Assumption
+        PS5 = 0xE,
+        
+        // Assumption
+        XScarlett = 0xF,
         Switch = 0x10
     }
 }
