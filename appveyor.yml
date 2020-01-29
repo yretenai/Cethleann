@@ -1,0 +1,15 @@
+version: '{build}'
+image: Visual Studio 2019
+branches:
+  only:
+  - master
+before_build:
+  - cmd: dotnet --version
+  - cmd: dotnet restore Cethleann.sln --verbosity m
+build_script:
+  - cmd: dotnet publish --configuration Release --self-contained -r win10-x64 -o dist/CethleannStandalone
+clone_depth: 3
+deploy: off
+artifacts:
+- path: dist/CethleannStandalone
+  name: CethleannStandalone
