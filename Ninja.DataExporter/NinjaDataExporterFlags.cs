@@ -14,5 +14,8 @@ namespace Ninja.DataExporter
 
         [CLIFlag("game", Default = InstallType.Dissidia, Aliases = new[] { "g" }, Help = "Game Type", Category = "DataExporter Options")]
         public InstallType Game { get; set; }
+
+        [CLIFlag("manifest-only", Default = false, Help = "Only dump file manifest", Category = "DataExporter Options")]
+        public bool ManifestOnly { get; set; }
     }
 }

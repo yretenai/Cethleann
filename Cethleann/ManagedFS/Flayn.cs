@@ -38,7 +38,7 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Game ID of the game.
         /// </summary>
-        public GameId GameId { get; }
+        public GameId GameId { get; private set; }
 
         /// <summary>
         ///     Game data
@@ -98,7 +98,7 @@ namespace Cethleann.ManagedFS
         }
 
         /// <summary>
-        ///     Adds a DATA0 container, usually DLC
+        ///     Adds a DATA container, usually base games
         /// </summary>
         /// <param name="path"></param>
         /// <exception cref="FileNotFoundException"></exception>
@@ -106,13 +106,38 @@ namespace Cethleann.ManagedFS
         {
             var data0Path = Path.Combine(path, "DATA0.bin");
             var data1Path = Path.Combine(path, "DATA1.bin");
-            if (!File.Exists(data0Path) || !File.Exists(data1Path)) throw new FileNotFoundException("DATA0 or DATA1 is missing from path");
+            if (!File.Exists(data0Path) || !File.Exists(data1Path))
+            {
+                AddLinkFS(path);
+                return;
+            }
 
+            AddDataFSInternal(data0Path, data1Path);
+        }
+
+        /// <summary>
+        ///     Adds a LINKDATA container, usually base games
+        /// </summary>
+        /// <param name="path"></param>
+        /// <exception cref="FileNotFoundException"></exception>
+        public void AddLinkFS(string path)
+        {
+            var idxPath = Path.Combine(path, "LINKDATA.IDX");
+            var binPath = Path.Combine(path, "LINKDATA.BIN");
+            if (!File.Exists(idxPath) || !File.Exists(binPath)) throw new FileNotFoundException("Cannot find DATA or LINKDATA pairs");
+
+            if (GameId == GameId.FireEmblemThreeHouses) GameId = GameId.None;
+
+            AddDataFSInternal(idxPath, binPath);
+        }
+
+        private void AddDataFSInternal(string idxPath, string binPath)
+        {
             GC.ReRegisterForFinalize(this);
 
-            var fullPath = Path.GetFullPath(path);
+            var fullPath = Path.GetFullPath(Path.GetDirectoryName(idxPath));
             if (Data.Any(x => x.romfs == fullPath)) return;
-            var set = (new DATA0(data0Path), File.OpenRead(data1Path), fullPath);
+            var set = (new DATA0(idxPath), File.OpenRead(binPath), fullPath);
             if (RootData == default)
             {
                 RootData = set;

@@ -18,6 +18,12 @@ namespace Ninja.DataExporter
             };
             var yshtola = new Yshtola(flags.RootDirectory, settings);
 
+            if (!Directory.Exists(flags.OutputDirectory)) Directory.CreateDirectory(flags.OutputDirectory);
+
+            File.WriteAllBytes(Path.Combine(flags.OutputDirectory, "manifest." + flags.Game.ToString("G").ToLower()), yshtola.Table.Table.ToArray());
+
+            if (flags.ManifestOnly) return;
+
             foreach (var entry in yshtola)
             {
                 try

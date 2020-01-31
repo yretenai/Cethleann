@@ -4,7 +4,6 @@ using Cethleann.Structure;
 using Cethleann.Structure.Resource;
 using Cethleann.Structure.Resource.Model;
 using DragonLib;
-using DragonLib.IO;
 using JetBrains.Annotations;
 using OpenTK;
 using Vector3 = DragonLib.Numerics.Vector3;
@@ -31,7 +30,6 @@ namespace Cethleann.G1.G1ModelSection
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MS version {Section.Version.ToVersion()} is not supported!");
 
             Header = MemoryMarshal.Read<ModelSkeletonHeader>(data);
-            Logger.Assert(Header.SkeletonCount == 1, "SkeletonCount == 1");
             BoneIndices = MemoryMarshal.Cast<byte, short>(data.Slice(SizeHelper.SizeOf<ModelSkeletonHeader>(), Header.BoneTableCount)).ToArray();
             Bones = MemoryMarshal.Cast<byte, ModelSkeletonBone>(data.Slice(Header.DataOffset - SizeHelper.SizeOf<ResourceSectionHeader>(), Header.BoneCount * SizeHelper.SizeOf<ModelSkeletonBone>())).ToArray();
 

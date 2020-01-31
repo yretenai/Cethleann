@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using Cethleann.Structure;
 using DragonLib;
 
@@ -43,12 +41,10 @@ namespace Cethleann
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static int ToVersionA(this int value)
+        public static int ToVersionI(this int value)
         {
-            var text = value.ToString("");
-            while (text.Length < 4) text = "0" + text;
-            text = string.Join("", Encoding.ASCII.GetBytes(text).Select(x => $"{x:X2}"));
-            return int.Parse(text, NumberStyles.HexNumber);
+            value -= 0x30303030;
+            return (value & 0xFF) + (((value >> 8) & 0xFF) * 10) + (((value >> 16) & 0xFF) * 100) + (((value >> 24) & 0xFF) * 1000);
         }
 
         /// <summary>
@@ -56,10 +52,14 @@ namespace Cethleann
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static int ToVersionI(this int value)
+        public static int ToVersionA(this int value)
         {
-            value -= 0x30303030;
-            return (value & 0xFF) + (((value >> 8) & 0xFF) * 10) + (((value >> 16) & 0xFF) * 100) + (((value >> 24) & 0xFF) * 1000);
+            var v = 0x30303030;
+            v += ((int) Math.Floor((value % 10000) / 1000d)) << 24;
+            v += ((int) Math.Floor((value % 1000) / 100d)) << 16;
+            v += ((int) Math.Floor((value % 100) / 10d)) << 8;
+            v += value % 10;
+            return v;
         }
 
         /// <summary>

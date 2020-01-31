@@ -57,7 +57,7 @@ namespace Cethleann.G1
                     Size = 0xC
                 };
 
-                if (dataHeader.Flags.HasFlag(TextureFlags.ExtraData))
+                if (dataHeader.ExtraDataVersion > 0)
                 {
                     var extraData = new Span<byte>(new byte[SizeHelper.SizeOf<TextureDataHeaderExtended>()]);
                     var size = MemoryMarshal.Read<int>(imageData.Slice(offset));

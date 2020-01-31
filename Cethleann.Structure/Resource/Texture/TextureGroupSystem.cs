@@ -22,13 +22,13 @@ namespace Cethleann.Structure.Resource.Texture
         // Also bad PC ports
         PS4 = 0xB,
         XOne = 0xC,
-        
+
         // Assumption
         Arcade = 0xD,
-        
+
         // Assumption
         PS5 = 0xE,
-        
+
         // Assumption
         XScarlett = 0xF,
         Switch = 0x10

@@ -616,14 +616,14 @@
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.Extensions.ToVersionA(System.Int32)">
+        <member name="M:Cethleann.Extensions.ToVersionI(System.Int32)">
             <summary>
                 Converts a version tag to a number.
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.Extensions.ToVersionI(System.Int32)">
+        <member name="M:Cethleann.Extensions.ToVersionA(System.Int32)">
             <summary>
                 Converts a version tag to a number.
             </summary>
@@ -1241,6 +1241,16 @@
                 lsof sections in the file.
             </summary>
         </member>
+        <member name="M:Cethleann.G1.PackedResource.WriteWithHeader``1(``0,Cethleann.Structure.DataType,System.Int32)">
+            <summary>
+                Create a file with the given parameters
+            </summary>
+            <param name="header"></param>
+            <param name="target"></param>
+            <param name="version"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
         <member name="T:Cethleann.G1.SCEN">
             <summary>
                 SCEN Container
@@ -1713,7 +1723,14 @@
         </member>
         <member name="M:Cethleann.ManagedFS.Flayn.AddDataFS(System.String)">
             <summary>
-                Adds a DATA0 container, usually DLC
+                Adds a DATA container, usually base games
+            </summary>
+            <param name="path"></param>
+            <exception cref="T:System.IO.FileNotFoundException"></exception>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Flayn.AddLinkFS(System.String)">
+            <summary>
+                Adds a LINKDATA container, usually base games
             </summary>
             <param name="path"></param>
             <exception cref="T:System.IO.FileNotFoundException"></exception>

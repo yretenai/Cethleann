@@ -21,6 +21,8 @@
 
         public byte Unknown3 { get; set; }
 
-        public TextureFlags Flags { get; set; }
+        public byte Unknown4 { get; set; }
+
+        public byte ExtraDataVersion { get; set; }
     }
 }
