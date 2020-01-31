@@ -1,3 +1,4 @@
+using Cethleann.Structure;
 using DragonLib.CLI;
 using JetBrains.Annotations;
 
@@ -12,8 +13,8 @@ namespace Ninja.DataExporter
         [CLIFlag("out-dir", Positional = 1, Help = "Extraction Directory", IsRequired = true, Category = "DataExporter Options")]
         public string OutputDirectory { get; set; }
 
-        [CLIFlag("game", Default = InstallType.Dissidia, Aliases = new[] { "g" }, Help = "Game Type", Category = "DataExporter Options")]
-        public InstallType Game { get; set; }
+        [CLIFlag("game", Default = DataGame.DissidiaNT, Aliases = new[] { "g" }, ValidValues = new[] { nameof(DataGame.DissidiaNT), nameof(DataGame.DFFNT) }, Help = "Game Type", Category = "DataExporter Options")]
+        public DataGame Game { get; set; }
 
         [CLIFlag("manifest-only", Default = false, Help = "Only dump file manifest", Category = "DataExporter Options")]
         public bool ManifestOnly { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Cethleann.ManagedFS;
+using Cethleann.Structure;
 using DragonLib.CLI;
 using DragonLib.IO;
 
@@ -13,7 +14,7 @@ namespace Ninja.DataExporter
 
             var settings = flags.Game switch
             {
-                InstallType.Dissidia => new DissidiaSettings(),
+                DataGame.DissidiaNT => new DissidiaSettings(),
                 _ => null
             };
             var yshtola = new Yshtola(flags.RootDirectory, settings);

@@ -1,6 +1,6 @@
-namespace Cethleann.Structure
+namespace Cethleann.Structure.Resource.Audio
 {
-    public enum GameId : uint
+    public enum AudioGameId : uint
     {
         None = 0,
         FireEmblemThreeHouses = 0xB75674CE,

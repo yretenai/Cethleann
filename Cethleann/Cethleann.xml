@@ -200,7 +200,7 @@
                 Parser for General ADPCM Streams
             </summary>
         </member>
-        <member name="M:Cethleann.Audio.NamedSounds.#ctor(System.Span{System.Byte},Cethleann.Platform)">
+        <member name="M:Cethleann.Audio.NamedSounds.#ctor(System.Span{System.Byte},Cethleann.Structure.DataPlatform)">
             <summary>
                 Initialize from a blob
             </summary>
@@ -291,14 +291,14 @@
                 Implements KTSR
             </summary>
         </member>
-        <member name="M:Cethleann.Audio.SoundResource.#ctor(System.IO.Stream,Cethleann.Platform)">
+        <member name="M:Cethleann.Audio.SoundResource.#ctor(System.IO.Stream,Cethleann.Structure.DataPlatform)">
             <summary>
                 Initialize a KTSR from a Stream
             </summary>
             <param name="stream"></param>
             <param name="platform"></param>
         </member>
-        <member name="M:Cethleann.Audio.SoundResource.#ctor(System.Span{System.Byte},Cethleann.Platform)">
+        <member name="M:Cethleann.Audio.SoundResource.#ctor(System.Span{System.Byte},Cethleann.Structure.DataPlatform)">
             <summary>
                 Initialize a KTSR from a Span buffer
             </summary>
@@ -320,7 +320,7 @@
                 Sound resources found in the KTSR container.
             </summary>
         </member>
-        <member name="M:Cethleann.Audio.SoundResource.DecodeSection(System.Span{System.Byte},Cethleann.Platform)">
+        <member name="M:Cethleann.Audio.SoundResource.DecodeSection(System.Span{System.Byte},Cethleann.Structure.DataPlatform)">
             <summary>
                 Decodes KTSR Section
             </summary>
@@ -1654,7 +1654,7 @@
                 Management class for DATA0 and INFO0 files.
             </summary>
         </member>
-        <member name="M:Cethleann.ManagedFS.Flayn.#ctor(System.String,Cethleann.Structure.GameId)">
+        <member name="M:Cethleann.ManagedFS.Flayn.#ctor(System.String,Cethleann.Structure.DataGame)">
             <summary>
                 Loads data
             </summary>
@@ -2068,21 +2068,6 @@
                 Write to buffer
             </summary>
             <returns></returns>
-        </member>
-        <member name="T:Cethleann.Platform">
-            <summary>
-                For abstract platform info
-            </summary>
-        </member>
-        <member name="F:Cethleann.Platform.Switch">
-            <summary>
-                Source platform is the Nintendo Switch
-            </summary>
-        </member>
-        <member name="F:Cethleann.Platform.Windows">
-            <summary>
-                Source platform is Windows
-            </summary>
         </member>
         <member name="T:Cethleann.RTRPK">
             <summary>

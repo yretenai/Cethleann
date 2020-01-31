@@ -1,9 +1,9 @@
-namespace Cethleann
+namespace Cethleann.Structure
 {
     /// <summary>
     ///     For abstract platform info
     /// </summary>
-    public enum Platform
+    public enum DataPlatform
     {
         /// <summary>
         ///     Source platform is the Nintendo Switch

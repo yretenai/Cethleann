@@ -1,6 +1,5 @@
 ﻿using Cethleann;
 using Cethleann.ManagedFS;
-using Cethleann.Structure;
 using Cethleann.Unbundler;
 using DragonLib.CLI;
 using JetBrains.Annotations;
@@ -16,7 +15,7 @@ namespace Koei.DataExporter
         {
             Flags = CommandLineFlags.ParseFlags<KoeiDataExporterFlags>(CommandLineFlags.PrintHelp, args);
 
-            using var cethleann = new Flayn(Flags.BaseDirectory, GameId.FireEmblemThreeHouses);
+            using var cethleann = new Flayn(Flags.BaseDirectory, Flags.GameId);
 
             if (Flags.PatchDirectory != null) cethleann.AddPatchFS(Flags.PatchDirectory);
 

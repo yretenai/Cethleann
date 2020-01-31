@@ -1,3 +1,4 @@
+using Cethleann.Structure;
 using DragonLib.CLI;
 
 namespace Cethleann.Unbundler
@@ -25,7 +26,10 @@ namespace Cethleann.Unbundler
         [CLIFlag("ktsr-raw", Help = "Output Raw KTSR streams", Category = "Unbundler Options")]
         public bool RawKTSR { get; set; }
 
-        [CLIFlag("platform", Default = Platform.Switch, Aliases = new[] { "p" }, Help = "Target Platform", Category = "Unbundler Options")]
-        public Platform Platform { get; set; }
+        [CLIFlag("platform", Default = DataPlatform.Switch, Aliases = new[] { "P" }, Help = "Platform the game is from", Category = "Unbundler Options")]
+        public DataPlatform Platform { get; set; }
+
+        [CLIFlag("game", Default = DataGame.FireEmblemThreeHouses, Aliases = new[] { "g" }, Help = "Game being loaded", Category = "Unbundler Options")]
+        public DataGame GameId { get; set; }
     }
 }

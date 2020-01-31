@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Cethleann.Structure;
 using Cethleann.Structure.Resource.Audio;
 using DragonLib;
 using DragonLib.IO;
@@ -19,7 +20,7 @@ namespace Cethleann.Audio
         /// </summary>
         /// <param name="blob"></param>
         /// <param name="platform"></param>
-        public NamedSounds(Span<byte> blob, Platform platform)
+        public NamedSounds(Span<byte> blob, DataPlatform platform)
         {
             FullBuffer = new Memory<byte>(blob.ToArray());
             Header = MemoryMarshal.Read<NamedSoundHeader>(blob);

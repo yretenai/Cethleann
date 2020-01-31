@@ -23,11 +23,11 @@ namespace Cethleann.ManagedFS
         /// </summary>
         /// <param name="baseRomFs"></param>
         /// <param name="game"></param>
-        public Flayn(string baseRomFs, GameId game = GameId.None)
+        public Flayn(string baseRomFs, DataGame game = DataGame.None)
         {
             GameId = game;
             AddDataFS(baseRomFs);
-            if (GameId == GameId.FireEmblemThreeHouses) Logger.Assert(RootEntryCount == 31161, "RootEntryCount == 31161");
+            if (GameId == DataGame.FireEmblemThreeHouses) Logger.Assert(RootEntryCount == 31161, "RootEntryCount == 31161");
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Game ID of the game.
         /// </summary>
-        public GameId GameId { get; private set; }
+        public DataGame GameId { get; private set; }
 
         /// <summary>
         ///     Game data
@@ -126,7 +126,7 @@ namespace Cethleann.ManagedFS
             var binPath = Path.Combine(path, "LINKDATA.BIN");
             if (!File.Exists(idxPath) || !File.Exists(binPath)) throw new FileNotFoundException("Cannot find DATA or LINKDATA pairs");
 
-            if (GameId == GameId.FireEmblemThreeHouses) GameId = GameId.None;
+            if (GameId == DataGame.FireEmblemThreeHouses) GameId = DataGame.None;
 
             AddDataFSInternal(idxPath, binPath);
         }
@@ -260,7 +260,7 @@ namespace Cethleann.ManagedFS
         /// </summary>
         public void LoadFileList(string filename = null)
         {
-            var loc = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), filename ?? $"filelist{(GameId == GameId.None ? "" : $"-{GameId:G}")}.csv");
+            var loc = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), filename ?? $"filelist{(GameId == DataGame.None ? "" : $"-{GameId:G}")}.csv");
             if (!File.Exists(loc)) return;
             var csv = File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith("#")).Select(x => x.Split(',', 2, StringSplitOptions.RemoveEmptyEntries).Select(y => y.Trim()).ToArray());
             foreach (var entry in csv)
