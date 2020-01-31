@@ -1,4 +1,4 @@
-# Cethleann [![Cethleann .NET Core](https://github.com/healingbrew/Cethleann/workflows/Cethleann%20.NET%20Core/badge.svg)](https://github.com/healingbrew/Cethleann/actions?query=workflow%3A%22Cethleann+.NET+Core%22)
+# Cethleann [![Build status](https://ci.appveyor.com/api/projects/status/qi51gg7vl4gb9r9o?svg=true)](https://ci.appveyor.com/project/yretenai/cethleann)
 
 KTGL (Soft Engine) data exploration and research
 
