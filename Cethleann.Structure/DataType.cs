@@ -14,6 +14,11 @@ namespace Cethleann.Structure
         None = 0,
 
         /// <summary>
+        ///     LINKDATA found in AoT2.
+        /// </summary>
+        LINKDATA = 0x00077DF9,
+
+        /// <summary>
         ///     <seealso cref="StructTable" />
         /// </summary>
         [FileExtension("struct")]

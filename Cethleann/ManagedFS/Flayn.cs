@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -16,7 +17,7 @@ namespace Cethleann.ManagedFS
     ///     Management class for DATA0 and INFO0 files.
     /// </summary>
     [PublicAPI]
-    public class Flayn : IDisposable
+    public class Flayn : IManagedFS
     {
         /// <summary>
         ///     Loads data
@@ -34,11 +35,6 @@ namespace Cethleann.ManagedFS
         ///     Loaded FileList.csv
         /// </summary>
         public Dictionary<string, string> FileList { get; } = new Dictionary<string, string>();
-
-        /// <summary>
-        ///     Game ID of the game.
-        /// </summary>
-        public DataGame GameId { get; private set; }
 
         /// <summary>
         ///     Game data
@@ -75,6 +71,9 @@ namespace Cethleann.ManagedFS
         /// </summary>
         public int PatchEntryCount { get; private set; }
 
+        /// <inheritdoc />
+        public DataGame GameId { get; private set; }
+
         /// <summary>
         ///     Maximum number of entries found in both containers and patches
         /// </summary>
@@ -87,6 +86,96 @@ namespace Cethleann.ManagedFS
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        /// <inheritdoc />
+        public Memory<byte> ReadEntry(int index)
+        {
+            if (index >= EntryCount) throw new IndexOutOfRangeException($"Index {index} does not exist!");
+
+            if (index >= RootEntryCount)
+            {
+                index -= RootEntryCount;
+                if (index < PatchEntryCount) return FindPatch(index);
+
+                index -= PatchEntryCount;
+                return FindDLC(index);
+            }
+
+            try
+            {
+                var (info0, _, _) = Patch;
+                var entry = info0.ReadEntry(PatchRomFS, index);
+                if (entry.Length > 0) return entry;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                // ignored.
+            }
+
+            var (baseData, baseStream, _) = RootData;
+            return baseData.ReadEntry(baseStream, index);
+        }
+        
+        /// <inheritdoc />
+        public void LoadFileList(string filename = null)
+        {
+            var loc = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), filename ?? $"filelist{(GameId == DataGame.None ? "" : $"-{GameId:G}")}.csv");
+            if (!File.Exists(loc)) return;
+            var csv = File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith("#")).Select(x => x.Split(',', 2, StringSplitOptions.RemoveEmptyEntries).Select(y => y.Trim()).ToArray());
+            foreach (var entry in csv)
+            {
+                if (entry.Length < 2) continue;
+                if (entry[0].Length == 0 || entry[1].Length == 0) continue;
+                var id = entry[0];
+
+                if (Path.GetInvalidPathChars().Any(x => entry[1].Contains(x)))
+                {
+                    Logger.Error("FLAYN", $"Path {entry[1]} for id {id} is invalid!");
+                    continue;
+                }
+
+                Logger.Assert(!FileList.ContainsKey(id), "!FileList.ContainsKey(id)", $"File List lists id {id} twice!");
+                FileList[id] = entry[1];
+            }
+        }
+
+        /// <inheritdoc />
+        public string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
+        {
+            if (dataType == DataType.Compressed || dataType == DataType.CompressedChonky) ext += ".gz";
+
+            var path = default(string);
+            var prefix = "";
+            var logicalId = default(string);
+            if (index >= RootEntryCount)
+            {
+                if (index >= RootEntryCount + PatchEntryCount)
+                {
+                    prefix = "dlc/";
+                    logicalId = $"DLC{index - RootEntryCount - PatchEntryCount} - {index}";
+                }
+                else
+                {
+                    prefix = "patch/";
+                    logicalId = $"PATCH{index - RootEntryCount} - {index}";
+                    var info1 = Patch.INFO1;
+                    path = info1.GetPath(index - RootEntryCount);
+                    if (!string.IsNullOrWhiteSpace(path) && path != "nx/")
+                    {
+                        if (path.StartsWith("nx/", StringComparison.InvariantCultureIgnoreCase)) path = path.Substring(3);
+                        var dir = Path.GetDirectoryName(path);
+                        var file = Path.GetFileName(path);
+                        path = Path.Combine(dir, $"{logicalId} - {file}");
+                    }
+                }
+            }
+
+            var temp = path;
+            if (!FileList.TryGetValue(logicalId ?? index.ToString(), out path)) path = temp ?? (ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{logicalId ?? index.ToString()}.{ext}" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{logicalId ?? index.ToString()}.{ext}");
+            else path = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + $".{ext}");
+            if (ext.EndsWith(".gz") && !path.EndsWith(".gz")) path += ".gz";
+            return prefix + path;
         }
 
         /// <summary>
@@ -170,39 +259,6 @@ namespace Cethleann.ManagedFS
             PatchEntryCount = Patch.INFO1?.Entries.Count ?? 0;
         }
 
-        /// <summary>
-        ///     Reads an entry from the first valid (non-zero) storage.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public Memory<byte> ReadEntry(int index)
-        {
-            if (index >= EntryCount) throw new IndexOutOfRangeException($"Index {index} does not exist!");
-
-            if (index >= RootEntryCount)
-            {
-                index -= RootEntryCount;
-                if (index < PatchEntryCount) return FindPatch(index);
-
-                index -= PatchEntryCount;
-                return FindDLC(index);
-            }
-
-            try
-            {
-                var (info0, _, _) = Patch;
-                var entry = info0.ReadEntry(PatchRomFS, index);
-                if (entry.Length > 0) return entry;
-            }
-            catch (IndexOutOfRangeException)
-            {
-                // ignored.
-            }
-
-            var (baseData, baseStream, _) = RootData;
-            return baseData.ReadEntry(baseStream, index);
-        }
-
         private Memory<byte> FindPatch(int index)
         {
             try
@@ -256,77 +312,9 @@ namespace Cethleann.ManagedFS
         }
 
         /// <summary>
-        ///     Loads a filelist from a csv file
-        /// </summary>
-        public void LoadFileList(string filename = null)
-        {
-            var loc = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), filename ?? $"filelist{(GameId == DataGame.None ? "" : $"-{GameId:G}")}.csv");
-            if (!File.Exists(loc)) return;
-            var csv = File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith("#")).Select(x => x.Split(',', 2, StringSplitOptions.RemoveEmptyEntries).Select(y => y.Trim()).ToArray());
-            foreach (var entry in csv)
-            {
-                if (entry.Length < 2) continue;
-                if (entry[0].Length == 0 || entry[1].Length == 0) continue;
-                var id = entry[0];
-
-                if (Path.GetInvalidPathChars().Any(x => entry[1].Contains(x)))
-                {
-                    Logger.Error("FLAYN", $"Path {entry[1]} for id {id} is invalid!");
-                    continue;
-                }
-
-                Logger.Assert(!FileList.ContainsKey(id), "!FileList.ContainsKey(id)", $"File List lists id {id} twice!");
-                FileList[id] = entry[1];
-            }
-        }
-
-        /// <summary>
-        ///     Attempts to get a valid filename/filepath.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="ext"></param>
-        /// <param name="dataType"></param>
-        /// <returns></returns>
-        public string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
-        {
-            if (dataType == DataType.Compressed || dataType == DataType.CompressedChonky) ext += ".gz";
-
-            var path = default(string);
-            var prefix = "";
-            var logicalId = default(string);
-            if (index >= RootEntryCount)
-            {
-                if (index >= RootEntryCount + PatchEntryCount)
-                {
-                    prefix = "dlc/";
-                    logicalId = $"DLC{index - RootEntryCount - PatchEntryCount} - {index}";
-                }
-                else
-                {
-                    prefix = "patch/";
-                    logicalId = $"PATCH{index - RootEntryCount} - {index}";
-                    var info1 = Patch.INFO1;
-                    path = info1.GetPath(index - RootEntryCount);
-                    if (!string.IsNullOrWhiteSpace(path) && path != "nx/")
-                    {
-                        if (path.StartsWith("nx/", StringComparison.InvariantCultureIgnoreCase)) path = path.Substring(3);
-                        var dir = Path.GetDirectoryName(path);
-                        var file = Path.GetFileName(path);
-                        path = Path.Combine(dir, $"{logicalId} - {file}");
-                    }
-                }
-            }
-
-            var temp = path;
-            if (!FileList.TryGetValue(logicalId ?? index.ToString(), out path)) path = temp ?? (ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{logicalId ?? index.ToString()}.{ext}" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{logicalId ?? index.ToString()}.{ext}");
-            else path = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + $".{ext}");
-            if (ext.EndsWith(".gz") && !path.EndsWith(".gz")) path += ".gz";
-            return prefix + path;
-        }
-
-        /// <summary>
         ///     Tests DLC sanity. DEBUG
         /// </summary>
+        [Conditional("DEBUG")]
         public void TestDLCSanity()
         {
             if (Data.Count < 2) return;

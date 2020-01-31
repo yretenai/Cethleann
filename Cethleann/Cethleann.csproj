@@ -11,6 +11,7 @@
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
         <DefineConstants>TRACE_ASSERTIONS;DEBUG_ASSERTIONS;DEBUG_ASSERTIONS_LOG</DefineConstants>
+        <DocumentationFile />
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

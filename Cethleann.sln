@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cethleann.Prototype", "Ceth
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninja.Gz", "Ninja.Gz\Ninja.Gz.csproj", "{B1FE941B-CCD5-43F0-B9E9-882F936C98BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Omega.DataExporter", "Omega.DataExporter\Omega.DataExporter.csproj", "{469DE82A-0ADE-48CE-B8B0-4A2454248ABD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -81,6 +83,10 @@ Global
 		{B1FE941B-CCD5-43F0-B9E9-882F936C98BB}.Debug|x64.Build.0 = Debug|x64
 		{B1FE941B-CCD5-43F0-B9E9-882F936C98BB}.Release|x64.ActiveCfg = Release|x64
 		{B1FE941B-CCD5-43F0-B9E9-882F936C98BB}.Release|x64.Build.0 = Release|x64
+		{469DE82A-0ADE-48CE-B8B0-4A2454248ABD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{469DE82A-0ADE-48CE-B8B0-4A2454248ABD}.Debug|x64.Build.0 = Debug|Any CPU
+		{469DE82A-0ADE-48CE-B8B0-4A2454248ABD}.Release|x64.ActiveCfg = Release|Any CPU
+		{469DE82A-0ADE-48CE-B8B0-4A2454248ABD}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +101,7 @@ Global
 		{1B055249-3E4F-4FF5-9117-649D42F2F4EE} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
 		{8AF4B89F-A020-407A-A846-F6C36035CF59} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
 		{B1FE941B-CCD5-43F0-B9E9-882F936C98BB} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
+		{469DE82A-0ADE-48CE-B8B0-4A2454248ABD} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D101D9DD-E806-4794-B9BE-E43298235565}

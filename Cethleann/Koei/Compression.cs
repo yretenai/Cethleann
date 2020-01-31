@@ -22,7 +22,7 @@ namespace Cethleann.Koei
         /// <returns></returns>
         public static Span<byte> Compress(Span<byte> data, int blockSize = (int) DataType.Compressed)
         {
-            var compInfo = new CompressionInfo
+            var compInfo = new KTGLCompressionInfo
             {
                 ChunkSize = blockSize,
                 ChunkCount = (int) Math.Ceiling((double) data.Length / blockSize),
@@ -30,7 +30,7 @@ namespace Cethleann.Koei
             };
             var buffer = new Span<byte>(new byte[data.Length]);
             MemoryMarshal.Write(buffer, ref compInfo);
-            var headerCursor = SizeHelper.SizeOf<CompressionInfo>();
+            var headerCursor = SizeHelper.SizeOf<KTGLCompressionInfo>();
             var cursor = (headerCursor + 4 * compInfo.ChunkCount).Align(0x80);
             for (int i = 0; i < data.Length; i += blockSize)
             {
@@ -76,9 +76,9 @@ namespace Cethleann.Koei
         public static unsafe Span<byte> Decompress(Span<byte> data)
         {
             var cursor = 0;
-            var compInfo = MemoryMarshal.Read<CompressionInfo>(data);
+            var compInfo = MemoryMarshal.Read<KTGLCompressionInfo>(data);
             var buffer = new Span<byte>(new byte[compInfo.Size]);
-            cursor += SizeHelper.SizeOf<CompressionInfo>();
+            cursor += SizeHelper.SizeOf<KTGLCompressionInfo>();
             var chunkSizes = MemoryMarshal.Cast<byte, int>(data.Slice(cursor, 4 * compInfo.ChunkCount));
             cursor = (cursor + 4 * compInfo.ChunkCount).Align(0x80);
             var bufferCursor = 0;
@@ -121,7 +121,7 @@ namespace Cethleann.Koei
         /// <returns></returns>
         public static Memory<byte> Decompress(Stream stream, long compressedSize)
         {
-            var compressedBuffer = new Span<byte>(new byte[compressedSize + SizeHelper.SizeOf<CompressionInfo>()]);
+            var compressedBuffer = new Span<byte>(new byte[compressedSize + SizeHelper.SizeOf<KTGLCompressionInfo>()]);
             stream.Read(compressedBuffer);
             var decompressed = Decompress(compressedBuffer);
             var result = new Memory<byte>(new byte[decompressed.Length]);

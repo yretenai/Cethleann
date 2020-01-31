@@ -1666,11 +1666,6 @@
                 Loaded FileList.csv
             </summary>
         </member>
-        <member name="P:Cethleann.ManagedFS.Flayn.GameId">
-            <summary>
-                Game ID of the game.
-            </summary>
-        </member>
         <member name="P:Cethleann.ManagedFS.Flayn.RootData">
             <summary>
                 Game data
@@ -1706,6 +1701,9 @@
                 Maximum number of entries found in the latest patch container.
             </summary>
         </member>
+        <member name="P:Cethleann.ManagedFS.Flayn.GameId">
+            <inheritdoc />
+        </member>
         <member name="P:Cethleann.ManagedFS.Flayn.EntryCount">
             <summary>
                 Maximum number of entries found in both containers and patches
@@ -1715,6 +1713,15 @@
             <summary>
                 Cleans managed data
             </summary>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Flayn.ReadEntry(System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:Cethleann.ManagedFS.Flayn.LoadFileList(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Cethleann.ManagedFS.Flayn.GetFilename(System.Int32,System.String,Cethleann.Structure.DataType)">
+            <inheritdoc />
         </member>
         <member name="M:Cethleann.ManagedFS.Flayn.Finalize">
             <summary>
@@ -1742,25 +1749,45 @@
             <param name="path"></param>
             <exception cref="T:System.IO.DirectoryNotFoundException"></exception>
         </member>
-        <member name="M:Cethleann.ManagedFS.Flayn.ReadEntry(System.Int32)">
-            <summary>
-                Reads an entry from the first valid (non-zero) storage.
-            </summary>
-            <param name="index"></param>
-            <returns></returns>
-        </member>
         <member name="M:Cethleann.ManagedFS.Flayn.Dispose(System.Boolean)">
             <summary>
                 Disposes with Finalizer flag
             </summary>
             <param name="disposing"></param>
         </member>
-        <member name="M:Cethleann.ManagedFS.Flayn.LoadFileList(System.String)">
+        <member name="M:Cethleann.ManagedFS.Flayn.TestDLCSanity">
+            <summary>
+                Tests DLC sanity. DEBUG
+            </summary>
+        </member>
+        <member name="T:Cethleann.ManagedFS.IManagedFS">
+            <summary>
+            Generic FS Interface
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.IManagedFS.EntryCount">
+            <summary>
+                Maximum number of entries found in both containers and patches
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.IManagedFS.GameId">
+            <summary>
+                Game ID of the game.
+            </summary>
+        </member>
+        <member name="M:Cethleann.ManagedFS.IManagedFS.ReadEntry(System.Int32)">
+            <summary>
+                Reads an entry from the first valid (non-zero) storage.
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.ManagedFS.IManagedFS.LoadFileList(System.String)">
             <summary>
                 Loads a filelist from a csv file
             </summary>
         </member>
-        <member name="M:Cethleann.ManagedFS.Flayn.GetFilename(System.Int32,System.String,Cethleann.Structure.DataType)">
+        <member name="M:Cethleann.ManagedFS.IManagedFS.GetFilename(System.Int32,System.String,Cethleann.Structure.DataType)">
             <summary>
                 Attempts to get a valid filename/filepath.
             </summary>
@@ -1769,10 +1796,78 @@
             <param name="dataType"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.ManagedFS.Flayn.TestDLCSanity">
+        <member name="T:Cethleann.ManagedFS.Leonhart">
             <summary>
-                Tests DLC sanity. DEBUG
+                Management class for DATA0 and INFO0 files.
             </summary>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Leonhart.#ctor(Cethleann.Structure.DataGame)">
+            <summary>
+                Loads data
+            </summary>
+            <param name="game"></param>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Leonhart.FileList">
+            <summary>
+                Loaded FileList.csv
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Leonhart.Data">
+            <summary>
+                Game data
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Leonhart.GameId">
+            <summary>
+                Game ID of the game.
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Leonhart.EntryCount">
+            <inheritdoc />
+        </member>
+        <member name="M:Cethleann.ManagedFS.Leonhart.Dispose">
+            <summary>
+                Cleans managed data
+            </summary>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Leonhart.ReadEntry(System.Int32)">
+            <summary>
+                Reads an entry from the first valid (non-zero) storage.
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Leonhart.LoadFileList(System.String)">
+            <summary>
+                Loads a filelist from a csv file
+            </summary>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Leonhart.GetFilename(System.Int32,System.String,Cethleann.Structure.DataType)">
+            <summary>
+                Attempts to get a valid filename/filepath.
+            </summary>
+            <param name="index"></param>
+            <param name="ext"></param>
+            <param name="dataType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Leonhart.Finalize">
+            <summary>
+                Cleanup
+            </summary>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Leonhart.AddDataFS(System.String)">
+            <summary>
+                Adds a LINKDATA container, usually base games
+            </summary>
+            <param name="path"></param>
+            <exception cref="T:System.IO.FileNotFoundException"></exception>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Leonhart.Dispose(System.Boolean)">
+            <summary>
+                Disposes with Finalizer flag
+            </summary>
+            <param name="disposing"></param>
         </member>
         <member name="T:Cethleann.ManagedFS.Reisalin">
             <summary>
@@ -2067,6 +2162,57 @@
             <summary>
                 Write to buffer
             </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.Omega.Compression">
+            <summary>
+                (De)compress Omega streams
+            </summary>
+        </member>
+        <member name="M:Cethleann.Omega.Compression.Decompress(System.Span{System.Byte},System.Int32)">
+            <summary>
+                Compresses a stream into a .gz stream.
+            </summary>
+            <param name="data"></param>
+            <param name="decompressedSize"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.Omega.LINKDATA">
+            <summary>
+            LINKDATA_*.BIN Parser
+            </summary>
+        </member>
+        <member name="M:Cethleann.Omega.LINKDATA.#ctor(System.IO.Stream)">
+            <summary>
+            Parse from Binary Stream
+            </summary>
+            <param name="stream"></param>
+        </member>
+        <member name="P:Cethleann.Omega.LINKDATA.DataStream">
+            <summary>
+            Underlying Data Stream
+            </summary>
+        </member>
+        <member name="P:Cethleann.Omega.LINKDATA.Entries">
+            <summary>
+            Lsof LINKDATA entries
+            </summary>
+        </member>
+        <member name="P:Cethleann.Omega.LINKDATA.Header">
+            <summary>
+            Linkdata Header
+            </summary>
+        </member>
+        <member name="M:Cethleann.Omega.LINKDATA.Dispose">
+            <summary>
+            Dispose of <seealso cref="P:Cethleann.Omega.LINKDATA.DataStream"/>
+            </summary>
+        </member>
+        <member name="M:Cethleann.Omega.LINKDATA.ReadEntry(Cethleann.Structure.LINKDATAEntry)">
+            <summary>
+            Read file entry
+            </summary>
+            <param name="entry"></param>
             <returns></returns>
         </member>
         <member name="T:Cethleann.RTRPK">

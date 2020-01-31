@@ -3,7 +3,7 @@
     /// <summary>
     ///     Info regarding compression for a file in DATA1
     /// </summary>
-    public struct CompressionInfo
+    public struct KTGLCompressionInfo
     {
         /// <summary>
         ///     usually 0x0001_0000, sometimes 0xFFFF_FFFF for dynamically sized.

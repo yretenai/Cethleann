@@ -11,6 +11,7 @@ namespace Cethleann.ManagedFS
     /// <summary>
     ///     Manages TN files
     /// </summary>
+    // TODO: Migrate to IManagedFS
     [PublicAPI]
     public class Yshtola : IEnumerable<IDTableEntry>
     {

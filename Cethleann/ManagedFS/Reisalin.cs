@@ -12,6 +12,7 @@ namespace Cethleann.ManagedFS
     /// <summary>
     ///     Manages PAK files
     /// </summary>
+    // TODO: Migrate to IManagedFS
     [PublicAPI]
     public class Reisalin : IDisposable, IEnumerable<(PAKEntry, PAK)>
     {
