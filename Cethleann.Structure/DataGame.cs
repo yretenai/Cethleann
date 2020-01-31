@@ -7,10 +7,6 @@ namespace Cethleann.Structure
         Nioh,
         AtelierRyza,
         DissidiaNT,
-        AttackOnTitan2,
-        FETH = FireEmblemThreeHouses,
-        Ryza = AtelierRyza,
-        DFFNT = DissidiaNT,
-        AOT2 = AttackOnTitan2
+        AttackOnTitan2
     }
 }
