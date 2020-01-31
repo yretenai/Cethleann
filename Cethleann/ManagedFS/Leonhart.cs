@@ -61,15 +61,10 @@ namespace Cethleann.ManagedFS
         public Memory<byte> ReadEntry(int index)
         {
             if (index >= EntryCount) throw new IndexOutOfRangeException($"Index {index} does not exist!");
-            foreach (var (linkdata, name) in Data)
+            foreach (var (linkdata, _) in Data)
             {
-                if (index >= linkdata.Entries.Length)
-                {
-                    index -= linkdata.Entries.Length;
-                    continue;
-                }
-
-                return linkdata.ReadEntry(linkdata.Entries[index]);
+                if (index < linkdata.Entries.Length) return linkdata.ReadEntry(linkdata.Entries[index]);
+                index -= linkdata.Entries.Length;
             }
 
             return Memory<byte>.Empty;
@@ -91,7 +86,7 @@ namespace Cethleann.ManagedFS
 
                 if (Path.GetInvalidPathChars().Any(x => entry[1].Contains(x)))
                 {
-                    Logger.Error("FLAYN", $"Path {entry[1]} for id {id} is invalid!");
+                    Logger.Error("LEONHART", $"Path {entry[1]} for id {id} is invalid!");
                     continue;
                 }
 

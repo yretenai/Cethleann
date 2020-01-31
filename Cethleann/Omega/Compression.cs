@@ -57,30 +57,3 @@ namespace Cethleann.Omega
         }
     }
 }
-
-/*
-        
-
-                    using var stream = new UnmanagedMemoryStream(pin, data.Length);
-                        if (stream.Position == stream.Length) break;
-
-                        var size = BinaryPrimitives.ReadUInt32LittleEndian(data.Slice((int) stream.Position + 4));
-                        var compressedSize = BinaryPrimitives.ReadUInt32LittleEndian(data.Slice((int) stream.Position + 8));
-                        var chunk = decompressed.Slice(decPtr);
-                        stream.Position += 8;
-                        var cursor = stream.Position;
-
-                        stream.Position += 2;
-                        Logger.Assert(data[(int)stream.Position + 4] == 0x78, "data[stream.Position + 4] == 0x78");
-                        Logger.Assert(data[(int)stream.Position + 1 + 4] == 0xDA, "data[stream.Position + 1 + 4] == 0xDA");
-                        using var inflate = new DeflateStream(stream, CompressionMode.Decompress, true);
-                        decPtr += inflate.Read(chunk);
-
-                        stream.Position = (cursor + size).Align(0x10);
-                    }
-
-                    return decompressed;
-                }
-            }
-        }
-        */

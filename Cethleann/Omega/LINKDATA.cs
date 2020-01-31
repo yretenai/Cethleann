@@ -59,9 +59,7 @@ namespace Cethleann.Omega
             var buffer = new Span<byte>(new byte[entry.Size]);
             DataStream.Position = pointer;
             DataStream.Read(buffer);
-            if (entry.DecompressedSize > 0) return new Memory<byte>(Compression.Decompress(buffer, entry.DecompressedSize).ToArray());
-
-            return new Memory<byte>(buffer.ToArray());
+            return entry.DecompressedSize > 0 ? new Memory<byte>(Compression.Decompress(buffer, entry.DecompressedSize).ToArray()) : new Memory<byte>(buffer.ToArray());
         }
     }
 }

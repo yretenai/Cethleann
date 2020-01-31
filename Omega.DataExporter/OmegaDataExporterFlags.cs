@@ -12,6 +12,7 @@ namespace Omega.DataExporter
         public string OutputDirectory { get; set; }
 
         [CLIFlag("base-dir", Positional = 1, Help = "RomFS Directories", IsRequired = true, Category = "DataExporter Options")]
+        [UsedImplicitly]
         public List<string> Directories { get; set; }
     }
 }
