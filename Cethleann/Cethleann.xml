@@ -689,6 +689,13 @@
             <param name="buffer"></param>
             <returns></returns>
         </member>
+        <member name="M:Cethleann.Extensions.IsPointerBundle(System.Span{System.Byte})">
+            <summary>
+                Guesses if the stream is a valid bundle.
+            </summary>
+            <param name="buffer"></param>
+            <returns></returns>
+        </member>
         <member name="T:Cethleann.G1.G1Animation">
             <summary>
                 Parser for G1A Files
@@ -1762,7 +1769,7 @@
         </member>
         <member name="T:Cethleann.ManagedFS.IManagedFS">
             <summary>
-            Generic FS Interface
+                Generic FS Interface
             </summary>
         </member>
         <member name="P:Cethleann.ManagedFS.IManagedFS.EntryCount">
@@ -2179,40 +2186,75 @@
         </member>
         <member name="T:Cethleann.Omega.LINKDATA">
             <summary>
-            LINKDATA_*.BIN Parser
+                LINKDATA_*.BIN Parser
             </summary>
         </member>
         <member name="M:Cethleann.Omega.LINKDATA.#ctor(System.IO.Stream)">
             <summary>
-            Parse from Binary Stream
+                Parse from Binary Stream
             </summary>
             <param name="stream"></param>
         </member>
         <member name="P:Cethleann.Omega.LINKDATA.DataStream">
             <summary>
-            Underlying Data Stream
+                Underlying Data Stream
             </summary>
         </member>
         <member name="P:Cethleann.Omega.LINKDATA.Entries">
             <summary>
-            Lsof LINKDATA entries
+                Lsof LINKDATA entries
             </summary>
         </member>
         <member name="P:Cethleann.Omega.LINKDATA.Header">
             <summary>
-            Linkdata Header
+                Linkdata Header
             </summary>
         </member>
         <member name="M:Cethleann.Omega.LINKDATA.Dispose">
             <summary>
-            Dispose of <seealso cref="P:Cethleann.Omega.LINKDATA.DataStream"/>
+                Dispose of <seealso cref="P:Cethleann.Omega.LINKDATA.DataStream" />
             </summary>
         </member>
         <member name="M:Cethleann.Omega.LINKDATA.ReadEntry(Cethleann.Structure.LINKDATAEntry)">
             <summary>
-            Read file entry
+                Read file entry
             </summary>
             <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.PointerBundle">
+            <summary>
+                Koei Engine Bundle, apparently because Bundle is too boring.
+            </summary>
+        </member>
+        <member name="M:Cethleann.PointerBundle.#ctor">
+            <summary>
+                Initialize with no data
+            </summary>
+        </member>
+        <member name="M:Cethleann.PointerBundle.#ctor(System.Span{System.Byte})">
+            <summary>
+                Split file into individual chunks
+            </summary>
+            <param name="data"></param>
+            <exception cref="T:System.IO.InvalidDataException"></exception>
+        </member>
+        <member name="P:Cethleann.PointerBundle.Entries">
+            <summary>
+                lsof data blobs
+            </summary>
+        </member>
+        <member name="M:Cethleann.PointerBundle.Write">
+            <summary>
+                Writes bundle data
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.PointerBundle.Validate(System.Span{System.Byte})">
+            <summary>
+                Checks if the stream makes sense to be a pointer bundle
+            </summary>
+            <param name="data"></param>
             <returns></returns>
         </member>
         <member name="T:Cethleann.RTRPK">

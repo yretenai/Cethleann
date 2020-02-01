@@ -62,12 +62,19 @@ namespace Cethleann.Unbundler
 
             if (allTypes || flags.Recursive)
             {
-                if (!datablob.Span.IsKnown() && datablob.Span.IsDataTable())
-                    if (TryExtractDataTable(blobBase, datablob, flags))
-                        return 1;
-                if (datablob.Span.IsBundle())
-                    if (TryExtractBundle(blobBase, datablob, flags))
-                        return 1;
+                if (!datablob.Span.IsKnown())
+                {
+                    if (datablob.Span.IsDataTable())
+                        if (TryExtractDataTable(blobBase, datablob, flags))
+                            return 1;
+                    if (datablob.Span.IsBundle())
+                        if (TryExtractBundle(blobBase, datablob, flags))
+                            return 1;
+                    if (datablob.Span.IsPointerBundle())
+                        if (TryExtractPointerBundle(blobBase, datablob, flags))
+                            return 1;
+                }
+
                 // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
                 switch (dataType)
                 {
@@ -259,12 +266,11 @@ namespace Cethleann.Unbundler
         // ReSharper disable once ConvertIfStatementToReturnStatement
         public static string GetExtension(Span<byte> data)
         {
-            var dt = data.GetDataType();
-            if (!data.IsKnown() && data.IsDataTable()) return "datatable";
-            if (dt == DataType.SCEN) return "scene";
+            if (data.IsKnown()) return data.GetDataType().GetExtension();
+            if (data.IsDataTable()) return "datatable";
             if (data.IsBundle()) return "bundle";
-            if (dt == DataType.MDLK) return "mdlk";
-            return dt.GetExtension();
+            if (data.IsPointerBundle()) return "ptrbundle";
+            return "bin";
         }
 
         private static bool TryExtractDataTable(string pathBase, Memory<byte> data, UnbundlerFlags flags)
@@ -319,6 +325,26 @@ namespace Cethleann.Unbundler
             catch (Exception e)
             {
                 Logger.Error("BUN", $"Failed unpacking Bundle, {e}");
+                if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool TryExtractPointerBundle(string pathBase, Memory<byte> data, UnbundlerFlags flags)
+        {
+            try
+            {
+                var blobs = new PointerBundle(data.Span);
+                if (blobs.Entries.Count == 0) return true;
+
+                TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, null, flags);
+            }
+            catch (Exception e)
+            {
+                Logger.Error("PBUN", $"Failed unpacking Pointer Bundle, {e}");
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;

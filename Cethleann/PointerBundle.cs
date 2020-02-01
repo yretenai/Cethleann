@@ -9,15 +9,15 @@ using JetBrains.Annotations;
 namespace Cethleann
 {
     /// <summary>
-    ///     Koei Engine Bundle, apparently because DataTable is too boring.
+    ///     Koei Engine Bundle, apparently because Bundle is too boring.
     /// </summary>
     [PublicAPI]
-    public class Bundle
+    public class PointerBundle
     {
         /// <summary>
         ///     Initialize with no data
         /// </summary>
-        public Bundle()
+        public PointerBundle()
         {
         }
 
@@ -26,15 +26,16 @@ namespace Cethleann
         /// </summary>
         /// <param name="data"></param>
         /// <exception cref="InvalidDataException"></exception>
-        public Bundle(Span<byte> data)
+        public PointerBundle(Span<byte> data)
         {
-            var sizes = Validate(data);
-            if (sizes == null) throw new InvalidDataException("Not a valid bundle stream.");
-            var offset = (4 + sizes.Length * 4).Align(0x10);
-            foreach (var size in sizes)
+            var pointers = Validate(data);
+            if (pointers == null) throw new InvalidDataException("Not a valid bundle stream.");
+            for (var index = 0; index < pointers.Length; index++)
             {
-                Entries.Add(new Memory<byte>(data.Slice(offset, size).ToArray()));
-                offset += size;
+                var pointer = pointers[index];
+                var size = data.Length - pointer;
+                if (index + 1 < pointers.Length) size = pointers[index + 1] - pointer;
+                Entries.Add(new Memory<byte>(data.Slice(pointer, size).ToArray()));
             }
         }
 
@@ -59,17 +60,16 @@ namespace Cethleann
             var dataOffset = baseLength;
             for (int i = 0; i < Entries.Count; ++i)
             {
-                var record = Entries[i].Length;
-                MemoryMarshal.Write(table.Slice(4 + 4 * i), ref record);
+                MemoryMarshal.Write(table.Slice(4 + 4 * i), ref dataOffset);
                 Entries[i].Span.CopyTo(table.Slice(dataOffset));
-                dataOffset += record;
+                dataOffset += Entries[i].Length;
             }
 
             return table;
         }
 
         /// <summary>
-        ///     Checks if the stream makes sense to be a bundle
+        ///     Checks if the stream makes sense to be a pointer bundle
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -80,10 +80,11 @@ namespace Cethleann
 
             var headerSize = count * 4;
             if (headerSize > data.Length || headerSize < 0) return null;
-            var sizes = MemoryMarshal.Cast<byte, int>(data.Slice(4, headerSize)).ToArray();
+            var pointers = MemoryMarshal.Cast<byte, int>(data.Slice(4, headerSize)).ToArray();
             try
             {
-                return sizes.Sum() + (headerSize + 4).Align(0x10) != data.Length ? null : sizes;
+                var l = data.Length;
+                return pointers[0] == headerSize.Align(0x10) && pointers.All(x => x < l) ? pointers : null;
             }
             catch (ArithmeticException)
             {

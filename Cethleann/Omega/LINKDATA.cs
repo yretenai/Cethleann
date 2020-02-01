@@ -8,13 +8,13 @@ using JetBrains.Annotations;
 namespace Cethleann.Omega
 {
     /// <summary>
-    /// LINKDATA_*.BIN Parser
+    ///     LINKDATA_*.BIN Parser
     /// </summary>
     [PublicAPI]
     public class LINKDATA : IDisposable
     {
         /// <summary>
-        /// Parse from Binary Stream
+        ///     Parse from Binary Stream
         /// </summary>
         /// <param name="stream"></param>
         public LINKDATA(Stream stream)
@@ -29,27 +29,27 @@ namespace Cethleann.Omega
         }
 
         /// <summary>
-        /// Underlying Data Stream
+        ///     Underlying Data Stream
         /// </summary>
         public Stream DataStream { get; }
-        
+
         /// <summary>
-        /// Lsof LINKDATA entries
+        ///     Lsof LINKDATA entries
         /// </summary>
         public LINKDATAEntry[] Entries { get; set; }
 
         /// <summary>
-        /// Linkdata Header
+        ///     Linkdata Header
         /// </summary>
         public LINKDATAHeader Header { get; set; }
 
         /// <summary>
-        /// Dispose of <seealso cref="DataStream"/>
+        ///     Dispose of <seealso cref="DataStream" />
         /// </summary>
         public void Dispose() => DataStream.Dispose();
 
         /// <summary>
-        /// Read file entry
+        ///     Read file entry
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>

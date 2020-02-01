@@ -129,8 +129,17 @@ namespace Cethleann
         /// <returns></returns>
         public static bool IsBundle(this Span<byte> buffer)
         {
-            if (buffer.Length < 0x30) return false;
             return Bundle.Validate(buffer) != null;
+        }
+
+        /// <summary>
+        ///     Guesses if the stream is a valid bundle.
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public static bool IsPointerBundle(this Span<byte> buffer)
+        {
+            return PointerBundle.Validate(buffer) != null;
         }
     }
 }

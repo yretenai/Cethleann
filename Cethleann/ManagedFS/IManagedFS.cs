@@ -4,7 +4,7 @@ using Cethleann.Structure;
 namespace Cethleann.ManagedFS
 {
     /// <summary>
-    /// Generic FS Interface
+    ///     Generic FS Interface
     /// </summary>
     public interface IManagedFS : IDisposable
     {
@@ -24,7 +24,7 @@ namespace Cethleann.ManagedFS
         /// <param name="index"></param>
         /// <returns></returns>
         Memory<byte> ReadEntry(int index);
-        
+
         /// <summary>
         ///     Loads a filelist from a csv file
         /// </summary>

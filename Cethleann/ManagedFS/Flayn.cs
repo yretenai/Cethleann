@@ -116,7 +116,7 @@ namespace Cethleann.ManagedFS
             var (baseData, baseStream, _) = RootData;
             return baseData.ReadEntry(baseStream, index);
         }
-        
+
         /// <inheritdoc />
         public void LoadFileList(string filename = null)
         {
