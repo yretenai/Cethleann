@@ -12,6 +12,7 @@ namespace Gust.Gz
         {
             foreach (var arg in args)
             {
+                Logger.PrintVersion("GUST");
                 Logger.Info("GUST", arg);
                 var data = new Span<byte>(File.ReadAllBytes(arg));
                 if (arg.EndsWith(".gz"))

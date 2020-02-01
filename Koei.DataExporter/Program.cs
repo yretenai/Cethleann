@@ -2,6 +2,7 @@
 using Cethleann.ManagedFS;
 using Cethleann.Unbundler;
 using DragonLib.CLI;
+using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Koei.DataExporter
@@ -13,6 +14,7 @@ namespace Koei.DataExporter
 
         private static void Main(string[] args)
         {
+            Logger.PrintVersion("KTGL");
             Flags = CommandLineFlags.ParseFlags<KoeiDataExporterFlags>(CommandLineFlags.PrintHelp, args);
 
             using var cethleann = new Flayn(Flags.BaseDirectory, Flags.GameId);

@@ -10,6 +10,7 @@ namespace Ninja.DataExporter
     {
         static void Main(string[] args)
         {
+            Logger.PrintVersion("NINJA");
             var flags = CommandLineFlags.ParseFlags<NinjaDataExporterFlags>(CommandLineFlags.PrintHelp, args);
 
             var settings = flags.Game switch

@@ -21,6 +21,7 @@ namespace Gust.EncFinder
 
         public static int Main(string[] args)
         {
+            Logger.PrintVersion("GUST");
             if (args.Length == 0)
             {
                 Logger.Error("GUST", "Usage: Gust.EncFinder.exe path/to/file.exe");

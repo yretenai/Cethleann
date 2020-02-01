@@ -10,6 +10,7 @@ namespace Ninja.Gz
     {
         static void Main(string[] args)
         {
+            Logger.PrintVersion("NINJA");
             foreach (var arg in args)
             {
                 Logger.Info("NINJA", arg);

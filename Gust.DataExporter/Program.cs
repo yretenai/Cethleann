@@ -9,6 +9,7 @@ namespace Gust.DataExporter
     {
         static void Main(string[] args)
         {
+            Logger.PrintVersion("GUST");
             var flags = CommandLineFlags.ParseFlags<GustDataExporterFlags>(CommandLineFlags.PrintHelp, args);
 
             using var reisalin = new Reisalin();

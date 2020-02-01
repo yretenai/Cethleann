@@ -2,6 +2,7 @@
 using Cethleann.ManagedFS;
 using Cethleann.Unbundler;
 using DragonLib.CLI;
+using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Omega.DataExporter
@@ -13,6 +14,7 @@ namespace Omega.DataExporter
 
         private static void Main(string[] args)
         {
+            Logger.PrintVersion("OMEGA");
             Flags = CommandLineFlags.ParseFlags<OmegaDataExporterFlags>(CommandLineFlags.PrintHelp, args);
 
             using var leonhart = new Leonhart(Flags.GameId);

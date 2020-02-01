@@ -12,6 +12,7 @@ namespace Koei.Gz
         {
             foreach (var arg in args)
             {
+                Logger.PrintVersion("KTGL");
                 Logger.Info("KTGL", arg);
                 var data = new Span<byte>(File.ReadAllBytes(arg));
                 if (arg.EndsWith(".gz"))
