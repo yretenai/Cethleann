@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 namespace Cethleann
 {
     /// <summary>
-    ///     Koei Engine Bundle, apparently because Bundle is too boring.
+    ///     Koei Engine Pointer Bundle, apparently because Bundle is too boring.
     /// </summary>
     [PublicAPI]
     public class PointerBundle
