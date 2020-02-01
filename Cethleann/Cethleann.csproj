@@ -6,16 +6,19 @@
         <PublishTrimmed>true</PublishTrimmed>
         <RuntimeIdentifiers>win10-x64;osx-x64;linux-x64</RuntimeIdentifiers>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <DocumentationFile>Cethleann.xml</DocumentationFile>
+        <Version>1.0.0</Version>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0</FileVersion>
+        <InformationalVersion>1.0.0</InformationalVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
         <DefineConstants>TRACE_ASSERTIONS;DEBUG_ASSERTIONS;DEBUG_ASSERTIONS_LOG</DefineConstants>
-        <DocumentationFile />
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
         <DefineConstants>TRACE;DEBUG_ASSERTIONS;DEBUG_ASSERTIONS_LOG</DefineConstants>
+        <DocumentationFile>Cethleann.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>

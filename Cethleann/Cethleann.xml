@@ -1762,11 +1762,6 @@
             </summary>
             <param name="disposing"></param>
         </member>
-        <member name="M:Cethleann.ManagedFS.Flayn.TestDLCSanity">
-            <summary>
-                Tests DLC sanity. DEBUG
-            </summary>
-        </member>
         <member name="T:Cethleann.ManagedFS.IManagedFS">
             <summary>
                 Generic FS Interface
@@ -2224,7 +2219,7 @@
         </member>
         <member name="T:Cethleann.PointerBundle">
             <summary>
-                Koei Engine Bundle, apparently because Bundle is too boring.
+                Koei Engine Pointer Bundle, apparently because Bundle is too boring.
             </summary>
         </member>
         <member name="M:Cethleann.PointerBundle.#ctor">

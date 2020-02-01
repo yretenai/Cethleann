@@ -104,8 +104,11 @@ namespace Cethleann.ManagedFS
             try
             {
                 var (info0, _, _) = Patch;
-                var entry = info0.ReadEntry(PatchRomFS, index);
-                if (entry.Length > 0) return entry;
+                if (info0 != null)
+                {
+                    var entry = info0.ReadEntry(PatchRomFS, index);
+                    if (entry.Length > 0) return entry;
+                }
             }
             catch (IndexOutOfRangeException)
             {

@@ -1,4 +1,11 @@
-version: '{build}'
+version: '1.0.{build}'
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{build}'
 image: Visual Studio 2019
 branches:
   only:
