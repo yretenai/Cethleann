@@ -75,8 +75,9 @@ namespace Cethleann
         /// <returns></returns>
         public static int[] Validate(Span<byte> data)
         {
+            if (data.Length < 0x10) return null;
             var count = MemoryMarshal.Read<int>(data);
-            if (count < 0 || count > 0xFF) return null;
+            if (count <= 0 || count > 0xFF) return null;
 
             var headerSize = count * 4;
             if (headerSize > data.Length || headerSize < 0) return null;
