@@ -20,7 +20,9 @@ namespace Koei.DataExporter
             if (Flags.PatchDirectory != null) cethleann.AddPatchFS(Flags.PatchDirectory);
 
             foreach (var dlcromfs in Flags.DLCDirectories) cethleann.AddDataFS(dlcromfs);
+#if DEBUG
             cethleann.TestDLCSanity();
+#endif
             cethleann.LoadFileList();
             ExtractAll(Flags.OutputDirectory, cethleann);
         }

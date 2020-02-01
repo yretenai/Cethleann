@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -311,15 +310,16 @@ namespace Cethleann.ManagedFS
             if (disposing) Data = new List<(DATA0 DATA0, Stream DATA1, string romfs)>();
         }
 
+#if DEBUG
         /// <summary>
         ///     Tests DLC sanity. DEBUG
         /// </summary>
-        [Conditional("DEBUG")]
         public void TestDLCSanity()
         {
             if (Data.Count < 2) return;
             Logger.Assert(Data.All(x => x.DATA0.Entries.Count == DataEntryCount), "Data.All(x => x.DATA0.Entries.Count == DataEntryCount)");
             for (var i = 0; i < DataEntryCount; ++i) Logger.Assert(Data.Count(x => x.DATA0.Entries[i].UncompressedSize > 0) <= 1, "Data.Count(x => x.DATA0.Entries[i].UncompressedSize > 0) <= 1");
         }
+#endif
     }
 }
