@@ -130,6 +130,8 @@ namespace Cethleann.ManagedFS
         /// <inheritdoc />
         public void AddDataFS(string path)
         {
+            GC.ReRegisterForFinalize(this);
+            
             var archives = Directory.GetFiles(path, "*.lnk");
             foreach (var archive in archives)
             {
