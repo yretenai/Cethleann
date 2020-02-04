@@ -722,23 +722,23 @@
                 Animation Spline Track Data
             </summary>
         </member>
-        <member name="T:Cethleann.G1.G1Lossless">
+        <member name="T:Cethleann.G1.G1Lazy">
             <summary>
                 Parser for G1L Files
             </summary>
         </member>
-        <member name="M:Cethleann.G1.G1Lossless.#ctor(System.Span{System.Byte})">
+        <member name="M:Cethleann.G1.G1Lazy.#ctor(System.Span{System.Byte})">
             <summary>
                 Initialize with Span buffer
             </summary>
             <param name="buffer"></param>
         </member>
-        <member name="P:Cethleann.G1.G1Lossless.Header">
+        <member name="P:Cethleann.G1.G1Lazy.Header">
             <summary>
                 G1L Header
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1Lossless.Audio">
+        <member name="P:Cethleann.G1.G1Lazy.Audio">
             <summary>
                 G1L Audio Data
             </summary>

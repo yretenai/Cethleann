@@ -10,24 +10,24 @@ namespace Cethleann.G1
     ///     Parser for G1L Files
     /// </summary>
     [PublicAPI]
-    public class G1Lossless
+    public class G1Lazy
     {
         /// <summary>
         ///     Initialize with Span buffer
         /// </summary>
         /// <param name="buffer"></param>
-        public G1Lossless(Span<byte> buffer)
+        public G1Lazy(Span<byte> buffer)
         {
-            Header = MemoryMarshal.Read<LosslessAudioContainer>(buffer);
+            Header = MemoryMarshal.Read<LazyContainer>(buffer);
             Logger.Assert(Header.Unknown1 == 0, "Header.Unknown1 == 0");
             Logger.Assert(Header.Unknown2 == 1, "Header.Unknown2 == 1");
-            Audio = new Memory<byte>(buffer.Slice(Header.SoundPointer).ToArray());
+            Audio = new Memory<byte>(buffer.Slice(Header.Pointer).ToArray());
         }
 
         /// <summary>
         ///     G1L Header
         /// </summary>
-        public LosslessAudioContainer Header { get; set; }
+        public LazyContainer Header { get; set; }
 
         /// <summary>
         ///     G1L Audio Data

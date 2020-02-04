@@ -205,10 +205,10 @@ namespace Cethleann.Structure
         VideoSource = 'G' << 24 | '1' << 16 | 'V' << 8 | 'S' << 0,
 
         /// <summary>
-        ///     KTGL Font
+        ///     KTGL Wrapped File
         /// </summary>
-        [FileExtension("g1n")]
-        Font = 'G' << 24 | '1' << 16 | 'L' << 8 | '_' << 0,
+        [FileExtension("g1l")]
+        Lazy = 'G' << 24 | '1' << 16 | 'L' << 8 | '_' << 0,
 
         /// <summary>
         ///     KTGL Font
@@ -227,12 +227,6 @@ namespace Cethleann.Structure
         /// </summary>
         [FileExtension("g1c")]
         Collision = 'G' << 24 | '1' << 16 | 'C' << 8 | 'O' << 0,
-
-        /// <summary>
-        ///     KTGL G1L
-        /// </summary>
-        [FileExtension("g1l")]
-        LosslessAudio = 'G' << 24 | '1' << 16 | 'L' << 8 | '_' << 0,
 
         /// <summary>
         ///     teXt Localization, version 19

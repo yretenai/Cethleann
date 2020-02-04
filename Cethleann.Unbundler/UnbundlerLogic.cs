@@ -87,7 +87,7 @@ namespace Cethleann.Unbundler
                     case DataType.GAPK when TryExtractGAPK(blobBase, datablob, flags, false):
                     case DataType.GEPK when TryExtractGAPK(blobBase, datablob, flags, true):
                     case DataType.GMPK when TryExtractGMPK(blobBase, datablob, flags):
-                    case DataType.LosslessAudio when TryExtractG1L(blobBase, datablob, flags):
+                    case DataType.Lazy when TryExtractG1L(blobBase, datablob, flags):
                     case DataType.KOVS when TryExtractKOVS(blobBase, datablob, flags):
                     case DataType.RTRPK when TryExtractRESPACK(blobBase, datablob, flags):
                     case DataType.EffectPack when TryExtractRESPACK(blobBase, datablob, flags):
@@ -542,7 +542,7 @@ namespace Cethleann.Unbundler
         {
             try
             {
-                var blobs = new G1Lossless(data.Span);
+                var blobs = new G1Lazy(data.Span);
                 var buffer = blobs.Audio;
                 TryExtractBlob(Path.ChangeExtension(pathBase, "kvs"), buffer, false, flags);
             }
