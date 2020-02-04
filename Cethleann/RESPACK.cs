@@ -6,17 +6,17 @@ using Cethleann.Structure;
 namespace Cethleann
 {
     /// <summary>
-    ///     RPRPK Packed files
+    ///     Packed Resource files
     /// </summary>
-    public class RTRPK
+    public class RESPACK
     {
         /// <summary>
         ///     Initialize with a buffer
         /// </summary>
         /// <param name="buffer"></param>
-        public RTRPK(Span<byte> buffer)
+        public RESPACK(Span<byte> buffer)
         {
-            Header = MemoryMarshal.Read<RTRPKHeader>(buffer);
+            Header = MemoryMarshal.Read<RESPACKHeader>(buffer);
             var pointers = MemoryMarshal.Cast<byte, int>(buffer.Slice(Header.PointerTablePointer, Header.PointerCount * 4));
             var sizes = MemoryMarshal.Cast<byte, int>(buffer.Slice(Header.SizeTablePointer, Header.SizeCount * 4));
             for (var i = 0; i < Header.PointerCount; ++i) Entries.Add(new Memory<byte>(buffer.Slice(pointers[i], sizes[i]).ToArray()));
@@ -25,7 +25,7 @@ namespace Cethleann
         /// <summary>
         ///     Underlying Header
         /// </summary>
-        public RTRPKHeader Header { get; set; }
+        public RESPACKHeader Header { get; set; }
 
         /// <summary>
         ///     Data Streams found in the PAK

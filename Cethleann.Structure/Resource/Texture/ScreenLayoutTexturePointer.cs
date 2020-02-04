@@ -1,6 +1,6 @@
 namespace Cethleann.Structure.Resource.Texture
 {
-    public struct KSLTPointer
+    public struct ScreenLayoutTexturePointer
     {
         public int Pointer { get; set; }
         public int Unknown1 { get; set; }

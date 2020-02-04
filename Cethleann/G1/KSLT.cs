@@ -12,20 +12,20 @@ namespace Cethleann.G1
     ///     KSLT parser
     /// </summary>
     [PublicAPI]
-    public class ScreenLayoutTexture
+    public class KSLT
     {
         /// <summary>
         ///     Initialize with byte data
         /// </summary>
         /// <param name="data"></param>
-        public ScreenLayoutTexture(Span<byte> data)
+        public KSLT(Span<byte> data)
         {
-            Header = MemoryMarshal.Read<KSLTHeader>(data);
-            var offset = SizeHelper.SizeOf<KSLTHeader>();
-            Matrices = MemoryMarshal.Cast<byte, KSLTMatrix>(data.Slice(offset, SizeHelper.SizeOf<KSLTMatrix>() * Header.Count)).ToArray();
+            Header = MemoryMarshal.Read<ScreenLayoutTextureHeader>(data);
+            var offset = SizeHelper.SizeOf<ScreenLayoutTextureHeader>();
+            Matrices = MemoryMarshal.Cast<byte, ScreenLayoutTextureMatrix>(data.Slice(offset, SizeHelper.SizeOf<ScreenLayoutTextureMatrix>() * Header.Count)).ToArray();
             offset += Header.PointerTablePointer;
-            Pointers = MemoryMarshal.Cast<byte, KSLTPointer>(data.Slice(offset, SizeHelper.SizeOf<KSLTPointer>() * Header.Count)).ToArray();
-            offset += SizeHelper.SizeOf<KSLTPointer>() * Header.Count;
+            Pointers = MemoryMarshal.Cast<byte, ScreenLayoutTexturePointer>(data.Slice(offset, SizeHelper.SizeOf<ScreenLayoutTexturePointer>() * Header.Count)).ToArray();
+            offset += SizeHelper.SizeOf<ScreenLayoutTexturePointer>() * Header.Count;
             Logger.Assert(Header.Count == Header.NameCount, "Header.FileCount == Header.NameCount");
             for (var i = 0; i < Header.NameCount; ++i)
             {
@@ -37,8 +37,8 @@ namespace Cethleann.G1
             foreach (var pointer in Pointers)
             {
                 offset = pointer.Pointer;
-                var header = MemoryMarshal.Read<KSLTImage>(data.Slice(offset));
-                var blob = new Memory<byte>(data.Slice(offset + SizeHelper.SizeOf<KSLTImage>(), header.Size).ToArray());
+                var header = MemoryMarshal.Read<ScreenLayoutTextureImage>(data.Slice(offset));
+                var blob = new Memory<byte>(data.Slice(offset + SizeHelper.SizeOf<ScreenLayoutTextureImage>(), header.Size).ToArray());
                 Entries.Add((header, blob));
             }
         }
@@ -47,17 +47,17 @@ namespace Cethleann.G1
         /// <summary>
         ///     KSLT Header data
         /// </summary>
-        public KSLTHeader Header { get; set; }
+        public ScreenLayoutTextureHeader Header { get; set; }
 
         /// <summary>
         ///     Matrix section
         /// </summary>
-        public KSLTMatrix[] Matrices { get; set; }
+        public ScreenLayoutTextureMatrix[] Matrices { get; set; }
 
         /// <summary>
         ///     Image pointers
         /// </summary>
-        public KSLTPointer[] Pointers { get; set; }
+        public ScreenLayoutTexturePointer[] Pointers { get; set; }
 
         /// <summary>
         ///     Image names
@@ -67,6 +67,6 @@ namespace Cethleann.G1
         /// <summary>
         ///     Images
         /// </summary>
-        public List<(KSLTImage header, Memory<byte> data)> Entries { get; set; } = new List<(KSLTImage, Memory<byte>)>();
+        public List<(ScreenLayoutTextureImage header, Memory<byte> data)> Entries { get; set; } = new List<(ScreenLayoutTextureImage, Memory<byte>)>();
     }
 }

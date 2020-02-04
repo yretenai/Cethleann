@@ -1,6 +1,6 @@
 namespace Cethleann.Structure.Resource.Texture
 {
-    public struct KSLTHeader
+    public struct ScreenLayoutTextureHeader
     {
         public DataType Magic { get; set; }
         public int Version { get; set; }

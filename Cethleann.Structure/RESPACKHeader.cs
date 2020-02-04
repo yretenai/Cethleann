@@ -1,6 +1,6 @@
 namespace Cethleann.Structure
 {
-    public struct RTRPKHeader
+    public struct RESPACKHeader
     {
         public DataType Magic { get; set; }
         public int LongMagic { get; set; }

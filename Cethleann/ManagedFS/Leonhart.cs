@@ -106,7 +106,7 @@ namespace Cethleann.ManagedFS
         {
             if (dataType == DataType.Compressed || dataType == DataType.CompressedChonky) ext += ".gz";
 
-            var prefix = @"LINKDATA_UNKNOWN\";
+            var prefix = "LINKDATA_UNKNOWN";
             foreach (var (linkdata, name) in Data)
             {
                 if (index >= linkdata.Entries.Length)
@@ -115,22 +115,14 @@ namespace Cethleann.ManagedFS
                     continue;
                 }
 
-                prefix = $@"{name}\";
+                prefix = $@"{name}";
                 break;
             }
 
-            if (!FileList.TryGetValue(index.ToString(), out var path)) path = (ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{index.ToString()}.{ext}" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{index.ToString()}.{ext}");
+            if (!FileList.TryGetValue($"{prefix}_{index}", out var path)) path = (ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{index.ToString()}.{ext}" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{index.ToString()}.{ext}");
             else path = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + $".{ext}");
             if (ext.EndsWith(".gz") && !path.EndsWith(".gz")) path += ".gz";
-            return prefix + path;
-        }
-
-        /// <summary>
-        ///     Cleanup
-        /// </summary>
-        ~Leonhart()
-        {
-            Dispose(false);
+            return $@"{prefix}\{path}";
         }
 
         /// <summary>
@@ -140,6 +132,8 @@ namespace Cethleann.ManagedFS
         /// <exception cref="FileNotFoundException"></exception>
         public void AddDataFS(string path)
         {
+            GC.ReRegisterForFinalize(this);
+
             var files = Directory.GetFiles(path, "LINKDATA_*.bin", SearchOption.AllDirectories).ToList();
 
             foreach (var file in files)
@@ -148,6 +142,14 @@ namespace Cethleann.ManagedFS
                 Data.Add((linkdata, Path.GetFileNameWithoutExtension(file)));
                 EntryCount += linkdata.Entries.Length;
             }
+        }
+
+        /// <summary>
+        ///     Cleanup
+        /// </summary>
+        ~Leonhart()
+        {
+            Dispose(false);
         }
 
         /// <summary>

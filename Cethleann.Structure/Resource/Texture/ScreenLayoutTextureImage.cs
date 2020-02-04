@@ -2,9 +2,9 @@ using DragonLib.Imaging.DXGI;
 
 namespace Cethleann.Structure.Resource.Texture
 {
-    public struct KSLTImage
+    public struct ScreenLayoutTextureImage
     {
-        public KSLTFormat Format { get; set; }
+        public ScreenLayoutTextureFormat Format { get; set; }
         public short Width { get; set; }
         public short Height { get; set; }
         public int Unknown2 { get; set; }
@@ -28,9 +28,9 @@ namespace Cethleann.Structure.Resource.Texture
         {
             return Format switch
             {
-                KSLTFormat.A8R8G8B8 => DXGIPixelFormat.R8G8B8A8_UNORM,
-                KSLTFormat.R8G8B8A8 => DXGIPixelFormat.R8G8B8A8_UNORM,
-                KSLTFormat.BC3 => DXGIPixelFormat.BC3_UNORM,
+                ScreenLayoutTextureFormat.A8R8G8B8 => DXGIPixelFormat.R8G8B8A8_UNORM,
+                ScreenLayoutTextureFormat.R8G8B8A8 => DXGIPixelFormat.R8G8B8A8_UNORM,
+                ScreenLayoutTextureFormat.BC3 => DXGIPixelFormat.BC3_UNORM,
                 _ => DXGIPixelFormat.UNKNOWN
             };
         }

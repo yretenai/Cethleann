@@ -38,5 +38,11 @@ namespace Cethleann.ManagedFS
         /// <param name="dataType"></param>
         /// <returns></returns>
         string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None);
+
+        /// <summary>
+        ///     Adds a container
+        /// </summary>
+        /// <param name="path"></param>
+        void AddDataFS(string path);
     }
 }

@@ -181,14 +181,6 @@ namespace Cethleann.ManagedFS
         }
 
         /// <summary>
-        ///     Cleanup
-        /// </summary>
-        ~Flayn()
-        {
-            Dispose(false);
-        }
-
-        /// <summary>
         ///     Adds a DATA container, usually base games
         /// </summary>
         /// <param name="path"></param>
@@ -204,6 +196,14 @@ namespace Cethleann.ManagedFS
             }
 
             AddDataFSInternal(data0Path, data1Path);
+        }
+
+        /// <summary>
+        ///     Cleanup
+        /// </summary>
+        ~Flayn()
+        {
+            Dispose(false);
         }
 
         /// <summary>

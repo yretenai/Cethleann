@@ -77,7 +77,7 @@
             <param name="buffer"></param>
             <param name="alternateNames"></param>
         </member>
-        <member name="P:Cethleann.Audio.KoeiWaveBank.RTRPK">
+        <member name="P:Cethleann.Audio.KoeiWaveBank.Resource">
             <summary>
                 Underlying RTRPK PAK
             </summary>
@@ -1209,6 +1209,42 @@
                 Section header for this section
             </summary>
         </member>
+        <member name="T:Cethleann.G1.KSLT">
+            <summary>
+                KSLT parser
+            </summary>
+        </member>
+        <member name="M:Cethleann.G1.KSLT.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize with byte data
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="P:Cethleann.G1.KSLT.Header">
+            <summary>
+                KSLT Header data
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.KSLT.Matrices">
+            <summary>
+                Matrix section
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.KSLT.Pointers">
+            <summary>
+                Image pointers
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.KSLT.Names">
+            <summary>
+                Image names
+            </summary>
+        </member>
+        <member name="P:Cethleann.G1.KSLT.Entries">
+            <summary>
+                Images
+            </summary>
+        </member>
         <member name="T:Cethleann.G1.MDLK">
             <summary>
                 Decomposes a MDLK buffer to individual files
@@ -1272,42 +1308,6 @@
         <member name="P:Cethleann.G1.SCEN.Entries">
             <summary>
                 lsof data entries
-            </summary>
-        </member>
-        <member name="T:Cethleann.G1.ScreenLayoutTexture">
-            <summary>
-                KSLT parser
-            </summary>
-        </member>
-        <member name="M:Cethleann.G1.ScreenLayoutTexture.#ctor(System.Span{System.Byte})">
-            <summary>
-                Initialize with byte data
-            </summary>
-            <param name="data"></param>
-        </member>
-        <member name="P:Cethleann.G1.ScreenLayoutTexture.Header">
-            <summary>
-                KSLT Header data
-            </summary>
-        </member>
-        <member name="P:Cethleann.G1.ScreenLayoutTexture.Matrices">
-            <summary>
-                Matrix section
-            </summary>
-        </member>
-        <member name="P:Cethleann.G1.ScreenLayoutTexture.Pointers">
-            <summary>
-                Image pointers
-            </summary>
-        </member>
-        <member name="P:Cethleann.G1.ScreenLayoutTexture.Names">
-            <summary>
-                Image names
-            </summary>
-        </member>
-        <member name="P:Cethleann.G1.ScreenLayoutTexture.Entries">
-            <summary>
-                Images
             </summary>
         </member>
         <member name="T:Cethleann.GAPK">
@@ -1730,17 +1730,17 @@
         <member name="M:Cethleann.ManagedFS.Flayn.GetFilename(System.Int32,System.String,Cethleann.Structure.DataType)">
             <inheritdoc />
         </member>
-        <member name="M:Cethleann.ManagedFS.Flayn.Finalize">
-            <summary>
-                Cleanup
-            </summary>
-        </member>
         <member name="M:Cethleann.ManagedFS.Flayn.AddDataFS(System.String)">
             <summary>
                 Adds a DATA container, usually base games
             </summary>
             <param name="path"></param>
             <exception cref="T:System.IO.FileNotFoundException"></exception>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Flayn.Finalize">
+            <summary>
+                Cleanup
+            </summary>
         </member>
         <member name="M:Cethleann.ManagedFS.Flayn.AddLinkFS(System.String)">
             <summary>
@@ -1798,6 +1798,12 @@
             <param name="dataType"></param>
             <returns></returns>
         </member>
+        <member name="M:Cethleann.ManagedFS.IManagedFS.AddDataFS(System.String)">
+            <summary>
+                Adds a container
+            </summary>
+            <param name="path"></param>
+        </member>
         <member name="T:Cethleann.ManagedFS.Leonhart">
             <summary>
                 Management class for DATA0 and INFO0 files.
@@ -1853,11 +1859,6 @@
             <param name="dataType"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.ManagedFS.Leonhart.Finalize">
-            <summary>
-                Cleanup
-            </summary>
-        </member>
         <member name="M:Cethleann.ManagedFS.Leonhart.AddDataFS(System.String)">
             <summary>
                 Adds a LINKDATA container, usually base games
@@ -1865,11 +1866,69 @@
             <param name="path"></param>
             <exception cref="T:System.IO.FileNotFoundException"></exception>
         </member>
+        <member name="M:Cethleann.ManagedFS.Leonhart.Finalize">
+            <summary>
+                Cleanup
+            </summary>
+        </member>
         <member name="M:Cethleann.ManagedFS.Leonhart.Dispose(System.Boolean)">
             <summary>
                 Disposes with Finalizer flag
             </summary>
             <param name="disposing"></param>
+        </member>
+        <member name="T:Cethleann.ManagedFS.Mitsunari">
+            <summary>
+                Nioh archive_*.bin file management
+            </summary>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Mitsunari.#ctor(Cethleann.Structure.DataGame)">
+            <summary>
+                Loads data
+            </summary>
+            <param name="game"></param>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Mitsunari.Data">
+            <summary>
+                Underlying LINKARCHIVEs
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Mitsunari.FileList">
+            <summary>
+                Loaded FileList.csv
+            </summary>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Mitsunari.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.ManagedFS.Mitsunari.EntryCount">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.ManagedFS.Mitsunari.GameId">
+            <inheritdoc />
+        </member>
+        <member name="M:Cethleann.ManagedFS.Mitsunari.ReadEntry(System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:Cethleann.ManagedFS.Mitsunari.LoadFileList(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Cethleann.ManagedFS.Mitsunari.GetFilename(System.Int32,System.String,Cethleann.Structure.DataType)">
+            <inheritdoc />
+        </member>
+        <member name="M:Cethleann.ManagedFS.Mitsunari.AddDataFS(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Cethleann.ManagedFS.Mitsunari.Dispose(System.Boolean)">
+            <summary>
+                Disposes with Finalizer flag
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Mitsunari.Finalize">
+            <summary>
+                Cleanup
+            </summary>
         </member>
         <member name="T:Cethleann.ManagedFS.Reisalin">
             <summary>
@@ -2143,6 +2202,82 @@
             <param name="divisor"></param>
             <returns></returns>
         </member>
+        <member name="T:Cethleann.Ninja.LINKARCHIVE">
+            <summary>
+                Nioh-like ARCHIVE bin
+            </summary>
+        </member>
+        <member name="M:Cethleann.Ninja.LINKARCHIVE.#ctor(System.IO.Stream)">
+            <summary>
+                Initialize from stream
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="P:Cethleann.Ninja.LINKARCHIVE.Entries">
+            <summary>
+                Entries found in the archive
+            </summary>
+        </member>
+        <member name="P:Cethleann.Ninja.LINKARCHIVE.Header">
+            <summary>
+                Archive header
+            </summary>
+        </member>
+        <member name="P:Cethleann.Ninja.LINKARCHIVE.DataStream">
+            <summary>
+                Underlying data stream
+            </summary>
+        </member>
+        <member name="M:Cethleann.Ninja.LINKARCHIVE.Dispose">
+            <summary>
+                Dispose <see cref="P:Cethleann.Ninja.LINKARCHIVE.DataStream" />
+            </summary>
+        </member>
+        <member name="M:Cethleann.Ninja.LINKARCHIVE.ReadEntry(Cethleann.Structure.LFMArchiveEntry)">
+            <summary>
+                Read an entry from the data stream
+            </summary>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.Ninja.LINKNAME">
+            <summary>
+                lfm_order_*.bin archive files
+            </summary>
+        </member>
+        <member name="M:Cethleann.Ninja.LINKNAME.#ctor(System.Span{System.Byte})">
+            <summary>
+                Read from span
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="P:Cethleann.Ninja.LINKNAME.SourceName">
+            <summary>
+                Source file name
+            </summary>
+        </member>
+        <member name="P:Cethleann.Ninja.LINKNAME.Names">
+            <summary>
+                Lsof names for the files
+            </summary>
+        </member>
+        <member name="P:Cethleann.Ninja.LINKNAME.Entries">
+            <summary>
+                LFM Order entry list
+            </summary>
+        </member>
+        <member name="P:Cethleann.Ninja.LINKNAME.Header">
+            <summary>
+                LFM Order Header
+            </summary>
+        </member>
+        <member name="M:Cethleann.Ninja.LINKNAME.GetName(System.Int32)">
+            <summary>
+                Get a filename for an id.
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
         <member name="T:Cethleann.OId">
             <summary>
                 Object ID / Bone ID list
@@ -2252,23 +2387,23 @@
             <param name="data"></param>
             <returns></returns>
         </member>
-        <member name="T:Cethleann.RTRPK">
+        <member name="T:Cethleann.RESPACK">
             <summary>
-                RPRPK Packed files
+                Packed Resource files
             </summary>
         </member>
-        <member name="M:Cethleann.RTRPK.#ctor(System.Span{System.Byte})">
+        <member name="M:Cethleann.RESPACK.#ctor(System.Span{System.Byte})">
             <summary>
                 Initialize with a buffer
             </summary>
             <param name="buffer"></param>
         </member>
-        <member name="P:Cethleann.RTRPK.Header">
+        <member name="P:Cethleann.RESPACK.Header">
             <summary>
                 Underlying Header
             </summary>
         </member>
-        <member name="P:Cethleann.RTRPK.Entries">
+        <member name="P:Cethleann.RESPACK.Entries">
             <summary>
                 Data Streams found in the PAK
             </summary>

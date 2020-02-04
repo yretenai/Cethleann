@@ -133,6 +133,60 @@ namespace Cethleann.Structure
         MDLK = 'M' << 0 | 'D' << 8 | 'L' << 16 | 'K' << 24,
 
         /// <summary>
+        ///     KTGL Model Pack
+        /// </summary>
+        [FileExtension("mdlpack")]
+        ModelPack = 'M' << 0 | 'D' << 8 | 'L' << 16 | 'R' << 24, // MDLRESPK
+
+        /// <summary>
+        ///     KTGL Effect Pack
+        /// </summary>
+        [FileExtension("effectpack")]
+        EffectPack = 'E' << 0 | 'F' << 8 | 'F' << 16 | 'R' << 24, // EFFRESPK
+
+        /// <summary>
+        ///     KTGL Animation Pack
+        /// </summary>
+        [FileExtension("g2apack")]
+        G2APack = 'G' << 0 | '2' << 8 | 'A' << 16 | '_' << 24, // G2A_PACK
+
+        /// <summary>
+        ///     KTGL Animation Pack
+        /// </summary>
+        [FileExtension("g1epack")]
+        G1EPack = 'G' << 0 | '1' << 8 | 'E' << 16 | '_' << 24, // G1E_PACK
+
+        /// <summary>
+        ///     KTGL Animation Pack
+        /// </summary>
+        [FileExtension("g1mpack")]
+        G1MPack = 'G' << 0 | '1' << 8 | 'M' << 16 | '_' << 24, // G1M_PACK
+
+        /// <summary>
+        ///     KTGL Animation Pack
+        /// </summary>
+        [FileExtension("g1copack")]
+        G1COPack = 'G' << 0 | '1' << 8 | 'C' << 16 | 'O' << 24, // G1COPACK
+
+        /// <summary>
+        ///     KTGL KTFK Pack
+        /// </summary>
+        [FileExtension("ktfkpack")]
+        KTFKPack = 'T' << 0 | 'R' << 8 | 'R' << 16 | 'R' << 24, // TRRRESPK
+
+        /// <summary>
+        ///     KTGL G1CO Pack
+        /// </summary>
+        [FileExtension("colpack")]
+        CollisionPack = 'C' << 0 | 'O' << 8 | 'L' << 16 | 'R' << 24, // COLRESPK
+
+        /// <summary>
+        ///     KTGL TD Pack
+        /// </summary>
+        [FileExtension("tdpack")]
+        TDPack = 'T' << 0 | 'D' << 8 | 'P' << 16 | 'A' << 24, // TDPACK
+
+        /// <summary>
         ///     KTGL Screen Layout Texture
         /// </summary>
         [FileExtension("kscl")]
@@ -155,6 +209,24 @@ namespace Cethleann.Structure
         /// </summary>
         [FileExtension("g1n")]
         Font = 'G' << 24 | '1' << 16 | 'L' << 8 | '_' << 0,
+
+        /// <summary>
+        ///     KTGL Font
+        /// </summary>
+        [FileExtension("g1n")]
+        Font2 = 'G' << 24 | '1' << 16 | 'N' << 8 | '_' << 0,
+
+        /// <summary>
+        ///     KTGL Font
+        /// </summary>
+        [FileExtension("g1h")]
+        Morph = 'G' << 24 | '1' << 16 | 'H' << 8 | '_' << 0,
+
+        /// <summary>
+        ///     KTGL Collision mesh
+        /// </summary>
+        [FileExtension("g1c")]
+        Collision = 'G' << 24 | '1' << 16 | 'C' << 8 | 'O' << 0,
 
         /// <summary>
         ///     KTGL G1L

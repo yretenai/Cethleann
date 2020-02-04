@@ -16,15 +16,15 @@ namespace Cethleann.Audio
         /// <param name="alternateNames"></param>
         public KoeiWaveBank(Span<byte> buffer, bool alternateNames)
         {
-            RTRPK = new RTRPK(buffer);
-            WBH = new WaveBankHeader(RTRPK.Entries[0].Span, alternateNames);
-            WBD = new WaveBankData(RTRPK.Entries[1].Span);
+            Resource = new RESPACK(buffer);
+            WBH = new WaveBankHeader(Resource.Entries[0].Span, alternateNames);
+            WBD = new WaveBankData(Resource.Entries[1].Span);
         }
 
         /// <summary>
         ///     Underlying RTRPK PAK
         /// </summary>
-        public RTRPK RTRPK { get; set; }
+        public RESPACK Resource { get; set; }
 
         /// <summary>
         ///     WAVE Header data

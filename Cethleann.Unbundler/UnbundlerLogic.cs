@@ -89,7 +89,16 @@ namespace Cethleann.Unbundler
                     case DataType.GMPK when TryExtractGMPK(blobBase, datablob, flags):
                     case DataType.LosslessAudio when TryExtractG1L(blobBase, datablob, flags):
                     case DataType.KOVS when TryExtractKOVS(blobBase, datablob, flags):
-                    case DataType.RTRPK when TryExtractRTRPK(blobBase, datablob, flags):
+                    case DataType.RTRPK when TryExtractRESPACK(blobBase, datablob, flags):
+                    case DataType.EffectPack when TryExtractRESPACK(blobBase, datablob, flags):
+                    case DataType.TDPack when TryExtractRESPACK(blobBase, datablob, flags):
+                    case DataType.CollisionPack when TryExtractRESPACK(blobBase, datablob, flags):
+                    case DataType.ModelPack when TryExtractRESPACK(blobBase, datablob, flags):
+                    case DataType.KTFKPack when TryExtractRESPACK(blobBase, datablob, flags):
+                    case DataType.G1EPack when TryExtractRESPACK(blobBase, datablob, flags):
+                    case DataType.G1MPack when TryExtractRESPACK(blobBase, datablob, flags):
+                    case DataType.G2APack when TryExtractRESPACK(blobBase, datablob, flags):
+                    case DataType.G1COPack when TryExtractRESPACK(blobBase, datablob, flags):
                     case DataType.WHD when TryExtractWHD(blobBase, datablob, flags):
                         return 1;
                 }
@@ -178,18 +187,18 @@ namespace Cethleann.Unbundler
             return true;
         }
 
-        private static bool TryExtractRTRPK(string pathBase, Memory<byte> data, UnbundlerFlags flags)
+        private static bool TryExtractRESPACK(string pathBase, Memory<byte> data, UnbundlerFlags flags)
         {
             try
             {
-                var blobs = new RTRPK(data.Span);
+                var blobs = new RESPACK(data.Span);
                 if (blobs.Entries.Count == 0) return true;
 
                 TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, null, flags);
             }
             catch (Exception e)
             {
-                Logger.Error("RTRPK", $"Failed unpacking RTRPK, {e}");
+                Logger.Error("RESPACK", $"Failed unpacking RTRPK, {e}");
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
