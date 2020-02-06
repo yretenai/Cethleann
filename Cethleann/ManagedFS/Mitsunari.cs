@@ -124,11 +124,7 @@ namespace Cethleann.ManagedFS
             }
         }
 
-        /// <summary>
-        ///     Disposes with Finalizer flag
-        /// </summary>
-        /// <param name="disposing"></param>
-        protected void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             foreach (var (archive, _, _) in Data) archive.Dispose();
 

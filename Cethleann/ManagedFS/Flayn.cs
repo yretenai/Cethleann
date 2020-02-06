@@ -286,11 +286,7 @@ namespace Cethleann.ManagedFS
             return Memory<byte>.Empty;
         }
 
-        /// <summary>
-        ///     Disposes with Finalizer flag
-        /// </summary>
-        /// <param name="disposing"></param>
-        protected void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             foreach (var (_, stream, _) in Data) stream.Dispose();
             if (!disposing) return;

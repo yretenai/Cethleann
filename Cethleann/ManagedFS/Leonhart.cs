@@ -129,12 +129,8 @@ namespace Cethleann.ManagedFS
         {
             Dispose(false);
         }
-
-        /// <summary>
-        ///     Disposes with Finalizer flag
-        /// </summary>
-        /// <param name="disposing"></param>
-        protected void Dispose(bool disposing)
+        
+        private void Dispose(bool disposing)
         {
             foreach (var (linkdata, _) in Data) linkdata.Dispose();
             if (!disposing) return;
