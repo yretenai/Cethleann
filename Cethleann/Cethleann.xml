@@ -1656,22 +1656,22 @@
             <param name="entry"></param>
             <returns></returns>
         </member>
+        <member name="T:Cethleann.Koei.RDB">
+            <summary>
+                First seen in DoA6, but it's used across the company.
+                It looks like it's the go-to format for KTGL Version 2 / "NewSoftEngine"
+            </summary>
+        </member>
         <member name="T:Cethleann.ManagedFS.Flayn">
             <summary>
                 Management class for DATA0 and INFO0 files.
             </summary>
         </member>
-        <member name="M:Cethleann.ManagedFS.Flayn.#ctor(System.String,Cethleann.Structure.DataGame)">
+        <member name="M:Cethleann.ManagedFS.Flayn.#ctor(Cethleann.Structure.DataGame)">
             <summary>
                 Loads data
             </summary>
-            <param name="baseRomFs"></param>
             <param name="game"></param>
-        </member>
-        <member name="P:Cethleann.ManagedFS.Flayn.FileList">
-            <summary>
-                Loaded FileList.csv
-            </summary>
         </member>
         <member name="P:Cethleann.ManagedFS.Flayn.RootData">
             <summary>
@@ -1708,6 +1708,16 @@
                 Maximum number of entries found in the latest patch container.
             </summary>
         </member>
+        <member name="P:Cethleann.ManagedFS.Flayn.Name">
+            <summary>
+                LINKDATA Name
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Flayn.FileList">
+            <summary>
+                Loaded FileList.csv
+            </summary>
+        </member>
         <member name="P:Cethleann.ManagedFS.Flayn.GameId">
             <inheritdoc />
         </member>
@@ -1724,7 +1734,7 @@
         <member name="M:Cethleann.ManagedFS.Flayn.ReadEntry(System.Int32)">
             <inheritdoc />
         </member>
-        <member name="M:Cethleann.ManagedFS.Flayn.LoadFileList(System.String)">
+        <member name="M:Cethleann.ManagedFS.Flayn.LoadFileList(System.String,System.Nullable{Cethleann.Structure.DataGame})">
             <inheritdoc />
         </member>
         <member name="M:Cethleann.ManagedFS.Flayn.GetFilename(System.Int32,System.String,Cethleann.Structure.DataType)">
@@ -1742,11 +1752,13 @@
                 Cleanup
             </summary>
         </member>
-        <member name="M:Cethleann.ManagedFS.Flayn.AddLinkFS(System.String)">
+        <member name="M:Cethleann.ManagedFS.Flayn.AddLinkFS(System.String,System.String,System.String)">
             <summary>
                 Adds a LINKDATA container, usually base games
             </summary>
             <param name="path"></param>
+            <param name="idxHint"></param>
+            <param name="binHint"></param>
             <exception cref="T:System.IO.FileNotFoundException"></exception>
         </member>
         <member name="M:Cethleann.ManagedFS.Flayn.AddPatchFS(System.String)">
@@ -1755,12 +1767,6 @@
             </summary>
             <param name="path"></param>
             <exception cref="T:System.IO.DirectoryNotFoundException"></exception>
-        </member>
-        <member name="M:Cethleann.ManagedFS.Flayn.Dispose(System.Boolean)">
-            <summary>
-                Disposes with Finalizer flag
-            </summary>
-            <param name="disposing"></param>
         </member>
         <member name="T:Cethleann.ManagedFS.IManagedFS">
             <summary>
@@ -1777,17 +1783,17 @@
                 Game ID of the game.
             </summary>
         </member>
+        <member name="P:Cethleann.ManagedFS.IManagedFS.FileList">
+            <summary>
+                Filename List
+            </summary>
+        </member>
         <member name="M:Cethleann.ManagedFS.IManagedFS.ReadEntry(System.Int32)">
             <summary>
                 Reads an entry from the first valid (non-zero) storage.
             </summary>
             <param name="index"></param>
             <returns></returns>
-        </member>
-        <member name="M:Cethleann.ManagedFS.IManagedFS.LoadFileList(System.String)">
-            <summary>
-                Loads a filelist from a csv file
-            </summary>
         </member>
         <member name="M:Cethleann.ManagedFS.IManagedFS.GetFilename(System.Int32,System.String,Cethleann.Structure.DataType)">
             <summary>
@@ -1815,14 +1821,14 @@
             </summary>
             <param name="game"></param>
         </member>
-        <member name="P:Cethleann.ManagedFS.Leonhart.FileList">
-            <summary>
-                Loaded FileList.csv
-            </summary>
-        </member>
         <member name="P:Cethleann.ManagedFS.Leonhart.Data">
             <summary>
                 Game data
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Leonhart.FileList">
+            <summary>
+                Loaded FileList.csv
             </summary>
         </member>
         <member name="P:Cethleann.ManagedFS.Leonhart.GameId">
@@ -1845,10 +1851,8 @@
             <param name="index"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.ManagedFS.Leonhart.LoadFileList(System.String)">
-            <summary>
-                Loads a filelist from a csv file
-            </summary>
+        <member name="M:Cethleann.ManagedFS.Leonhart.LoadFileList(System.String,System.Nullable{Cethleann.Structure.DataGame})">
+            <inheritdoc />
         </member>
         <member name="M:Cethleann.ManagedFS.Leonhart.GetFilename(System.Int32,System.String,Cethleann.Structure.DataType)">
             <summary>
@@ -1870,12 +1874,6 @@
             <summary>
                 Cleanup
             </summary>
-        </member>
-        <member name="M:Cethleann.ManagedFS.Leonhart.Dispose(System.Boolean)">
-            <summary>
-                Disposes with Finalizer flag
-            </summary>
-            <param name="disposing"></param>
         </member>
         <member name="T:Cethleann.ManagedFS.Mitsunari">
             <summary>
@@ -1910,7 +1908,7 @@
         <member name="M:Cethleann.ManagedFS.Mitsunari.ReadEntry(System.Int32)">
             <inheritdoc />
         </member>
-        <member name="M:Cethleann.ManagedFS.Mitsunari.LoadFileList(System.String)">
+        <member name="M:Cethleann.ManagedFS.Mitsunari.LoadFileList(System.String,System.Nullable{Cethleann.Structure.DataGame})">
             <inheritdoc />
         </member>
         <member name="M:Cethleann.ManagedFS.Mitsunari.GetFilename(System.Int32,System.String,Cethleann.Structure.DataType)">
@@ -1919,16 +1917,40 @@
         <member name="M:Cethleann.ManagedFS.Mitsunari.AddDataFS(System.String)">
             <inheritdoc />
         </member>
-        <member name="M:Cethleann.ManagedFS.Mitsunari.Dispose(System.Boolean)">
-            <summary>
-                Disposes with Finalizer flag
-            </summary>
-            <param name="disposing"></param>
-        </member>
         <member name="M:Cethleann.ManagedFS.Mitsunari.Finalize">
             <summary>
                 Cleanup
             </summary>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Nyotengu.#ctor(Cethleann.Structure.DataGame)">
+            <summary>
+                Loads data
+            </summary>
+            <param name="game"></param>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Nyotengu.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.ManagedFS.Nyotengu.EntryCount">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.ManagedFS.Nyotengu.GameId">
+            <inheritdoc />
+        </member>
+        <member name="M:Cethleann.ManagedFS.Nyotengu.ReadEntry(System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.ManagedFS.Nyotengu.FileList">
+            <inheritdoc />
+        </member>
+        <member name="M:Cethleann.ManagedFS.Nyotengu.GetFilename(System.Int32,System.String,Cethleann.Structure.DataType)">
+            <inheritdoc />
+        </member>
+        <member name="M:Cethleann.ManagedFS.Nyotengu.AddDataFS(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Cethleann.ManagedFS.Nyotengu.LoadFileList(System.String,System.Nullable{Cethleann.Structure.DataGame})">
+            <inheritdoc />
         </member>
         <member name="T:Cethleann.ManagedFS.Reisalin">
             <summary>
@@ -1966,12 +1988,52 @@
                 Disposes
             </summary>
         </member>
+        <member name="T:Cethleann.ManagedFS.Support.YshtolaDissidiaSettings">
+            <summary>
+                Settings specific to NT
+            </summary>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Support.YshtolaDissidiaSettings.#ctor">
+            <summary>
+                Initialize with default values
+            </summary>
+        </member>
+        <member name="T:Cethleann.ManagedFS.Support.YshtolaSettings">
+            <summary>
+                Abstract base settings
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Support.YshtolaSettings.Directory">
+            <summary>
+                Directory the files and ID table reside in
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Support.YshtolaSettings.TableName">
+            <summary>
+                ID Table name
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Support.YshtolaSettings.XorTruth">
+            <summary>
+                Key truth
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Support.YshtolaSettings.Multiplier">
+            <summary>
+                Key multiplier constant
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Support.YshtolaSettings.Divisor">
+            <summary>
+                Key divisor constant
+            </summary>
+        </member>
         <member name="T:Cethleann.ManagedFS.Yshtola">
             <summary>
                 Manages TN files
             </summary>
         </member>
-        <member name="M:Cethleann.ManagedFS.Yshtola.#ctor(System.String,Cethleann.ManagedFS.YshtolaSettings)">
+        <member name="M:Cethleann.ManagedFS.Yshtola.#ctor(System.String,Cethleann.ManagedFS.Support.YshtolaSettings)">
             <summary>
                 Initialize with standard data.
             </summary>
@@ -2003,46 +2065,6 @@
             <param name="entry"></param>
             <returns></returns>
             <exception cref="T:System.IO.FileNotFoundException"></exception>
-        </member>
-        <member name="T:Cethleann.ManagedFS.YshtolaSettings">
-            <summary>
-                Abstract base settings
-            </summary>
-        </member>
-        <member name="P:Cethleann.ManagedFS.YshtolaSettings.Directory">
-            <summary>
-                Directory the files and ID table reside in
-            </summary>
-        </member>
-        <member name="P:Cethleann.ManagedFS.YshtolaSettings.TableName">
-            <summary>
-                ID Table name
-            </summary>
-        </member>
-        <member name="P:Cethleann.ManagedFS.YshtolaSettings.XorTruth">
-            <summary>
-                Key truth
-            </summary>
-        </member>
-        <member name="P:Cethleann.ManagedFS.YshtolaSettings.Multiplier">
-            <summary>
-                Key multiplier constant
-            </summary>
-        </member>
-        <member name="P:Cethleann.ManagedFS.YshtolaSettings.Divisor">
-            <summary>
-                Key divisor constant
-            </summary>
-        </member>
-        <member name="T:Cethleann.ManagedFS.DissidiaSettings">
-            <summary>
-                Settings specific to NT
-            </summary>
-        </member>
-        <member name="M:Cethleann.ManagedFS.DissidiaSettings.#ctor">
-            <summary>
-                Initialize with default values
-            </summary>
         </member>
         <member name="T:Cethleann.Ninja.Compression">
             <summary>
@@ -2308,7 +2330,7 @@
         </member>
         <member name="M:Cethleann.Omega.Compression.Decompress(System.Span{System.Byte},System.Int32)">
             <summary>
-                Compresses a stream into a .gz stream.
+                Decompresses a Gz stream
             </summary>
             <param name="data"></param>
             <param name="decompressedSize"></param>

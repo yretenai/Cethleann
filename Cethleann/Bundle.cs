@@ -80,7 +80,7 @@ namespace Cethleann
             if (count <= 0 || count > 0xFF) return null;
 
             var headerSize = count * 4;
-            if (headerSize > data.Length || headerSize < 0) return null;
+            if (headerSize + 4 > data.Length || headerSize < 0) return null;
             var sizes = MemoryMarshal.Cast<byte, int>(data.Slice(4, headerSize)).ToArray();
             try
             {

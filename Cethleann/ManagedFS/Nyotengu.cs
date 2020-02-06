@@ -37,7 +37,17 @@ namespace Cethleann.ManagedFS
         public DataGame GameId { get; }
 
         /// <inheritdoc />
-        public Memory<byte> ReadEntry(int index) => throw new NotImplementedException();
+        public Memory<byte> ReadEntry(int index)
+        {
+            foreach (var rdb in RDBs)
+            {
+                if (index < rdb.Entries.Count) return rdb.ReadEntry(index);
+
+                index -= rdb.Entries.Count;
+            }
+
+            return Memory<byte>.Empty;
+        }
 
         /// <inheritdoc />
         public Dictionary<string, string> FileList { get; set; }
@@ -62,11 +72,11 @@ namespace Cethleann.ManagedFS
 
             if (ext == "bin")
                 if (!ExtList.TryGetValue(entry.TypeId.ToString("x8"), out ext))
-                    ext = entry.TypeId.ToString("X8");
+                    ext = entry.TypeId.ToString("x8");
 
             prefix += $@"\{ext}";
 
-            if (!FileList.TryGetValue($"{prefix}_{entry.FileId:x8}", out var path)) path = $"{index}_{entry.FileId:x8}.{ext}";
+            if (!FileList.TryGetValue($"{prefix}_{entry.FileId:x8}", out var path)) path = $"{entry.FileId:x8}.{ext}";
             else path = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + $".{ext}");
             return $@"{prefix}\{path}";
         }

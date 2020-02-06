@@ -8,8 +8,8 @@
         public long ContentSize { get; set; }
         public long Size { get; set; }
         public int Type { get; set; }
-        public int FileId { get; set; }
-        public int TypeId { get; set; }
+        public uint FileId { get; set; }
+        public uint TypeId { get; set; }
         public RDBFlags Flags { get; set; }
     }
 
@@ -17,6 +17,7 @@
     {
         External = 0x00010000,
         Internal = 0x00020000,
-        Compressed = 0x00100000
+        ZlibCompressed = 0x00100000,
+        LZ77Compressed = 0x00200000
     }
 }

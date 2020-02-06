@@ -129,7 +129,7 @@ namespace Cethleann.ManagedFS
         {
             Dispose(false);
         }
-        
+
         private void Dispose(bool disposing)
         {
             foreach (var (linkdata, _) in Data) linkdata.Dispose();

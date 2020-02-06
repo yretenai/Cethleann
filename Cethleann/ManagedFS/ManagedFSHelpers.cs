@@ -11,7 +11,7 @@ namespace Cethleann.ManagedFS
     {
         public static string[][] GetFileList(string loc, int fields)
         {
-            return File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith(";")).Select(x => x.Split(';', fields, StringSplitOptions.RemoveEmptyEntries)[0].Split(',', fields, StringSplitOptions.RemoveEmptyEntries).Where(y => y.Length == fields).Select(y => y.Trim()).ToArray()).ToArray();
+            return !File.Exists(loc) ? new string[0][] : File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith(";")).Select(x => x.Split(',', fields, StringSplitOptions.RemoveEmptyEntries).Select(y => y.Trim()).ToArray()).ToArray();
         }
 
         public static string GetFileListLocation(string filename, DataGame game)
