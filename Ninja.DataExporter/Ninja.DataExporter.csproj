@@ -16,12 +16,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Cethleann.Unbundler\Cethleann.Unbundler.csproj" />
         <ProjectReference Include="..\Cethleann\Cethleann.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Cethleann, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-        <HintPath>..\Koei.DataExporter\bin\x64\Debug\netcoreapp3.0\Cethleann.dll</HintPath>
-      </Reference>
+        <ProjectReference Include="..\DragonLib\DragonLib.csproj" />
     </ItemGroup>
 
 </Project>
