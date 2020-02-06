@@ -1,4 +1,6 @@
-﻿using Cethleann;
+﻿using System.IO;
+using System.Linq;
+using Cethleann;
 using Cethleann.ManagedFS;
 using Cethleann.Unbundler;
 using DragonLib.CLI;
@@ -17,14 +19,14 @@ namespace Koei.DataExporter
             Logger.PrintVersion("KTGL");
             Flags = CommandLineFlags.ParseFlags<KoeiDataExporterFlags>(CommandLineFlags.PrintHelp, args);
 
-            using var flayn = new Flayn(Flags.BaseDirectory, Flags.GameId);
+            using var flayn = new Flayn(Flags.GameId)
+            {
+                PrefixLinkData = Flags.UseLinkdataPrefix
+            };
 
-            if (Flags.PatchDirectory != null) flayn.AddPatchFS(Flags.PatchDirectory);
-
-            foreach (var dlcromfs in Flags.DLCDirectories) flayn.AddDataFS(dlcromfs);
-#if DEBUG
-            flayn.TestDLCSanity();
-#endif
+            flayn.AddLinkFS(Flags.BaseDirectory, Flags.IDXHint, Flags.BINHint);
+            if (Flags.PatchDirectory != null && Directory.Exists(Flags.PatchDirectory)) flayn.AddPatchFS(Flags.PatchDirectory);
+            foreach (var dlcromfs in Flags.DLCDirectories.Where(Directory.Exists)) flayn.AddLinkFS(dlcromfs, Flags.IDXHint, Flags.BINHint);
             flayn.LoadFileList();
             ExtractAll(Flags.OutputDirectory, flayn);
         }

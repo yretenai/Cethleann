@@ -3,13 +3,28 @@ namespace Cethleann.Structure
     public enum DataGame
     {
         None,
-        ThreeHouses,
-        Nioh,
-        Ryza,
         DissidiaNT,
-        AttackOnTitan2,
-        Scramble,
+        DeadOrAlive5,
         DeadOrAlive6,
-        ThreeKingdomsXIV
+        Nioh,
+        Nelke,
+        Totori,
+        Sophie,
+        Meruru,
+        Lydie,
+        Lulua,
+        Firis,
+        Ryza,
+        ThreeKingdomsXIV,
+        Warriors7XL,
+        Warriors8Empires,
+        Warriors9,
+        Scramble,
+        DragonQuest,
+        DragonQuest2,
+        AttackOnTitan2,
+        Hyrule,
+        FireEmblemWarriors,
+        ThreeHouses
     }
 }

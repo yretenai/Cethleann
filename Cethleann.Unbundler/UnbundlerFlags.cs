@@ -26,10 +26,10 @@ namespace Cethleann.Unbundler
         [CLIFlag("ktsr-raw", Help = "Output Raw KTSR streams", Category = "Unbundler Options")]
         public bool RawKTSR { get; set; }
 
-        [CLIFlag("platform", Default = DataPlatform.Switch, Aliases = new[] { "P" }, Help = "Platform the game is from", Category = "Unbundler Options")]
+        [CLIFlag("platform", Default = DataPlatform.Windows, Aliases = new[] { "P" }, Help = "Platform the game is from", Category = "Unbundler Options")]
         public DataPlatform Platform { get; set; }
 
-        [CLIFlag("game", Default = DataGame.ThreeHouses, Aliases = new[] { "g" }, Help = "Game being loaded", Category = "Unbundler Options")]
+        [CLIFlag("game", Default = DataGame.None, Aliases = new[] { "g" }, Help = "Game being loaded", Category = "Unbundler Options")]
         public DataGame GameId { get; set; }
     }
 }

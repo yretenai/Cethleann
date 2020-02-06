@@ -22,7 +22,7 @@ namespace Cethleann.ManagedFS
         public static Dictionary<string, string> GetSimpleFileList(string filename, DataGame game)
         {
             var loc = GetFileListLocation(filename, game);
-            if (!File.Exists(loc)) return null;
+            if (!File.Exists(loc)) return new Dictionary<string, string>();
             var csv = GetFileList(loc, 2);
             return csv.ToDictionary(x => x[0], y => y[1]);
         }

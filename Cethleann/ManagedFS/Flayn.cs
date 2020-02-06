@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 using Cethleann.Koei;
 using Cethleann.Structure;
 using DragonLib;
-using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Cethleann.ManagedFS
@@ -20,13 +19,10 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Loads data
         /// </summary>
-        /// <param name="baseRomFs"></param>
         /// <param name="game"></param>
-        public Flayn(string baseRomFs, DataGame game = DataGame.None)
+        public Flayn(DataGame game = DataGame.None)
         {
             GameId = game;
-            AddDataFS(baseRomFs);
-            if (GameId == DataGame.ThreeHouses) Logger.Assert(RootEntryCount == 31161, "RootEntryCount == 31161");
         }
 
         /// <summary>
@@ -63,6 +59,13 @@ namespace Cethleann.ManagedFS
         ///     Maximum number of entries found in the latest patch container.
         /// </summary>
         public int PatchEntryCount { get; private set; }
+
+        /// <summary>
+        ///     LINKDATA Name
+        /// </summary>
+        public string Name { get; set; }
+
+        public bool PrefixLinkData { get; set; }
 
         /// <summary>
         ///     Loaded FileList.csv
@@ -138,12 +141,12 @@ namespace Cethleann.ManagedFS
                 if (index >= RootEntryCount + PatchEntryCount)
                 {
                     prefix = "dlc/";
-                    logicalId = $"DLC{index - RootEntryCount - PatchEntryCount} - {index}";
+                    logicalId = $"DLC_{index - RootEntryCount - PatchEntryCount} - {index}";
                 }
                 else
                 {
                     prefix = "patch/";
-                    logicalId = $"PATCH{index - RootEntryCount} - {index}";
+                    logicalId = $"PATCH_{index - RootEntryCount} - {index}";
                     var info1 = Patch.INFO1;
                     path = info1.GetPath(index - RootEntryCount);
                     if (!string.IsNullOrWhiteSpace(path) && path != "nx/")
@@ -155,6 +158,8 @@ namespace Cethleann.ManagedFS
                     }
                 }
             }
+
+            if (PrefixLinkData) logicalId = $"{Name}_{(prefix.Length > 0 ? prefix : index.ToString())}";
 
             var temp = path;
             if (!FileList.TryGetValue(logicalId ?? index.ToString(), out path)) path = temp ?? (ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{logicalId ?? index.ToString()}.{ext}" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{logicalId ?? index.ToString()}.{ext}");
@@ -170,15 +175,7 @@ namespace Cethleann.ManagedFS
         /// <exception cref="FileNotFoundException"></exception>
         public void AddDataFS(string path)
         {
-            var data0Path = Path.Combine(path, "DATA0.bin");
-            var data1Path = Path.Combine(path, "DATA1.bin");
-            if (!File.Exists(data0Path) || !File.Exists(data1Path))
-            {
-                AddLinkFS(path);
-                return;
-            }
-
-            AddDataFSInternal(data0Path, data1Path);
+            AddLinkFS(path, "DATA0", "DATA1");
         }
 
         /// <summary>
@@ -193,14 +190,17 @@ namespace Cethleann.ManagedFS
         ///     Adds a LINKDATA container, usually base games
         /// </summary>
         /// <param name="path"></param>
+        /// <param name="idxHint"></param>
+        /// <param name="binHint"></param>
         /// <exception cref="FileNotFoundException"></exception>
-        public void AddLinkFS(string path)
+        public void AddLinkFS(string path, string idxHint, string binHint = null)
         {
-            var idxPath = Path.Combine(path, "LINKDATA.IDX");
-            var binPath = Path.Combine(path, "LINKDATA.BIN");
+            var idxPath = Path.Combine(path, $"{idxHint}.IDX");
+            if (!File.Exists(idxPath)) idxPath = Path.Combine(path, $"{idxHint}.BIN");
+            var binPath = Path.Combine(path, $"{binHint ?? idxHint}.BIN");
             if (!File.Exists(idxPath) || !File.Exists(binPath)) throw new FileNotFoundException("Cannot find DATA or LINKDATA pairs");
 
-            if (GameId == DataGame.ThreeHouses) GameId = DataGame.None;
+            Name = idxHint;
 
             AddDataFSInternal(idxPath, binPath);
         }
@@ -231,10 +231,11 @@ namespace Cethleann.ManagedFS
         /// <exception cref="DirectoryNotFoundException"></exception>
         public void AddPatchFS(string path)
         {
-            if (!Directory.Exists(path)) throw new DirectoryNotFoundException("Patch RomFS is not found!");
+            if (!Directory.Exists(path)) return;
             PatchRomFS = Path.GetFullPath(Path.Combine(path, ".."));
             var buffer = new Span<byte>(new byte[SizeHelper.SizeOf<INFO2>()]);
             var info0Path = Path.Combine(path, "INFO0.bin");
+            if (!File.Exists(info0Path)) return;
             var info1Path = Path.Combine(path, "INFO1.bin");
             var info2Path = Path.Combine(path, "INFO2.bin");
             using var info2Stream = File.OpenRead(info2Path);
@@ -298,17 +299,5 @@ namespace Cethleann.ManagedFS
             PatchEntryCount = 0;
             RootEntryCount = 0;
         }
-
-#if DEBUG
-        /// <summary>
-        ///     Tests DLC sanity. DEBUG
-        /// </summary>
-        public void TestDLCSanity()
-        {
-            if (Data.Count < 2) return;
-            Logger.Assert(Data.All(x => x.DATA0.Entries.Count == DataEntryCount), "Data.All(x => x.DATA0.Entries.Count == DataEntryCount)");
-            for (var i = 0; i < DataEntryCount; ++i) Logger.Assert(Data.Count(x => x.DATA0.Entries[i].UncompressedSize > 0) <= 1, "Data.Count(x => x.DATA0.Entries[i].UncompressedSize > 0) <= 1");
-        }
-#endif
     }
 }
