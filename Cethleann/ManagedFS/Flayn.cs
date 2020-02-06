@@ -26,7 +26,7 @@ namespace Cethleann.ManagedFS
         {
             GameId = game;
             AddDataFS(baseRomFs);
-            if (GameId == DataGame.FireEmblemThreeHouses) Logger.Assert(RootEntryCount == 31161, "RootEntryCount == 31161");
+            if (GameId == DataGame.ThreeHouses) Logger.Assert(RootEntryCount == 31161, "RootEntryCount == 31161");
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace Cethleann.ManagedFS
             var binPath = Path.Combine(path, "LINKDATA.BIN");
             if (!File.Exists(idxPath) || !File.Exists(binPath)) throw new FileNotFoundException("Cannot find DATA or LINKDATA pairs");
 
-            if (GameId == DataGame.FireEmblemThreeHouses) GameId = DataGame.None;
+            if (GameId == DataGame.ThreeHouses) GameId = DataGame.None;
 
             AddDataFSInternal(idxPath, binPath);
         }

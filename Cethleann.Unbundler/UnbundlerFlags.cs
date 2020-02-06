@@ -29,7 +29,7 @@ namespace Cethleann.Unbundler
         [CLIFlag("platform", Default = DataPlatform.Switch, Aliases = new[] { "P" }, Help = "Platform the game is from", Category = "Unbundler Options")]
         public DataPlatform Platform { get; set; }
 
-        [CLIFlag("game", Default = DataGame.FireEmblemThreeHouses, Aliases = new[] { "g" }, Help = "Game being loaded", Category = "Unbundler Options")]
+        [CLIFlag("game", Default = DataGame.ThreeHouses, Aliases = new[] { "g" }, Help = "Game being loaded", Category = "Unbundler Options")]
         public DataGame GameId { get; set; }
     }
 }

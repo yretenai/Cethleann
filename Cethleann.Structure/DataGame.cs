@@ -3,13 +3,13 @@ namespace Cethleann.Structure
     public enum DataGame
     {
         None,
-        FireEmblemThreeHouses,
+        ThreeHouses,
         Nioh,
-        AtelierRyza,
+        Ryza,
         DissidiaNT,
         AttackOnTitan2,
-        Persona5Scramble,
+        Scramble,
         DeadOrAlive6,
-        RomanceOfTheThreeKingdomsXIV
+        ThreeKingdomsXIV
     }
 }
