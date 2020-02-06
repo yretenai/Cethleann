@@ -17,6 +17,9 @@ namespace Koei.DataExporter
         [CLIFlag("link-prefix", Default = false, Help = "Use LINKDATA filename as unknown path prefix", Category = "DataExporter Options")]
         public bool UseLinkdataPrefix { get; set; }
 
+        [CLIFlag("filelist", Help = "File List filename to load, relative to the exe (unspecified is automatically determined based on GameId)", Category = "DataExporter Options")]
+        public string FileList { get; set; }
+
         [CLIFlag("base-dir", Positional = 0, Help = "Base RomFS Directory", IsRequired = true, Category = "DataExporter Options")]
         public string BaseDirectory { get; set; }
 

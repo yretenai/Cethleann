@@ -27,7 +27,7 @@ namespace Koei.DataExporter
             flayn.AddLinkFS(Flags.BaseDirectory, Flags.IDXHint, Flags.BINHint);
             if (Flags.PatchDirectory != null && Directory.Exists(Flags.PatchDirectory)) flayn.AddPatchFS(Flags.PatchDirectory);
             foreach (var dlcromfs in Flags.DLCDirectories.Where(Directory.Exists)) flayn.AddLinkFS(dlcromfs, Flags.IDXHint, Flags.BINHint);
-            flayn.LoadFileList();
+            flayn.LoadFileList(Flags.FileList);
             ExtractAll(Flags.OutputDirectory, flayn);
         }
 
