@@ -31,7 +31,12 @@ namespace Cethleann.ManagedFS
         /// <returns></returns>
         Memory<byte> ReadEntry(int index);
 
-
+        /// <summary>
+        ///     Loads a predefined filelist mapping file ids to names
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="game"></param>
+        /// <returns></returns>
         Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null);
 
         /// <summary>

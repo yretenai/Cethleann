@@ -65,6 +65,9 @@ namespace Cethleann.ManagedFS
         /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        ///     Prefix LINKDATA archive name to files
+        /// </summary>
         public bool PrefixLinkData { get; set; }
 
         /// <summary>

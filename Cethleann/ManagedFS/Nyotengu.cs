@@ -8,6 +8,9 @@ using JetBrains.Annotations;
 
 namespace Cethleann.ManagedFS
 {
+    /// <summary>
+    ///     RDB Manager
+    /// </summary>
     [PublicAPI]
     public class Nyotengu : IManagedFS
     {
@@ -21,6 +24,10 @@ namespace Cethleann.ManagedFS
         }
 
         private Dictionary<string, string> ExtList { get; set; }
+
+        /// <summary>
+        ///     List of RDBs loaded
+        /// </summary>
         public List<RDB> RDBs { get; set; } = new List<RDB>();
 
         /// <inheritdoc />
@@ -99,6 +106,9 @@ namespace Cethleann.ManagedFS
             return FileList;
         }
 
+        /// <summary>
+        ///     Disposes
+        /// </summary>
         ~Nyotengu()
         {
             Dispose(false);

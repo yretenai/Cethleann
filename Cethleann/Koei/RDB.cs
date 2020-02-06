@@ -24,6 +24,12 @@ namespace Cethleann.Koei
         private static string HASH_PREFIX = Encoding.UTF8.GetString(new byte[] { 0xEF, 0xBC, 0xBB });
         private static string HASH_SUFFIX = Encoding.UTF8.GetString(new byte[] { 0xEF, 0xBC, 0xBD });
 
+        /// <summary>
+        ///     Initialize with buffer and basic info about the FS
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="name"></param>
+        /// <param name="directory"></param>
         public RDB(Span<byte> buffer, string name, string directory)
         {
             Name = name;
@@ -40,19 +46,48 @@ namespace Cethleann.Koei
             }
         }
 
-        public Dictionary<string, Stream> Streams { get; set; } = new Dictionary<string, Stream>();
+        private Dictionary<string, Stream> Streams { get; set; } = new Dictionary<string, Stream>();
+
+        /// <summary>
+        ///     Directory that holds this RDB file
+        /// </summary>
         public string RDBDirectory { get; set; }
+
+        /// <summary>
+        ///     External data directory
+        /// </summary>
         public string Directory { get; set; }
+
+        /// <summary>
+        ///     Name of this RDB archive
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        ///     RDB Header
+        /// </summary>
         public RDBHeader Header { get; set; }
+
+        /// <summary>
+        ///     List of RDB entries found in this file
+        /// </summary>
         public List<(RDBEntry entry, byte[] typeBuffer, (long offset, long size, int binId, int binSubId))> Entries { get; set; } = new List<(RDBEntry, byte[], (long, long, int, int))>();
 
+        /// <summary>
+        ///     Clean up streams
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        ///     Gets RDB Info Entry
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        /// <exception cref="IndexOutOfRangeException"></exception>
         public RDBEntry GetEntry(int index)
         {
             if (index >= Entries.Count) throw new IndexOutOfRangeException();
@@ -60,6 +95,12 @@ namespace Cethleann.Koei
             return Entries[index].entry;
         }
 
+        /// <summary>
+        ///     Gets a bin path for a given index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        /// <exception cref="IndexOutOfRangeException"></exception>
         public string GetBinPath(int index)
         {
             if (index >= Entries.Count) throw new IndexOutOfRangeException();
@@ -71,11 +112,21 @@ namespace Cethleann.Koei
             return binPath;
         }
 
+        /// <summary>
+        ///     Gets an external file path for a given index
+        /// </summary>
+        /// <param name="fileId"></param>
+        /// <returns></returns>
         public string GetExternalPath(uint fileId)
         {
             return Path.Combine(Directory, $"0x{fileId:x8}.file");
         }
 
+        /// <summary>
+        ///     Reads a file by the given index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public Memory<byte> ReadEntry(int index)
         {
             GC.ReRegisterForFinalize(this);
@@ -127,6 +178,7 @@ namespace Cethleann.Koei
             var (fileEntry, _, buffer) = ReadRDBEntry(blob);
             if (entry.Flags.HasFlag(RDBFlags.ZlibCompressed))
                 return RDBCompression.Decompress(buffer, (int) fileEntry.Size, 1).ToArray();
+            // ReSharper disable once ConvertIfStatementToReturnStatement
             if (entry.Flags.HasFlag(RDBFlags.LZ77Compressed))
                 return RDBCompression.Decompress(buffer, (int) fileEntry.Size, 2).ToArray();
             return buffer;
@@ -156,6 +208,9 @@ namespace Cethleann.Koei
             return (offset, size, binId, binSubId);
         }
 
+        /// <summary>
+        ///     Disposes
+        /// </summary>
         ~RDB()
         {
             Dispose(false);
@@ -168,6 +223,13 @@ namespace Cethleann.Koei
             Streams.Clear();
         }
 
+        /// <summary>
+        ///     Hash filename
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="iv"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static uint Hash(Span<byte> text, int iv, int key)
         {
             unchecked
@@ -183,6 +245,12 @@ namespace Cethleann.Koei
             }
         }
 
+        /// <summary>
+        ///     Hash filename given formatting
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="ext"></param>
+        /// <returns></returns>
         public static uint Hash(string text, string ext)
         {
             var formatted = $"R_{ext}{HASH_PREFIX}{text}{HASH_SUFFIX}";
@@ -190,6 +258,11 @@ namespace Cethleann.Koei
             return Hash(buffer.Slice(1), buffer[0] * HASH_KEY, HASH_KEY);
         }
 
+        /// <summary>
+        ///     Hash KIDSSystemData filenames
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public static uint Hash(string text)
         {
             string name;

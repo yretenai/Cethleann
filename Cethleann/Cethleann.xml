@@ -1662,6 +1662,117 @@
                 It looks like it's the go-to format for KTGL Version 2 / "NewSoftEngine"
             </summary>
         </member>
+        <member name="M:Cethleann.Koei.RDB.#ctor(System.Span{System.Byte},System.String,System.String)">
+            <summary>
+                Initialize with buffer and basic info about the FS
+            </summary>
+            <param name="buffer"></param>
+            <param name="name"></param>
+            <param name="directory"></param>
+        </member>
+        <member name="P:Cethleann.Koei.RDB.RDBDirectory">
+            <summary>
+                Directory that holds this RDB file
+            </summary>
+        </member>
+        <member name="P:Cethleann.Koei.RDB.Directory">
+            <summary>
+                External data directory
+            </summary>
+        </member>
+        <member name="P:Cethleann.Koei.RDB.Name">
+            <summary>
+                Name of this RDB archive
+            </summary>
+        </member>
+        <member name="P:Cethleann.Koei.RDB.Header">
+            <summary>
+                RDB Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.Koei.RDB.Entries">
+            <summary>
+                List of RDB entries found in this file
+            </summary>
+        </member>
+        <member name="M:Cethleann.Koei.RDB.Dispose">
+            <summary>
+                Clean up streams
+            </summary>
+        </member>
+        <member name="M:Cethleann.Koei.RDB.GetEntry(System.Int32)">
+            <summary>
+                Gets RDB Info Entry
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+            <exception cref="T:System.IndexOutOfRangeException"></exception>
+        </member>
+        <member name="M:Cethleann.Koei.RDB.GetBinPath(System.Int32)">
+            <summary>
+                Gets a bin path for a given index
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+            <exception cref="T:System.IndexOutOfRangeException"></exception>
+        </member>
+        <member name="M:Cethleann.Koei.RDB.GetExternalPath(System.UInt32)">
+            <summary>
+                Gets an external file path for a given index
+            </summary>
+            <param name="fileId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Koei.RDB.ReadEntry(System.Int32)">
+            <summary>
+                Reads a file by the given index
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Koei.RDB.Finalize">
+            <summary>
+                Disposes
+            </summary>
+        </member>
+        <member name="M:Cethleann.Koei.RDB.Hash(System.Span{System.Byte},System.Int32,System.Int32)">
+            <summary>
+                Hash filename
+            </summary>
+            <param name="text"></param>
+            <param name="iv"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Koei.RDB.Hash(System.String,System.String)">
+            <summary>
+                Hash filename given formatting
+            </summary>
+            <param name="text"></param>
+            <param name="ext"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Koei.RDB.Hash(System.String)">
+            <summary>
+                Hash KIDSSystemData filenames
+            </summary>
+            <param name="text"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.Koei.RDBCompression">
+            <summary>
+                (De)compress Omega streams
+            </summary>
+        </member>
+        <member name="M:Cethleann.Koei.RDBCompression.Decompress(System.Span{System.Byte},System.Int32,System.Int32)">
+            <summary>
+                Decompresses a Gz stream
+            </summary>
+            <param name="data"></param>
+            <param name="decompressedSize"></param>
+            <param name="compressionFunc"></param>
+            <returns></returns>
+        </member>
         <member name="T:Cethleann.ManagedFS.Flayn">
             <summary>
                 Management class for DATA0 and INFO0 files.
@@ -1711,6 +1822,11 @@
         <member name="P:Cethleann.ManagedFS.Flayn.Name">
             <summary>
                 LINKDATA Name
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Flayn.PrefixLinkData">
+            <summary>
+                Prefix LINKDATA archive name to files
             </summary>
         </member>
         <member name="P:Cethleann.ManagedFS.Flayn.FileList">
@@ -1793,6 +1909,14 @@
                 Reads an entry from the first valid (non-zero) storage.
             </summary>
             <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.ManagedFS.IManagedFS.LoadFileList(System.String,System.Nullable{Cethleann.Structure.DataGame})">
+            <summary>
+                Loads a predefined filelist mapping file ids to names
+            </summary>
+            <param name="filename"></param>
+            <param name="game"></param>
             <returns></returns>
         </member>
         <member name="M:Cethleann.ManagedFS.IManagedFS.GetFilename(System.Int32,System.String,Cethleann.Structure.DataType)">
@@ -1922,11 +2046,21 @@
                 Cleanup
             </summary>
         </member>
+        <member name="T:Cethleann.ManagedFS.Nyotengu">
+            <summary>
+                RDB Manager
+            </summary>
+        </member>
         <member name="M:Cethleann.ManagedFS.Nyotengu.#ctor(Cethleann.Structure.DataGame)">
             <summary>
                 Loads data
             </summary>
             <param name="game"></param>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Nyotengu.RDBs">
+            <summary>
+                List of RDBs loaded
+            </summary>
         </member>
         <member name="M:Cethleann.ManagedFS.Nyotengu.Dispose">
             <inheritdoc />
@@ -1951,6 +2085,11 @@
         </member>
         <member name="M:Cethleann.ManagedFS.Nyotengu.LoadFileList(System.String,System.Nullable{Cethleann.Structure.DataGame})">
             <inheritdoc />
+        </member>
+        <member name="M:Cethleann.ManagedFS.Nyotengu.Finalize">
+            <summary>
+                Disposes
+            </summary>
         </member>
         <member name="T:Cethleann.ManagedFS.Reisalin">
             <summary>
