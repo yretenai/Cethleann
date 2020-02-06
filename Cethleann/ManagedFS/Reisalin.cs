@@ -24,8 +24,8 @@ namespace Cethleann.ManagedFS
         /// <inheritdoc />
         public void Dispose()
         {
-            foreach (var pak in PAKs) pak.Dispose();
-            PAKs.Clear();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <inheritdoc />
@@ -35,6 +35,13 @@ namespace Cethleann.ManagedFS
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        private void Dispose(bool disposing)
+        {
+            foreach (var pak in PAKs) pak.Dispose();
+            if (!disposing) return;
+            PAKs.Clear();
+        }
 
         /// <summary>
         ///     Mounts a PAK

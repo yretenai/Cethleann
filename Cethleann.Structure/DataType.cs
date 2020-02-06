@@ -400,6 +400,18 @@ namespace Cethleann.Structure
         WBD = 'W' << 24 | 'B' << 16 | 'D' << 8 | '_' << 0,
 
         /// <summary>
+        ///     RDB
+        /// </summary>
+        [FileExtension("rdb")]
+        RDB = 'K' << 24 | 'R' << 16 | 'D' << 8 | '_' << 0,
+
+        /// <summary>
+        ///     RDB Entry
+        /// </summary>
+        [FileExtension("rdb.bin")]
+        RDBEntry = 'K' << 24 | 'R' << 16 | 'D' << 8 | 'I' << 0,
+
+        /// <summary>
         ///     DEFLATE Compressed File.
         /// </summary>
         [FileExtension("gz")]

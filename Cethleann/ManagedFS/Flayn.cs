@@ -30,11 +30,6 @@ namespace Cethleann.ManagedFS
         }
 
         /// <summary>
-        ///     Loaded FileList.csv
-        /// </summary>
-        public Dictionary<string, string> FileList { get; set; } = new Dictionary<string, string>();
-
-        /// <summary>
         ///     Game data
         /// </summary>
         public (DATA0 DATA0, Stream DATA1, string romfs) RootData { get; private set; }
@@ -68,6 +63,11 @@ namespace Cethleann.ManagedFS
         ///     Maximum number of entries found in the latest patch container.
         /// </summary>
         public int PatchEntryCount { get; private set; }
+
+        /// <summary>
+        ///     Loaded FileList.csv
+        /// </summary>
+        public Dictionary<string, string> FileList { get; set; } = new Dictionary<string, string>();
 
         /// <inheritdoc />
         public DataGame GameId { get; private set; }
@@ -116,6 +116,13 @@ namespace Cethleann.ManagedFS
 
             var (baseData, baseStream, _) = RootData;
             return baseData.ReadEntry(baseStream, index);
+        }
+
+        /// <inheritdoc />
+        public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null)
+        {
+            FileList = ManagedFSHelpers.GetSimpleFileList(filename, game ?? GameId);
+            return FileList;
         }
 
         /// <inheritdoc />
@@ -285,8 +292,11 @@ namespace Cethleann.ManagedFS
         protected void Dispose(bool disposing)
         {
             foreach (var (_, stream, _) in Data) stream.Dispose();
-
-            if (disposing) Data = new List<(DATA0 DATA0, Stream DATA1, string romfs)>();
+            if (!disposing) return;
+            Data = new List<(DATA0 DATA0, Stream DATA1, string romfs)>();
+            DataEntryCount = 0;
+            PatchEntryCount = 0;
+            RootEntryCount = 0;
         }
 
 #if DEBUG

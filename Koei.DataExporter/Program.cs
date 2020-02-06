@@ -25,11 +25,11 @@ namespace Koei.DataExporter
 #if DEBUG
             flayn.TestDLCSanity();
 #endif
-            ((IManagedFS)flayn).LoadFileList();
+            flayn.LoadFileList();
             ExtractAll(Flags.OutputDirectory, flayn);
         }
 
-        private static void ExtractAll(string romfs, Flayn cethleann)
+        private static void ExtractAll(string romfs, IManagedFS cethleann)
         {
             for (var index = 0; index < cethleann.EntryCount; index++)
             {

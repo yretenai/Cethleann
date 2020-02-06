@@ -8,6 +8,8 @@ namespace Cethleann.Structure
         AtelierRyza,
         DissidiaNT,
         AttackOnTitan2,
-        Persona5Scramble
+        Persona5Scramble,
+        DeadOrAlive6,
+        RomanceOfTheThreeKingdomsXIV
     }
 }

@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using Cethleann.Omega;
 using Cethleann.Structure;
-using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Cethleann.ManagedFS
@@ -26,14 +24,14 @@ namespace Cethleann.ManagedFS
         }
 
         /// <summary>
-        ///     Loaded FileList.csv
-        /// </summary>
-        public Dictionary<string, string> FileList { get; set; } = new Dictionary<string, string>();
-
-        /// <summary>
         ///     Game data
         /// </summary>
         public List<(LINKDATA linkdata, string name)> Data { get; private set; } = new List<(LINKDATA, string name)>();
+
+        /// <summary>
+        ///     Loaded FileList.csv
+        /// </summary>
+        public Dictionary<string, string> FileList { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
         ///     Game ID of the game.
@@ -70,6 +68,13 @@ namespace Cethleann.ManagedFS
             return Memory<byte>.Empty;
         }
 
+        /// <inheritdoc />
+        public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null)
+        {
+            FileList = ManagedFSHelpers.GetSimpleFileList(filename, game ?? GameId);
+            return FileList;
+        }
+
         /// <summary>
         ///     Attempts to get a valid filename/filepath.
         /// </summary>
@@ -79,8 +84,6 @@ namespace Cethleann.ManagedFS
         /// <returns></returns>
         public string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
         {
-            if (dataType == DataType.Compressed || dataType == DataType.CompressedChonky) ext += ".gz";
-
             var prefix = "LINKDATA_UNKNOWN";
             foreach (var (linkdata, name) in Data)
             {
@@ -90,7 +93,7 @@ namespace Cethleann.ManagedFS
                     continue;
                 }
 
-                prefix = $@"{name}";
+                prefix = name;
                 break;
             }
 
@@ -134,8 +137,9 @@ namespace Cethleann.ManagedFS
         protected void Dispose(bool disposing)
         {
             foreach (var (linkdata, _) in Data) linkdata.Dispose();
-
-            if (disposing) Data = new List<(LINKDATA, string)>();
+            if (!disposing) return;
+            Data = new List<(LINKDATA, string)>();
+            EntryCount = 0;
         }
     }
 }

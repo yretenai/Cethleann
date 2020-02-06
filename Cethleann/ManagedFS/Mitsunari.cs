@@ -22,7 +22,7 @@ namespace Cethleann.ManagedFS
         {
             GameId = game;
         }
-        
+
         /// <summary>
         ///     Underlying LINKARCHIVEs
         /// </summary>
@@ -57,6 +57,13 @@ namespace Cethleann.ManagedFS
             }
 
             return Memory<byte>.Empty;
+        }
+
+        /// <inheritdoc />
+        public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null)
+        {
+            FileList = ManagedFSHelpers.GetSimpleFileList(filename, game ?? GameId);
+            return FileList;
         }
 
         /// <inheritdoc />
@@ -105,7 +112,7 @@ namespace Cethleann.ManagedFS
         public void AddDataFS(string path)
         {
             GC.ReRegisterForFinalize(this);
-            
+
             var archives = Directory.GetFiles(path, "*.lnk");
             foreach (var archive in archives)
             {
@@ -125,7 +132,9 @@ namespace Cethleann.ManagedFS
         {
             foreach (var (archive, _, _) in Data) archive.Dispose();
 
-            if (disposing) Data = new List<(LINKARCHIVE, LINKNAME, string)>();
+            if (!disposing) return;
+            Data = new List<(LINKARCHIVE, LINKNAME, string)>();
+            EntryCount = 0;
         }
 
         /// <summary>

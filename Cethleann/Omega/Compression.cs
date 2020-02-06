@@ -14,7 +14,7 @@ namespace Cethleann.Omega
     public class Compression
     {
         /// <summary>
-        ///     Compresses a stream into a .gz stream.
+        ///     Decompresses a Gz stream
         /// </summary>
         /// <param name="data"></param>
         /// <param name="decompressedSize"></param>

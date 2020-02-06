@@ -2,6 +2,7 @@
 using System.IO;
 using Cethleann;
 using Cethleann.ManagedFS;
+using Cethleann.ManagedFS.Support;
 using Cethleann.Structure;
 using Cethleann.Unbundler;
 using DragonLib.CLI;
@@ -31,7 +32,7 @@ namespace Ninja.DataExporter
         {
             var settings = Flags.GameId switch
             {
-                DataGame.DissidiaNT => new DissidiaSettings(),
+                DataGame.DissidiaNT => new YshtolaDissidiaSettings(),
                 _ => null
             };
             if (settings == null) throw new NotImplementedException($"Game {Flags.GameId} is not supported!");
@@ -72,7 +73,7 @@ namespace Ninja.DataExporter
 
         private static void ExportArchive()
         {
-            using IManagedFS mitsunari = new Mitsunari(Flags.GameId);
+            using var mitsunari = new Mitsunari(Flags.GameId);
             mitsunari.AddDataFS(Flags.RootDirectory);
             mitsunari.LoadFileList();
             ExtractAll(Flags.OutputDirectory, mitsunari);

@@ -17,7 +17,7 @@ namespace Omega.DataExporter
             Logger.PrintVersion("OMEGA");
             Flags = CommandLineFlags.ParseFlags<OmegaDataExporterFlags>(CommandLineFlags.PrintHelp, args);
 
-            using IManagedFS leonhart = new Leonhart(Flags.GameId);
+            using var leonhart = new Leonhart(Flags.GameId);
             foreach (var romfs in Flags.Directories) leonhart.AddDataFS(romfs);
             leonhart.LoadFileList();
             ExtractAll(Flags.OutputDirectory, leonhart);
