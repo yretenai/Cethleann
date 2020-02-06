@@ -17,16 +17,16 @@ namespace Koei.DataExporter
             Logger.PrintVersion("KTGL");
             Flags = CommandLineFlags.ParseFlags<KoeiDataExporterFlags>(CommandLineFlags.PrintHelp, args);
 
-            using var cethleann = new Flayn(Flags.BaseDirectory, Flags.GameId);
+            using var flayn = new Flayn(Flags.BaseDirectory, Flags.GameId);
 
-            if (Flags.PatchDirectory != null) cethleann.AddPatchFS(Flags.PatchDirectory);
+            if (Flags.PatchDirectory != null) flayn.AddPatchFS(Flags.PatchDirectory);
 
-            foreach (var dlcromfs in Flags.DLCDirectories) cethleann.AddDataFS(dlcromfs);
+            foreach (var dlcromfs in Flags.DLCDirectories) flayn.AddDataFS(dlcromfs);
 #if DEBUG
-            cethleann.TestDLCSanity();
+            flayn.TestDLCSanity();
 #endif
-            cethleann.LoadFileList();
-            ExtractAll(Flags.OutputDirectory, cethleann);
+            ((IManagedFS)flayn).LoadFileList();
+            ExtractAll(Flags.OutputDirectory, flayn);
         }
 
         private static void ExtractAll(string romfs, Flayn cethleann)

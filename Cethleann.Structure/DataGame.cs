@@ -7,6 +7,7 @@ namespace Cethleann.Structure
         Nioh,
         AtelierRyza,
         DissidiaNT,
-        AttackOnTitan2
+        AttackOnTitan2,
+        Persona5Scramble
     }
 }

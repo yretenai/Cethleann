@@ -262,7 +262,7 @@ namespace Cethleann.Structure
         ///     KTGL Model Group
         /// </summary>
         [FileExtension("g1mg")]
-        ModelGroup = 'M' << 0 | 'D' << 8 | 'L' << 16 | 'K' << 24,
+        ModelGroup = 'G' << 24 | '1' << 16 | 'M' << 8 | 'G' << 0,
 
         /// <summary>
         ///     KTGL Effect Model

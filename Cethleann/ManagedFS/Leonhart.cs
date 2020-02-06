@@ -28,7 +28,7 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Loaded FileList.csv
         /// </summary>
-        public Dictionary<string, string> FileList { get; } = new Dictionary<string, string>();
+        public Dictionary<string, string> FileList { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
         ///     Game data
@@ -68,31 +68,6 @@ namespace Cethleann.ManagedFS
             }
 
             return Memory<byte>.Empty;
-        }
-
-        /// <summary>
-        ///     Loads a filelist from a csv file
-        /// </summary>
-        public void LoadFileList(string filename = null)
-        {
-            var loc = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), filename ?? $"filelist{(GameId == DataGame.None ? "" : $"-{GameId:G}")}.csv");
-            if (!File.Exists(loc)) return;
-            var csv = File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith("#")).Select(x => x.Split(',', 2, StringSplitOptions.RemoveEmptyEntries).Select(y => y.Trim()).ToArray());
-            foreach (var entry in csv)
-            {
-                if (entry.Length < 2) continue;
-                if (entry[0].Length == 0 || entry[1].Length == 0) continue;
-                var id = entry[0];
-
-                if (Path.GetInvalidPathChars().Any(x => entry[1].Contains(x)))
-                {
-                    Logger.Error("LEONHART", $"Path {entry[1]} for id {id} is invalid!");
-                    continue;
-                }
-
-                Logger.Assert(!FileList.ContainsKey(id), "!FileList.ContainsKey(id)", $"File List lists id {id} twice!");
-                FileList[id] = entry[1];
-            }
         }
 
         /// <summary>

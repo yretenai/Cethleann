@@ -17,13 +17,13 @@ namespace Omega.DataExporter
             Logger.PrintVersion("OMEGA");
             Flags = CommandLineFlags.ParseFlags<OmegaDataExporterFlags>(CommandLineFlags.PrintHelp, args);
 
-            using var leonhart = new Leonhart(Flags.GameId);
+            using IManagedFS leonhart = new Leonhart(Flags.GameId);
             foreach (var romfs in Flags.Directories) leonhart.AddDataFS(romfs);
             leonhart.LoadFileList();
             ExtractAll(Flags.OutputDirectory, leonhart);
         }
 
-        private static void ExtractAll(string romfs, Leonhart leonhart)
+        private static void ExtractAll(string romfs, IManagedFS leonhart)
         {
             for (var index = 0; index < leonhart.EntryCount; index++)
             {

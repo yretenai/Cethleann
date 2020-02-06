@@ -72,7 +72,7 @@ namespace Ninja.DataExporter
 
         private static void ExportArchive()
         {
-            using var mitsunari = new Mitsunari(Flags.GameId);
+            using IManagedFS mitsunari = new Mitsunari(Flags.GameId);
             mitsunari.AddDataFS(Flags.RootDirectory);
             mitsunari.LoadFileList();
             ExtractAll(Flags.OutputDirectory, mitsunari);
