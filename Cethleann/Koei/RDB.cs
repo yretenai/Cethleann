@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -22,8 +21,8 @@ namespace Cethleann.Koei
     {
         private const byte HASH_KEY = 0x1F;
         private static readonly Regex AddressRegex = new Regex("([a-fA-F0-9]*)@([a-fA-F0-9]*)(?:#([a-fA-F0-9]*))?(?:\\$([a-fA-F0-9])*)?");
-        private static string HASH_PREFIX = Encoding.UTF8.GetString(new byte[] { 0xEF, 0xBC, 0xBB });
-        private static string HASH_SUFFIX = Encoding.UTF8.GetString(new byte[] { 0xEF, 0xBC, 0xBD });
+        private static byte[] HASH_PREFIX = { 0xEF, 0xBC, 0xBB };
+        private static byte[] HASH_SUFFIX = { 0xEF, 0xBC, 0xBD };
 
         /// <summary>
         ///     Initialize with buffer and basic info about the FS
@@ -253,13 +252,27 @@ namespace Cethleann.Koei
         /// <param name="ext"></param>
         /// <param name="prefix"></param>
         /// <returns></returns>
-        public static uint Hash(string text, string ext, string prefix = "P_")
+        public static uint Hash(string text, string ext, string prefix = "R_")
         {
-            var formatted = $"{prefix}{ext}{HASH_PREFIX}{text}{HASH_SUFFIX}";
-            Span<byte> buffer = Encoding.UTF8.GetBytes(formatted);
-            var v =  Hash(buffer.Slice(1), buffer[0] * HASH_KEY, HASH_KEY);
-            Console.WriteLine($"{v:X8} = {(BitConverter.ToString(BitConverter.GetBytes(v)).Replace("-",""))} = {formatted}");
-            return v;
+            return Hash(Encoding.UTF8.GetBytes(text), ext, prefix);
+        }
+
+        /// <summary>
+        ///     Hash filename given formatting
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="ext"></param>
+        /// <param name="prefix"></param>
+        /// <returns></returns>
+        public static uint Hash(Span<byte> text, string ext, string prefix = "R_")
+        {
+            Span<byte> buffer = new byte[ext.Length + prefix.Length + HASH_PREFIX.Length + HASH_SUFFIX.Length + text.Length];
+            prefix.ToSpan().CopyTo(buffer);
+            ext.ToSpan().CopyTo(buffer.Slice(prefix.Length));
+            HASH_PREFIX.CopyTo(buffer.Slice(prefix.Length + ext.Length));
+            text.CopyTo(buffer.Slice(prefix.Length + ext.Length + HASH_PREFIX.Length));
+            HASH_SUFFIX.CopyTo(buffer.Slice(prefix.Length + ext.Length + HASH_PREFIX.Length + text.Length));
+            return Hash(buffer.Slice(1), buffer[0] * HASH_KEY, HASH_KEY);
         }
 
         /// <summary>

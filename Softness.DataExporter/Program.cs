@@ -24,7 +24,7 @@ namespace Softness.DataExporter
             ExtractAll(Flags.OutputDirectory, nyotengu);
         }
 
-        private static void ExtractAll(string romfs, IManagedFS nyo)
+        private static void ExtractAll(string romfs, Nyotengu nyo)
         {
             for (var index = 0; index < nyo.EntryCount; index++)
             {
