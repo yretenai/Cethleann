@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Cethleann.ManagedFS.Support;
@@ -12,23 +11,22 @@ namespace Cethleann.ManagedFS
     /// <summary>
     ///     Manages TN files
     /// </summary>
-    // TODO: Migrate to IManagedFS
     [PublicAPI]
-    public class Yshtola : IEnumerable<IDTableEntry>
+    public class Yshtola : IManagedFS
     {
         /// <summary>
         ///     Initialize with standard data.
         /// </summary>
+        /// <param name="gameId"></param>
         /// <param name="root"></param>
         /// <param name="settings"></param>
-        public Yshtola(string root, YshtolaSettings settings)
+        public Yshtola(DataGame gameId, string root, YshtolaSettings settings)
         {
+            GameId = gameId;
             Settings = settings;
-            if (File.Exists(Path.Combine(root, Settings.TableName)))
-                Root = Path.GetFullPath(Path.Combine(root, ".."));
-            else if (File.Exists(Path.Combine(root, Settings.Directory, Settings.TableName))) Root = Path.GetFullPath(Path.Combine(root));
+            Root = root;
 
-            Table = new IDTable(File.ReadAllBytes(Path.Combine(root, Settings.Directory, settings.TableName)), IDTableFlags.Compressed | IDTableFlags.Encrypted, Settings.XorTruth, Settings.Multiplier, Settings.Divisor);
+            foreach (var tableName in settings.TableNames) AddDataFS(tableName);
         }
 
         /// <summary>
@@ -39,33 +37,48 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     ID Table
         /// </summary>
-        public IDTable Table { get; set; }
+        public List<IDTable> Tables { get; set; } = new List<IDTable>();
 
         /// <summary>
         ///     Root directory, the one that contains COMMON.
         /// </summary>
         public string Root { get; set; }
 
-        /// <inheritdoc />
-        public IEnumerator<IDTableEntry> GetEnumerator()
+        public void Dispose() { }
+
+        public int EntryCount { get; }
+        public DataGame GameId { get; }
+        public Dictionary<string, string> FileList { get; set; }
+
+        public Memory<byte> ReadEntry(int index)
         {
-            return ((IEnumerable<IDTableEntry>) Table.Entries).GetEnumerator();
+            foreach (var table in Tables)
+            {
+                if (index < table.Entries.Length) return new Memory<byte>(table.Read(File.ReadAllBytes(Path.Combine(Root, table.Entries[index].Path(table.Buffer, table.Header.Offset))), table.Entries[index], Settings.XorTruth, Settings.Multiplier, Settings.Divisor).ToArray());
+                index -= table.Entries.Length;
+            }
+
+            return Memory<byte>.Empty;
         }
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null) => null;
 
-        /// <summary>
-        ///     Reads a file from an ID Table entry.
-        /// </summary>
-        /// <param name="entry"></param>
-        /// <returns></returns>
-        /// <exception cref="FileNotFoundException"></exception>
-        public (Memory<byte> Data, string Path) ReadEntry(IDTableEntry entry)
+        public string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
         {
-            var path = Path.Combine(Root, entry.Path(Table.Table, Table.Header.Offset));
-            if (!File.Exists(path)) throw new FileNotFoundException(path);
+            foreach (var table in Tables)
+            {
+                if (index < table.Entries.Length) return table.Entries[index].Path(table.Buffer, table.Header.Offset);
+                index -= table.Entries.Length;
+            }
 
-            return (new Memory<byte>(Table.Read(File.ReadAllBytes(path), entry, Settings.XorTruth, Settings.Multiplier, Settings.Divisor).ToArray()), entry.OriginalPath(Table.Table, Table.Header.Offset));
+            throw new ArgumentOutOfRangeException();
+        }
+
+        public void AddDataFS(string path)
+        {
+            var tablePath = Path.Combine(Root, path);
+            if (!File.Exists(tablePath)) return;
+            Tables.Add(new IDTable(File.ReadAllBytes(tablePath), IDTableFlags.Compressed | IDTableFlags.Encrypted, Settings.XorTruth, Settings.Multiplier, Settings.Divisor));
         }
     }
 }

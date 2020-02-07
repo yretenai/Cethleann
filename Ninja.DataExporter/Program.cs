@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Cethleann;
 using Cethleann.ManagedFS;
 using Cethleann.ManagedFS.Support;
@@ -19,64 +18,41 @@ namespace Ninja.DataExporter
             Logger.PrintVersion("NINJA");
             Flags = CommandLineFlags.ParseFlags<NinjaDataExporterFlags>(CommandLineFlags.PrintHelp, args);
 
-            if (Flags.GameId != DataGame.DissidiaNT)
-            {
-                ExportArchive();
-                return;
-            }
 
-            ExportTable();
-        }
-
-        private static void ExportTable()
-        {
             var settings = Flags.GameId switch
             {
-                DataGame.DissidiaNT => new YshtolaDissidiaSettings(),
+                DataGame.DissidiaNT => (YshtolaSettings) new YshtolaDissidiaSettings(),
+                DataGame.VenusVacation => new YshtolaVenusVacationSettings(),
                 _ => null
             };
-            if (settings == null) throw new NotImplementedException($"Game {Flags.GameId} is not supported!");
-
-            var yshtola = new Yshtola(Flags.RootDirectory, settings);
-
-            if (!Directory.Exists(Flags.OutputDirectory)) Directory.CreateDirectory(Flags.OutputDirectory);
-
-            File.WriteAllBytes(Path.Combine(Flags.OutputDirectory, "manifest." + Flags.GameId.ToString("G").ToLower()), yshtola.Table.Table.ToArray());
-
-            if (Flags.ManifestOnly) return;
-
-            foreach (var entry in yshtola)
+            IManagedFS fs;
+            if (settings == null)
             {
-                try
-                {
-                    var (data, filepath) = yshtola.ReadEntry(entry);
-                    if (data.Length == 0)
-                    {
-                        Logger.Info("NINJA", $"{entry} is zero!");
-                        continue;
-                    }
-
-                    while (filepath.StartsWith("\\") || filepath.StartsWith("/")) filepath = filepath.Substring(1);
-
-                    var path = Path.Combine(Flags.OutputDirectory, filepath);
-                    var dir = Path.GetDirectoryName(path);
-                    if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-                    File.WriteAllBytes(path, data.ToArray());
-                    Logger.Info("NINJA", path);
-                }
-                catch
-                {
-                    // ignored
-                }
+                var mitsunari = new Mitsunari(Flags.GameId);
+                mitsunari.AddDataFS(Flags.RootDirectory);
+                mitsunari.LoadFileList();
+                fs = mitsunari;
             }
-        }
+            else
+            {
+                var yshtola = new Yshtola(Flags.GameId, Flags.RootDirectory, settings);
 
-        private static void ExportArchive()
-        {
-            using var mitsunari = new Mitsunari(Flags.GameId);
-            mitsunari.AddDataFS(Flags.RootDirectory);
-            mitsunari.LoadFileList();
-            ExtractAll(Flags.OutputDirectory, mitsunari);
+                if (!Directory.Exists(Flags.OutputDirectory)) Directory.CreateDirectory(Flags.OutputDirectory);
+
+                for (var index = 0; index < yshtola.Tables.Count; index++)
+                {
+                    var table = yshtola.Tables[index];
+                    var type = Path.GetDirectoryName(yshtola.Settings.TableNames[index]);
+                    var name = $"manifest-{type ?? "COMMON"}.{Flags.GameId.ToString("X").ToLower()}";
+                    File.WriteAllBytes(Path.Combine(Flags.OutputDirectory, name), table.Buffer.ToArray());
+                }
+
+                if (Flags.ManifestOnly) return;
+                fs = yshtola;
+            }
+
+            ExtractAll(Flags.OutputDirectory, fs);
+            fs.Dispose();
         }
 
         private static void ExtractAll(string romfs, IManagedFS fs)
@@ -86,7 +62,9 @@ namespace Ninja.DataExporter
                 var data = fs.ReadEntry(index);
                 var dt = data.Span.GetDataType();
                 var ext = UnbundlerLogic.GetExtension(data.Span);
-                var pathBase = $@"{romfs}\{fs.GetFilename(index, ext, dt)}";
+                var filepath = fs.GetFilename(index, ext, dt);
+                while (filepath.StartsWith("\\") || filepath.StartsWith("/")) filepath = filepath.Substring(1);
+                var pathBase = $@"{romfs}\{filepath}";
                 UnbundlerLogic.TryExtractBlob(pathBase, data, false, Flags);
             }
         }

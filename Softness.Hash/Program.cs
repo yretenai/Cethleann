@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -9,7 +10,6 @@ using DragonLib;
 using DragonLib.CLI;
 using DragonLib.IO;
 using JetBrains.Annotations;
-using Softness.DataExporter;
 
 namespace Softness.Hash
 {
@@ -21,12 +21,22 @@ namespace Softness.Hash
             var flags = CommandLineFlags.ParseFlags<SoftnessHashFlags>(CommandLineFlags.PrintHelp, args);
             Logger.Assert(RDB.Hash("HEL_COS_103", "G1M") == 0x57DF4CFCu, "Sanity Check: RDB.Hash('HEL_COS_103', 'G1M') == 0x57DF4CFC");
 
-            using var nyotengu = new Nyotengu(flags.GameId);
-            foreach (var rdb in Directory.GetFiles(flags.GameDirectory, "*.rdb")) nyotengu.AddDataFS(rdb);
-            nyotengu.LoadFileList();
-            var targetId = uint.Parse(flags.TypeId, NumberStyles.HexNumber);
-            var hashes = nyotengu.RDBs.SelectMany(x => x.Entries.Select(y => y.entry)).Where(x => x.TypeId == targetId).Select(x => x.FileId).ToHashSet();
-            if (hashes.Count == 0) Logger.Error("SOFT", $"Could not find hashes with type id {targetId}");
+            HashSet<uint> hashes;
+            if (flags.NoRDB)
+            {
+                hashes = File.ReadAllLines(flags.GameDirectory).Select(uint.Parse).ToHashSet();
+                if (hashes.Count == 0) Logger.Error("SOFT", "Could not parse hashes");
+            }
+            else
+            {
+                using var nyotengu = new Nyotengu(flags.GameId);
+                foreach (var rdb in Directory.GetFiles(flags.GameDirectory, "*.rdb")) nyotengu.AddDataFS(rdb);
+                nyotengu.LoadFileList();
+                var targetId = uint.Parse(flags.TypeId, NumberStyles.HexNumber);
+                hashes = nyotengu.RDBs.SelectMany(x => x.Entries.Select(y => y.entry)).Where(x => x.TypeId == targetId).Select(x => x.FileId).ToHashSet();
+                if (hashes.Count == 0) Logger.Error("SOFT", $"Could not find hashes with type id {targetId}");
+            }
+
             var targetName = flags.TypeName.ToUpper();
             var charMap = Encoding.ASCII.GetBytes("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-");
 
@@ -64,7 +74,7 @@ namespace Softness.Hash
                 }
 
 
-                var hash = RDB.Hash(generated.Slice(0, pos), targetName, flags.Prefix);
+                var hash = RDB.Hash(flags.Prefix + generated.Slice(0, pos).ReadString(), targetName, flags.GlobalPrefix);
                 if (hashes.Contains(hash)) Console.WriteLine($"{hash:x8},{generated.ReadString()}");
             }
         }

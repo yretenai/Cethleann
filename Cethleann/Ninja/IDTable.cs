@@ -30,7 +30,7 @@ namespace Cethleann.Ninja
                 data = Read(data.Slice(4), size, flags, truth, multiplier, divisor);
             }
 
-            Table = new Memory<byte>(data.ToArray());
+            Buffer = new Memory<byte>(data.ToArray());
             Header = MemoryMarshal.Read<IDTableHeader>(data);
             Entries = MemoryMarshal.Cast<byte, IDTableEntry>(data.Slice(Header.Offset, Header.Count * SizeHelper.SizeOf<IDTableEntry>())).ToArray();
         }
@@ -48,7 +48,7 @@ namespace Cethleann.Ninja
         /// <summary>
         ///     Raw table
         /// </summary>
-        public Memory<byte> Table { get; set; }
+        public Memory<byte> Buffer { get; set; }
 
         /// <summary>
         ///     Read a file with decryption constants using an id table entry

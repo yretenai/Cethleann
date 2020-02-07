@@ -6,6 +6,7 @@ namespace Cethleann.Structure
         DissidiaNT,
         DeadOrAlive5,
         DeadOrAlive6,
+        VenusVacation,
         Nioh,
         Nelke,
         Totori,

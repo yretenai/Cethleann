@@ -9,14 +9,9 @@ namespace Cethleann.ManagedFS.Support
     public abstract class YshtolaSettings
     {
         /// <summary>
-        ///     Directory the files and ID table reside in
-        /// </summary>
-        public string Directory { get; set; }
-
-        /// <summary>
         ///     ID Table name
         /// </summary>
-        public string TableName { get; set; }
+        public string[] TableNames { get; set; }
 
         /// <summary>
         ///     Key truth

@@ -13,8 +13,7 @@ namespace Cethleann.ManagedFS.Support
         /// </summary>
         public YshtolaDissidiaSettings()
         {
-            Directory = "COMMON";
-            TableName = "dafb4dd62a79856ae4a02584d9f642a10208bcc3d3de61210a73a75bfb218bc0";
+            TableNames = new[] { "COMMON/dafb4dd62a79856ae4a02584d9f642a10208bcc3d3de61210a73a75bfb218bc0" };
             Multiplier = 0x69UL;
             Divisor = 0xBUL;
             XorTruth = new byte[]
