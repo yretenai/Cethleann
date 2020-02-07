@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -250,12 +251,15 @@ namespace Cethleann.Koei
         /// </summary>
         /// <param name="text"></param>
         /// <param name="ext"></param>
+        /// <param name="prefix"></param>
         /// <returns></returns>
-        public static uint Hash(string text, string ext)
+        public static uint Hash(string text, string ext, string prefix = "P_")
         {
-            var formatted = $"R_{ext}{HASH_PREFIX}{text}{HASH_SUFFIX}";
+            var formatted = $"{prefix}{ext}{HASH_PREFIX}{text}{HASH_SUFFIX}";
             Span<byte> buffer = Encoding.UTF8.GetBytes(formatted);
-            return Hash(buffer.Slice(1), buffer[0] * HASH_KEY, HASH_KEY);
+            var v =  Hash(buffer.Slice(1), buffer[0] * HASH_KEY, HASH_KEY);
+            Console.WriteLine($"{v:X8} = {(BitConverter.ToString(BitConverter.GetBytes(v)).Replace("-",""))} = {formatted}");
+            return v;
         }
 
         /// <summary>

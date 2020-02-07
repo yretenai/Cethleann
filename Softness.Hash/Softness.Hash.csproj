@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <Configurations>Release;Debug</Configurations>
+        <Platforms>x64</Platforms>
+        <PublishTrimmed>true</PublishTrimmed>
+        <RuntimeIdentifiers>win10-x64;osx-x64;linux-x64</RuntimeIdentifiers>
+        <Version>1.0.0</Version>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0</FileVersion>
+        <InformationalVersion>1.0.0</InformationalVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Cethleann.Unbundler\Cethleann.Unbundler.csproj" />
+        <ProjectReference Include="..\Cethleann\Cethleann.csproj" />
+        <ProjectReference Include="..\DragonLib\DragonLib.csproj" />
+    </ItemGroup>
+
+</Project>

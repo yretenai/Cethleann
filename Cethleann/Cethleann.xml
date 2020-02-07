@@ -1744,12 +1744,13 @@
             <param name="key"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.Koei.RDB.Hash(System.String,System.String)">
+        <member name="M:Cethleann.Koei.RDB.Hash(System.String,System.String,System.String)">
             <summary>
                 Hash filename given formatting
             </summary>
             <param name="text"></param>
             <param name="ext"></param>
+            <param name="prefix"></param>
             <returns></returns>
         </member>
         <member name="M:Cethleann.Koei.RDB.Hash(System.String)">
