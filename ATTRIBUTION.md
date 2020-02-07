@@ -9,3 +9,5 @@ This list is to serve as a record of attribution, regardless if the research is 
 - Ploaj's [Metanoia](https://github.com/Ploaj/Metanoia)
 - [quickbms](https://aluigi.altervista.org/quickbms.htm) [arslan.bms](https://aluigi.altervista.org/bms/arslan.bms)
 - VitaSmith's [gust_tools](https://github.com/VitaSmith/gust_tools)
+- Eternity's rdbtool
+- Chrrox's rdb quickbms script
