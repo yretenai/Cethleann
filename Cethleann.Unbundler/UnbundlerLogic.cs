@@ -46,11 +46,11 @@ namespace Cethleann.Unbundler
                         path = Path.Combine(Path.GetDirectoryName(pathBase), $"{name}.{ext}");
                 }
 
-                TryExtractBlob(path, datablob, allTypes, flags);
+                TryExtractBlob(path, datablob.Span, allTypes, flags);
             }
         }
 
-        public static int TryExtractBlob(string blobBase, Memory<byte> datablob, bool allTypes, UnbundlerFlags flags)
+        public static int TryExtractBlob(string blobBase, Span<byte> datablob, bool allTypes, UnbundlerFlags flags)
         {
             if (datablob.Length == 0 && !flags.WriteZero)
             {
@@ -58,22 +58,22 @@ namespace Cethleann.Unbundler
                 return 0;
             }
 
-            var dataType = datablob.Span.GetDataType();
+            var dataType = datablob.GetDataType();
 
             if (allTypes || (flags.Recursive && flags.Depth > 0))
             {
                 var recursionLevel = flags.Depth--;
                 try
                 {
-                    if (!datablob.Span.IsKnown())
+                    if (!datablob.IsKnown())
                     {
-                        if (datablob.Span.IsDataTable())
+                        if (datablob.IsDataTable())
                             if (TryExtractDataTable(blobBase, datablob, flags))
                                 return 1;
-                        if (datablob.Span.IsBundle())
+                        if (datablob.IsBundle())
                             if (TryExtractBundle(blobBase, datablob, flags))
                                 return 1;
-                        if (datablob.Span.IsPointerBundle())
+                        if (datablob.IsPointerBundle())
                             if (TryExtractPointerBundle(blobBase, datablob, flags))
                                 return 1;
                     }
@@ -115,11 +115,11 @@ namespace Cethleann.Unbundler
             if (dataType == DataType.Compressed || dataType == DataType.CompressedChonky)
                 try
                 {
-                    var decompressed = TableCompression.Decompress(datablob.Span);
+                    var decompressed = TableCompression.Decompress(datablob);
                     var pathBase = blobBase;
                     if (pathBase.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase)) pathBase = pathBase.Substring(0, pathBase.Length - 3);
 
-                    var result = TryExtractBlob(pathBase, new Memory<byte>(decompressed.ToArray()), allTypes, flags);
+                    var result = TryExtractBlob(pathBase, decompressed, allTypes, flags);
 
                     if (result > 0) return result;
                 }
@@ -168,11 +168,11 @@ namespace Cethleann.Unbundler
             return 2;
         }
 
-        private static bool TryExtractGAPK(string pathBase, Memory<byte> data, UnbundlerFlags flags, bool prependNames)
+        private static bool TryExtractGAPK(string pathBase, Span<byte> data, UnbundlerFlags flags, bool prependNames)
         {
             try
             {
-                var blobs = new GAPK(data.Span);
+                var blobs = new GAPK(data);
                 if (blobs.Blobs.Count == 0) return true;
 
                 var names = blobs.NameMap.Names;
@@ -195,11 +195,11 @@ namespace Cethleann.Unbundler
             return true;
         }
 
-        private static bool TryExtractRESPACK(string pathBase, Memory<byte> data, UnbundlerFlags flags)
+        private static bool TryExtractRESPACK(string pathBase, Span<byte> data, UnbundlerFlags flags)
         {
             try
             {
-                var blobs = new RESPACK(data.Span);
+                var blobs = new RESPACK(data);
                 if (blobs.Entries.Count == 0) return true;
 
                 TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, null, flags);
@@ -215,11 +215,11 @@ namespace Cethleann.Unbundler
             return true;
         }
 
-        private static bool TryExtractWHD(string pathBase, Memory<byte> data, UnbundlerFlags flags)
+        private static bool TryExtractWHD(string pathBase, Span<byte> data, UnbundlerFlags flags)
         {
             try
             {
-                var blobs = new KoeiWaveBank(data.Span, flags.WBHAlternateNames);
+                var blobs = new KoeiWaveBank(data, flags.WBHAlternateNames);
                 if (blobs.WBH.Soundbank.Entries.Count == 0) return true;
 
                 var names = blobs.WBH.Soundbank.Names;
@@ -232,7 +232,7 @@ namespace Cethleann.Unbundler
                         var wav = blobs.WBD.ReconstructWave(stream, flags.ConvertADPCM);
                         var name = $@"{pathBase}\{(names?.ElementAtOrDefault(index)?.SanitizeDirname() ?? index.ToString("X8"))}".Trim();
                         if (streams.Length > 1) name += $@"\{streamIndex:X8}";
-                        TryExtractBlob($@"{name}.wav", wav, false, flags);
+                        TryExtractBlob($@"{name}.wav", wav.Span, false, flags);
                     }
                 }
             }
@@ -247,11 +247,11 @@ namespace Cethleann.Unbundler
             return true;
         }
 
-        private static bool TryExtractGMPK(string pathBase, Memory<byte> data, UnbundlerFlags flags)
+        private static bool TryExtractGMPK(string pathBase, Span<byte> data, UnbundlerFlags flags)
         {
             try
             {
-                var blobs = new GMPK(data.Span);
+                var blobs = new GMPK(data);
                 if (blobs.Blobs.Count == 0) return true;
 
                 var nameIndex = 0;
@@ -290,11 +290,11 @@ namespace Cethleann.Unbundler
             return "bin";
         }
 
-        private static bool TryExtractDataTable(string pathBase, Memory<byte> data, UnbundlerFlags flags)
+        private static bool TryExtractDataTable(string pathBase, Span<byte> data, UnbundlerFlags flags)
         {
             try
             {
-                var blobs = new DataTable(data.Span);
+                var blobs = new DataTable(data);
                 if (blobs.Entries.Count == 0) return true;
 
                 TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, null, flags);
@@ -310,11 +310,11 @@ namespace Cethleann.Unbundler
             return true;
         }
 
-        private static bool TryExtractSCEN(string pathBase, Memory<byte> data, UnbundlerFlags flags)
+        private static bool TryExtractSCEN(string pathBase, Span<byte> data, UnbundlerFlags flags)
         {
             try
             {
-                var blobs = new SCEN(data.Span);
+                var blobs = new SCEN(data);
                 if (blobs.Entries.Count == 0) return true;
 
                 TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, null, flags);
@@ -330,11 +330,11 @@ namespace Cethleann.Unbundler
             return true;
         }
 
-        private static bool TryExtractBundle(string pathBase, Memory<byte> data, UnbundlerFlags flags)
+        private static bool TryExtractBundle(string pathBase, Span<byte> data, UnbundlerFlags flags)
         {
             try
             {
-                var blobs = new Bundle(data.Span);
+                var blobs = new Bundle(data);
                 if (blobs.Entries.Count == 0) return true;
 
                 TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, null, flags);
@@ -350,11 +350,11 @@ namespace Cethleann.Unbundler
             return true;
         }
 
-        private static bool TryExtractPointerBundle(string pathBase, Memory<byte> data, UnbundlerFlags flags)
+        private static bool TryExtractPointerBundle(string pathBase, Span<byte> data, UnbundlerFlags flags)
         {
             try
             {
-                var blobs = new PointerBundle(data.Span);
+                var blobs = new PointerBundle(data);
                 if (blobs.Entries.Count == 0) return true;
 
                 TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, null, flags);
@@ -370,11 +370,11 @@ namespace Cethleann.Unbundler
             return true;
         }
 
-        private static bool TryExtractMDLK(string pathBase, Memory<byte> data, UnbundlerFlags flags)
+        private static bool TryExtractMDLK(string pathBase, Span<byte> data, UnbundlerFlags flags)
         {
             try
             {
-                var blobs = new MDLK(data.Span);
+                var blobs = new MDLK(data);
                 if (blobs.Entries.Count == 0) return true;
 
                 TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, null, flags);
@@ -390,11 +390,11 @@ namespace Cethleann.Unbundler
             return true;
         }
 
-        private static bool TryExtractLX(string pathBase, Memory<byte> data)
+        private static bool TryExtractLX(string pathBase, Span<byte> data)
         {
             try
             {
-                var blobs = new TextLocalization(data.Span);
+                var blobs = new TextLocalization(data);
                 if (blobs.Entries.Count == 0) return true;
 
                 var ft = Path.ChangeExtension(pathBase, ".txt");
@@ -426,18 +426,18 @@ namespace Cethleann.Unbundler
             return true;
         }
 
-        private static bool TryExtractG1M(string pathBase, Memory<byte> data, UnbundlerFlags flags)
+        private static bool TryExtractG1M(string pathBase, Span<byte> data, UnbundlerFlags flags)
         {
             try
             {
-                var blobs = new G1Model(data.Span, true, false);
+                var blobs = new G1Model(data, true, false);
                 if (blobs.SectionRoot.Sections.Count == 0) return true;
 
                 for (var index = 0; index < blobs.SectionRoot.Sections.Count; index++)
                 {
                     var sectionData = blobs.SectionRoot.Sections[index];
                     var magic = MemoryMarshal.Read<DataType>(sectionData.Span);
-                    TryExtractBlob($@"{pathBase}\{index:X4}.{string.Join("", magic.ToFourCC(true).Reverse())}", sectionData, false, flags);
+                    TryExtractBlob($@"{pathBase}\{index:X4}.{string.Join("", magic.ToFourCC(true).Reverse())}", sectionData.Span, false, flags);
                 }
             }
             catch (Exception e)
@@ -451,11 +451,11 @@ namespace Cethleann.Unbundler
             return true;
         }
 
-        private static bool TryExtractKTSR(string pathBase, Memory<byte> data, UnbundlerFlags flags)
+        private static bool TryExtractKTSR(string pathBase, Span<byte> data, UnbundlerFlags flags)
         {
             try
             {
-                var blobs = new SoundResource(data.Span, flags.Platform);
+                var blobs = new SoundResource(data, flags.Platform);
                 if (blobs.Entries.Count == 0) return true;
 
                 foreach (var datablob in blobs.Entries)
@@ -481,7 +481,7 @@ namespace Cethleann.Unbundler
                                         break;
                                     }
                                     default:
-                                        TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}_{adcpmSection.Base.Id:X8}.{GetExtension(adcpmSection.FullBuffer.Span)}", adcpmSection.FullBuffer, false, flags);
+                                        TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}_{adcpmSection.Base.Id:X8}.{GetExtension(adcpmSection.FullBuffer.Span)}", adcpmSection.FullBuffer.Span, false, flags);
                                         break;
                                 }
                             }
@@ -507,7 +507,7 @@ namespace Cethleann.Unbundler
                                 OGGSound sample => sample.Data,
                                 _ => datablob.FullBuffer
                             };
-                            TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}.{GetExtension(buffer.Span)}", buffer, false, flags);
+                            TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}.{GetExtension(buffer.Span)}", buffer.Span, false, flags);
                             break;
                         }
                     }
@@ -524,15 +524,15 @@ namespace Cethleann.Unbundler
             }
         }
 
-        private static bool TryExtractKTSC(string pathBase, Memory<byte> data, UnbundlerFlags flags)
+        private static bool TryExtractKTSC(string pathBase, Span<byte> data, UnbundlerFlags flags)
         {
             try
             {
-                var blobs = new SoundContainer(data.Span);
+                var blobs = new SoundContainer(data);
                 for (var index = 0; index < blobs.KTSR.Count; index++)
                 {
                     var ktsr = blobs.KTSR[index];
-                    TryExtractBlob($@"{pathBase}\{blobs.Identifiers[index]:X8}.{GetExtension(ktsr.Span)}", ktsr, false, flags);
+                    TryExtractBlob($@"{pathBase}\{blobs.Identifiers[index]:X8}.{GetExtension(ktsr.Span)}", ktsr.Span, false, flags);
                 }
 
                 return true;
@@ -546,13 +546,13 @@ namespace Cethleann.Unbundler
             }
         }
 
-        private static bool TryExtractG1L(string pathBase, Memory<byte> data, UnbundlerFlags flags)
+        private static bool TryExtractG1L(string pathBase, Span<byte> data, UnbundlerFlags flags)
         {
             try
             {
-                var blobs = new G1Lazy(data.Span);
+                var blobs = new G1Lazy(data);
                 var buffer = blobs.Audio;
-                TryExtractBlob(Path.ChangeExtension(pathBase, "kvs"), buffer, false, flags);
+                TryExtractBlob(Path.ChangeExtension(pathBase, "kvs"), buffer.Span, false, flags);
             }
             catch (Exception e)
             {
@@ -565,13 +565,13 @@ namespace Cethleann.Unbundler
             return true;
         }
 
-        private static bool TryExtractKOVS(string pathBase, Memory<byte> data, UnbundlerFlags flags)
+        private static bool TryExtractKOVS(string pathBase, Span<byte> data, UnbundlerFlags flags)
         {
             try
             {
-                var blobs = new KOVSSound(data.Span);
+                var blobs = new KOVSSound(data);
                 var buffer = blobs.Stream;
-                TryExtractBlob(Path.ChangeExtension(pathBase, "ogg"), buffer, false, flags);
+                TryExtractBlob(Path.ChangeExtension(pathBase, "ogg"), buffer.Span, false, flags);
             }
             catch (Exception e)
             {

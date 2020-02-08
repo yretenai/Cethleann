@@ -28,12 +28,12 @@ namespace Gust.DataExporter
         {
             for (var index = 0; index < fs.EntryCount; index++)
             {
-                var data = fs.ReadEntry(index);
+                var data = fs.ReadEntry(index).Span;
                 var filepath = fs.GetFilename(index);
                 while (filepath.StartsWith("\\") || filepath.StartsWith("/")) filepath = filepath.Substring(1);
-                if (filepath.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase) && data.Span[4] == 0x78)
+                if (filepath.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    data = Compression.Decompress(data.Span, -1, 1).ToArray();
+                    if (data[4] == 0x78) data = Compression.Decompress(data, -1, 1);
                     filepath = filepath.Substring(0, filepath.Length - 3);
                 }
 

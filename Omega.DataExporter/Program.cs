@@ -27,9 +27,9 @@ namespace Omega.DataExporter
         {
             for (var index = 0; index < leonhart.EntryCount; index++)
             {
-                var data = leonhart.ReadEntry(index);
-                var dt = data.Span.GetDataType();
-                var ext = UnbundlerLogic.GetExtension(data.Span);
+                var data = leonhart.ReadEntry(index).Span;
+                var dt = data.GetDataType();
+                var ext = UnbundlerLogic.GetExtension(data);
                 var pathBase = $@"{romfs}\{leonhart.GetFilename(index, ext, dt)}";
                 UnbundlerLogic.TryExtractBlob(pathBase, data, false, Flags);
             }

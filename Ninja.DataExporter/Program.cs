@@ -59,9 +59,9 @@ namespace Ninja.DataExporter
         {
             for (var index = 0; index < fs.EntryCount; index++)
             {
-                var data = fs.ReadEntry(index);
-                var dt = data.Span.GetDataType();
-                var ext = UnbundlerLogic.GetExtension(data.Span);
+                var data = fs.ReadEntry(index).Span;
+                var dt = data.GetDataType();
+                var ext = UnbundlerLogic.GetExtension(data);
                 var filepath = fs.GetFilename(index, ext, dt);
                 while (filepath.StartsWith("\\") || filepath.StartsWith("/")) filepath = filepath.Substring(1);
                 var pathBase = $@"{romfs}\{filepath}";

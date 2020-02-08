@@ -35,9 +35,9 @@ namespace Koei.DataExporter
         {
             for (var index = 0; index < cethleann.EntryCount; index++)
             {
-                var data = cethleann.ReadEntry(index);
-                var dt = data.Span.GetDataType();
-                var ext = UnbundlerLogic.GetExtension(data.Span);
+                var data = cethleann.ReadEntry(index).Span;
+                var dt = data.GetDataType();
+                var ext = UnbundlerLogic.GetExtension(data);
                 var pathBase = $@"{romfs}\{cethleann.GetFilename(index, ext, dt)}";
                 UnbundlerLogic.TryExtractBlob(pathBase, data, false, Flags);
             }

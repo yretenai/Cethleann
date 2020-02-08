@@ -60,7 +60,7 @@ namespace Cethleann.Gust
                 var size = MemoryMarshal.Read<int>(entryBlob.Slice(0x80));
                 var key = entryBlob.Slice(0x84, 20).ToArray();
                 var infoBlob = entryBlob.Slice(0x98);
-                var info = Is64Bit ? MemoryMarshal.Cast<byte, long>(infoBlob).ToArray() : (MemoryMarshal.Cast<byte, int>(infoBlob).ToArray().Select(x => (long) x).ToArray());
+                var info = Is64Bit ? MemoryMarshal.Cast<byte, long>(infoBlob).ToArray() : (MemoryMarshal.Cast<byte, uint>(infoBlob).ToArray().Select(x => (long) x).ToArray());
                 var encrypted = key.Any(x => x != 0);
                 if (encrypted) Recode(filenameBlob, key);
 

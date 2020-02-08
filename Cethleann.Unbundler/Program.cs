@@ -51,7 +51,7 @@ namespace Cethleann.Unbundler
             foreach (var arg in files)
             {
                 Logger.Info("CETH", arg);
-                var data = new Memory<byte>(File.ReadAllBytes(arg));
+                var data = File.ReadAllBytes(arg);
                 var pathBase = arg;
                 if (!arg.EndsWith(".text"))
                 {

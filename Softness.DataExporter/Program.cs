@@ -28,9 +28,9 @@ namespace Softness.DataExporter
         {
             for (var index = 0; index < nyo.EntryCount; index++)
             {
-                var data = nyo.ReadEntry(index);
-                var dt = data.Span.GetDataType();
-                var ext = UnbundlerLogic.GetExtension(data.Span);
+                var data = nyo.ReadEntry(index).Span;
+                var dt = data.GetDataType();
+                var ext = UnbundlerLogic.GetExtension(data);
                 var pathBase = $@"{romfs}\{nyo.GetFilename(index, ext, dt)}";
                 UnbundlerLogic.TryExtractBlob(pathBase, data, false, Flags);
             }
