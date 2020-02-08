@@ -1,132 +1,90 @@
-using System;
+﻿using System;
+using System.Buffers.Binary;
 using System.IO;
 using System.IO.Compression;
-using System.Runtime.InteropServices;
-using Cethleann.Structure;
 using DragonLib;
+using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Cethleann.Koei
 {
     /// <summary>
-    ///     Compression helper class for KTGL.
+    ///     (De)compress Omega streams
     /// </summary>
     [PublicAPI]
-    public static class Compression
+    public class Compression
     {
         /// <summary>
-        ///     Compresses a stream into a .gz stream.
+        ///     Decompresses a Gz stream
         /// </summary>
         /// <param name="data"></param>
+        /// <param name="decompressedSize"></param>
+        /// <param name="compressionFunc"></param>
         /// <param name="blockSize"></param>
         /// <returns></returns>
-        public static Span<byte> Compress(Span<byte> data, int blockSize = (int) DataType.Compressed)
+        public static Span<byte> Decompress(Span<byte> data, int decompressedSize, int compressionFunc, int blockSize = 0x4000)
         {
-            var compInfo = new KTGLCompressionInfo
+            unsafe
             {
-                ChunkSize = blockSize,
-                ChunkCount = (int) Math.Ceiling((double) data.Length / blockSize),
-                Size = data.Length
-            };
-            var buffer = new Span<byte>(new byte[data.Length]);
-            MemoryMarshal.Write(buffer, ref compInfo);
-            var headerCursor = SizeHelper.SizeOf<KTGLCompressionInfo>();
-            var cursor = (headerCursor + 4 * compInfo.ChunkCount).Align(0x80);
-            for (int i = 0; i < data.Length; i += blockSize)
-            {
-                using var ms = new MemoryStream(blockSize);
-                using var deflateStream = new DeflateStream(ms, CompressionLevel.Optimal);
-
-                var block = data.Slice(i, Math.Min(blockSize, data.Length - i));
-                deflateStream.Write(block);
-                deflateStream.Flush();
-                var write = block.Length;
-                var compressed = false;
-                if (ms.Length < block.Length) // special case where the last block is too small to compress properly.
+                var decPtr = 0;
+                Span<byte> decompressed = new byte[decompressedSize == -1 ? data.Length : decompressedSize];
+                var comPtr = 0;
+                while (true)
                 {
-                    write = (int) ms.Position + 2;
-                    block = new Span<byte>(new byte[ms.Length]);
-                    ms.Position = 0;
-                    ms.Read(block);
-                    compressed = true;
-                }
+                    if (comPtr >= data.Length) break;
+                    var chunkSize = BinaryPrimitives.ReadInt32LittleEndian(data.Slice(comPtr));
+                    comPtr += 4;
+                    if (chunkSize == 0) break;
 
-                var absWrite = write + 4;
-                MemoryMarshal.Write(buffer.Slice(headerCursor), ref absWrite);
-                headerCursor += 4;
-                MemoryMarshal.Write(buffer.Slice(cursor), ref write);
-                if (compressed)
-                {
-                    buffer[cursor + 4] = 0x78;
-                    buffer[cursor + 5] = 0xDA;
-                }
-
-                block.CopyTo(buffer.Slice(cursor + 4 + (compressed ? 2 : 0)));
-                cursor = (cursor + write + 4 + (compressed ? 2 : 0)).Align(0x80);
-            }
-
-            return buffer.Slice(0, cursor);
-        }
-
-        /// <summary>
-        ///     Decompresses a .gz stream.
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public static unsafe Span<byte> Decompress(Span<byte> data)
-        {
-            var cursor = 0;
-            var compInfo = MemoryMarshal.Read<KTGLCompressionInfo>(data);
-            var buffer = new Span<byte>(new byte[compInfo.Size]);
-            cursor += SizeHelper.SizeOf<KTGLCompressionInfo>();
-            var chunkSizes = MemoryMarshal.Cast<byte, int>(data.Slice(cursor, 4 * compInfo.ChunkCount));
-            cursor = (cursor + 4 * compInfo.ChunkCount).Align(0x80);
-            var bufferCursor = 0;
-            for (var i = 0; i < compInfo.ChunkCount; ++i)
-            {
-                var chunkSize = chunkSizes[i];
-                try
-                {
-                    if (chunkSize + bufferCursor == buffer.Length)
+                    switch (compressionFunc)
                     {
-                        data.Slice(cursor, chunkSize).CopyTo(buffer.Slice(bufferCursor));
-                        bufferCursor += chunkSize;
-                        continue;
+                        case 1:
+                        {
+                            var chunk = data.Slice(comPtr + 2, chunkSize - 2);
+                            fixed (byte* pin = &chunk.GetPinnableReference())
+                            {
+                                using var stream = new UnmanagedMemoryStream(pin, chunk.Length);
+                                Logger.Assert(data[comPtr] == 0x78, "data[comPtr] == 0x78");
+                                using var inflate = new DeflateStream(stream, CompressionMode.Decompress, true);
+                                Span<byte> block = new byte[blockSize * 4];
+                                var decRead = inflate.Read(block);
+                                if (decPtr + decRead > decompressed.Length)
+                                {
+                                    Span<byte> temp = new byte[decompressed.Length + data.Length + decRead];
+                                    decompressed.CopyTo(temp);
+                                    decompressed = temp;
+                                }
+
+                                block.Slice(0, decRead).CopyTo(decompressed.Slice(decPtr));
+                                decPtr += decRead;
+                            }
+
+                            break;
+                        }
+                        case 2:
+                        {
+                            var chunk = data.Slice(comPtr, chunkSize);
+                            Span<byte> block = new byte[blockSize * 4];
+                            var decRead = CompressionEncryption.UnsafeDecompressLZ77EA_970(chunk, block);
+                            if (decPtr + decRead > decompressed.Length)
+                            {
+                                Span<byte> temp = new byte[decPtr + decRead + blockSize * 4];
+                                decompressed.CopyTo(temp);
+                                decompressed = temp;
+                            }
+
+                            block.Slice(0, decRead).CopyTo(decompressed.Slice(decPtr));
+                            decPtr += decRead;
+                            break;
+                        }
                     }
 
-                    fixed (byte* pinData = &data.Slice(cursor)[6])
-                    {
-                        using var stream = new UnmanagedMemoryStream(pinData, chunkSize - 6);
-                        using var inflateStream = new DeflateStream(stream, CompressionMode.Decompress);
-                        var block = new Span<byte>(new byte[compInfo.ChunkSize]);
-                        var read = inflateStream.Read(block);
-                        block.Slice(0, read).CopyTo(buffer.Slice(bufferCursor));
-                        bufferCursor = (bufferCursor + read).Align(0x80);
-                    }
+                    comPtr += chunkSize;
                 }
-                finally
-                {
-                    cursor = (cursor + chunkSize).Align(0x80);
-                }
+
+                Logger.Assert(comPtr == data.Length, "comPtr == data.Length");
+                return decompressed.Slice(0, decPtr);
             }
-
-            return buffer;
-        }
-
-        /// <summary>
-        ///     Wrapper for Stream based buffers
-        /// </summary>
-        /// <param name="stream"></param>
-        /// <param name="compressedSize"></param>
-        /// <returns></returns>
-        public static Memory<byte> Decompress(Stream stream, long compressedSize)
-        {
-            var compressedBuffer = new Span<byte>(new byte[compressedSize + SizeHelper.SizeOf<KTGLCompressionInfo>()]);
-            stream.Read(compressedBuffer);
-            var decompressed = Decompress(compressedBuffer);
-            var result = new Memory<byte>(new byte[decompressed.Length]);
-            decompressed.CopyTo(result.Span);
-            return result;
         }
     }
 }

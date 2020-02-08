@@ -100,7 +100,7 @@ namespace Cethleann.Koei
             var buffer = new Memory<byte>(new byte[entry.UncompressedSize]);
             using var stream = File.OpenRead(entryPath);
 
-            if (entry.IsCompressed != 0) return Compression.Decompress(stream, entry.CompressedSize);
+            if (entry.IsCompressed != 0) return TableCompression.Decompress(stream, entry.CompressedSize);
 
             stream.Read(buffer.Span);
             return buffer;

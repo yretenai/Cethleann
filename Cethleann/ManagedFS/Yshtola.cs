@@ -46,9 +46,8 @@ namespace Cethleann.ManagedFS
 
         public void Dispose() { }
 
-        public int EntryCount { get; }
+        public int EntryCount { get; private set; }
         public DataGame GameId { get; }
-        public Dictionary<string, string> FileList { get; set; }
 
         public Memory<byte> ReadEntry(int index)
         {
@@ -78,7 +77,9 @@ namespace Cethleann.ManagedFS
         {
             var tablePath = Path.Combine(Root, path);
             if (!File.Exists(tablePath)) return;
-            Tables.Add(new IDTable(File.ReadAllBytes(tablePath), IDTableFlags.Compressed | IDTableFlags.Encrypted, Settings.XorTruth, Settings.Multiplier, Settings.Divisor));
+            var table = new IDTable(File.ReadAllBytes(tablePath), IDTableFlags.Compressed | IDTableFlags.Encrypted, Settings.XorTruth, Settings.Multiplier, Settings.Divisor);
+            Tables.Add(table);
+            EntryCount += table.Entries.Length;
         }
     }
 }

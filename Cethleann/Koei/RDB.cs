@@ -177,10 +177,10 @@ namespace Cethleann.Koei
 
             var (fileEntry, _, buffer) = ReadRDBEntry(blob);
             if (entry.Flags.HasFlag(RDBFlags.ZlibCompressed))
-                return RDBCompression.Decompress(buffer, (int) fileEntry.Size, 1).ToArray();
+                return Compression.Decompress(buffer, (int) fileEntry.Size, 1).ToArray();
             // ReSharper disable once ConvertIfStatementToReturnStatement
             if (entry.Flags.HasFlag(RDBFlags.LZ77Compressed))
-                return RDBCompression.Decompress(buffer, (int) fileEntry.Size, 2).ToArray();
+                return Compression.Decompress(buffer, (int) fileEntry.Size, 2).ToArray();
             return buffer;
         }
 

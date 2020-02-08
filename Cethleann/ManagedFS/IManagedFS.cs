@@ -20,11 +20,6 @@ namespace Cethleann.ManagedFS
         DataGame GameId { get; }
 
         /// <summary>
-        ///     Filename List
-        /// </summary>
-        Dictionary<string, string> FileList { get; set; }
-
-        /// <summary>
         ///     Reads an entry from the first valid (non-zero) storage.
         /// </summary>
         /// <param name="index"></param>

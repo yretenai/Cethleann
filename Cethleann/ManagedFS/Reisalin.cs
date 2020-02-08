@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Cethleann.Gust;
 using Cethleann.Structure;
 using JetBrains.Annotations;
@@ -12,10 +9,14 @@ namespace Cethleann.ManagedFS
     /// <summary>
     ///     Manages PAK files
     /// </summary>
-    // TODO: Migrate to IManagedFS
     [PublicAPI]
-    public class Reisalin : IDisposable, IEnumerable<(PAKEntry, PAK)>
+    public class Reisalin : IManagedFS
     {
+        public Reisalin(DataGame gameid)
+        {
+            GameId = gameid;
+        }
+
         /// <summary>
         ///     Lsof PAKs mounted
         /// </summary>
@@ -28,13 +29,37 @@ namespace Cethleann.ManagedFS
             GC.SuppressFinalize(this);
         }
 
-        /// <inheritdoc />
-        public IEnumerator<(PAKEntry, PAK)> GetEnumerator()
+        public int EntryCount { get; private set; }
+        public DataGame GameId { get; }
+
+        public Memory<byte> ReadEntry(int index)
         {
-            return (from pak in PAKs from entry in pak.Entries select (entry, pak)).GetEnumerator();
+            foreach (var pak in PAKs)
+            {
+                if (index < pak.Entries.Count) return pak.ReadEntry(pak.Entries[index]);
+                index -= pak.Entries.Count;
+            }
+
+            return Memory<byte>.Empty;
         }
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null)
+        {
+            return null;
+        }
+
+        public string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
+        {
+            foreach (var pak in PAKs)
+            {
+                if (index < pak.Entries.Count) return pak.Entries[index].Filename;
+                index -= pak.Entries.Count;
+            }
+
+            return null;
+        }
+
+        public void AddDataFS(string path) => AddDataFS(path, true);
 
         private void Dispose(bool disposing)
         {
@@ -48,30 +73,11 @@ namespace Cethleann.ManagedFS
         /// </summary>
         /// <param name="path"></param>
         /// <param name="a18"></param>
-        public void Mount(string path, bool a18 = true)
+        public void AddDataFS(string path, bool a18)
         {
-            if (Directory.Exists(path))
-                foreach (var file in Directory.GetFiles(path, "*.PAK"))
-                    Mount(file, a18);
-            else
-                PAKs.Add(new PAK(path, a18));
-        }
-
-        /// <summary>
-        ///     Reads a file from a path.
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        /// <exception cref="FileNotFoundException"></exception>
-        public Memory<byte> ReadFile(string path)
-        {
-            foreach (var pak in PAKs)
-            {
-                if (pak.TryGetEntry(path, out var entry))
-                    return pak.ReadEntry(entry);
-            }
-
-            throw new FileNotFoundException(path);
+            var pak = new PAK(path, a18);
+            EntryCount += pak.Entries.Count;
+            PAKs.Add(pak);
         }
 
         /// <summary>

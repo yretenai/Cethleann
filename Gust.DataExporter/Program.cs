@@ -1,5 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using Cethleann.Koei;
 using Cethleann.ManagedFS;
+using Cethleann.Unbundler;
 using DragonLib.CLI;
 using DragonLib.IO;
 
@@ -7,38 +10,35 @@ namespace Gust.DataExporter
 {
     static class Program
     {
+        private static GustDataExporterFlags Flags;
+
         static void Main(string[] args)
         {
             Logger.PrintVersion("GUST");
-            var flags = CommandLineFlags.ParseFlags<GustDataExporterFlags>(CommandLineFlags.PrintHelp, args);
+            Flags = CommandLineFlags.ParseFlags<GustDataExporterFlags>(CommandLineFlags.PrintHelp, args);
 
-            using var reisalin = new Reisalin();
-            foreach (var location in flags.PAKLocations) reisalin.Mount(location, !flags.A17);
+            using var reisalin = new Reisalin(Flags.GameId);
+            foreach (var location in Directory.GetFiles(Flags.GameDir, "*.PAK")) reisalin.AddDataFS(location, !Flags.A17);
 
-            foreach (var (entry, pak) in reisalin)
+            ExtractAll(Flags.OutputDirectory, reisalin);
+        }
+
+
+        private static void ExtractAll(string romfs, IManagedFS fs)
+        {
+            for (var index = 0; index < fs.EntryCount; index++)
             {
-                try
+                var data = fs.ReadEntry(index);
+                var filepath = fs.GetFilename(index);
+                while (filepath.StartsWith("\\") || filepath.StartsWith("/")) filepath = filepath.Substring(1);
+                if (filepath.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase) && data.Span[4] == 0x78)
                 {
-                    var data = pak.ReadEntry(entry).ToArray();
-                    if (data.Length == 0)
-                    {
-                        Logger.Error("GUST", $"{entry.Filename} is zero!");
-                        continue;
-                    }
-
-                    var fn = entry.Filename;
-                    while (fn.StartsWith("\\") || fn.StartsWith("/")) fn = fn.Substring(1);
-
-                    var path = Path.Combine(flags.OutputDirectory, fn);
-                    var dir = Path.GetDirectoryName(path);
-                    if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-                    File.WriteAllBytes(path, data);
-                    Logger.Info("GUST", path);
+                    data = Compression.Decompress(data.Span, -1, 1).ToArray();
+                    filepath = filepath.Substring(0, filepath.Length - 3);
                 }
-                catch
-                {
-                    // ignored
-                }
+
+                var pathBase = $@"{romfs}\{filepath}";
+                UnbundlerLogic.TryExtractBlob(pathBase, data, false, Flags);
             }
         }
     }

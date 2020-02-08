@@ -31,6 +31,9 @@ namespace Cethleann.ManagedFS
         public List<RDB> RDBs { get; set; } = new List<RDB>();
 
         /// <inheritdoc />
+        public Dictionary<string, string> FileList { get; set; }
+
+        /// <inheritdoc />
         public void Dispose()
         {
             Dispose(true);
@@ -55,9 +58,6 @@ namespace Cethleann.ManagedFS
 
             return Memory<byte>.Empty;
         }
-
-        /// <inheritdoc />
-        public Dictionary<string, string> FileList { get; set; }
 
         /// <inheritdoc />
         public string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)

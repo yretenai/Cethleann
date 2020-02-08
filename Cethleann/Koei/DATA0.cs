@@ -81,7 +81,7 @@ namespace Cethleann.Koei
 
             data1.Position = entry.Offset;
 
-            if (entry.IsCompressed) return Compression.Decompress(data1, entry.CompressedSize);
+            if (entry.IsCompressed) return TableCompression.Decompress(data1, entry.CompressedSize);
 
             var buffer = new Memory<byte>(new byte[entry.UncompressedSize]);
             data1.Read(buffer.Span);

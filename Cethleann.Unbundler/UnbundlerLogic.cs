@@ -60,54 +60,62 @@ namespace Cethleann.Unbundler
 
             var dataType = datablob.Span.GetDataType();
 
-            if (allTypes || flags.Recursive)
+            if (allTypes || (flags.Recursive && flags.Depth > 0))
             {
-                if (!datablob.Span.IsKnown())
+                var recursionLevel = flags.Depth--;
+                try
                 {
-                    if (datablob.Span.IsDataTable())
-                        if (TryExtractDataTable(blobBase, datablob, flags))
-                            return 1;
-                    if (datablob.Span.IsBundle())
-                        if (TryExtractBundle(blobBase, datablob, flags))
-                            return 1;
-                    if (datablob.Span.IsPointerBundle())
-                        if (TryExtractPointerBundle(blobBase, datablob, flags))
-                            return 1;
-                }
+                    if (!datablob.Span.IsKnown())
+                    {
+                        if (datablob.Span.IsDataTable())
+                            if (TryExtractDataTable(blobBase, datablob, flags))
+                                return 1;
+                        if (datablob.Span.IsBundle())
+                            if (TryExtractBundle(blobBase, datablob, flags))
+                                return 1;
+                        if (datablob.Span.IsPointerBundle())
+                            if (TryExtractPointerBundle(blobBase, datablob, flags))
+                                return 1;
+                    }
 
-                // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
-                switch (dataType)
+                    // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
+                    switch (dataType)
+                    {
+                        case DataType.SCEN when TryExtractSCEN(blobBase, datablob, flags):
+                        case DataType.MDLK when TryExtractMDLK(blobBase, datablob, flags):
+                        case DataType.KTSR when TryExtractKTSR(blobBase, datablob, flags):
+                        case DataType.KTSC when TryExtractKTSC(blobBase, datablob, flags):
+                        case DataType.Model when !flags.Recursive && TryExtractG1M(blobBase, datablob, flags):
+                        case DataType.TextLocalization19 when TryExtractLX(blobBase, datablob):
+                        case DataType.GAPK when TryExtractGAPK(blobBase, datablob, flags, false):
+                        case DataType.GEPK when TryExtractGAPK(blobBase, datablob, flags, true):
+                        case DataType.GMPK when TryExtractGMPK(blobBase, datablob, flags):
+                        case DataType.Lazy when TryExtractG1L(blobBase, datablob, flags):
+                        case DataType.KOVS when TryExtractKOVS(blobBase, datablob, flags):
+                        case DataType.RTRPK when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.EffectPack when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.TDPack when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.CollisionPack when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.ModelPack when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.KTFKPack when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.G1EPack when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.G1MPack when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.G2APack when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.G1COPack when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.WHD when TryExtractWHD(blobBase, datablob, flags):
+                            return 1;
+                    }
+                }
+                finally
                 {
-                    case DataType.SCEN when TryExtractSCEN(blobBase, datablob, flags):
-                    case DataType.MDLK when TryExtractMDLK(blobBase, datablob, flags):
-                    case DataType.KTSR when TryExtractKTSR(blobBase, datablob, flags):
-                    case DataType.KTSC when TryExtractKTSC(blobBase, datablob, flags):
-                    case DataType.Model when !flags.Recursive && TryExtractG1M(blobBase, datablob, flags):
-                    case DataType.TextLocalization19 when TryExtractLX(blobBase, datablob):
-                    case DataType.GAPK when TryExtractGAPK(blobBase, datablob, flags, false):
-                    case DataType.GEPK when TryExtractGAPK(blobBase, datablob, flags, true):
-                    case DataType.GMPK when TryExtractGMPK(blobBase, datablob, flags):
-                    case DataType.Lazy when TryExtractG1L(blobBase, datablob, flags):
-                    case DataType.KOVS when TryExtractKOVS(blobBase, datablob, flags):
-                    case DataType.RTRPK when TryExtractRESPACK(blobBase, datablob, flags):
-                    case DataType.EffectPack when TryExtractRESPACK(blobBase, datablob, flags):
-                    case DataType.TDPack when TryExtractRESPACK(blobBase, datablob, flags):
-                    case DataType.CollisionPack when TryExtractRESPACK(blobBase, datablob, flags):
-                    case DataType.ModelPack when TryExtractRESPACK(blobBase, datablob, flags):
-                    case DataType.KTFKPack when TryExtractRESPACK(blobBase, datablob, flags):
-                    case DataType.G1EPack when TryExtractRESPACK(blobBase, datablob, flags):
-                    case DataType.G1MPack when TryExtractRESPACK(blobBase, datablob, flags):
-                    case DataType.G2APack when TryExtractRESPACK(blobBase, datablob, flags):
-                    case DataType.G1COPack when TryExtractRESPACK(blobBase, datablob, flags):
-                    case DataType.WHD when TryExtractWHD(blobBase, datablob, flags):
-                        return 1;
+                    flags.Depth = recursionLevel;
                 }
             }
 
             if (dataType == DataType.Compressed || dataType == DataType.CompressedChonky)
                 try
                 {
-                    var decompressed = Compression.Decompress(datablob.Span);
+                    var decompressed = TableCompression.Decompress(datablob.Span);
                     var pathBase = blobBase;
                     if (pathBase.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase)) pathBase = pathBase.Substring(0, pathBase.Length - 3);
 
