@@ -43,7 +43,7 @@ namespace Ninja.DataExporter
                 {
                     var table = yshtola.Tables[index];
                     var type = Path.GetDirectoryName(yshtola.Settings.TableNames[index]);
-                    var name = $"manifest-{type ?? "COMMON"}.{Flags.GameId.ToString("X").ToLower()}";
+                    var name = $"manifest-{type ?? "COMMON"}.{Flags.GameId.ToString("G").ToLower()}";
                     File.WriteAllBytes(Path.Combine(Flags.OutputDirectory, name), table.Buffer.ToArray());
                 }
 

@@ -17,10 +17,19 @@ namespace Koei.Gz
                 var data = new Span<byte>(File.ReadAllBytes(arg));
                 if (arg.EndsWith(".gz"))
                 {
-                    var buffer = TableCompression.Decompress(data);
-                    var newName = Path.GetFileNameWithoutExtension(arg);
-                    if (newName == Path.GetFileNameWithoutExtension(newName)) newName += $".{buffer.GetDataType().GetExtension()}";
-                    File.WriteAllBytes(Path.Combine(Path.GetDirectoryName(arg), newName), buffer.ToArray());
+                    if (data[4] == 0x78)
+                    {
+                        var newName = Path.GetFileNameWithoutExtension(arg);
+                        File.WriteAllBytes(Path.Combine(Path.GetDirectoryName(arg), newName), Compression.Decompress(data, -1, 1).ToArray());
+                    }
+                    else
+                    {
+                        var buffer = TableCompression.Decompress(data, true);
+                        if (buffer.Length == 0) buffer = data;
+                        var newName = Path.GetFileNameWithoutExtension(arg);
+                        if (newName == Path.GetFileNameWithoutExtension(newName)) newName += $".{buffer.GetDataType().GetExtension()}";
+                        File.WriteAllBytes(Path.Combine(Path.GetDirectoryName(arg), newName), buffer.ToArray());
+                    }
                 }
                 else
                 {

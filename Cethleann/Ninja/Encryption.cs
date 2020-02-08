@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Cethleann.Ninja
@@ -18,15 +19,16 @@ namespace Cethleann.Ninja
         /// <param name="multiplier"></param>
         /// <param name="divisor"></param>
         /// <returns></returns>
-        public static Span<byte> Xor(uint length, Span<byte> truth, ulong multiplier, ulong divisor)
+        public static Span<byte> Xor(uint length, byte[] truth, ulong multiplier, ulong divisor)
         {
             var mag = length * multiplier / divisor;
             var bytes = BitConverter.GetBytes(mag).Where(x => x != 0).Reverse().ToArray();
-            return truth.ToArray().Select((x, i) =>
+            Logger.Assert(bytes.Length <= 4, "bytes.Length <= 4");
+            return Enumerable.Range(0, bytes.Length == 4 ? truth.Length : truth.Length * bytes.Length).Select((x, i) =>
             {
                 unchecked
                 {
-                    return (byte) (x ^ bytes[i % bytes.Length]);
+                    return (byte) (truth[i % truth.Length] ^ bytes[i % bytes.Length]);
                 }
             }).ToArray();
         }

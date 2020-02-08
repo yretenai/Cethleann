@@ -72,11 +72,13 @@ namespace Cethleann.Koei
         ///     Decompresses a .gz stream.
         /// </summary>
         /// <param name="data"></param>
+        /// <param name="checkSanity"></param>
         /// <returns></returns>
-        public static unsafe Span<byte> Decompress(Span<byte> data)
+        public static unsafe Span<byte> Decompress(Span<byte> data, bool checkSanity = false)
         {
             var cursor = 0;
             var compInfo = MemoryMarshal.Read<KTGLCompressionInfo>(data);
+            if (checkSanity && (compInfo.ChunkSize != 0x4000 && compInfo.ChunkSize != 0x00010000 && compInfo.ChunkSize != 0x00020000)) return Span<byte>.Empty;
             var buffer = new Span<byte>(new byte[compInfo.Size]);
             cursor += SizeHelper.SizeOf<KTGLCompressionInfo>();
             var chunkSizes = MemoryMarshal.Cast<byte, int>(data.Slice(cursor, 4 * compInfo.ChunkCount));
