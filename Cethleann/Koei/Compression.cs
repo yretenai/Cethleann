@@ -65,7 +65,7 @@ namespace Cethleann.Koei
                         {
                             var chunk = data.Slice(comPtr, chunkSize);
                             Span<byte> block = new byte[blockSize * 4];
-                            var decRead = CompressionEncryption.UnsafeDecompressLZ77EA_970(chunk, block);
+                            var decRead = CompressionEncryption.DecompressLZ4(chunk, block);
                             if (decPtr + decRead > decompressed.Length)
                             {
                                 Span<byte> temp = new byte[decPtr + decRead + blockSize * 4];
