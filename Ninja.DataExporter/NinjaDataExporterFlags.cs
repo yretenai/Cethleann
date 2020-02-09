@@ -13,7 +13,7 @@ namespace Ninja.DataExporter
         [CLIFlag("out-dir", Positional = 1, Help = "Extraction Directory", IsRequired = true, Category = "DataExporter Options")]
         public string OutputDirectory { get; set; }
 
-        [CLIFlag("manifest-only", Default = false, Help = "Only dump file manifest", Category = "DataExporter Options")]
+        [CLIFlag("manifest-only", Help = "Only dump file manifest", Category = "DataExporter Options")]
         public bool ManifestOnly { get; set; }
     }
 }

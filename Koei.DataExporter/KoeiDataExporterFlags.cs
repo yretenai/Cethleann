@@ -14,7 +14,7 @@ namespace Koei.DataExporter
         [CLIFlag("bin", Default = "DATA1", Help = "BIN Filename (without extension)", Category = "DataExporter Options")]
         public string BINHint { get; set; }
 
-        [CLIFlag("link-prefix", Default = false, Help = "Use LINKDATA filename as unknown path prefix", Category = "DataExporter Options")]
+        [CLIFlag("link-prefix", Help = "Use LINKDATA filename as unknown path prefix", Category = "DataExporter Options")]
         public bool UseLinkdataPrefix { get; set; }
 
         [CLIFlag("filelist", Help = "File List filename to load, relative to the exe (unspecified is automatically determined based on GameId)", Category = "DataExporter Options")]

@@ -13,7 +13,7 @@ namespace Softness.Hasher
         [CLIFlag("format", Help = "File type of the filename", Category = "Hasher Options")]
         public string Format { get; set; }
 
-        [CLIFlag("raw", Default = false, Help = "Skip string formatting", Category = "Hasher Options")]
+        [CLIFlag("raw", Help = "Skip string formatting", Category = "Hasher Options")]
         public bool Raw { get; set; }
 
         [UsedImplicitly]

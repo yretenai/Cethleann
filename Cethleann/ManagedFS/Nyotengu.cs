@@ -33,7 +33,7 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Loaded FileList.csv
         /// </summary>
-        public Dictionary<string, string> FileList { get; set; }
+        public Dictionary<string, string> FileList { get; set; } = new Dictionary<string, string>();
 
         /// <inheritdoc />
         public void Dispose()
@@ -64,8 +64,12 @@ namespace Cethleann.ManagedFS
         /// <inheritdoc />
         public string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
         {
+            return GetFilenameInternal(index);
+        }
+
+        private string GetFilenameInternal(int index)
+        {
             var prefix = "RDBArchive";
-            var rdbName = "RDBArchive";
             var entry = default(RDBEntry);
             foreach (var rdb in RDBs)
             {
@@ -76,18 +80,16 @@ namespace Cethleann.ManagedFS
                 }
 
                 prefix = rdb.Name;
-                rdbName = rdb.Name;
                 entry = rdb.GetEntry(index);
                 break;
             }
 
-            if (ext == "bin")
-                if (!ExtList.TryGetValue(entry.TypeId.ToString("x8"), out ext))
-                    ext = entry.TypeId.ToString("x8");
+            if (!ExtList.TryGetValue(entry.TypeId.ToString("x8"), out var ext) || string.IsNullOrEmpty(ext))
+                ext = entry.TypeId.ToString("x8");
 
             prefix += $@"\{ext}";
 
-            if (!FileList.TryGetValue($"{rdbName}_{entry.FileId:x8}", out var path)) path = $"{entry.FileId:x8}.{ext}";
+            if (!FileList.TryGetValue(entry.FileId.ToString("x8"), out var path)) path = $"{entry.FileId:x8}.{ext}";
             else path = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + $".{ext}");
             return $@"{prefix}\{path}";
         }
@@ -105,11 +107,19 @@ namespace Cethleann.ManagedFS
         {
             var loc = ManagedFSHelpers.GetFileListLocation(filename, game ?? GameId);
             var locShared = ManagedFSHelpers.GetFileListLocation(filename, "RDBSHared");
-            var csv = ManagedFSHelpers.GetFileList(locShared, 3).Concat(ManagedFSHelpers.GetFileList(loc, 3));
+            var csv = ManagedFSHelpers.GetFileList(locShared, 3).Concat(ManagedFSHelpers.GetFileList(loc, 3)).ToArray();
             FileList = new Dictionary<string, string>();
-            foreach (var (key, value) in csv.Select(x => (key: $"{x[0]}_{x[1].ToLower().PadLeft(8, '0')}", value: x[2]))) FileList[key] = value;
-            ExtList = ManagedFSHelpers.GetSimpleFileList("filelist-RDB.csv", DataGame.None);
+            foreach (var (key, value) in csv.Select(x => (key: x[1].ToLower().PadLeft(8, '0'), value: x[2]))) FileList[key] = value;
             return FileList;
+        }
+
+        /// <summary>
+        ///     Load typeid extension list
+        /// </summary>
+        /// <param name="filename"></param>
+        public void LoadExtList(string filename = null)
+        {
+            ExtList = ManagedFSHelpers.GetSimpleFileList(filename ?? "filelist-RDB.csv", DataGame.None);
         }
 
         /// <summary>

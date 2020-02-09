@@ -2074,6 +2074,12 @@
         <member name="M:Cethleann.ManagedFS.Nyotengu.LoadFileList(System.String,System.Nullable{Cethleann.Structure.DataGame})">
             <inheritdoc />
         </member>
+        <member name="M:Cethleann.ManagedFS.Nyotengu.LoadExtList(System.String)">
+            <summary>
+                Load typeid extension list
+            </summary>
+            <param name="filename"></param>
+        </member>
         <member name="M:Cethleann.ManagedFS.Nyotengu.Finalize">
             <summary>
                 Disposes

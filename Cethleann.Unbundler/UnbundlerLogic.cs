@@ -229,7 +229,7 @@ namespace Cethleann.Unbundler
                     for (var streamIndex = 0; streamIndex < streams.Length; streamIndex++)
                     {
                         var stream = streams[streamIndex];
-                        var wav = blobs.WBD.ReconstructWave(stream, flags.ConvertADPCM);
+                        var wav = blobs.WBD.ReconstructWave(stream, !flags.SkipADPCM);
                         var name = $@"{pathBase}\{(names?.ElementAtOrDefault(index)?.SanitizeDirname() ?? index.ToString("X8"))}".Trim();
                         if (streams.Length > 1) name += $@"\{streamIndex:X8}";
                         TryExtractBlob($@"{name}.wav", wav.Span, false, flags);
@@ -470,13 +470,13 @@ namespace Cethleann.Unbundler
                                 {
                                     case GCADPCMSound gcadpcm:
                                     {
-                                        var streams = !flags.RawKTSR && flags.ConvertADPCM ? gcadpcm.ReconstructWave(flags.ConvertADPCM) : gcadpcm.ReconstructAsIndividual();
-                                        TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{gcadpcm.Base.Id:X8}", streams, false, null, streams.Count == 1, true, !flags.RawKTSR && flags.ConvertADPCM ? "wav" : "ktgcadpcm", flags);
+                                        var streams = !flags.RawKTSR && !flags.SkipADPCM ? gcadpcm.ReconstructWave(!flags.SkipADPCM) : gcadpcm.ReconstructAsIndividual();
+                                        TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{gcadpcm.Base.Id:X8}", streams, false, null, streams.Count == 1, true, !flags.RawKTSR && !flags.SkipADPCM ? "wav" : "ktgcadpcm", flags);
                                         break;
                                     }
                                     case MSADPCMSound msadpcm:
                                     {
-                                        var streams = flags.RawKTSR ? msadpcm.ReconstructAsIndividual() : msadpcm.ReconstructWave(flags.ConvertADPCM);
+                                        var streams = flags.RawKTSR ? msadpcm.ReconstructAsIndividual() : msadpcm.ReconstructWave(!flags.SkipADPCM);
                                         TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{msadpcm.Base.Id:X8}", streams, false, null, streams.Count == 1, true, flags.RawKTSR ? "ktmsadpcm" : "wav", flags);
                                         break;
                                     }
@@ -490,13 +490,13 @@ namespace Cethleann.Unbundler
                         }
                         case GCADPCMSound gcadpcm:
                         {
-                            var streams = !flags.RawKTSR && flags.ConvertADPCM ? gcadpcm.ReconstructWave(flags.ConvertADPCM) : gcadpcm.ReconstructAsIndividual();
-                            TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{gcadpcm.Base.Id:X8}", streams, false, null, streams.Count == 1, true, !flags.RawKTSR && flags.ConvertADPCM ? "wav" : "ktgcadpcm", flags);
+                            var streams = !flags.RawKTSR && !flags.SkipADPCM ? gcadpcm.ReconstructWave(!flags.SkipADPCM) : gcadpcm.ReconstructAsIndividual();
+                            TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{gcadpcm.Base.Id:X8}", streams, false, null, streams.Count == 1, true, !flags.RawKTSR && !flags.SkipADPCM ? "wav" : "ktgcadpcm", flags);
                             break;
                         }
                         case MSADPCMSound msadpcm:
                         {
-                            var streams = flags.RawKTSR ? msadpcm.ReconstructAsIndividual() : msadpcm.ReconstructWave(flags.ConvertADPCM);
+                            var streams = flags.RawKTSR ? msadpcm.ReconstructAsIndividual() : msadpcm.ReconstructWave(!flags.SkipADPCM);
                             TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{msadpcm.Base.Id:X8}", streams, false, null, streams.Count == 1, true, flags.RawKTSR ? "ktmsadpcm" : "wav", flags);
                             break;
                         }
