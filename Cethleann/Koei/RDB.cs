@@ -276,29 +276,13 @@ namespace Cethleann.Koei
         }
 
         /// <summary>
-        ///     Hash KIDSSystemData filenames
+        ///     Hash filenames
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
         public static uint Hash(string text)
         {
-            string name;
-            if (text.EndsWith(".mud.ndb.name"))
-                name = text.Substring(0, text.Length - 5);
-            else if (text.EndsWith(".mud.kidsobjdb"))
-                name = text.Substring(0, text.Length - 10);
-            else if (text.EndsWith(".kidsscndb.kidsobjdb"))
-                name = text.Substring(0, text.Length - 10);
-            else if (text.EndsWith(".kidsscndb.name"))
-                name = text;
-            else if (text.EndsWith(".kidssingletondb.kidsobjdb"))
-                name = text.Substring(0, text.Length - 10);
-            else if (text.EndsWith(".kidssingletondb.name"))
-                name = text;
-            else
-                return Hash(Path.GetFileNameWithoutExtension(text), Path.GetExtension(text)?.Substring(1).ToUpper() ?? "FILE");
-
-            return Hash(Encoding.UTF8.GetBytes(name.Substring(1)), name[0] * HASH_KEY, HASH_KEY);
+            return Hash(Encoding.UTF8.GetBytes(text.Substring(1)), text[0] * HASH_KEY, HASH_KEY);
         }
     }
 }

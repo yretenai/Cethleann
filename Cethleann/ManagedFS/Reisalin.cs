@@ -12,6 +12,10 @@ namespace Cethleann.ManagedFS
     [PublicAPI]
     public class Reisalin : IManagedFS
     {
+        /// <summary>
+        ///     Initialize with game ID
+        /// </summary>
+        /// <param name="gameid"></param>
         public Reisalin(DataGame gameid)
         {
             GameId = gameid;
@@ -29,9 +33,13 @@ namespace Cethleann.ManagedFS
             GC.SuppressFinalize(this);
         }
 
+        /// <inheritdoc />
         public int EntryCount { get; private set; }
+
+        /// <inheritdoc />
         public DataGame GameId { get; }
 
+        /// <inheritdoc />
         public Memory<byte> ReadEntry(int index)
         {
             foreach (var pak in PAKs)
@@ -43,11 +51,10 @@ namespace Cethleann.ManagedFS
             return Memory<byte>.Empty;
         }
 
-        public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null)
-        {
-            return null;
-        }
+        /// <inheritdoc />
+        public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null) => null;
 
+        /// <inheritdoc />
         public string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
         {
             foreach (var pak in PAKs)
@@ -59,6 +66,7 @@ namespace Cethleann.ManagedFS
             return null;
         }
 
+        /// <inheritdoc />
         public void AddDataFS(string path) => AddDataFS(path, true);
 
         private void Dispose(bool disposing)

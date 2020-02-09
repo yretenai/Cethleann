@@ -2,9 +2,15 @@
 
 namespace Cethleann.ManagedFS.Support
 {
+    /// <summary>
+    ///     Settings specific to XVV
+    /// </summary>
     [PublicAPI]
     public class YshtolaVenusVacationSettings : YshtolaSettings
     {
+        /// <summary>
+        ///     Initialize with default settings
+        /// </summary>
         public YshtolaVenusVacationSettings()
         {
             TableNames = new[] { "COMMON/4be7efcc93f64e14d7bd7984ef6eeb2ef5ad802ea74cf12ad50a4d39bab71798", "HIGH/9b2d39b6d57f8613d9a316d8c3e6120886640a5762ea23c8fcc88d8acc7563b4", "LOW/4e172f40859f78ae3b61db95d114f046e39211a356989a418f0069f66a24bb0d" };

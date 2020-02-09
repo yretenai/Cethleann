@@ -20,7 +20,7 @@ namespace Softness.DataExporter
 
             using var nyotengu = new Nyotengu(Flags.GameId);
             foreach (var rdb in Directory.GetFiles(Flags.GameDirectory, "*.rdb")) nyotengu.AddDataFS(rdb);
-            nyotengu.LoadFileList();
+            if (Flags.UseFilelist) nyotengu.LoadFileList();
             ExtractAll(Flags.OutputDirectory, nyotengu);
         }
 

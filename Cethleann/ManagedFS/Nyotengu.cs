@@ -30,7 +30,9 @@ namespace Cethleann.ManagedFS
         /// </summary>
         public List<RDB> RDBs { get; set; } = new List<RDB>();
 
-        /// <inheritdoc />
+        /// <summary>
+        ///     Loaded FileList.csv
+        /// </summary>
         public Dictionary<string, string> FileList { get; set; }
 
         /// <inheritdoc />
@@ -63,6 +65,7 @@ namespace Cethleann.ManagedFS
         public string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
         {
             var prefix = "RDBArchive";
+            var rdbName = "RDBArchive";
             var entry = default(RDBEntry);
             foreach (var rdb in RDBs)
             {
@@ -73,6 +76,7 @@ namespace Cethleann.ManagedFS
                 }
 
                 prefix = rdb.Name;
+                rdbName = rdb.Name;
                 entry = rdb.GetEntry(index);
                 break;
             }
@@ -83,7 +87,7 @@ namespace Cethleann.ManagedFS
 
             prefix += $@"\{ext}";
 
-            if (!FileList.TryGetValue($"{prefix}_{entry.FileId:x8}", out var path)) path = $"{entry.FileId:x8}.{ext}";
+            if (!FileList.TryGetValue($"{rdbName}_{entry.FileId:x8}", out var path)) path = $"{entry.FileId:x8}.{ext}";
             else path = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + $".{ext}");
             return $@"{prefix}\{path}";
         }
@@ -101,7 +105,7 @@ namespace Cethleann.ManagedFS
         {
             var loc = ManagedFSHelpers.GetFileListLocation(filename, game ?? GameId);
             var csv = ManagedFSHelpers.GetFileList(loc, 3);
-            FileList = csv.ToDictionary(x => $"{x[0]}_{x[1]}", y => y[2]);
+            FileList = csv.ToDictionary(x => $"{x[0]}_{x[1].ToLower().PadLeft(8, '0')}", y => y[2]);
             ExtList = ManagedFSHelpers.GetSimpleFileList("filelist-RDB.csv", DataGame.None);
             return FileList;
         }
