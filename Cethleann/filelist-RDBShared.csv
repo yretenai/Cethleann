@@ -1,0 +1,22 @@
+; shared system,,
+system,19693329,CharacterEditor.kidsscndb
+system,5e3c83de,Field_Common.kidssingletondb
+system,62550860,TechPreviewPB2ClusteredShading.kidsscndb
+system,908ab6e2,TechPreviewCommon.kidsscndb
+system,93fb3280,TechPreview.kidssingletondb
+system,dab638b2,EnvironmentEditor.kidssingletondb
+; shared KIDSSystemResource,,
+KIDSSystemResource,0d421fe3,Field_Common.effect.kidssingletondb
+KIDSSystemResource,266f8573,Field_Common.lamp.ies.kidssingletondb
+KIDSSystemResource,3b94ea7f,LuminousEditor.kidssingletondb
+KIDSSystemResource,443ebf24,FE4CommonResource.kidssingletondb
+KIDSSystemResource,4446954d,SLECommonResource.kidssingletondb
+KIDSSystemResource,642ef74b,SoundEditor.Common.kidssingletondb
+KIDSSystemResource,68865d7c,ScreenLayoutEditor.Common.kidssingletondb
+KIDSSystemResource,718ccb8b,CharacterEditor.shader.kidssingletondb
+KIDSSystemResource,749c14fb,ScreenLayoutEditor.Common.sound.kidssingletondb
+KIDSSystemResource,b290631c,CharacterEditor.kidssingletondb
+KIDSSystemResource,ce77a23b,FieldEditor4.kidssingletondb
+KIDSSystemResource,d14d76ef,Field_Common.character.level.kidssingletondb
+KIDSSystemResource,d956e4a2,MaterialEditor.kidssingletondb
+KIDSSystemResource,e65789ff,Field_Common.sound.kidssingletondb

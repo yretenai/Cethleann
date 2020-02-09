@@ -19,6 +19,11 @@ namespace Cethleann.ManagedFS
             return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), filename ?? $"filelist{(game == DataGame.None ? "" : $"-{game:G}")}.csv");
         }
 
+        public static string GetFileListLocation(string filename, string type)
+        {
+            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), filename ?? $"filelist{(type?.Length == 0 ? "" : $"-{type}")}.csv");
+        }
+
         public static Dictionary<string, string> GetSimpleFileList(string filename, DataGame game)
         {
             var loc = GetFileListLocation(filename, game);

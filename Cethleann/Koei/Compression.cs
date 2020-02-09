@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 namespace Cethleann.Koei
 {
     /// <summary>
-    ///     (De)compress Omega streams
+    ///     Decompress Standard KTGL streams
     /// </summary>
     [PublicAPI]
     public class Compression

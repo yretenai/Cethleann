@@ -1469,7 +1469,7 @@
         </member>
         <member name="T:Cethleann.Koei.Compression">
             <summary>
-                (De)compress Omega streams
+                Decompress Standard KTGL streams
             </summary>
         </member>
         <member name="M:Cethleann.Koei.Compression.Decompress(System.Span{System.Byte},System.Int32,System.Int32,System.Int32)">

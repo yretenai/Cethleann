@@ -104,8 +104,10 @@ namespace Cethleann.ManagedFS
         public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null)
         {
             var loc = ManagedFSHelpers.GetFileListLocation(filename, game ?? GameId);
-            var csv = ManagedFSHelpers.GetFileList(loc, 3);
-            FileList = csv.ToDictionary(x => $"{x[0]}_{x[1].ToLower().PadLeft(8, '0')}", y => y[2]);
+            var locShared = ManagedFSHelpers.GetFileListLocation(filename, "RDBSHared");
+            var csv = ManagedFSHelpers.GetFileList(locShared, 3).Concat(ManagedFSHelpers.GetFileList(loc, 3));
+            FileList = new Dictionary<string, string>();
+            foreach (var (key, value) in csv.Select(x => (key: $"{x[0]}_{x[1].ToLower().PadLeft(8, '0')}", value: x[2]))) FileList[key] = value;
             ExtList = ManagedFSHelpers.GetSimpleFileList("filelist-RDB.csv", DataGame.None);
             return FileList;
         }

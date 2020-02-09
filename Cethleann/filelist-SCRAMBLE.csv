@@ -1,0 +1,19 @@
+; SCRAMBLE specific,,
+KIDSSystemResource,285db7c7,EM3CommonResource.motor.kidssingletondb
+KIDSSystemResource,285e0e3d,FE4CommonResource.motor.kidssingletondb
+KIDSSystemResource,2865e466,SLECommonResource.motor.kidssingletondb
+KIDSSystemResource,2865f72b,SQECommonResource.motor.kidssingletondb
+KIDSSystemResource,58e86a38,SQECommonResource.motor.kidsscndb
+KIDSSystemResource,6d011726,ProjectCommonResource.motor.kidsscndb
+KIDSSystemResource,72a99709,ProjectShaderCache_PD.motor.kidsscndb
+KIDSSystemResource,7db38795,MaterialCommonResource.motor.kidssingletondb
+KIDSSystemResource,d2ecccdf,EnvironmentCommonResource.motor.kidssingletondb
+; trail and error,,
+KIDSSystemResource,c21b5cd6,H0000_Joker.mud
+CharacterEditor,948554ec,H0000_Joker.g1m
+CharacterEditor,948554ec,H0000_Joker.mtl
+CharacterEditor,49afd70f,H0000_Joker.ktid
+CharacterEditor,9b74e66a,H0000_Joker.grp
+CharacterEditor,9b74e66a,H0000_Joker.grp
+CharacterEditor,867f8e65,H0000_Joker.oid
+CharacterEditor,1ad8db12,H0000_Joker.oidex
