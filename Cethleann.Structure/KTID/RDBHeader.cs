@@ -1,4 +1,4 @@
-﻿namespace Cethleann.Structure
+﻿namespace Cethleann.Structure.KTID
 {
     public struct RDBHeader
     {
@@ -7,6 +7,6 @@
         public int HeaderSize { get; set; }
         public DataSystem System { get; set; }
         public int Count { get; set; }
-        public uint NameDBId { get; set; }
+        public uint NameDatabaseKTID { get; set; }
     }
 }

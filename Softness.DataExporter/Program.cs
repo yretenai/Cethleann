@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Cethleann;
 using Cethleann.ManagedFS;
 using Cethleann.Unbundler;
 using DragonLib.CLI;

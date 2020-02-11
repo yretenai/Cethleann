@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Cethleann.Koei;
 using Cethleann.Structure;
+using Cethleann.Structure.KTID;
+using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Cethleann.ManagedFS
@@ -23,7 +26,7 @@ namespace Cethleann.ManagedFS
             GameId = game;
         }
 
-        private Dictionary<string, string> ExtList { get; set; }
+        private Dictionary<uint, string> ExtList { get; set; }
 
         /// <summary>
         ///     List of RDBs loaded
@@ -33,7 +36,7 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Loaded FileList.csv
         /// </summary>
-        public Dictionary<string, string> FileList { get; set; } = new Dictionary<string, string>();
+        public Dictionary<uint, string> FileList { get; set; } = new Dictionary<uint, string>();
 
         /// <inheritdoc />
         public void Dispose()
@@ -67,33 +70,6 @@ namespace Cethleann.ManagedFS
             return GetFilenameInternal(index);
         }
 
-        private string GetFilenameInternal(int index)
-        {
-            var prefix = "RDBArchive";
-            var entry = default(RDBEntry);
-            foreach (var rdb in RDBs)
-            {
-                if (index >= rdb.Entries.Count)
-                {
-                    index -= rdb.Entries.Count;
-                    continue;
-                }
-
-                prefix = rdb.Name;
-                entry = rdb.GetEntry(index);
-                break;
-            }
-
-            if (!ExtList.TryGetValue(entry.TypeId.ToString("x8"), out var ext) || string.IsNullOrEmpty(ext))
-                ext = entry.TypeId.ToString("x8");
-
-            prefix += $@"\{ext}";
-
-            if (!FileList.TryGetValue(entry.FileId.ToString("x8"), out var path)) path = $"{entry.FileId:x8}.{ext}";
-            else path = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + $".{ext}");
-            return $@"{prefix}\{path}";
-        }
-
         /// <inheritdoc />
         public void AddDataFS(string path)
         {
@@ -108,9 +84,45 @@ namespace Cethleann.ManagedFS
             var loc = ManagedFSHelpers.GetFileListLocation(filename, game ?? GameId);
             var locShared = ManagedFSHelpers.GetFileListLocation(filename, "RDBSHared");
             var csv = ManagedFSHelpers.GetFileList(locShared, 3).Concat(ManagedFSHelpers.GetFileList(loc, 3)).ToArray();
-            FileList = new Dictionary<string, string>();
-            foreach (var (key, value) in csv.Select(x => (key: x[1].ToLower().PadLeft(8, '0'), value: x[2]))) FileList[key] = value;
-            return FileList;
+            FileList = new Dictionary<uint, string>();
+            foreach (var (key, value) in csv.Select(x => (key: uint.Parse(x[1].ToLower(), NumberStyles.HexNumber), value: x[2])))
+            {
+                if (FileList.ContainsKey(key)) Logger.Warn("NYO", $"File List contains filename hash twice! ({key}, {value}, {FileList[key]})");
+                FileList[key] = value;
+            }
+
+            return FileList.ToDictionary(x => x.Key.ToString(), y => y.Value);
+        }
+
+        private string GetFilenameInternal(int index)
+        {
+            var prefix = "";
+            var entry = default(RDBEntry);
+            var selectedRdb = default(RDB);
+            foreach (var rdb in RDBs)
+            {
+                if (index >= rdb.Entries.Count)
+                {
+                    index -= rdb.Entries.Count;
+                    continue;
+                }
+
+                prefix = rdb.Name;
+                entry = rdb.GetEntry(index);
+                selectedRdb = rdb;
+                break;
+            }
+
+            if (selectedRdb == null) return null;
+
+            if (!selectedRdb.NameDatabase.ExtMap.TryGetValue(entry.TypeInfoKTID, out var ext) && (!ExtList.TryGetValue(entry.TypeInfoKTID, out ext) || string.IsNullOrEmpty(ext)) && !selectedRdb.NameDatabase.ExtMapRaw.TryGetValue(entry.TypeInfoKTID, out ext)) ext = entry.TypeInfoKTID.ToString("x8");
+
+            prefix += $@"\{ext}";
+
+            if (selectedRdb.NameDatabase.NameMap.TryGetValue(entry.FileKTID, out var path)) path = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + $".{ext}");
+            else if (FileList.TryGetValue(entry.FileKTID, out path)) path = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + $".{ext}");
+            else path = $"{entry.FileKTID:x8}.{ext}";
+            return $@"{prefix}\{path}";
         }
 
         /// <summary>
@@ -119,7 +131,7 @@ namespace Cethleann.ManagedFS
         /// <param name="filename"></param>
         public void LoadExtList(string filename = null)
         {
-            ExtList = ManagedFSHelpers.GetSimpleFileList(filename ?? "filelist-RDB.csv", DataGame.None);
+            ExtList = ManagedFSHelpers.GetSimpleFileList(filename ?? "filelist-RDBExt.csv", DataGame.None).ToDictionary(x => uint.Parse(x.Key, NumberStyles.HexNumber), y => y.Value);
         }
 
         /// <summary>

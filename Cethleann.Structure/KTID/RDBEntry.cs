@@ -1,4 +1,4 @@
-﻿namespace Cethleann.Structure
+﻿namespace Cethleann.Structure.KTID
 {
     public struct RDBEntry
     {
@@ -8,8 +8,8 @@
         public long ContentSize { get; set; }
         public long Size { get; set; }
         public int Type { get; set; }
-        public uint FileId { get; set; }
-        public uint TypeId { get; set; }
+        public uint FileKTID { get; set; }
+        public uint TypeInfoKTID { get; set; }
         public RDBFlags Flags { get; set; }
     }
 

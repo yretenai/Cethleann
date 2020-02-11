@@ -1,4 +1,4 @@
-; shared system,,
+; shared,system,
 system,024496ee,TechPreviewPB2ClusteredShading.kidsrender
 system,117e8f35,ScreenLayoutEditorScriptProject.kidsobjdb
 system,19693329,CharacterEditor.kidsscndb
@@ -15,7 +15,24 @@ system,c50061a2,TechPreviewShaderProject.kidsobjdb
 system,d8307cae,EnvironmentEditorScriptProject.kidsobjdb
 system,dab638b2,EnvironmentEditor.kidssingletondb
 system,fb38d226,CharacterEditorBehaviorScriptProject.kidsobjdb
-; shared KIDSSystemResource,,
+; name,system,
+system,b3ded1cc,TechPreviewPB2ClusteredShading.kidsrender.name
+system,8bc37a5f,ScreenLayoutEditorScriptProject.kidsobjdb.name
+system,6ddc67f1,CharacterEditor.kidsscndb.name
+system,b026553c,Field_Common.kidssingletondb.name
+system,b0abb988,CharacterEditorScriptProject.kidsobjdb.name
+system,5d7afafa,TechPreviewPB2ClusteredShading.kidsscndb.name
+system,3f2ae42f,CharacterEditor.shader.kidssingletondb.name
+system,4ba2d058,TechPreviewCommon.kidsscndb.name
+system,34e0867a,TechPreview.kidssingletondb.name
+system,7da3b395,FieldEditor4ScriptProject.kidsobjdb.name
+system,546807a4,TechPreviewScriptProject.kidsobjdb.name
+system,aceaddec,TechPreview.kidstask.name
+system,ef5b543e,TechPreviewShaderProject.kidsobjdb.name
+system,a8503632,EnvironmentEditorScriptProject.kidsobjdb.name
+system,d867bc88,EnvironmentEditor.kidssingletondb.name
+system,2eb0373a,CharacterEditorBehaviorScriptProject.kidsobjdb.name
+; shared,KIDSSystemResource,
 KIDSSystemResource,0d421fe3,Field_Common.effect.kidssingletondb
 KIDSSystemResource,208be13a,SLECommonResource.motor.kidsobjdb
 KIDSSystemResource,22ab4c21,AutomatonEditorDocumentProject.kidsobjdb
@@ -42,3 +59,39 @@ KIDSSystemResource,d2ecccdf,EnvironmentCommonResource.motor.kidssingletondb
 KIDSSystemResource,d956e4a2,MaterialEditor.kidssingletondb
 KIDSSystemResource,e0d0b241,CharacterEditorRealtimeRigScriptProject.kidsobjdb
 KIDSSystemResource,e65789ff,Field_Common.sound.kidssingletondb
+; name,KIDSSystemResource,
+KIDSSystemResource,2337a35c,Field_Common.effect.kidssingletondb.name
+KIDSSystemResource,becdeef3,SLECommonResource.motor.kidsobjdb.name
+KIDSSystemResource,3ee75dc2,AutomatonEditorDocumentProject.kidsobjdb.name
+KIDSSystemResource,95120eac,Field_Common.lamp.ies.kidssingletondb.name
+KIDSSystemResource,7882d6c0,EM3CommonResource.motor.kidssingletondb.name
+KIDSSystemResource,78832d36,FE4CommonResource.motor.kidssingletondb.name
+KIDSSystemResource,788b035f,SLECommonResource.motor.kidssingletondb.name
+KIDSSystemResource,788b1624,SQECommonResource.motor.kidssingletondb.name
+KIDSSystemResource,97375f66,LuminousEditor.kidssingletondb.name
+KIDSSystemResource,a95d0d28,MaterialCommonResource.motor.kidsobjdb.name
+KIDSSystemResource,f72a77f1,SQECommonResource.motor.kidsscndb.name
+KIDSSystemResource,8e2ea0b2,SoundEditor.Common.kidssingletondb.name
+KIDSSystemResource,dba3a05f,ProjectCommonResource.motor.kidsscndb.name
+KIDSSystemResource,e14c2042,ProjectShaderCache_PD.motor.kidsscndb.name
+KIDSSystemResource,0b532af4,ScreenLayoutEditor.Common.sound.kidssingletondb.name
+KIDSSystemResource,56f7dc3c,MaterialCommonResource.motor.kidssingletondb.name
+KIDSSystemResource,b5d18f71,Field_Common.kidsobjdb.name
+KIDSSystemResource,fcf6fc82,Field_Common.character.level.kidsobjdb.name
+KIDSSystemResource,cb3c8b15,CharacterEditor.kidssingletondb.name
+KIDSSystemResource,474778f0,Field_Common.effect.kidsobjdb.name
+KIDSSystemResource,bc1e4aa9,CharacterEditor.kidsobjdb.name
+KIDSSystemResource,aa91cb96,Field_Common.character.level.kidssingletondb.name
+KIDSSystemResource,69a3e2d8,EnvironmentCommonResource.motor.kidssingletondb.name
+KIDSSystemResource,34f95989,MaterialEditor.kidssingletondb.name
+KIDSSystemResource,4ac7e5c0,CharacterEditorRealtimeRigScriptProject.kidsobjdb.name
+KIDSSystemResource,10573366,Field_Common.sound.kidssingletondb.name
+; name,RDB,
+CharacterEditor,de91b561,CharacterEditor.rdb.name
+EventMaker3,a071f28e,EventMaker3.rdb.name
+FieldEditor4,f437fe16,FieldEditor4.rdb.name
+KIDSSystemResource,bcc13c53,KIDSSystemResource.rdb.name
+RRPreview,067a824f,RRPreview.rdb.name
+ScreenLayout,8c759c7f,ScreenLayout.rdb.name
+SequenceEditor,c9e4076a,SequenceEditor.rdb.name
+system,0a603d98,system.rdb.name

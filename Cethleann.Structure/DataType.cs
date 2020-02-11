@@ -400,16 +400,40 @@ namespace Cethleann.Structure
         WBD = 'W' << 24 | 'B' << 16 | 'D' << 8 | '_' << 0,
 
         /// <summary>
-        ///     RDB
+        ///     Koei Readable Database File
         /// </summary>
         [FileExtension("rdb")]
         RDB = 'K' << 24 | 'R' << 16 | 'D' << 8 | '_' << 0,
 
         /// <summary>
-        ///     RDB Entry
+        ///     Koei Readable Database Index
         /// </summary>
         [FileExtension("rdb.bin")]
-        RDBEntry = 'K' << 24 | 'R' << 16 | 'D' << 8 | 'I' << 0,
+        RDBIndex = 'K' << 24 | 'R' << 16 | 'D' << 8 | 'I' << 0,
+
+        /// <summary>
+        ///     Koei Name Database File
+        /// </summary>
+        [FileExtension("name")]
+        NAME = 'K' << 24 | 'N' << 16 | 'R' << 8 | '_' << 0,
+
+        /// <summary>
+        ///     Koei Name Database Index
+        /// </summary>
+        [FileExtension("name.bin")]
+        NAMEIndex = 'K' << 24 | 'N' << 16 | 'R' << 8 | 'I' << 0,
+
+        /// <summary>
+        ///     Koei Object Database File
+        /// </summary>
+        [FileExtension("rdb")]
+        KOD = 'K' << 24 | 'O' << 16 | 'D' << 8 | '_' << 0,
+
+        /// <summary>
+        ///     Koei Object Database Index
+        /// </summary>
+        [FileExtension("rdb.bin")]
+        KODIndex = 'K' << 24 | 'O' << 16 | 'D' << 8 | 'I' << 0,
 
         /// <summary>
         ///     DEFLATE Compressed File.

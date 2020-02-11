@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using Cethleann.Structure;
+using Cethleann.Structure.KTID;
 using DragonLib;
 using DragonLib.IO;
 using JetBrains.Annotations;
@@ -20,9 +21,11 @@ namespace Cethleann.Koei
     public class RDB : IDisposable
     {
         private const byte HASH_KEY = 0x1F;
-        private static readonly Regex AddressRegex = new Regex("([a-fA-F0-9]*)@([a-fA-F0-9]*)(?:#([a-fA-F0-9]*))?(?:\\$([a-fA-F0-9])*)?");
+        private static readonly Regex ADDRESS_REGEX = new Regex("([a-fA-F0-9]*)@([a-fA-F0-9]*)(?:#([a-fA-F0-9]*))?(?:\\&([a-fA-F0-9])*)?");
         private static byte[] HASH_PREFIX = { 0xEF, 0xBC, 0xBB };
         private static byte[] HASH_SUFFIX = { 0xEF, 0xBC, 0xBD };
+        private static readonly string HASH_PREFIX_STR = Encoding.UTF8.GetString(HASH_PREFIX);
+        private static readonly string HASH_SUFFIX_STR = Encoding.UTF8.GetString(HASH_SUFFIX);
 
         /// <summary>
         ///     Initialize with buffer and basic info about the FS
@@ -43,7 +46,13 @@ namespace Cethleann.Koei
                 var (entry, typeblob, data) = ReadRDBEntry(buffer.Slice(offset));
                 offset += (int) entry.EntrySize.Align(4);
                 Entries.Add((entry, typeblob, DecodeOffset(((Span<byte>) data).ReadString())));
+                KTIDToEntryId[entry.FileKTID] = i;
             }
+
+            if (!KTIDToEntryId.TryGetValue(Header.NameDatabaseKTID, out var nameDatabaseId)) return;
+            var nameBuffer = ReadEntry(nameDatabaseId);
+            if (nameBuffer.Length == 0) return;
+            NameDatabase = new NAME(nameBuffer.Span);
         }
 
         private Dictionary<string, Stream> Streams { get; set; } = new Dictionary<string, Stream>();
@@ -72,6 +81,16 @@ namespace Cethleann.Koei
         ///     List of RDB entries found in this file
         /// </summary>
         public List<(RDBEntry entry, byte[] typeBuffer, (long offset, long size, int binId, int binSubId))> Entries { get; set; } = new List<(RDBEntry, byte[], (long, long, int, int))>();
+
+        /// <summary>
+        ///     KTID to Entry ID map
+        /// </summary>
+        public Dictionary<uint, int> KTIDToEntryId { get; set; } = new Dictionary<uint, int>();
+
+        /// <summary>
+        ///     Name Database for this RDB
+        /// </summary>
+        public NAME NameDatabase { get; set; } = new NAME();
 
         /// <summary>
         ///     Clean up streams
@@ -129,12 +148,12 @@ namespace Cethleann.Koei
         /// <returns></returns>
         public Memory<byte> ReadEntry(int index)
         {
-            GC.ReRegisterForFinalize(this);
             var (entry, _, (offset, size, _, _)) = Entries[index];
+
             Span<byte> blob;
             if (entry.Flags.HasFlag(RDBFlags.External))
             {
-                var path = GetExternalPath(entry.FileId);
+                var path = GetExternalPath(entry.FileKTID);
                 if (!File.Exists(path))
                 {
                     Logger.Error("RDB", $"Cannot find external RDB file {Path.GetFileName(path)}");
@@ -164,6 +183,7 @@ namespace Cethleann.Koei
                         return Memory<byte>.Empty;
                     }
 
+                    GC.ReRegisterForFinalize(this);
                     stream = File.OpenRead(path);
                     Streams[Path.GetFileName(path)] = stream;
                 }
@@ -176,6 +196,7 @@ namespace Cethleann.Koei
             if (blob.Length < SizeHelper.SizeOf<RDBEntry>()) return Memory<byte>.Empty;
 
             var (fileEntry, _, buffer) = ReadRDBEntry(blob);
+            if (fileEntry.Size == 0) return Memory<byte>.Empty;
             if (entry.Flags.HasFlag(RDBFlags.ZlibCompressed))
                 return Compression.Decompress(buffer, (int) fileEntry.Size, 1).ToArray();
             // ReSharper disable once ConvertIfStatementToReturnStatement
@@ -187,8 +208,9 @@ namespace Cethleann.Koei
         private (RDBEntry entry, byte[] typeblob, byte[] data) ReadRDBEntry(Span<byte> buffer)
         {
             var entry = MemoryMarshal.Read<RDBEntry>(buffer);
+            if (entry.Magic != DataType.RDBIndex) return (default, null, null);
             var unknownsSize = entry.EntrySize - SizeHelper.SizeOf<RDBEntry>() - entry.ContentSize;
-            var unknowns = unknownsSize == 0 ? new byte[0] : buffer.Slice(SizeHelper.SizeOf<RDBEntry>(), (int) (unknownsSize)).ToArray();
+            var unknowns = unknownsSize < 1 ? new byte[0] : buffer.Slice(SizeHelper.SizeOf<RDBEntry>(), (int) (unknownsSize)).ToArray();
             var data = buffer.Slice((int) (entry.EntrySize - entry.ContentSize), (int) entry.ContentSize).ToArray();
             return (entry, unknowns, data);
         }
@@ -196,15 +218,14 @@ namespace Cethleann.Koei
         private static (long offset, long size, int binId, int binSubId) DecodeOffset(string packed)
         {
             if (packed == null) return (-1, -1, -1, -1);
-            var regex = AddressRegex.Match(packed);
+            var regex = ADDRESS_REGEX.Match(packed);
             if (!regex.Success) return (-1, -1, -1, -1);
 
             var groups = regex.Groups;
             var offset = long.Parse(groups[1].Value, NumberStyles.HexNumber);
             var size = long.Parse(groups[2].Value, NumberStyles.HexNumber);
-            var binId = groups[3].Value != "" ? int.Parse(groups[2].Value, NumberStyles.HexNumber) : -1;
-            var binSubId = groups[4].Value != "" ? int.Parse(groups[2].Value, NumberStyles.HexNumber) : -1;
-
+            var binId = groups[3].Value != "" ? int.Parse(groups[3].Value, NumberStyles.HexNumber) : -1;
+            var binSubId = groups[4].Value != "" ? int.Parse(groups[4].Value, NumberStyles.HexNumber) : -1;
             return (offset, size, binId, binSubId);
         }
 
@@ -283,6 +304,25 @@ namespace Cethleann.Koei
         public static uint Hash(string text)
         {
             return Hash(Encoding.UTF8.GetBytes(text.Substring(1)), text[0] * HASH_KEY, HASH_KEY);
+        }
+
+        /// <summary>
+        ///     Strips formatting from a string
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static (string name, string ext) StripName(string text)
+        {
+            string ext = null;
+            var index = text.IndexOf(HASH_PREFIX_STR, StringComparison.Ordinal);
+            if (text.StartsWith("R_") && index > 2) ext = text.Substring(2, index - 2);
+
+            if (index > -1) text = text.Substring(index + 1);
+
+            index = text.IndexOf(HASH_SUFFIX_STR, StringComparison.Ordinal);
+            if (index > -1) text = text.Substring(0, index);
+
+            return (text, ext);
         }
     }
 }

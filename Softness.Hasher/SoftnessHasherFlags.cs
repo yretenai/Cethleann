@@ -17,7 +17,7 @@ namespace Softness.Hasher
         public bool Raw { get; set; }
 
         [UsedImplicitly]
-        [CLIFlag("strings", Positional = 0, Hidden = true)]
+        [CLIFlag("strings", Positional = 0)]
         public HashSet<string> Strings { get; set; } = new HashSet<string>();
     }
 }
