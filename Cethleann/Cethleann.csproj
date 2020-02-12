@@ -28,22 +28,22 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="filelist-ThreeHouses.csv">
+        <None Include="filelist-ThreeHouses-link.csv">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="TXTH\.ktgcadpcm.txth">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="filelist-DeadOrAlive6.csv">
+        <None Update="filelist-DeadOrAlive6-rdb.csv">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="filelist-RDBExt.csv">
+        <None Update="filelist-RDBExt-rdb.csv">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="filelist-Scramble.csv">
+        <None Update="filelist-Scramble-rdb.csv">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="filelist-RDBShared.csv">
+        <None Update="filelist-RDBShared-rdb.csv">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>

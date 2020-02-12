@@ -18,6 +18,6 @@
         /// <summary>
         ///     Compressed (read: bytes to read in this file) size of this file.
         /// </summary>
-        public int Size { get; set; }
+        public uint Size { get; set; }
     }
 }

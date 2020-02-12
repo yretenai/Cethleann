@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Cethleann.Structure;
 using DragonLib;
@@ -26,7 +27,7 @@ namespace Cethleann.Koei
             {
                 ChunkSize = blockSize,
                 ChunkCount = (int) Math.Ceiling((double) data.Length / blockSize),
-                Size = data.Length
+                Size = (uint) data.Length
             };
             var buffer = new Span<byte>(new byte[data.Length]);
             MemoryMarshal.Write(buffer, ref compInfo);
@@ -76,12 +77,13 @@ namespace Cethleann.Koei
         /// <returns></returns>
         public static unsafe Span<byte> Decompress(Span<byte> data, bool checkSanity = false)
         {
-            var cursor = 0;
             var compInfo = MemoryMarshal.Read<KTGLCompressionInfo>(data);
+            var cursor = SizeHelper.SizeOf<KTGLCompressionInfo>();
+            if (compInfo.ChunkCount < 0 || cursor + compInfo.ChunkCount * 4 > data.Length || compInfo.ChunkSize < 0x4000) return Span<byte>.Empty;
             if (checkSanity && (compInfo.ChunkSize != 0x4000 && compInfo.ChunkSize != 0x00010000 && compInfo.ChunkSize != 0x00020000)) return Span<byte>.Empty;
             var buffer = new Span<byte>(new byte[compInfo.Size]);
-            cursor += SizeHelper.SizeOf<KTGLCompressionInfo>();
-            var chunkSizes = MemoryMarshal.Cast<byte, int>(data.Slice(cursor, 4 * compInfo.ChunkCount));
+            var chunkSizes = MemoryMarshal.Cast<byte, int>(data.Slice(cursor, 4 * compInfo.ChunkCount)).ToArray();
+            if (chunkSizes.Any(x => x < 6)) return Span<byte>.Empty;
             cursor = (cursor + 4 * compInfo.ChunkCount).Align(0x80);
             var bufferCursor = 0;
             for (var i = 0; i < compInfo.ChunkCount; ++i)

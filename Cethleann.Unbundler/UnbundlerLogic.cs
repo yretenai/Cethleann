@@ -116,6 +116,11 @@ namespace Cethleann.Unbundler
                 try
                 {
                     var decompressed = TableCompression.Decompress(datablob);
+                    if (decompressed.Length == 0)
+                    {
+                        Logger.Info("KTGL", $"{blobBase} is zero!");
+                        return 0;
+                    }
                     var pathBase = blobBase;
                     if (pathBase.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase)) pathBase = pathBase.Substring(0, pathBase.Length - 3);
 

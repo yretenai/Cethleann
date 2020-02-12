@@ -14,19 +14,19 @@ namespace Cethleann.ManagedFS
             return !File.Exists(loc) ? new string[0][] : File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith(";")).Select(x => x.Split(',', fields, StringSplitOptions.RemoveEmptyEntries).Select(y => y.Trim()).ToArray()).ToArray();
         }
 
-        public static string GetFileListLocation(string filename, DataGame game)
+        public static string GetFileListLocation(string filename, DataGame game, string system)
         {
-            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), filename ?? $"filelist{(game == DataGame.None ? "" : $"-{game:G}")}.csv");
+            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), filename ?? $"filelist{(game == DataGame.None ? "" : $"-{game:G}")}-{system}.csv");
         }
 
-        public static string GetFileListLocation(string filename, string type)
+        public static string GetFileListLocation(string filename, string type, string system)
         {
-            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), filename ?? $"filelist{(type?.Length == 0 ? "" : $"-{type}")}.csv");
+            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), filename ?? $"filelist{(type?.Length == 0 ? "" : $"-{type}")}-{system}.csv");
         }
 
-        public static Dictionary<string, string> GetSimpleFileList(string filename, DataGame game)
+        public static Dictionary<string, string> GetSimpleFileList(string filename, DataGame game, string system)
         {
-            var loc = GetFileListLocation(filename, game);
+            var loc = GetFileListLocation(filename, game, system);
             if (!File.Exists(loc)) return new Dictionary<string, string>();
             var csv = GetFileList(loc, 2);
             return csv.ToDictionary(x => x[0], y => y[1]);

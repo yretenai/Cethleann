@@ -16,8 +16,18 @@ before_build:
   - cmd: dotnet restore Cethleann.sln --verbosity m
 build_script:
   - cmd: dotnet publish --configuration Release --self-contained -r win10-x64 -o dist/CethleannStandalone
+  - cmd: dotnet publish --configuration Release /p:PublishTrimmed=false -o dist/CethleannRuntime
+  - cmd: dotnet publish --configuration Debug /p:PublishTrimmed=false -o dist/CethleannDebug
+on_success:
+  - cmd: del dist\CethleannStandalone\*.json
+  - cmd: del dist\CethleannRuntime\*.json
+  - cmd: del dist\CethleannDebug\*.json
 clone_depth: 3
 deploy: off
 artifacts:
 - path: dist/CethleannStandalone
-  name: CethleannStandalone
+  name: CethleannStandalone_netcore30
+- path: dist/CethleannRuntime
+  name: CethleannRuntime_netcore30
+- path: dist/CethleannDebug
+  name: CethleannDebug_netcore30

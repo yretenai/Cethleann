@@ -81,8 +81,8 @@ namespace Cethleann.ManagedFS
         /// <inheritdoc />
         public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null)
         {
-            var loc = ManagedFSHelpers.GetFileListLocation(filename, game ?? GameId);
-            var locShared = ManagedFSHelpers.GetFileListLocation(filename, "RDBSHared");
+            var loc = ManagedFSHelpers.GetFileListLocation(filename, game ?? GameId, "rdb");
+            var locShared = ManagedFSHelpers.GetFileListLocation(filename, "RDBSHared", "rdb");
             var csv = ManagedFSHelpers.GetFileList(locShared, 3).Concat(ManagedFSHelpers.GetFileList(loc, 3)).ToArray();
             FileList = new Dictionary<uint, string>();
             foreach (var (key, value) in csv.Select(x => (key: uint.Parse(x[1].ToLower(), NumberStyles.HexNumber), value: x[2])))
@@ -131,7 +131,7 @@ namespace Cethleann.ManagedFS
         /// <param name="filename"></param>
         public void LoadExtList(string filename = null)
         {
-            ExtList = ManagedFSHelpers.GetSimpleFileList(filename ?? "filelist-RDBExt.csv", DataGame.None).ToDictionary(x => uint.Parse(x.Key, NumberStyles.HexNumber), y => y.Value);
+            ExtList = ManagedFSHelpers.GetSimpleFileList(filename ?? "filelist-RDBExt.csv", DataGame.None, "rdb").ToDictionary(x => uint.Parse(x.Key, NumberStyles.HexNumber), y => y.Value);
         }
 
         /// <summary>

@@ -799,18 +799,6 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.G1.G1Model.ExportMeshes(System.String,System.String,System.Int32,System.Int32,System.String)">
-            <summary>
-                Exports meshes to GLTF
-            </summary>
-            <param name="bufferPath"></param>
-            <param name="bufferPathRoot"></param>
-            <param name="lod"></param>
-            <param name="group"></param>
-            <param name="texBase"></param>
-            <returns></returns>
-            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
-        </member>
         <member name="T:Cethleann.G1.G1ModelSection.G1Extra">
             <summary>
                 Extra Section of G1M models
@@ -1661,6 +1649,16 @@
                 List of RDB entries found in this file
             </summary>
         </member>
+        <member name="P:Cethleann.Koei.RDB.KTIDToEntryId">
+            <summary>
+                KTID to Entry ID map
+            </summary>
+        </member>
+        <member name="P:Cethleann.Koei.RDB.NameDatabase">
+            <summary>
+                Name Database for this RDB
+            </summary>
+        </member>
         <member name="M:Cethleann.Koei.RDB.Dispose">
             <summary>
                 Clean up streams
@@ -1731,6 +1729,13 @@
         <member name="M:Cethleann.Koei.RDB.Hash(System.String)">
             <summary>
                 Hash filenames
+            </summary>
+            <param name="text"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Koei.RDB.StripName(System.String)">
+            <summary>
+                Strips formatting from a string
             </summary>
             <param name="text"></param>
             <returns></returns>
