@@ -7,7 +7,7 @@ using Cethleann.Structure;
 using DragonLib;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei
+namespace Cethleann.Compression
 {
     /// <summary>
     ///     Compression helper class for KTGL.

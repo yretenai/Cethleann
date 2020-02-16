@@ -6,13 +6,13 @@ using DragonLib;
 using DragonLib.IO;
 using JetBrains.Annotations;
 
-namespace Cethleann.Koei
+namespace Cethleann.Compression
 {
     /// <summary>
     ///     Decompress Standard KTGL streams
     /// </summary>
     [PublicAPI]
-    public class Compression
+    public class StreamCompression
     {
         /// <summary>
         ///     Decompresses a Gz stream
@@ -21,14 +21,22 @@ namespace Cethleann.Koei
         /// <param name="decompressedSize"></param>
         /// <param name="compressionFunc"></param>
         /// <param name="blockSize"></param>
+        /// <param name="sizePrefix"></param>
         /// <returns></returns>
-        public static Span<byte> Decompress(Span<byte> data, int decompressedSize, int compressionFunc, int blockSize = 0x4000)
+        public static Span<byte> Decompress(Span<byte> data, int decompressedSize, int compressionFunc, int blockSize = 0x4000, bool sizePrefix = false)
         {
             unsafe
             {
                 var decPtr = 0;
                 Span<byte> decompressed = new byte[decompressedSize == -1 ? data.Length : decompressedSize];
                 var comPtr = 0;
+                if (sizePrefix)
+                {
+                    var size = BinaryPrimitives.ReadInt32LittleEndian(data);
+                    comPtr += 4;
+                    Logger.Assert(size == decompressedSize, "size == decompressedSize");
+                }
+
                 while (true)
                 {
                     if (comPtr >= data.Length) break;

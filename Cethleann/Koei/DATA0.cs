@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Cethleann.Compression;
 using Cethleann.Structure;
 using JetBrains.Annotations;
 
@@ -78,7 +79,7 @@ namespace Cethleann.Koei
         {
             if (!data1.CanRead) throw new InvalidOperationException("Cannot read from stream!");
             if (entry.UncompressedSize == 0) return Memory<byte>.Empty;
-            if (entry.UncompressedSize >= 0x7FFFFFFF) return Memory<byte>.Empty;;
+            if (entry.UncompressedSize >= 0x7FFFFFFF) return Memory<byte>.Empty;
 
             data1.Position = entry.Offset;
 

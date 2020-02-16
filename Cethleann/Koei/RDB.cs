@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using Cethleann.Compression;
 using Cethleann.Structure;
 using Cethleann.Structure.KTID;
 using DragonLib;
@@ -198,10 +199,10 @@ namespace Cethleann.Koei
             var (fileEntry, _, buffer) = ReadRDBEntry(blob);
             if (fileEntry.Size == 0) return Memory<byte>.Empty;
             if (entry.Flags.HasFlag(RDBFlags.ZlibCompressed))
-                return Compression.Decompress(buffer, (int) fileEntry.Size, 1).ToArray();
+                return StreamCompression.Decompress(buffer, (int) fileEntry.Size, 1).ToArray();
             // ReSharper disable once ConvertIfStatementToReturnStatement
             if (entry.Flags.HasFlag(RDBFlags.LZ77Compressed))
-                return Compression.Decompress(buffer, (int) fileEntry.Size, 2).ToArray();
+                return StreamCompression.Decompress(buffer, (int) fileEntry.Size, 2).ToArray();
             return buffer;
         }
 

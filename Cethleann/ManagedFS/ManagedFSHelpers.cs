@@ -16,7 +16,7 @@ namespace Cethleann.ManagedFS
 
         public static string GetFileListLocation(string filename, DataGame game, string system)
         {
-            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), filename ?? $"filelist{(game == DataGame.None ? "" : $"-{game:G}")}-{system}.csv");
+            return GetFileListLocation(filename, game == DataGame.None ? "" : game.ToString(), system);
         }
 
         public static string GetFileListLocation(string filename, string type, string system)

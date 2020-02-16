@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Cethleann.Compression;
 using Cethleann.Structure;
 using DragonLib;
 using JetBrains.Annotations;

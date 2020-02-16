@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Cethleann.Audio;
+using Cethleann.Compression;
 using Cethleann.DataTables;
 using Cethleann.G1;
-using Cethleann.Koei;
 using Cethleann.Structure;
 using Cethleann.Text;
 using DragonLib;
@@ -121,6 +121,7 @@ namespace Cethleann.Unbundler
                         Logger.Info("KTGL", $"{blobBase} is zero!");
                         return 0;
                     }
+
                     var pathBase = blobBase;
                     if (pathBase.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase)) pathBase = pathBase.Substring(0, pathBase.Length - 3);
 

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using DragonLib;
 using JetBrains.Annotations;
 
-namespace Cethleann.Ninja
+namespace Cethleann.Compression
 {
     /// <summary>
     ///     Compression helper class for TN's fork of KTGL

@@ -1,6 +1,7 @@
 using System;
 using System.Buffers.Binary;
 using System.Runtime.InteropServices;
+using Cethleann.Compression;
 using Cethleann.Structure;
 using DragonLib;
 using DragonLib.IO;
@@ -85,7 +86,7 @@ namespace Cethleann.Ninja
             // ReSharper disable once InvertIf
             if (flags.HasFlag(IDTableFlags.Compressed))
             {
-                var decompressedData = Compression.Decompress(file, (int) size);
+                var decompressedData = Stream8000Compression.Decompress(file, (int) size);
                 if (decompressedData.Length != 0) file = decompressedData;
             }
 
