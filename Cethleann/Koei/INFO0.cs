@@ -19,28 +19,27 @@ namespace Cethleann.Koei
         /// <summary>
         ///     Reads a INFO0 file list from a path
         /// </summary>
-        /// <param name="info2"></param>
         /// <param name="path">File path to read</param>
 #pragma warning disable IDE0068 // Use recommended dispose pattern, reason: disposed in sub-method DATA0(Stream, bool) when bool leaveOpen is false.
-        public INFO0(INFO2 info2, string path) : this(info2, File.OpenRead(path)) { }
+        public INFO0(string path) : this(File.OpenRead(path)) { }
 #pragma warning restore IDE0068 // Use recommended dispose pattern
 
         /// <summary>
         ///     Reads a INFO0 file list from a stream
         /// </summary>
-        /// <param name="info2"></param>
         /// <param name="stream"></param>
         /// <param name="leaveOpen"></param>
         /// <exception cref="InvalidOperationException"></exception>
-        public INFO0(INFO2 info2, Stream stream, bool leaveOpen = false)
+        public INFO0(Stream stream, bool leaveOpen = false)
         {
             try
             {
                 if (!stream.CanRead) throw new InvalidOperationException("Cannot read from stream!");
 
-                Entries = new List<(INFO0Entry entry, string path)>((int) info2.INFO0Count);
                 var buffer = new Span<byte>(new byte[SizeHelper.SizeOf<INFO0Entry>() + 0x100]);
-                for (int i = 0; i < info2.INFO0Count; ++i)
+                var entryCount = (int) (stream.Length / buffer.Length);
+                Entries = new List<(INFO0Entry entry, string path)>(entryCount);
+                for (int i = 0; i < entryCount; ++i)
                 {
                     stream.Read(buffer);
                     var entry = MemoryMarshal.Read<INFO0Entry>(buffer);

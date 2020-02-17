@@ -7,11 +7,11 @@ using Cethleann.Structure;
 
 namespace Cethleann.ManagedFS
 {
-    internal static class ManagedFSHelpers
+    internal static class ManagedFSHelper
     {
         public static string[][] GetFileList(string loc, int fields)
         {
-            return !File.Exists(loc) ? new string[0][] : File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith(";")).Select(x => x.Split(',', fields, StringSplitOptions.RemoveEmptyEntries).Select(y => y.Trim()).ToArray()).ToArray();
+            return !File.Exists(loc) ? new string[0][] : File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith(";")).Select(x => x.Split(',', fields).Select(y => y.Trim()).ToArray()).ToArray();
         }
 
         public static string GetFileListLocation(string filename, DataGame game, string system)
@@ -21,6 +21,7 @@ namespace Cethleann.ManagedFS
 
         public static string GetFileListLocation(string filename, string type, string system)
         {
+            if (!string.IsNullOrWhiteSpace(filename) && File.Exists(filename)) return Path.GetFullPath(filename);
             return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), filename ?? $"filelist{(type?.Length == 0 ? "" : $"-{type}")}-{system}.csv");
         }
 

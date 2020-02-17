@@ -71,7 +71,7 @@ namespace Cethleann.ManagedFS
         /// <inheritdoc />
         public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null)
         {
-            FileList = ManagedFSHelpers.GetSimpleFileList(filename, game ?? GameId, "link");
+            FileList = ManagedFSHelper.GetSimpleFileList(filename, game ?? GameId, "link");
             return FileList;
         }
 
@@ -112,7 +112,7 @@ namespace Cethleann.ManagedFS
         {
             GC.ReRegisterForFinalize(this);
 
-            var files = Directory.GetFiles(path, "LINKDATA_*.bin", SearchOption.AllDirectories).ToList();
+            var files = Directory.GetFiles(path, "LINKDATA_*", SearchOption.AllDirectories).ToList();
 
             foreach (var file in files)
             {

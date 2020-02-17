@@ -22,6 +22,7 @@ namespace Cethleann.DataExporter
             if (flags.Flayn)
             {
                 fs = new Flayn(flags.GameId);
+                ((Flayn) fs).LoadPatterns();
                 foreach (var gamedir in flags.GameDirs) fs.AddDataFS(gamedir);
             }
             else if (flags.Leonhart)

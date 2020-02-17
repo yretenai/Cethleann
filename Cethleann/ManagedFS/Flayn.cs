@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Cethleann.Koei;
 using Cethleann.Structure;
-using DragonLib;
 using JetBrains.Annotations;
 
 namespace Cethleann.ManagedFS
@@ -24,21 +23,21 @@ namespace Cethleann.ManagedFS
         {
             GameId = game;
         }
-
+        
         /// <summary>
         ///     Game data
         /// </summary>
-        public (DATA0 DATA0, Stream DATA1, string romfs) RootData { get; private set; }
-
-        /// <summary>
-        ///     DLC data
-        /// </summary>
-        public List<(DATA0 DATA0, Stream DATA1, string romfs)> Data { get; private set; } = new List<(DATA0 DATA0, Stream DATA1, string romfs)>();
+        public List<(DATA0 DATA0, Stream DATA1, string romfs, string name)> Data { get; private set; } = new List<(DATA0, Stream, string, string)>();
 
         /// <summary>
         ///     Patch data
         /// </summary>
-        public (INFO0 INFO0, INFO1 INFO1, INFO2 INFO2) Patch { get; private set; }
+        public (INFO0 INFO0, INFO1 INFO1) Patch { get; private set; }
+
+        /// <summary>
+        ///     LINKIDX/LINKDATA patterns
+        /// </summary>
+        public List<(string idxPattern, string dataPattern, char[] separators, string type)> Patterns { get; set; } = new List<(string idxPattern, string dataPattern, char[] separators, string type)>();
 
         /// <summary>
         ///     Root directory of the Patch rom:/
@@ -99,16 +98,12 @@ namespace Cethleann.ManagedFS
 
             if (index >= RootEntryCount)
             {
-                index -= RootEntryCount;
-                if (index < PatchEntryCount) return FindPatch(index);
-
-                index -= PatchEntryCount;
-                return FindDLC(index);
+                if (index < PatchEntryCount + RootEntryCount) return FindPatch(index - RootEntryCount);
             }
 
             try
             {
-                var (info0, _, _) = Patch;
+                var (info0, _) = Patch;
                 if (info0 != null)
                 {
                     var entry = info0.ReadEntry(PatchRomFS, index);
@@ -120,14 +115,37 @@ namespace Cethleann.ManagedFS
                 // ignored.
             }
 
-            var (baseData, baseStream, _) = RootData;
-            return baseData.ReadEntry(baseStream, index);
+            for (var i = 0; i < Data.Count; i++)
+            {
+                if (index < 0) break;
+                
+                var (data, stream, _, _) = Data[i];
+                if (index >= data.Entries.Count)
+                {
+                    index -= data.Entries.Count;
+                    if (i == 0) index -= PatchEntryCount;
+                    continue;
+                }
+
+                try
+                {
+                    var blob = data.ReadEntry(stream, index);
+                    if (blob.Length == 0) continue;
+                    return blob;
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    // ignored.
+                }
+            }
+
+            return Memory<byte>.Empty;
         }
 
         /// <inheritdoc />
         public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null)
         {
-            FileList = ManagedFSHelpers.GetSimpleFileList(filename, game ?? GameId, "link");
+            FileList = ManagedFSHelper.GetSimpleFileList(filename, game ?? GameId, "link");
             return FileList;
         }
 
@@ -141,10 +159,13 @@ namespace Cethleann.ManagedFS
             var logicalId = default(string);
             if (index >= RootEntryCount)
             {
-                if (index >= RootEntryCount + PatchEntryCount)
+                if (index < RootEntryCount + PatchEntryCount)
                 {
-                    prefix = "dlc/";
-                    logicalId = $"DLC_{index - RootEntryCount - PatchEntryCount} - {index}";
+                    if (GameId == DataGame.ThreeHouses)
+                    {
+                        prefix = "dlc/";
+                        logicalId = $"DLC_{index - RootEntryCount - PatchEntryCount} - {index}";
+                    }
                 }
                 else
                 {
@@ -178,7 +199,31 @@ namespace Cethleann.ManagedFS
         /// <exception cref="FileNotFoundException"></exception>
         public void AddDataFS(string path)
         {
-            AddLinkFS(path, "DATA0", "DATA1");
+            foreach (var (idxPattern, dataPattern, separators, type) in Patterns)
+            {
+                foreach (var file in Directory.GetFiles(path, idxPattern, SearchOption.TopDirectoryOnly))
+                {
+                    var binPath = dataPattern;
+                    if (separators.Length > 0)
+                    {
+                        var chunks = Path.GetFileName(file).Split(separators).Select(x => (object) x).ToArray();
+                        binPath = Path.Combine(path, string.Format(dataPattern, chunks));
+                    }
+
+                    if (File.Exists(binPath))
+                    {
+                        switch (type)
+                        {
+                            case "DATA":
+                                AddDataFSInternal(file, binPath);
+                                break;
+                            case "INFO":
+                                AddInfoFSInternal(file, binPath);
+                                break;
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -189,62 +234,34 @@ namespace Cethleann.ManagedFS
             Dispose(false);
         }
 
-        /// <summary>
-        ///     Adds a LINKDATA container, usually base games
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="idxHint"></param>
-        /// <param name="binHint"></param>
-        /// <exception cref="FileNotFoundException"></exception>
-        public void AddLinkFS(string path, string idxHint, string binHint = null)
-        {
-            var idxPath = Path.Combine(path, $"{idxHint}.IDX");
-            if (!File.Exists(idxPath)) idxPath = Path.Combine(path, $"{idxHint}.BIN");
-            var binPath = Path.Combine(path, $"{binHint ?? idxHint}.BIN");
-            if (!File.Exists(idxPath) || !File.Exists(binPath)) throw new FileNotFoundException("Cannot find DATA or LINKDATA pairs");
-
-            Name = idxHint;
-
-            AddDataFSInternal(idxPath, binPath);
-        }
-
         private void AddDataFSInternal(string idxPath, string binPath)
         {
             GC.ReRegisterForFinalize(this);
 
             var fullPath = Path.GetFullPath(Path.GetDirectoryName(idxPath));
             if (Data.Any(x => x.romfs == fullPath)) return;
-            var set = (new DATA0(idxPath), File.OpenRead(binPath), fullPath);
-            if (RootData == default)
+            var set = (new DATA0(idxPath), File.OpenRead(binPath), fullPath, Path.GetFileNameWithoutExtension(idxPath));
+            Data.Add(set);
+            if (Data.Count == 1)
             {
-                RootData = set;
-                RootEntryCount = RootData.DATA0.Entries.Count + 1; // thanks Koei.
+                RootEntryCount = set.Item1.Entries.Count + 1; // thanks Koei.
             }
             else
             {
-                Data.Add(set);
-                DataEntryCount = Data.Max(x => x.DATA0.Entries.Count);
+                DataEntryCount = Data.Skip(1).Max(x => x.DATA0.Entries.Count);
             }
         }
 
         /// <summary>
         ///     Adds a patch container.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="info0Path"></param>
+        /// <param name="info1Path"></param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        public void AddPatchFS(string path)
+        public void AddInfoFSInternal(string info0Path, string info1Path)
         {
-            if (!Directory.Exists(path)) return;
-            PatchRomFS = Path.GetFullPath(Path.Combine(path, ".."));
-            var buffer = new Span<byte>(new byte[SizeHelper.SizeOf<INFO2>()]);
-            var info0Path = Path.Combine(path, "INFO0.bin");
-            if (!File.Exists(info0Path)) return;
-            var info1Path = Path.Combine(path, "INFO1.bin");
-            var info2Path = Path.Combine(path, "INFO2.bin");
-            using var info2Stream = File.OpenRead(info2Path);
-            info2Stream.Read(buffer);
-            var info2 = MemoryMarshal.Read<INFO2>(buffer);
-            Patch = (new INFO0(info2, info0Path), new INFO1(info2, info1Path), info2);
+            PatchRomFS = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(info0Path), ".."));
+            Patch = (new INFO0(info0Path), new INFO1(info1Path));
             PatchEntryCount = Patch.INFO1?.Entries.Count ?? 0;
         }
 
@@ -252,7 +269,7 @@ namespace Cethleann.ManagedFS
         {
             try
             {
-                var (_, info1, _) = Patch;
+                var (_, info1) = Patch;
                 var entry = info1.ReadEntry(PatchRomFS, index);
                 if (entry.Length > 0) return entry;
             }
@@ -264,39 +281,19 @@ namespace Cethleann.ManagedFS
             return Memory<byte>.Empty;
         }
 
-        private Memory<byte> FindDLC(int index)
-        {
-            foreach (var (data, stream, _) in Data)
-            {
-                if (index >= data.Entries.Count)
-                {
-                    index -= data.Entries.Count;
-                    continue;
-                }
-
-                try
-                {
-                    var blob = data.ReadEntry(stream, index);
-                    if (blob.Length == 0) continue;
-                    return blob;
-                }
-                catch (IndexOutOfRangeException)
-                {
-                    // ignored.
-                }
-            }
-
-            return Memory<byte>.Empty;
-        }
-
         private void Dispose(bool disposing)
         {
-            foreach (var (_, stream, _) in Data) stream.Dispose();
+            foreach (var (_, stream, _, _) in Data) stream.Dispose();
             if (!disposing) return;
-            Data = new List<(DATA0 DATA0, Stream DATA1, string romfs)>();
+            Data = new List<(DATA0, Stream, string, string)>();
             DataEntryCount = 0;
             PatchEntryCount = 0;
             RootEntryCount = 0;
+        }
+
+        public void LoadPatterns(string filename = null)
+        {
+            Patterns = ManagedFSHelper.GetFileList(ManagedFSHelper.GetFileListLocation(filename, "LINKDATAPatterns", "link"), 4).Select(x => (x[0], x[2], x[1].ToCharArray(), x[3])).ToList();
         }
     }
 }
