@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Cethleann.Koei;
 using Cethleann.Structure;
 using JetBrains.Annotations;
@@ -23,7 +23,7 @@ namespace Cethleann.ManagedFS
         {
             GameId = game;
         }
-        
+
         /// <summary>
         ///     Game data
         /// </summary>
@@ -60,11 +60,6 @@ namespace Cethleann.ManagedFS
         public int PatchEntryCount { get; private set; }
 
         /// <summary>
-        ///     LINKDATA Name
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
         ///     Prefix LINKDATA archive name to files
         /// </summary>
         public bool PrefixLinkData { get; set; }
@@ -95,48 +90,36 @@ namespace Cethleann.ManagedFS
         public Memory<byte> ReadEntry(int index)
         {
             if (index >= EntryCount) throw new IndexOutOfRangeException($"Index {index} does not exist!");
-
-            if (index >= RootEntryCount)
+            var localId = index;
+            for (var i = 0; i < Data.Count + (PatchEntryCount > 0 ? 1 : 0); ++i)
             {
-                if (index < PatchEntryCount + RootEntryCount) return FindPatch(index - RootEntryCount);
-            }
-
-            try
-            {
-                var (info0, _) = Patch;
-                if (info0 != null)
+                if (PatchEntryCount > 0)
                 {
-                    var entry = info0.ReadEntry(PatchRomFS, index);
-                    if (entry.Length > 0) return entry;
-                }
-            }
-            catch (IndexOutOfRangeException)
-            {
-                // ignored.
-            }
+                    var (info0, info1) = Patch;
+                    if (i == 1)
+                    {
+                        if (localId < info1.Entries.Count) return info1.ReadEntry(PatchRomFS, localId);
 
-            for (var i = 0; i < Data.Count; i++)
-            {
-                if (index < 0) break;
-                
-                var (data, stream, _, _) = Data[i];
-                if (index >= data.Entries.Count)
-                {
-                    index -= data.Entries.Count;
-                    if (i == 0) index -= PatchEntryCount;
-                    continue;
+                        localId -= info1.Entries.Count;
+                        continue;
+                    }
+
+                    var buffer = info0.ReadEntry(PatchRomFS, localId);
+                    if (buffer.Length > 0) return buffer;
                 }
 
-                try
+                var actualIndex = i;
+                if (i > 0 && PatchEntryCount > 0) actualIndex -= 1;
+                var (data, stream, _, _) = Data[actualIndex];
+                var dataCount = data.Entries.Count;
+                if (i == 0) dataCount += 1;
+                if (localId < dataCount)
                 {
-                    var blob = data.ReadEntry(stream, index);
-                    if (blob.Length == 0) continue;
-                    return blob;
+                    var buffer = data.ReadEntry(stream, localId);
+                    if (GameId == DataGame.ThreeHouses && i > 0 && buffer.Length == 0) continue;
+                    return buffer;
                 }
-                catch (IndexOutOfRangeException)
-                {
-                    // ignored.
-                }
+                localId -= dataCount;
             }
 
             return Memory<byte>.Empty;
@@ -145,51 +128,71 @@ namespace Cethleann.ManagedFS
         /// <inheritdoc />
         public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null)
         {
-            FileList = ManagedFSHelper.GetSimpleFileList(filename, game ?? GameId, "link");
+            FileList = ManagedFSHelper.GetNamedFileList(filename, game ?? GameId, "link");
             return FileList;
         }
 
         /// <inheritdoc />
         public string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
         {
-            if (dataType == DataType.Compressed || dataType == DataType.CompressedChonky) ext += ".gz";
+            if (dataType == DataType.Compressed || dataType == DataType.CompressedChonky) ext = ext == "gz" ? "bin.gz" : ext + ".gz";
 
-            var path = default(string);
+            var id = "0";
+            var generatedPrefix = index.ToString();
             var prefix = "";
-            var logicalId = default(string);
-            if (index >= RootEntryCount)
+            var localId = index;
+            for (var i = 0; i < Data.Count + (PatchEntryCount > 0 ? 1 : 0); ++i)
             {
-                if (index < RootEntryCount + PatchEntryCount)
+                if (localId < 0) break;
+                if (PatchEntryCount > 0 && i == 1)
                 {
-                    if (GameId == DataGame.ThreeHouses)
+                    var (_, info1) = Patch;
+                    if (localId > info1.Entries.Count)
                     {
-                        prefix = "dlc/";
-                        logicalId = $"DLC_{index - RootEntryCount - PatchEntryCount} - {index}";
+                        localId -= info1.Entries.Count;
+                        continue;
                     }
-                }
-                else
-                {
+
+                    generatedPrefix = "PATCH - ";
+                    id = $"PATCH_{localId}";
                     prefix = "patch/";
-                    logicalId = $"PATCH_{index - RootEntryCount} - {index}";
-                    var info1 = Patch.INFO1;
-                    path = info1.GetPath(index - RootEntryCount);
-                    if (!string.IsNullOrWhiteSpace(path) && path != "nx/")
-                    {
-                        if (path.StartsWith("nx/", StringComparison.InvariantCultureIgnoreCase)) path = path.Substring(3);
-                        var dir = Path.GetDirectoryName(path);
-                        var file = Path.GetFileName(path);
-                        path = Path.Combine(dir, $"{logicalId} - {file}");
-                    }
+                    break;
                 }
+
+                var actualIndex = i;
+                if (i > 0 && PatchEntryCount > 0) actualIndex -= 1;
+                var (data, _, _, linkname) = Data[actualIndex];
+                var dataCount = data.Entries.Count;
+                if (i == 0) dataCount += 1;
+                if (localId > dataCount)
+                {
+                    localId -= dataCount;
+                    continue;
+                }
+
+                generatedPrefix = GameId switch
+                {
+                    DataGame.ThreeHouses => i == 0 ? "" : "DLC - ",
+                    _ => ""
+                };
+                id = GameId switch
+                {
+                    DataGame.ThreeHouses => $"{(i == 0 ? "" : "DLC_")}{localId}",
+                    _ => $"{linkname}_{localId}"
+                };
+                prefix = GameId switch
+                {
+                    DataGame.ThreeHouses => $"{(i == 0 ? "" : "dlc")}/",
+                    _ => $"{linkname}"
+                };
+                break;
             }
 
-            if (PrefixLinkData) logicalId = $"{Name}_{(prefix.Length > 0 ? prefix : index.ToString())}";
 
-            var temp = path;
-            if (!FileList.TryGetValue(logicalId ?? index.ToString(), out path)) path = temp ?? (ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{logicalId ?? index.ToString()}.{ext}" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{logicalId ?? index.ToString()}.{ext}");
+            if (!FileList.TryGetValue(id, out var path)) path = (ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{generatedPrefix}{localId}.{ext}" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{generatedPrefix}{localId}.{ext}");
             else path = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + $".{ext}");
             if (ext.EndsWith(".gz") && !path.EndsWith(".gz")) path += ".gz";
-            return prefix + path;
+            return $@"{prefix}\{path}";
         }
 
         /// <summary>
@@ -197,6 +200,7 @@ namespace Cethleann.ManagedFS
         /// </summary>
         /// <param name="path"></param>
         /// <exception cref="FileNotFoundException"></exception>
+        // TODO: Separate Main and DLC.
         public void AddDataFS(string path)
         {
             foreach (var (idxPattern, dataPattern, separators, type) in Patterns)
@@ -263,22 +267,6 @@ namespace Cethleann.ManagedFS
             PatchRomFS = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(info0Path), ".."));
             Patch = (new INFO0(info0Path), new INFO1(info1Path));
             PatchEntryCount = Patch.INFO1?.Entries.Count ?? 0;
-        }
-
-        private Memory<byte> FindPatch(int index)
-        {
-            try
-            {
-                var (_, info1) = Patch;
-                var entry = info1.ReadEntry(PatchRomFS, index);
-                if (entry.Length > 0) return entry;
-            }
-            catch (IndexOutOfRangeException)
-            {
-                // ignored.
-            }
-
-            return Memory<byte>.Empty;
         }
 
         private void Dispose(bool disposing)

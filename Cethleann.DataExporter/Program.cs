@@ -15,7 +15,7 @@ namespace Cethleann.DataExporter
     {
         private static void Main(string[] args)
         {
-            Logger.PrintVersion("CETH");
+            Logger.PrintVersion("Cethleann");
             var flags = CommandLineFlags.ParseFlags<DataExporterFlags>(CommandLineFlags.PrintHelp, args);
 
             IManagedFS fs = default;
@@ -57,7 +57,7 @@ namespace Cethleann.DataExporter
                 };
                 if (settings == default)
                 {
-                    Logger.Error("CETH", $"No decryption settings found for {flags.GameId}!");
+                    Logger.Error("Cethleann", $"No decryption settings found for {flags.GameId}!");
                     return;
                 }
 
@@ -77,7 +77,7 @@ namespace Cethleann.DataExporter
 
             if (fs == default)
             {
-                Logger.Error("CETH", "No FS specified! Prove --flayn, --reisalin, --leonhart, --mitsunari, --nyotengu, or --yshtola!");
+                Logger.Error("Cethleann", "No FS specified! Prove --flayn, --reisalin, --leonhart, --mitsunari, --nyotengu, or --yshtola!");
                 return;
             }
 

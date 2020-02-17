@@ -21,16 +21,16 @@ namespace Gust.EncFinder
 
         public static int Main(string[] args)
         {
-            Logger.PrintVersion("GUST");
+            Logger.PrintVersion("Gust");
             if (args.Length == 0)
             {
-                Logger.Error("GUST", "Usage: Gust.EncFinder.exe path/to/file.exe");
+                Logger.Error("Gust", "Usage: Gust.EncFinder.exe path/to/file.exe");
                 return 1;
             }
 
             foreach (var pefile in args)
             {
-                Logger.Error("GUST", Path.GetFileName(pefile));
+                Logger.Error("Gust", Path.GetFileName(pefile));
                 Span<byte> exe;
                 using (var stream = File.OpenRead(pefile))
                 {
@@ -44,7 +44,7 @@ namespace Gust.EncFinder
                     constantPtr = exe.FindPointerFromSignature(SEED_CONSTANT_SIGNATURE_2);
                     if (constantPtr == -1)
                     {
-                        Logger.Error("GUST", "Can't find the seed constant MOV instruction, is the executable obfuscated or not PE32?");
+                        Logger.Error("Gust", "Can't find the seed constant MOV instruction, is the executable obfuscated or not PE32?");
                         return 2;
                     }
                 }
@@ -54,7 +54,7 @@ namespace Gust.EncFinder
                 var functionStartPtr = exe.Slice(0, constantPtr).FindPointerFromSignatureReverse(FUNCTION_START_SIGNATURE);
                 if (functionStartPtr == -1)
                 {
-                    Logger.Error("GUST", "Can't find the start of the function, is the executable obfuscated or not PE32?");
+                    Logger.Error("Gust", "Can't find the start of the function, is the executable obfuscated or not PE32?");
                     return 3;
                 }
 
@@ -77,7 +77,7 @@ namespace Gust.EncFinder
                     var num = MemoryMarshal.Read<int>(exe.Slice(functionStartPtr + tablePtr + 1));
                     if (num == 0 && counter == 0)
                     {
-                        Logger.Warn("GUST", "Skipping first table entry because it is zero.");
+                        Logger.Warn("Gust", "Skipping first table entry because it is zero.");
                         continue; // weird edge case for Nights of Azure 2
                     }
 
@@ -93,14 +93,14 @@ namespace Gust.EncFinder
 
                 if (table.Contains(0) || lengths.Contains(0))
                 {
-                    Logger.Error("GUST", "Table is incomplete?");
+                    Logger.Error("Gust", "Table is incomplete?");
                     return 3;
                 }
 
                 var main1Ptr = exe.Slice(constantPtr).FindPointerFromSignature(MOV_DWORD_LITERAL_SIGNATURE);
                 if (main1Ptr == -1)
                 {
-                    Logger.Error("GUST", "Can't find main[0]");
+                    Logger.Error("Gust", "Can't find main[0]");
                     return 4;
                 }
 
@@ -111,7 +111,7 @@ namespace Gust.EncFinder
                 var main2Ptr2 = exe.Slice(main2Ptr + main1Ptr + constantPtr).FindPointerFromSignature(MOV_DWORD_PTR_SIGNATURE_2);
                 if (main2Ptr == -1)
                 {
-                    Logger.Error("GUST", "Can't find main[2]");
+                    Logger.Error("Gust", "Can't find main[2]");
                     return 4;
                 }
 
@@ -121,7 +121,7 @@ namespace Gust.EncFinder
                 var main3Ptr = exe.Slice(main1Ptr + constantPtr + 2).FindPointerFromSignature(MOV_DWORD_LITERAL_SIGNATURE);
                 if (main3Ptr == -1)
                 {
-                    Logger.Error("GUST", "Can't find main[3]");
+                    Logger.Error("Gust", "Can't find main[3]");
                     return 4;
                 }
 
@@ -131,7 +131,7 @@ namespace Gust.EncFinder
                 var fencePtr = exe.Slice(main1Ptr + constantPtr).FindPointerFromSignature(FENCE_SIGNATURE);
                 if (fencePtr == -1)
                 {
-                    Logger.Error("GUST", "Can't find fence");
+                    Logger.Error("Gust", "Can't find fence");
                     return 4;
                 }
 
@@ -140,11 +140,11 @@ namespace Gust.EncFinder
 
                 Console.WriteLine();
 
-                Logger.Log24Bit(ConsoleSwatch.COLOR_RESET, null, false, Console.Out, "GUST", "All table entries are prime? ");
+                Logger.Log24Bit(ConsoleSwatch.COLOR_RESET, null, false, Console.Out, "Gust", "All table entries are prime? ");
                 if (main.All(x => x.IsPrime()) && lengths.All(x => x.IsPrime()) && table.All(x => x.IsPrime()))
-                    Logger.Log24Bit(ConsoleSwatch.XTermColor.GreenYellow, false, Console.Out, "GUST", "Yes");
+                    Logger.Log24Bit(ConsoleSwatch.XTermColor.GreenYellow, false, Console.Out, "Gust", "Yes");
                 else
-                    Logger.Log24Bit(ConsoleSwatch.XTermColor.Red, false, Console.Out, "GUST", "No");
+                    Logger.Log24Bit(ConsoleSwatch.XTermColor.Red, false, Console.Out, "Gust", "No");
 
                 Console.WriteLine();
 
@@ -167,14 +167,14 @@ namespace Gust.EncFinder
 
         private static void LogNumber(string message, int number)
         {
-            Logger.Log24Bit(ConsoleSwatch.COLOR_RESET, null, false, Console.Out, "GUST", $"{message}: ");
-            Logger.Log24Bit(ConsoleSwatch.XTermColor.Fuchsia, true, Console.Out, "GUST", $"0x{number:X8}");
+            Logger.Log24Bit(ConsoleSwatch.COLOR_RESET, null, false, Console.Out, "Gust", $"{message}: ");
+            Logger.Log24Bit(ConsoleSwatch.XTermColor.Fuchsia, true, Console.Out, "Gust", $"0x{number:X8}");
         }
 
         private static void LogNumberImportant(string message, int number)
         {
-            Logger.Log24Bit(ConsoleSwatch.COLOR_RESET, null, false, Console.Out, "GUST", $"{message}: ");
-            Logger.Log24Bit(ConsoleSwatch.XTermColor.OrangeRed, true, Console.Out, "GUST", $"0x{number:X2}");
+            Logger.Log24Bit(ConsoleSwatch.COLOR_RESET, null, false, Console.Out, "Gust", $"{message}: ");
+            Logger.Log24Bit(ConsoleSwatch.XTermColor.OrangeRed, true, Console.Out, "Gust", $"0x{number:X2}");
         }
     }
 }

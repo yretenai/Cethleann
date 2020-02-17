@@ -32,5 +32,13 @@ namespace Cethleann.ManagedFS
             var csv = GetFileList(loc, 2);
             return csv.ToDictionary(x => x[0], y => y[1]);
         }
+
+        public static Dictionary<string, string> GetNamedFileList(string filename, DataGame game, string system)
+        {
+            var loc = GetFileListLocation(filename, game, system);
+            if (!File.Exists(loc)) return new Dictionary<string, string>();
+            var csv = GetFileList(loc, 3);
+            return csv.ToDictionary(x => x[1], y => y[2]);
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace Cethleann.Unbundler
     {
         static void Main(string[] args)
         {
-            Logger.PrintVersion("CETH");
+            Logger.PrintVersion("Cethleann");
             var flags = CommandLineFlags.ParseFlags<CethleannUnbundlerFlags>(CommandLineFlags.PrintHelp, args);
             var files = new List<string>();
             foreach (var arg in flags.Paths)
@@ -27,7 +27,7 @@ namespace Cethleann.Unbundler
 
                 if (flags.Bundle)
                 {
-                    Logger.Info("CETH", arg);
+                    Logger.Info("Cethleann", arg);
                     var ext = ".datatable";
                     if (File.Exists(Path.Combine(arg, "originaltype.cethleann"))) ext = File.ReadAllText(Path.Combine(arg, "originaltype.cethleann"));
                     var originalName = arg + ext;
@@ -50,7 +50,7 @@ namespace Cethleann.Unbundler
 
             foreach (var arg in files)
             {
-                Logger.Info("CETH", arg);
+                Logger.Info("Cethleann", arg);
                 var data = File.ReadAllBytes(arg);
                 var pathBase = arg;
                 if (!arg.EndsWith(".text"))
@@ -66,7 +66,7 @@ namespace Cethleann.Unbundler
                 if (!Directory.Exists(pathBase) || Path.GetFileName(arg) == Path.GetFileNameWithoutExtension(arg)) continue;
                 // TODO: Get TryExtractBlob to write this file with relevant file metadata.
                 File.WriteAllText(Path.Combine(pathBase, "originaltype.cethleann"), Path.GetExtension(arg));
-                Logger.Info("CETH", $"Writing meta file {Path.Combine(pathBase, "originaltype.cethleann")}");
+                Logger.Info("Cethleann", $"Writing meta file {Path.Combine(pathBase, "originaltype.cethleann")}");
             }
         }
 

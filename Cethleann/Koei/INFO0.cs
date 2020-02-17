@@ -72,8 +72,7 @@ namespace Cethleann.Koei
         public Memory<byte> ReadEntry(string romfs, int index)
         {
             var (entry, path) = Entries.FirstOrDefault(x => x.entry.Index == index);
-            if (path == null) throw new IndexOutOfRangeException($"Index {index} does not exist!");
-            return ReadEntry(Path.Combine(romfs, path.Substring(5)), entry);
+            return path == null ? Memory<byte>.Empty : ReadEntry(Path.Combine(romfs, path.Substring(5)), entry);
         }
 
         /// <summary>

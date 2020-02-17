@@ -54,7 +54,7 @@ namespace Cethleann.Unbundler
         {
             if (datablob.Length == 0 && !flags.WriteZero)
             {
-                Logger.Info("KTGL", $"{blobBase} is zero!");
+                Logger.Error("Cethleann", $"{blobBase} is zero!");
                 return 0;
             }
 
@@ -118,7 +118,7 @@ namespace Cethleann.Unbundler
                     var decompressed = TableCompression.Decompress(datablob);
                     if (decompressed.Length == 0)
                     {
-                        Logger.Info("KTGL", $"{blobBase} is zero!");
+                        Logger.Info("Cethleann", $"{blobBase} is zero!");
                         return 0;
                     }
 
@@ -131,7 +131,7 @@ namespace Cethleann.Unbundler
                 }
                 catch (Exception e)
                 {
-                    Logger.Error("KTGL", $"Failed decompressing blob, {e}");
+                    Logger.Error("Cethleann", $"Failed decompressing blob, {e}");
                 }
 
             var basedir = Path.GetDirectoryName(blobBase);
@@ -139,7 +139,7 @@ namespace Cethleann.Unbundler
             {
                 if (File.Exists(basedir))
                 {
-                    Logger.Warn("KTGL", $@"Trying to make a directory named {basedir} but it is a file?");
+                    Logger.Warn("Cethleann", $@"Trying to make a directory named {basedir} but it is a file?");
                     return 0;
                 }
 
@@ -163,12 +163,12 @@ namespace Cethleann.Unbundler
                 }
                 else
                 {
-                    Logger.Warn("KTGL", $@"{blobBase} already exists!");
+                    Logger.Warn("Cethleann", $@"{blobBase} already exists!");
                     return 0;
                 }
             }
 
-            Logger.Info("KTGL", blobBase);
+            Logger.Info("Cethleann", blobBase);
             File.WriteAllBytes(blobBase, datablob.ToArray());
 
             return 2;

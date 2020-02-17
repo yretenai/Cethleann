@@ -62,7 +62,7 @@ namespace Cethleann.ManagedFS
         /// <inheritdoc />
         public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null)
         {
-            FileList = ManagedFSHelper.GetSimpleFileList(filename, game ?? GameId, "archive");
+            FileList = ManagedFSHelper.GetNamedFileList(filename, game ?? GameId, "archive");
             return FileList;
         }
 

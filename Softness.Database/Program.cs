@@ -13,7 +13,7 @@ namespace Softness.Database
     {
         private static void Main(string[] args)
         {
-            Logger.PrintVersion("SOFT");
+            Logger.PrintVersion("Softness");
             var flags = CommandLineFlags.ParseFlags<SoftnessDatabaseFlags>(CommandLineFlags.PrintHelp, args);
 
             foreach (var path in flags.Paths)
@@ -43,7 +43,7 @@ namespace Softness.Database
                         break;
                     }
                     default:
-                        Logger.Error("SOFT", $"Format for {path} is unknown!");
+                        Logger.Error("Softness", $"Format for {path} is unknown!");
                         break;
                 }
             }
