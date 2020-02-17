@@ -85,19 +85,29 @@ namespace Cethleann.DataExporter
 
             for (var index = 0; index < fs.EntryCount; index++)
             {
-                var data = fs.ReadEntry(index).Span;
-                var dt = data.GetDataType();
-                var ext = UnbundlerLogic.GetExtension(data);
-                var filepath = fs.GetFilename(index, ext, dt);
-                while (filepath.StartsWith("\\") || filepath.StartsWith("/")) filepath = filepath.Substring(1);
-                if (flags.Reisalin && filepath.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase))
+                try
                 {
-                    if (data[4] == 0x78) data = StreamCompression.Decompress(data, -1, 1);
-                    filepath = filepath.Substring(0, filepath.Length - 3);
-                }
+                    var data = fs.ReadEntry(index).Span;
+                    var dt = data.GetDataType();
+                    var ext = UnbundlerLogic.GetExtension(data);
+                    var filepath = fs.GetFilename(index, ext, dt);
+                    while (filepath.StartsWith("\\") || filepath.StartsWith("/")) filepath = filepath.Substring(1);
+                    if (flags.Reisalin && filepath.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        if (data[4] == 0x78) data = StreamCompression.Decompress(data, -1, 1);
+                        filepath = filepath.Substring(0, filepath.Length - 3);
+                    }
 
-                var pathBase = $@"{flags.OutputDirectory}\{filepath}";
-                UnbundlerLogic.TryExtractBlob(pathBase, data, false, flags);
+                    var pathBase = $@"{flags.OutputDirectory}\{filepath}";
+                    UnbundlerLogic.TryExtractBlob(pathBase, data, false, flags);
+                }
+                catch (Exception e)
+                {
+                    Logger.Error("Cethleann", e.ToString());
+#if DEBUG
+                    throw;
+#endif
+                }
             }
 
             fs.Dispose();

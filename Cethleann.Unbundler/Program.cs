@@ -50,23 +50,33 @@ namespace Cethleann.Unbundler
 
             foreach (var arg in files)
             {
-                Logger.Info("Cethleann", arg);
-                var data = File.ReadAllBytes(arg);
-                var pathBase = arg;
-                if (!arg.EndsWith(".text"))
+                try
                 {
-                    if (Path.GetFileName(arg) == Path.GetFileNameWithoutExtension(arg))
-                        pathBase += "_contents";
-                    else
-                        pathBase = Path.Combine(Path.GetDirectoryName(arg), Path.GetFileNameWithoutExtension(arg));
+                    Logger.Info("Cethleann", arg);
+                    var data = File.ReadAllBytes(arg);
+                    var pathBase = arg;
+                    if (!arg.EndsWith(".text"))
+                    {
+                        if (Path.GetFileName(arg) == Path.GetFileNameWithoutExtension(arg))
+                            pathBase += "_contents";
+                        else
+                            pathBase = Path.Combine(Path.GetDirectoryName(arg), Path.GetFileNameWithoutExtension(arg));
+                    }
+
+                    UnbundlerLogic.TryExtractBlob(pathBase, data, true, flags);
+
+                    if (!Directory.Exists(pathBase) || Path.GetFileName(arg) == Path.GetFileNameWithoutExtension(arg)) continue;
+                    // TODO: Get TryExtractBlob to write this file with relevant file metadata.
+                    File.WriteAllText(Path.Combine(pathBase, "originaltype.cethleann"), Path.GetExtension(arg));
+                    Logger.Info("Cethleann", $"Writing meta file {Path.Combine(pathBase, "originaltype.cethleann")}");
                 }
-
-                UnbundlerLogic.TryExtractBlob(pathBase, data, true, flags);
-
-                if (!Directory.Exists(pathBase) || Path.GetFileName(arg) == Path.GetFileNameWithoutExtension(arg)) continue;
-                // TODO: Get TryExtractBlob to write this file with relevant file metadata.
-                File.WriteAllText(Path.Combine(pathBase, "originaltype.cethleann"), Path.GetExtension(arg));
-                Logger.Info("Cethleann", $"Writing meta file {Path.Combine(pathBase, "originaltype.cethleann")}");
+                catch (Exception e)
+                {
+                    Logger.Error("Cethleann", e.ToString());
+#if DEBUG
+                    throw;
+#endif
+                }
             }
         }
 
