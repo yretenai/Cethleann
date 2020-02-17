@@ -1,13 +1,6 @@
 ﻿; IDX pattern, separators, BIN pattern, type
-; the IDX filename will be split with each character in separators, i.e.,,
-; _., will split LINKDATA_0.BIN into, 0:LINKDATA 1:0 2:BIN,
-; DATA0.bin = DATA1.bin, DATA0.S13 = DATA1.S13,,
 DATA0.*,.,DATA1.{1},DATA
-; INFO0.bin = INFO1.bin,,,
 INFO0.*,.,INFO1.{1},INFO
-; LINKDATA.IDX = LINKDATA.BIN, LINKDATA_CMN.IDX = LINKDATA_CMN.BIN, LINKDATA0.IDX = LINKDATA0.BIN,
 LINKDATA*.IDX,.,{0}.BIN,DATA
-; LINKIDX.BIN = LINKFILE.BIN,,,
 LINKIDX.BIN,,LINKFILE.BIN,DATA
-; LINKIDX_0.BIN = LINKFILE_0.BIN,,,
 LINKIDX_*.BIN,_,LINKFILE_{1},DATA
