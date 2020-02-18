@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Buffers;
 using System.Runtime.InteropServices;
 using Cethleann.Structure;
 using DragonLib;
@@ -13,7 +12,6 @@ namespace Cethleann.Ninja
     [PublicAPI]
     public class PKGINFO
     {
-
         public PKGINFO(Span<byte> buffer)
         {
             Resource = new RESPACK(buffer);
@@ -33,7 +31,7 @@ namespace Cethleann.Ninja
             Entries = MemoryMarshal.Cast<byte, BTIFEntry>(buffer.Slice(SizeHelper.SizeOf<BTIFHeader>(), Header.BlockSize)).ToArray();
             UnknownBuffer = buffer.Slice(SizeHelper.SizeOf<BTIFHeader>() + Header.MangledPointer, 0x80).ToArray();
         }
-        
+
         public BTIFHeader Header { get; set; }
         public BTIFEntry[] Entries { get; set; }
         public byte[] UnknownBuffer { get; set; }

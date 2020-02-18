@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using Cethleann.Koei;
 using Cethleann.Structure;
 using JetBrains.Annotations;
@@ -119,6 +118,7 @@ namespace Cethleann.ManagedFS
                     if (GameId == DataGame.ThreeHouses && i > 0 && buffer.Length == 0) continue;
                     return buffer;
                 }
+
                 localId -= dataCount;
             }
 
@@ -215,7 +215,6 @@ namespace Cethleann.ManagedFS
                     }
 
                     if (File.Exists(binPath))
-                    {
                         switch (type)
                         {
                             case "DATA":
@@ -225,7 +224,6 @@ namespace Cethleann.ManagedFS
                                 AddInfoFSInternal(file, binPath);
                                 break;
                         }
-                    }
                 }
             }
         }
@@ -247,13 +245,9 @@ namespace Cethleann.ManagedFS
             var set = (new DATA0(idxPath), File.OpenRead(binPath), fullPath, Path.GetFileNameWithoutExtension(idxPath));
             Data.Add(set);
             if (Data.Count == 1)
-            {
                 RootEntryCount = set.Item1.Entries.Count + 1; // thanks Koei.
-            }
             else
-            {
                 DataEntryCount = Data.Skip(1).Max(x => x.DATA0.Entries.Count);
-            }
         }
 
         /// <summary>

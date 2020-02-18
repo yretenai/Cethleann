@@ -451,6 +451,6 @@ namespace Cethleann.Structure
         ///     TN PKGINFO
         /// </summary>
         [FileExtension("pkginfo")]
-        PackageInfo = 'p' << 0 | 'k'  << 8 | 'g' << 16 | 'i' << 24
+        PackageInfo = 'p' << 0 | 'k' << 8 | 'g' << 16 | 'i' << 24
     }
 }

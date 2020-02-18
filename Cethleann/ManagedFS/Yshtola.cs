@@ -14,8 +14,6 @@ namespace Cethleann.ManagedFS
     [PublicAPI]
     public class Yshtola : IManagedFS
     {
-        public Dictionary<string, string> FileList { get; set; } = new Dictionary<string, string>();
-
         /// <summary>
         ///     Initialize with standard data.
         /// </summary>
@@ -30,6 +28,8 @@ namespace Cethleann.ManagedFS
 
             foreach (var tableName in settings.TableNames) AddDataFS(tableName);
         }
+
+        public Dictionary<string, string> FileList { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
         ///     Settings to use for decryption and loading.
@@ -82,13 +82,14 @@ namespace Cethleann.ManagedFS
                 if (index < table.Entries.Length)
                 {
                     var entry = table.Entries[index];
-                    if(entry.OriginalPathOffset > -1) 
+                    if (entry.OriginalPathOffset > -1)
                         return entry.OriginalPath(table.Buffer, table.Header.Offset);
-                    
+
                     var path = entry.Path(table.Buffer, table.Header.Offset);
                     if (!FileList.TryGetValue(path, out var resultPath)) resultPath = path + $".{ext}";
                     return resultPath;
                 }
+
                 index -= table.Entries.Length;
             }
 

@@ -62,7 +62,7 @@ namespace Cethleann.Ninja
         ///     Loaded PKGINFO
         /// </summary>
         public PKGINFO PackageInfo { get; set; }
-        
+
         /// <summary>
         ///     File ID table entries
         /// </summary>
