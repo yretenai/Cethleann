@@ -147,7 +147,7 @@ namespace Cethleann.Structure
         /// <summary>
         ///     KTGL Animation Pack
         /// </summary>
-        [FileExtension("g2apack")]
+        [FileExtension("g1apack")]
         G2APack = 'G' << 0 | '2' << 8 | 'A' << 16 | '_' << 24, // G2A_PACK
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace Cethleann.Structure
         /// <summary>
         ///     KTGL Animation
         /// </summary>
-        [FileExtension("g2a")]
+        [FileExtension("g1a")]
         AnimationV2 = 'G' << 24 | '2' << 16 | 'A' << 8 | '_' << 0,
 
         /// <summary>
@@ -257,6 +257,12 @@ namespace Cethleann.Structure
         /// </summary>
         [FileExtension("g1a")]
         Animation = 'G' << 24 | '1' << 16 | 'A' << 8 | '_' << 0,
+
+        /// <summary>
+        ///     KTGL Shader
+        /// </summary>
+        [FileExtension("g1s")]
+        Shader = 'G' << 24 | '2' << 16 | 'S' << 8 | '_' << 0,
 
         /// <summary>
         ///     KTGL Model Group
@@ -451,7 +457,7 @@ namespace Cethleann.Structure
         ///     TN PKGINFO
         /// </summary>
         [FileExtension("pkginfo")]
-        PackageInfo = 'p' << 0 | 'k' << 8 | 'g' << 16 | 'i' << 24,
+        PackageInfo = 'p' << 0 | 'k' << 8 | 'g' << 16 | 'i' << 24, // pkginfo
 
         [FileExtension("wmv")]
         WMV = 0x75B22630,
@@ -466,7 +472,7 @@ namespace Cethleann.Structure
         ///     CHAR_DAT
         /// </summary>
         [FileExtension("chardata")]
-        CharacterData = 'c' << 0 | 'h' << 8 | 'a' << 16 | 'r' << 24,
+        CharacterData = 'c' << 0 | 'h' << 8 | 'a' << 16 | 'r' << 24, // char_dat
 
         /// <summary>
         ///     Cont?
@@ -478,6 +484,30 @@ namespace Cethleann.Structure
         ///     Team ninja Model Container?
         /// </summary>
         [FileExtension("tmc")]
-        TMC = 'T' << 0 | 'M' << 8 | 'C' << 16
+        TMC = 'T' << 0 | 'M' << 8 | 'C' << 16,
+
+        /// <summary>
+        ///     clip
+        /// </summary>
+        [FileExtension("clip")]
+        Clip = 'c' << 0 | 'l' << 8 | 'i' << 16 | 'p' << 24,
+
+        /// <summary>
+        ///     bodybase
+        /// </summary>
+        [FileExtension("bodybase")]
+        Body = 'b' << 0 | 'o' << 8 | 'd' << 16 | 'y' << 24, // bodybase
+
+        /// <summary>
+        ///     pbsmat
+        /// </summary>
+        [FileExtension("material")]
+        PBSMaterial = 'P' << 0 | 'B' << 8 | 'S' << 16 | 'M' << 24, // PDBMat
+
+        /// <summary>
+        ///     TDPack
+        /// </summary>
+        [FileExtension("tdpack")]
+        OldTDPack = 't' << 0 | 'd' << 8 | 'p' << 16 | 'a' << 24, // tdpack
     }
 }
