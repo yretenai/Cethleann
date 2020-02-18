@@ -150,8 +150,8 @@ namespace Cethleann
         // TODO: Actually parse this shit. 
         public static bool IsDDSBundle(this Span<byte> buffer)
         {
-            if (buffer.Length < 0x10) return false;
-            return buffer.Slice(0xC).GetDataType() == DataType.DDS;
+            if (buffer.Length < 0x100) return false;
+            return buffer.Slice(0xC0).GetDataType() == DataType.DDS || buffer.Slice(0x40).GetDataType() == DataType.DDS;
         }
     }
 }
