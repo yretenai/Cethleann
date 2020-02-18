@@ -60,7 +60,12 @@ namespace Cethleann.ManagedFS
         {
             foreach (var table in Tables)
             {
-                if (index < table.Entries.Length) return new Memory<byte>(table.Read(File.ReadAllBytes(Path.Combine(Root, table.Entries[index].Path(table.Buffer, table.Header.Offset))), table.Entries[index], Settings.XorTruth, Settings.Multiplier, Settings.Divisor).ToArray());
+                if (index < table.Entries.Length)
+                {
+                    var filepath = Path.Combine(Root, table.Entries[index].Path(table.Buffer, table.Header.Offset));
+                    return !File.Exists(filepath) ? Memory<byte>.Empty : new Memory<byte>(table.Read(File.ReadAllBytes(filepath), table.Entries[index], Settings.XorTruth, Settings.Multiplier, Settings.Divisor).ToArray());
+                }
+
                 index -= table.Entries.Length;
             }
 

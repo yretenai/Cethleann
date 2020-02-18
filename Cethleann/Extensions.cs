@@ -141,5 +141,17 @@ namespace Cethleann
         {
             return PointerBundle.Validate(buffer) != null;
         }
+
+        /// <summary>
+        ///     Guesses if the stream is a valid dds bundle.
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        // TODO: Actually parse this shit. 
+        public static bool IsDDSBundle(this Span<byte> buffer)
+        {
+            if (buffer.Length < 0x10) return false;
+            return buffer.Slice(0xC).GetDataType() == DataType.DDS;
+        }
     }
 }

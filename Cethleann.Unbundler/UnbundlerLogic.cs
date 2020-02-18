@@ -293,6 +293,7 @@ namespace Cethleann.Unbundler
             if (data.IsDataTable()) return "datatable";
             if (data.IsBundle()) return "bundle";
             if (data.IsPointerBundle()) return "ptrbundle";
+            if (data.IsDDSBundle()) return "ddsbundle";
             return "bin";
         }
 

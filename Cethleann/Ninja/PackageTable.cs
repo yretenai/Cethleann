@@ -48,7 +48,9 @@ namespace Cethleann.Ninja
                     Flags = x.Flags,
                     Checksum = x.Checksum,
                     CompressedSize = x.CompressedSize,
-                    DecompressedSize = x.DecompressedSize
+                    DecompressedSize = x.DecompressedSize,
+                    Padding1 = PackageInfo.InfoTable.UnknownBuffer[x.UnknownIndex],
+                    Padding2 = PackageInfo.InfoTable.UnknownBuffer[x.UnknownIndex + 1]
                 }).ToArray();
             }
             else
@@ -104,20 +106,28 @@ namespace Cethleann.Ninja
         /// <returns></returns>
         public Span<byte> Read(Span<byte> file, uint size, IDTableFlags flags, byte[] truth, ulong multiplier, ulong divisor)
         {
-            if (flags.HasFlag(IDTableFlags.Encrypted))
-            {
-                var key = Encryption.Xor(size, truth, multiplier, divisor);
-                file = Encryption.Crypt(file, key);
-            }
-
             // ReSharper disable once InvertIf
-            if (flags.HasFlag(IDTableFlags.Compressed))
+            if (flags.HasFlag(IDTableFlags.Compressed) && file.Length != size)
             {
-                var decompressedData = Stream8000Compression.Decompress(file, (int) size);
-                if (decompressedData.Length != 0) file = decompressedData;
-            }
+                if (flags.HasFlag(IDTableFlags.Encrypted))
+                {
+                    var key = Encryption.Xor(size, truth, multiplier, divisor);
+                    file = Encryption.Crypt(file, key);
+                }
 
-            Logger.Assert(flags == IDTableFlags.Compressed || flags == IDTableFlags.Encrypted || flags == (IDTableFlags.Compressed | IDTableFlags.Encrypted) || flags == IDTableFlags.None, "Flags == Compressed || Flags == Encrypted || Flags == Compresed | Encrypted || Flags == None");
+                try
+                {
+                    var decompressedData = Stream8000Compression.Decompress(file, (int) size);
+                    if (decompressedData.Length != 0) file = decompressedData;
+                }
+                catch (Exception e)
+                {
+                    Logger.Error("PKGINFO", e.ToString());
+                }
+            }
+            Logger.Assert(flags.ToString("G") != flags.ToString("D"), "flags.ToString('G') != flags.ToString('D')");
+            Logger.Assert(flags != IDTableFlags.Encrypted, "flags != IDTableFlags.Encrypted");
+            Logger.Assert(flags != (IDTableFlags.Encrypted | IDTableFlags.Streamed), "flags != (IDTableFlags.Encrypted | IDTableFlags.Streamed)");
 
             return file;
         }

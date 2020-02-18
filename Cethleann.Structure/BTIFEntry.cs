@@ -3,7 +3,7 @@
     public struct BTIFEntry
     {
         public uint Checksum { get; set; }
-        public uint MangledIndex { get; set; }
+        public uint UnknownIndex { get; set; }
         public uint Id { get; set; }
         public int NameOffset { get; set; }
         public IDTableFlags Flags { get; set; }

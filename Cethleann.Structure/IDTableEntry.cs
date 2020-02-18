@@ -11,7 +11,8 @@ namespace Cethleann.Structure
         public uint Checksum { get; set; }
         public uint CompressedSize { get; set; }
         public uint DecompressedSize { get; set; }
-        public ulong Padding { get; set; }
+        public uint Padding1 { get; set; }
+        public uint Padding2 { get; set; }
 
         public string Path(Memory<byte> table, int offset)
         {

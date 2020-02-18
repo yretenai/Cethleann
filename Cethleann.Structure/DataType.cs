@@ -451,6 +451,33 @@ namespace Cethleann.Structure
         ///     TN PKGINFO
         /// </summary>
         [FileExtension("pkginfo")]
-        PackageInfo = 'p' << 0 | 'k' << 8 | 'g' << 16 | 'i' << 24
+        PackageInfo = 'p' << 0 | 'k' << 8 | 'g' << 16 | 'i' << 24,
+
+        [FileExtension("wmv")]
+        WMV = 0x75B22630,
+
+        /// <summary>
+        ///     DDS, can't fcking believe it.
+        /// </summary>
+        [FileExtension("dds")]
+        DDS = 'D' << 0 | 'D' << 8 | 'S' << 16 | ' ' << 24,
+
+        /// <summary>
+        ///     CHAR_DAT
+        /// </summary>
+        [FileExtension("chardata")]
+        CharacterData = 'c' << 0 | 'h' << 8 | 'a' << 16 | 'r' << 24,
+
+        /// <summary>
+        ///     Cont?
+        /// </summary>
+        [FileExtension("cont")]
+        CONT = 'C' << 0 | 'O' << 8 | 'N' << 16 | 'T' << 24,
+
+        /// <summary>
+        ///     Team ninja Model Container?
+        /// </summary>
+        [FileExtension("tmc")]
+        TMC = 'T' << 0 | 'M' << 8 | 'C' << 16
     }
 }
