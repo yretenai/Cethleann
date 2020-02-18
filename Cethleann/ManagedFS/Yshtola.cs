@@ -14,6 +14,8 @@ namespace Cethleann.ManagedFS
     [PublicAPI]
     public class Yshtola : IManagedFS
     {
+        public Dictionary<string, string> FileList { get; set; } = new Dictionary<string, string>();
+
         /// <summary>
         ///     Initialize with standard data.
         /// </summary>
@@ -37,7 +39,7 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     ID Table
         /// </summary>
-        public List<IDTable> Tables { get; set; } = new List<IDTable>();
+        public List<PackageTable> Tables { get; set; } = new List<PackageTable>();
 
         /// <summary>
         ///     Root directory, the one that contains COMMON.
@@ -66,14 +68,27 @@ namespace Cethleann.ManagedFS
         }
 
         /// <inheritdoc />
-        public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null) => null;
+        public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null)
+        {
+            FileList = ManagedFSHelper.GetSimpleFileList(filename, game ?? GameId, "pkginfo");
+            return FileList;
+        }
 
         /// <inheritdoc />
         public string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
         {
             foreach (var table in Tables)
             {
-                if (index < table.Entries.Length) return table.Entries[index].Path(table.Buffer, table.Header.Offset);
+                if (index < table.Entries.Length)
+                {
+                    var entry = table.Entries[index];
+                    if(entry.OriginalPathOffset > -1) 
+                        return entry.OriginalPath(table.Buffer, table.Header.Offset);
+                    
+                    var path = entry.Path(table.Buffer, table.Header.Offset);
+                    if (!FileList.TryGetValue(path, out var resultPath)) resultPath = path + $".{ext}";
+                    return resultPath;
+                }
                 index -= table.Entries.Length;
             }
 
@@ -85,7 +100,7 @@ namespace Cethleann.ManagedFS
         {
             var tablePath = Path.Combine(Root, path);
             if (!File.Exists(tablePath)) return;
-            var table = new IDTable(File.ReadAllBytes(tablePath), IDTableFlags.Compressed | IDTableFlags.Encrypted, Settings.XorTruth, Settings.Multiplier, Settings.Divisor);
+            var table = new PackageTable(File.ReadAllBytes(tablePath), IDTableFlags.Compressed | IDTableFlags.Encrypted, Settings.XorTruth, Settings.Multiplier, Settings.Divisor);
             Tables.Add(table);
             EntryCount += table.Entries.Length;
         }

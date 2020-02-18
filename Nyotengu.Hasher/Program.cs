@@ -5,7 +5,7 @@ using DragonLib.CLI;
 using DragonLib.IO;
 using JetBrains.Annotations;
 
-namespace Softness.Hasher
+namespace Nyotengu.Hasher
 {
     [PublicAPI]
     public static class Program

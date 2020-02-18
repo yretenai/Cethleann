@@ -7,7 +7,7 @@ using Cethleann.Structure;
 using DragonLib.CLI;
 using DragonLib.IO;
 
-namespace Softness.Database
+namespace Nyotengu.Database
 {
     public static class Program
     {

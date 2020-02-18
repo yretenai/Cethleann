@@ -445,6 +445,12 @@ namespace Cethleann.Structure
         ///     DEFLATE Compressed File.
         /// </summary>
         [FileExtension("gz")]
-        CompressedChonky = 0x0002_0000
+        CompressedChonky = 0x0002_0000,
+
+        /// <summary>
+        ///     TN PKGINFO
+        /// </summary>
+        [FileExtension("pkginfo")]
+        PackageInfo = 'p' << 0 | 'k'  << 8 | 'g' << 16 | 'i' << 24
     }
 }

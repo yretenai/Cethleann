@@ -2,7 +2,7 @@
 using DragonLib.CLI;
 using JetBrains.Annotations;
 
-namespace Softness.Database
+namespace Nyotengu.Database
 {
     public class SoftnessDatabaseFlags : ICLIFlags
     {

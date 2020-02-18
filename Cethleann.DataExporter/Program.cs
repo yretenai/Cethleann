@@ -64,6 +64,7 @@ namespace Cethleann.DataExporter
                 fs = new Yshtola(flags.GameId, flags.GameDirs[0], settings);
                 fs.AddDataFS(flags.GameDirs[0]);
                 var yshtola = (Yshtola) fs;
+                if (!Directory.Exists(flags.OutputDirectory)) Directory.CreateDirectory(flags.OutputDirectory);
                 for (var index = 0; index < yshtola.Tables.Count; index++)
                 {
                     var table = yshtola.Tables[index];

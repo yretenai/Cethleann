@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Softness.Orchestrion
+namespace Yshtola.Downloader
 {
     class Program
     {

@@ -2,7 +2,7 @@
 using DragonLib.CLI;
 using JetBrains.Annotations;
 
-namespace Softness.Hasher
+namespace Nyotengu.Hasher
 {
     [PublicAPI]
     public class SoftnessHasherFlags : ICLIFlags

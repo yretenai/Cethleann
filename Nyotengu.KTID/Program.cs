@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Softness.KTID
+namespace Nyotengu.KTID
 {
     class Program
     {

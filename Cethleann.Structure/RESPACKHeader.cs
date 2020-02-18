@@ -8,7 +8,7 @@ namespace Cethleann.Structure
         public int HeaderSize { get; set; }
         public int FileSize { get; set; }
         public int PointerCount { get; set; }
-        public int SizeCount { get; set; }
+        public int UnknownCount { get; set; }
         public int Unknown { get; set; }
         public int PointerTablePointer { get; set; }
         public int SizeTablePointer { get; set; }
