@@ -508,6 +508,6 @@ namespace Cethleann.Structure
         ///     TDPack
         /// </summary>
         [FileExtension("tdpack")]
-        OldTDPack = 't' << 0 | 'd' << 8 | 'p' << 16 | 'a' << 24, // tdpack
+        OldTDPack = 't' << 0 | 'd' << 8 | 'p' << 16 | 'a' << 24 // tdpack
     }
 }

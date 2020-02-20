@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 namespace Nyotengu.Hasher
 {
     [PublicAPI]
-    public class SoftnessHasherFlags : ICLIFlags
+    public class HasherFlags : ICLIFlags
     {
         [CLIFlag("prefix", Default = "R_", Help = "Hash Prefix", Category = "Hasher Options")]
         public string Prefix { get; set; }

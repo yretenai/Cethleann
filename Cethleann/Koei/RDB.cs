@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using Cethleann.Compression;
+using Cethleann.KTID;
 using Cethleann.Structure;
 using Cethleann.Structure.KTID;
 using DragonLib;

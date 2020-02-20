@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace Nyotengu.Database
 {
-    public class SoftnessDatabaseFlags : ICLIFlags
+    public class DatabaseFlags : ICLIFlags
     {
         [UsedImplicitly]
         [CLIFlag("paths", Positional = 0)]

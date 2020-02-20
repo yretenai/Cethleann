@@ -18,15 +18,11 @@ namespace Cethleann.ManagedFS
         ///     Initialize with standard data.
         /// </summary>
         /// <param name="gameId"></param>
-        /// <param name="root"></param>
         /// <param name="settings"></param>
-        public Yshtola(DataGame gameId, string root, YshtolaSettings settings)
+        public Yshtola(DataGame gameId, YshtolaSettings settings)
         {
             GameId = gameId;
             Settings = settings;
-            Root = root;
-
-            foreach (var tableName in settings.TableNames) AddDataFS(tableName);
         }
 
         public Dictionary<string, string> FileList { get; set; } = new Dictionary<string, string>();
@@ -44,7 +40,7 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Root directory, the one that contains COMMON.
         /// </summary>
-        public string Root { get; set; }
+        public string[] Root { get; set; }
 
         /// <inheritdoc />
         public void Dispose() { }
@@ -62,8 +58,13 @@ namespace Cethleann.ManagedFS
             {
                 if (index < table.Entries.Length)
                 {
-                    var filepath = Path.Combine(Root, table.Entries[index].Path(table.Buffer, table.Header.Offset));
-                    return !File.Exists(filepath) ? Memory<byte>.Empty : new Memory<byte>(table.Read(File.ReadAllBytes(filepath), table.Entries[index], Settings.XorTruth, Settings.Multiplier, Settings.Divisor).ToArray());
+                    foreach (var root in Root)
+                    {
+                        var filepath = Path.Combine(root, table.Entries[index].Path(table.Buffer, table.Header.Offset));
+                        if (File.Exists(filepath)) return new Memory<byte>(table.Read(File.ReadAllBytes(filepath), GameId, table.Entries[index], Settings.XorTruth, Settings.Multiplier, Settings.Divisor).ToArray());
+                    }
+
+                    return Memory<byte>.Empty;
                 }
 
                 index -= table.Entries.Length;
@@ -104,11 +105,15 @@ namespace Cethleann.ManagedFS
         /// <inheritdoc />
         public void AddDataFS(string path)
         {
-            var tablePath = Path.Combine(Root, path);
-            if (!File.Exists(tablePath)) return;
-            var table = new PackageTable(File.ReadAllBytes(tablePath), IDTableFlags.Compressed | IDTableFlags.Encrypted, Settings.XorTruth, Settings.Multiplier, Settings.Divisor);
-            Tables.Add(table);
-            EntryCount += table.Entries.Length;
+            foreach (var root in Root)
+            {
+                var tablePath = Path.Combine(root, path);
+                if (!File.Exists(tablePath)) continue;
+                var table = new PackageTable(File.ReadAllBytes(tablePath), GameId, IDTableFlags.Compressed | IDTableFlags.Encrypted, Settings.XorTruth, Settings.Multiplier, Settings.Divisor);
+                Tables.Add(table);
+                EntryCount += table.Entries.Length;
+                break;
+            }
         }
     }
 }

@@ -61,9 +61,10 @@ namespace Cethleann.DataExporter
                     return;
                 }
 
-                fs = new Yshtola(flags.GameId, flags.GameDirs[0], settings);
-                fs.AddDataFS(flags.GameDirs[0]);
+                fs = new Yshtola(flags.GameId, settings);
                 var yshtola = (Yshtola) fs;
+                yshtola.Root = flags.GameDirs.ToArray();
+                foreach (var tableName in settings.TableNames) fs.AddDataFS(tableName);
                 if (!Directory.Exists(flags.OutputDirectory)) Directory.CreateDirectory(flags.OutputDirectory);
                 for (var index = 0; index < yshtola.Tables.Count; index++)
                 {

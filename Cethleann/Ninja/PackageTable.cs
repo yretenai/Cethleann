@@ -20,16 +20,17 @@ namespace Cethleann.Ninja
         ///     Initialize table with decryption constants
         /// </summary>
         /// <param name="data"></param>
+        /// <param name="game"></param>
         /// <param name="flags"></param>
         /// <param name="truth"></param>
         /// <param name="multiplier"></param>
         /// <param name="divisor"></param>
-        public PackageTable(Span<byte> data, IDTableFlags flags = IDTableFlags.Encrypted | IDTableFlags.Compressed, byte[] truth = null, ulong multiplier = 0, ulong divisor = 0)
+        public PackageTable(Span<byte> data, DataGame game, IDTableFlags flags = IDTableFlags.Encrypted | IDTableFlags.Compressed, byte[] truth = null, ulong multiplier = 0, ulong divisor = 0)
         {
             if (flags != IDTableFlags.None)
             {
                 var size = BinaryPrimitives.ReadUInt32LittleEndian(data);
-                data = Read(data.Slice(4), size, flags, truth, multiplier, divisor);
+                data = Read(data.Slice(4), game, (uint) data.Length - 4, size, flags, truth, multiplier, divisor);
             }
 
             Buffer = new Memory<byte>(data.ToArray());
@@ -84,37 +85,45 @@ namespace Cethleann.Ninja
         ///     Read a file with decryption constants using an id table entry
         /// </summary>
         /// <param name="file"></param>
+        /// <param name="game"></param>
         /// <param name="entry"></param>
         /// <param name="truth"></param>
         /// <param name="multiplier"></param>
         /// <param name="divisor"></param>
         /// <returns></returns>
-        public Span<byte> Read(Span<byte> file, IDTableEntry entry, byte[] truth, ulong multiplier, ulong divisor)
+        public Span<byte> Read(Span<byte> file, DataGame game, IDTableEntry entry, byte[] truth, ulong multiplier, ulong divisor)
         {
-            return Read(file, entry.DecompressedSize, entry.Flags, truth, multiplier, divisor);
+            return Read(file, game, entry.CompressedSize, entry.DecompressedSize, entry.Flags, truth, multiplier, divisor);
         }
 
         /// <summary>
         ///     Read a file with decryption constants
         /// </summary>
         /// <param name="file"></param>
+        /// <param name="game"></param>
+        /// <param name="compressedSize"></param>
         /// <param name="size"></param>
         /// <param name="flags"></param>
         /// <param name="truth"></param>
         /// <param name="multiplier"></param>
         /// <param name="divisor"></param>
         /// <returns></returns>
-        public Span<byte> Read(Span<byte> file, uint size, IDTableFlags flags, byte[] truth, ulong multiplier, ulong divisor)
+        public Span<byte> Read(Span<byte> file, DataGame game, uint compressedSize, uint size, IDTableFlags flags, byte[] truth, ulong multiplier, ulong divisor)
         {
-            // ReSharper disable once InvertIf
-            if (flags.HasFlag(IDTableFlags.Compressed) && file.Length != size)
+            if (compressedSize > file.Length)
             {
-                if (flags.HasFlag(IDTableFlags.Encrypted))
-                {
-                    var key = Encryption.Xor(size, truth, multiplier, divisor);
-                    file = Encryption.Crypt(file, key);
-                }
+                Logger.Warn("PKGINFO", "Compressed Size is larger than actual file! The package info might have drifted from the saved files. Please verify game data!");
+            }
+            
+            if (flags.HasFlag(IDTableFlags.Encrypted) && (game != DataGame.VenusVacation || flags.HasFlag(IDTableFlags.Compressed)))
+            {
+                var key = Encryption.Xor(size, truth, multiplier, divisor);
+                file = Encryption.Crypt(file, key);
+            }
 
+            // ReSharper disable once InvertIf
+            if (flags.HasFlag(IDTableFlags.Compressed))
+            {
                 try
                 {
                     var decompressedData = Stream8000Compression.Decompress(file, (int) size);
@@ -125,9 +134,6 @@ namespace Cethleann.Ninja
                     Logger.Error("PKGINFO", e.ToString());
                 }
             }
-            Logger.Assert(flags.ToString("G") != flags.ToString("D"), "flags.ToString('G') != flags.ToString('D')");
-            Logger.Assert(flags != IDTableFlags.Encrypted, "flags != IDTableFlags.Encrypted");
-            Logger.Assert(flags != (IDTableFlags.Encrypted | IDTableFlags.Streamed), "flags != (IDTableFlags.Encrypted | IDTableFlags.Streamed)");
 
             return file;
         }

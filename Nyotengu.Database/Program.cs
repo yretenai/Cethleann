@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Cethleann;
 using Cethleann.Koei;
+using Cethleann.KTID;
 using Cethleann.Structure;
 using DragonLib.CLI;
 using DragonLib.IO;
@@ -13,8 +14,8 @@ namespace Nyotengu.Database
     {
         private static void Main(string[] args)
         {
-            Logger.PrintVersion("Softness");
-            var flags = CommandLineFlags.ParseFlags<SoftnessDatabaseFlags>(CommandLineFlags.PrintHelp, args);
+            Logger.PrintVersion("Nyotengu");
+            var flags = CommandLineFlags.ParseFlags<DatabaseFlags>(CommandLineFlags.PrintHelp, args);
 
             foreach (var path in flags.Paths)
             {
@@ -43,7 +44,7 @@ namespace Nyotengu.Database
                         break;
                     }
                     default:
-                        Logger.Error("Softness", $"Format for {path} is unknown!");
+                        Logger.Error("Nyotengu", $"Format for {path} is unknown!");
                         break;
                 }
             }

@@ -15,7 +15,7 @@ namespace Cethleann.Unbundler
         static void Main(string[] args)
         {
             Logger.PrintVersion("Cethleann");
-            var flags = CommandLineFlags.ParseFlags<CethleannUnbundlerFlags>(CommandLineFlags.PrintHelp, args);
+            var flags = CommandLineFlags.ParseFlags<UnbundlerToolFlags>(CommandLineFlags.PrintHelp, args);
             var files = new List<string>();
             foreach (var arg in flags.Paths)
             {

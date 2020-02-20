@@ -7,7 +7,7 @@ using Cethleann.Structure.KTID;
 using DragonLib;
 using JetBrains.Annotations;
 
-namespace Cethleann
+namespace Cethleann.KTID
 {
     [PublicAPI]
     public class NAME
