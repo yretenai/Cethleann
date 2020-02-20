@@ -402,7 +402,7 @@ namespace Cethleann.Unbundler
         {
             try
             {
-                var blobs = new XL19TextLocalization(data);
+                var blobs = new XL19(data);
                 if (blobs.Entries.Count == 0) return true;
 
                 var ft = Path.ChangeExtension(pathBase, ".txt");
@@ -558,8 +558,8 @@ namespace Cethleann.Unbundler
         {
             try
             {
-                var blobs = new G1Lazy(data);
-                var buffer = blobs.Audio;
+                var blobs = new G1L(data);
+                var buffer = blobs.Buffer;
                 TryExtractBlob(Path.ChangeExtension(pathBase, "kvs"), buffer.Span, false, flags);
             }
             catch (Exception e)

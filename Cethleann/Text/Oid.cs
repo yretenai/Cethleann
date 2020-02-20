@@ -11,14 +11,14 @@ namespace Cethleann.Text
     ///     Object ID / Bone ID list
     /// </summary>
     [PublicAPI]
-    public class ObjectIDList
+    public class Oid
     {
         /// <summary>
         ///     Initialize with buffer
         /// </summary>
         /// <param name="buffer"></param>
         /// <param name="encoding"></param>
-        public ObjectIDList(Span<byte> buffer, Encoding encoding = null)
+        public Oid(Span<byte> buffer, Encoding encoding = null)
         {
             var pointer = 0;
             while (pointer < buffer.Length)

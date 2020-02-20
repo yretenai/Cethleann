@@ -14,7 +14,7 @@ namespace Cethleann.Archive
     ///     ID Table parser for both versions
     /// </summary>
     [PublicAPI]
-    public class PackageTable
+    public class PKGTBL
     {
         /// <summary>
         ///     Initialize table with decryption constants
@@ -25,7 +25,7 @@ namespace Cethleann.Archive
         /// <param name="truth"></param>
         /// <param name="multiplier"></param>
         /// <param name="divisor"></param>
-        public PackageTable(Span<byte> data, DataGame game, IDTableFlags flags = IDTableFlags.Encrypted | IDTableFlags.Compressed, byte[] truth = null, ulong multiplier = 0, ulong divisor = 0)
+        public PKGTBL(Span<byte> data, DataGame game, IDTableFlags flags = IDTableFlags.Encrypted | IDTableFlags.Compressed, byte[] truth = null, ulong multiplier = 0, ulong divisor = 0)
         {
             if (flags != IDTableFlags.None)
             {

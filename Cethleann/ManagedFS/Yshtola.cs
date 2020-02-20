@@ -38,7 +38,7 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     ID Table
         /// </summary>
-        public List<PackageTable> Tables { get; set; } = new List<PackageTable>();
+        public List<PKGTBL> Tables { get; set; } = new List<PKGTBL>();
 
         /// <summary>
         ///     Root directory, the one that contains COMMON.
@@ -112,7 +112,7 @@ namespace Cethleann.ManagedFS
             {
                 var tablePath = Path.Combine(root, path);
                 if (!File.Exists(tablePath)) continue;
-                var table = new PackageTable(File.ReadAllBytes(tablePath), GameId, IDTableFlags.Compressed | IDTableFlags.Encrypted, Settings.XorTruth, Settings.Multiplier, Settings.Divisor);
+                var table = new PKGTBL(File.ReadAllBytes(tablePath), GameId, IDTableFlags.Compressed | IDTableFlags.Encrypted, Settings.XorTruth, Settings.Multiplier, Settings.Divisor);
                 Tables.Add(table);
                 EntryCount += table.Entries.Length;
                 break;

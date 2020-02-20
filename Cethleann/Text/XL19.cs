@@ -11,13 +11,13 @@ namespace Cethleann.Text
     ///     Text Localization files are used to collect text data.
     /// </summary>
     [PublicAPI]
-    public class XL19TextLocalization
+    public class XL19
     {
         /// <summary>
         ///     Initialize with a span buffer
         /// </summary>
         /// <param name="buffer"></param>
-        public XL19TextLocalization(Span<byte> buffer)
+        public XL19(Span<byte> buffer)
         {
             if (!buffer.Matches(DataType.TextLocalization19)) throw new InvalidOperationException("Not an XL 19 stream");
 
