@@ -110,11 +110,8 @@ namespace Cethleann.Ninja
         /// <returns></returns>
         public Span<byte> Read(Span<byte> file, DataGame game, uint compressedSize, uint size, IDTableFlags flags, byte[] truth, ulong multiplier, ulong divisor)
         {
-            if (compressedSize > file.Length)
-            {
-                Logger.Warn("PKGINFO", "Compressed Size is larger than actual file! The package info might have drifted from the saved files. Please verify game data!");
-            }
-            
+            if (compressedSize > file.Length) Logger.Warn("PKGINFO", "Compressed Size is larger than actual file! The package info might have drifted from the saved files. Please verify game data!");
+
             if (flags.HasFlag(IDTableFlags.Encrypted) && (game != DataGame.VenusVacation || flags.HasFlag(IDTableFlags.Compressed)))
             {
                 var key = Encryption.Xor(size, truth, multiplier, divisor);
@@ -123,7 +120,6 @@ namespace Cethleann.Ninja
 
             // ReSharper disable once InvertIf
             if (flags.HasFlag(IDTableFlags.Compressed))
-            {
                 try
                 {
                     var decompressedData = Stream8000Compression.Decompress(file, (int) size);
@@ -133,7 +129,6 @@ namespace Cethleann.Ninja
                 {
                     Logger.Error("PKGINFO", e.ToString());
                 }
-            }
 
             return file;
         }
