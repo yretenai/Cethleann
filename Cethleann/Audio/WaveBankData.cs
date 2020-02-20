@@ -4,12 +4,14 @@ using Cethleann.Structure.Resource;
 using Cethleann.Structure.WHD;
 using DragonLib;
 using DragonLib.Audio;
+using JetBrains.Annotations;
 
 namespace Cethleann.Audio
 {
     /// <summary>
     ///     Wave Bank Data
     /// </summary>
+    [PublicAPI]
     public class WaveBankData
     {
         /// <summary>

@@ -6,12 +6,14 @@ using Cethleann.Structure.Resource.Audio;
 using Cethleann.Structure.WHD;
 using DragonLib;
 using DragonLib.Audio;
+using JetBrains.Annotations;
 
 namespace Cethleann.Audio
 {
     /// <summary>
     ///     Parser for MS ADPCM Streams
     /// </summary>
+    [PublicAPI]
     public class MSADPCMSound : ISoundResourceSection
     {
         /// <summary>

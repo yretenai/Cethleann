@@ -3,10 +3,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Cethleann.Structure;
+using JetBrains.Annotations;
 
 namespace Cethleann.ManagedFS
 {
-    internal static class ManagedFSHelper
+    [PublicAPI]
+    public static class ManagedFSHelper
     {
         public static string[][] GetFileList(string loc, int fields)
         {

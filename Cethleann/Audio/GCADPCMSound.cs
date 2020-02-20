@@ -5,12 +5,14 @@ using System.Runtime.InteropServices;
 using Cethleann.Structure.Resource.Audio;
 using DragonLib;
 using DragonLib.Audio;
+using JetBrains.Annotations;
 
 namespace Cethleann.Audio
 {
     /// <summary>
     ///     Parser for NGCDSP ADPCM Streams
     /// </summary>
+    [PublicAPI]
     public class GCADPCMSound : ISoundResourceSection
     {
         /// <summary>

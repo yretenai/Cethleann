@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using Cethleann;
-using Cethleann.Koei;
+using Cethleann.Archive;
 using Cethleann.KTID;
 using Cethleann.Structure;
 using DragonLib.CLI;

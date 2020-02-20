@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using Cethleann.Structure.WHD;
+using JetBrains.Annotations;
 
 namespace Cethleann.Audio.WBH
 {
     /// <summary>
     ///     Abstract interface for WBH soundbanks
     /// </summary>
+    [PublicAPI]
     public interface IWBHSoundbank
     {
         /// <summary>

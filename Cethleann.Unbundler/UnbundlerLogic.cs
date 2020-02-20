@@ -5,8 +5,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Cethleann.Audio;
 using Cethleann.Compression;
-using Cethleann.DataTables;
-using Cethleann.G1;
+using Cethleann.Tables;
+using Cethleann.Graphics;
+using Cethleann.Pack;
 using Cethleann.Structure;
 using Cethleann.Text;
 using DragonLib;
@@ -401,7 +402,7 @@ namespace Cethleann.Unbundler
         {
             try
             {
-                var blobs = new TextLocalization(data);
+                var blobs = new XL19TextLocalization(data);
                 if (blobs.Entries.Count == 0) return true;
 
                 var ft = Path.ChangeExtension(pathBase, ".txt");

@@ -26,7 +26,7 @@ namespace Cethleann.DataExporter
         [CLIFlag("leonhart", Aliases = new[] { "linkarchive" }, Help = "Game is contained in LINKARCHIVE containers", Category = "ManagedFS Options")]
         public bool Leonhart { get; set; }
 
-        [CLIFlag("mitsunari", Aliases = new[] { "linkbin" }, Help = "Game is contained in LNK containers", Category = "ManagedFS Options")]
+        [CLIFlag("mitsunari", Aliases = new[] { "linkbin", "lnk" }, Help = "Game is contained in LNK containers", Category = "ManagedFS Options")]
         public bool Mitsunari { get; set; }
 
         [CLIFlag("nyotengu", Aliases = new[] { "rdb" }, Help = "Game is contained in RDB containers", Category = "ManagedFS Options")]
@@ -38,7 +38,7 @@ namespace Cethleann.DataExporter
         [CLIFlag("yshtola", Aliases = new[] { "pkg", "common" }, Help = "Game is contained in PKG containers (COMMON directory)", Category = "ManagedFS Options")]
         public bool Yshtola { get; set; }
 
-        [CLIFlag("32bit", Aliases = new[] { "w" }, Help = "Parse older, 32-bit Atelier PAKs", Category = "Reisalin Options")]
+        [CLIFlag("32bit", Aliases = new[] { "a17" }, Help = "Parse older, 32-bit Atelier PAKs", Category = "Reisalin Options")]
         public bool A17 { get; set; }
 
         [CLIFlag("manifest-only", Help = "Only dump package manifest", Category = "Y'shtola Options")]

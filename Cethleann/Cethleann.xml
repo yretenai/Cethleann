@@ -790,64 +790,64 @@
             <param name="buffer"></param>
             <returns></returns>
         </member>
-        <member name="T:Cethleann.G1.G1Animation">
+        <member name="T:Cethleann.Graphics.G1Animation">
             <summary>
                 Parser for G1A Files
             </summary>
         </member>
-        <member name="M:Cethleann.G1.G1Animation.#ctor(System.Span{System.Byte})">
+        <member name="M:Cethleann.Graphics.G1Animation.#ctor(System.Span{System.Byte})">
             <summary>
                 Initialize with buffer
             </summary>
             <param name="buffer"></param>
         </member>
-        <member name="P:Cethleann.G1.G1Animation.Section">
+        <member name="P:Cethleann.Graphics.G1Animation.Section">
             <summary>
                 GResource
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1Animation.Header">
+        <member name="P:Cethleann.Graphics.G1Animation.Header">
             <summary>
                 Underlying Header
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1Animation.Splines">
+        <member name="P:Cethleann.Graphics.G1Animation.Splines">
             <summary>
                 Animation Spline Track Data
             </summary>
         </member>
-        <member name="T:Cethleann.G1.G1Lazy">
+        <member name="T:Cethleann.Graphics.G1Lazy">
             <summary>
                 Parser for G1L Files
             </summary>
         </member>
-        <member name="M:Cethleann.G1.G1Lazy.#ctor(System.Span{System.Byte})">
+        <member name="M:Cethleann.Graphics.G1Lazy.#ctor(System.Span{System.Byte})">
             <summary>
                 Initialize with Span buffer
             </summary>
             <param name="buffer"></param>
         </member>
-        <member name="P:Cethleann.G1.G1Lazy.Header">
+        <member name="P:Cethleann.Graphics.G1Lazy.Header">
             <summary>
                 G1L Header
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1Lazy.Audio">
+        <member name="P:Cethleann.Graphics.G1Lazy.Audio">
             <summary>
                 G1L Audio Data
             </summary>
         </member>
-        <member name="T:Cethleann.G1.G1Model">
+        <member name="T:Cethleann.Graphics.G1Model">
             <summary>
                 G1Model is the main model format
             </summary>
         </member>
-        <member name="M:Cethleann.G1.G1Model.#ctor">
+        <member name="M:Cethleann.Graphics.G1Model.#ctor">
             <summary>
                 Initialize with no data.
             </summary>
         </member>
-        <member name="M:Cethleann.G1.G1Model.#ctor(System.Span{System.Byte},System.Boolean,System.Boolean)">
+        <member name="M:Cethleann.Graphics.G1Model.#ctor(System.Span{System.Byte},System.Boolean,System.Boolean)">
             <summary>
                 Parse G1M from the provided data buffer
             </summary>
@@ -855,50 +855,50 @@
             <param name="ignoreVersion"></param>
             <param name="parse"></param>
         </member>
-        <member name="P:Cethleann.G1.G1Model.SectionRoot">
+        <member name="P:Cethleann.Graphics.G1Model.SectionRoot">
             <summary>
                 Raw data for each section
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1Model.Sections">
+        <member name="P:Cethleann.Graphics.G1Model.Sections">
             <summary>
                 Sections found in this model.
-                Look for <seealso cref="T:Cethleann.G1.G1ModelSection.G1MGeometry" /> for Geometry.
-                Look for <seealso cref="T:Cethleann.G1.G1ModelSection.G1MSkeleton" /> for Skeleton.
+                Look for <seealso cref="T:Cethleann.Graphics.G1ModelSection.G1MGeometry" /> for Geometry.
+                Look for <seealso cref="T:Cethleann.Graphics.G1ModelSection.G1MSkeleton" /> for Skeleton.
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1Model.SupportedVersion">
+        <member name="P:Cethleann.Graphics.G1Model.SupportedVersion">
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1Model.Section">
+        <member name="P:Cethleann.Graphics.G1Model.Section">
             <inheritdoc />
         </member>
-        <member name="M:Cethleann.G1.G1Model.WriteFromRoot">
+        <member name="M:Cethleann.Graphics.G1Model.WriteFromRoot">
             <summary>
                 Write to G1M span using just SectionsRoot
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.G1.G1Model.GetSection``1">
+        <member name="M:Cethleann.Graphics.G1Model.GetSection``1">
             <summary>
                 Gets a specific section from the G1M model
             </summary>
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.G1.G1Model.GetSections``1">
+        <member name="M:Cethleann.Graphics.G1Model.GetSections``1">
             <summary>
                 Gets a specific section from the G1M model
             </summary>
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
-        <member name="T:Cethleann.G1.G1ModelSection.G1Extra">
+        <member name="T:Cethleann.Graphics.G1ModelSection.G1Extra">
             <summary>
                 Extra Section of G1M models
             </summary>
         </member>
-        <member name="M:Cethleann.G1.G1ModelSection.G1Extra.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
+        <member name="M:Cethleann.Graphics.G1ModelSection.G1Extra.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
             <summary>
                 Extra data found in G1M models.
             </summary>
@@ -906,18 +906,18 @@
             <param name="ignoreVersion"></param>
             <param name="sectionHeader"></param>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1Extra.SupportedVersion">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1Extra.SupportedVersion">
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1Extra.Section">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1Extra.Section">
             <inheritdoc />
         </member>
-        <member name="T:Cethleann.G1.G1ModelSection.G1MFormat">
+        <member name="T:Cethleann.Graphics.G1ModelSection.G1MFormat">
             <summary>
                 F Section of G1M models
             </summary>
         </member>
-        <member name="M:Cethleann.G1.G1ModelSection.G1MFormat.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
+        <member name="M:Cethleann.Graphics.G1ModelSection.G1MFormat.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
             <summary>
                 Model format Data
                 Pay Respects.
@@ -926,18 +926,18 @@
             <param name="ignoreVersion"></param>
             <param name="sectionHeader"></param>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MFormat.SupportedVersion">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MFormat.SupportedVersion">
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MFormat.Section">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MFormat.Section">
             <inheritdoc />
         </member>
-        <member name="T:Cethleann.G1.G1ModelSection.G1MGeometry">
+        <member name="T:Cethleann.Graphics.G1ModelSection.G1MGeometry">
             <summary>
                 Geometry Section of G1M models
             </summary>
         </member>
-        <member name="M:Cethleann.G1.G1ModelSection.G1MGeometry.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
+        <member name="M:Cethleann.Graphics.G1ModelSection.G1MGeometry.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
             <summary>
                 Model Geometry
             </summary>
@@ -945,205 +945,205 @@
             <param name="ignoreVersion"></param>
             <param name="sectionHeader"></param>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGeometry.Header">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGeometry.Header">
             <summary>
                 Header info (bounding box)
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGeometry.SubSections">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGeometry.SubSections">
             <summary>
                 List of geometry sections
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGeometry.SupportedVersion">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGeometry.SupportedVersion">
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGeometry.Section">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGeometry.Section">
             <inheritdoc />
         </member>
-        <member name="M:Cethleann.G1.G1ModelSection.G1MGeometry.GetSection``1">
+        <member name="M:Cethleann.Graphics.G1ModelSection.G1MGeometry.GetSection``1">
             <summary>
                 Gets a geometry component
             </summary>
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.G1.G1ModelSection.G1MGeometry.GetSections``1">
+        <member name="M:Cethleann.Graphics.G1ModelSection.G1MGeometry.GetSections``1">
             <summary>
                 Gets all geometry components matching
             </summary>
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
-        <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGBone">
+        <member name="T:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGBone">
             <summary>
                 Parses mesh bones
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGBone.Bones">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGBone.Bones">
             <summary>
                 Bone map
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGBone.Type">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGBone.Type">
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGBone.Section">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGBone.Section">
             <inheritdoc />
         </member>
-        <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGIndexBuffer">
+        <member name="T:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGIndexBuffer">
             <summary>
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGIndexBuffer.Buffers">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGIndexBuffer.Buffers">
             <summary>
                 List of vertex buffer strides
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGIndexBuffer.Type">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGIndexBuffer.Type">
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGIndexBuffer.Section">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGIndexBuffer.Section">
             <inheritdoc />
         </member>
-        <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMaterial">
+        <member name="T:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGMaterial">
             <summary>
                 Parses material data
             </summary>
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMaterial.Materials">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGMaterial.Materials">
             <summary>
                 Material data found in this section
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMaterial.Section">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGMaterial.Section">
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMaterial.Type">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGMaterial.Type">
             <inheritdoc />
         </member>
-        <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMesh">
+        <member name="T:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGMesh">
             <summary>
                 Parses submesh groups
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMesh.Meshes">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGMesh.Meshes">
             <summary>
                 List of meshes with the related data.
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMesh.Type">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGMesh.Type">
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGMesh.Section">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGMesh.Section">
             <inheritdoc />
         </member>
-        <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGShaderParam">
+        <member name="T:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGShaderParam">
             <summary>
                 Parses shader variable data
             </summary>
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGShaderParam.ParamGroups">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGShaderParam.ParamGroups">
             <summary>
                 Two dimensional list of param values.
                 I think count usually matches the number of materials.
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGShaderParam.Type">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGShaderParam.Type">
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGShaderParam.Section">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGShaderParam.Section">
             <inheritdoc />
         </member>
-        <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGSocket">
+        <member name="T:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGSocket">
             <summary>
                 "Lattice" is an assumption.
                 Just a list of float data, used for bones maybe?
             </summary>
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGSocket.Sockets">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGSocket.Sockets">
             <summary>
                 Sockets
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGSocket.Section">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGSocket.Section">
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGSocket.Type">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGSocket.Type">
             <inheritdoc />
         </member>
-        <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGSubMesh">
+        <member name="T:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGSubMesh">
             <summary>
                 Parses submesh data
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGSubMesh.SubMeshes">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGSubMesh.SubMeshes">
             <summary>
                 Assembles a series of faces into a polygon.
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGSubMesh.Type">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGSubMesh.Type">
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGSubMesh.Section">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGSubMesh.Section">
             <inheritdoc />
         </member>
-        <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexAttribute">
+        <member name="T:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGVertexAttribute">
             <summary>
                 VertexBuffer Stride information
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexAttribute.Attributes">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGVertexAttribute.Attributes">
             <summary>
                 Describes vertex strides
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexAttribute.Type">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGVertexAttribute.Type">
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexAttribute.Section">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGVertexAttribute.Section">
             <inheritdoc />
         </member>
-        <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexBuffer">
+        <member name="T:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGVertexBuffer">
             <summary>
                 Copies raw vertex buffers.
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexBuffer.Buffers">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGVertexBuffer.Buffers">
             <summary>
                 List of vertex buffer strides
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexBuffer.Type">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGVertexBuffer.Type">
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.G1MGVertexBuffer.Section">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.G1MGVertexBuffer.Section">
             <inheritdoc />
         </member>
-        <member name="T:Cethleann.G1.G1ModelSection.G1MGSection.IG1MGSection">
+        <member name="T:Cethleann.Graphics.G1ModelSection.G1MGSection.IG1MGSection">
             <summary>
                 Base Wrapper for G1MG Sections
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.IG1MGSection.Type">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.IG1MGSection.Type">
             <summary>
                 Type of this section
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MGSection.IG1MGSection.Section">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MGSection.IG1MGSection.Section">
             <summary>
                 Section header
             </summary>
         </member>
-        <member name="T:Cethleann.G1.G1ModelSection.G1MMatrix">
+        <member name="T:Cethleann.Graphics.G1ModelSection.G1MMatrix">
             <summary>
                 Matrix Section of G1M models
             </summary>
         </member>
-        <member name="M:Cethleann.G1.G1ModelSection.G1MMatrix.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
+        <member name="M:Cethleann.Graphics.G1ModelSection.G1MMatrix.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
             <summary>
                 Model Matrix Data
             </summary>
@@ -1151,24 +1151,24 @@
             <param name="ignoreVersion"></param>
             <param name="sectionHeader"></param>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MMatrix.Matrices">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MMatrix.Matrices">
             <summary>
                 List of matrices found in the file.
                 They're all weird.
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MMatrix.SupportedVersion">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MMatrix.SupportedVersion">
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MMatrix.Section">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MMatrix.Section">
             <inheritdoc />
         </member>
-        <member name="T:Cethleann.G1.G1ModelSection.G1MSkeleton">
+        <member name="T:Cethleann.Graphics.G1ModelSection.G1MSkeleton">
             <summary>
                 Skeleton Section of G1M models
             </summary>
         </member>
-        <member name="M:Cethleann.G1.G1ModelSection.G1MSkeleton.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
+        <member name="M:Cethleann.Graphics.G1ModelSection.G1MSkeleton.#ctor(System.Span{System.Byte},System.Boolean,Cethleann.Structure.Resource.ResourceSectionHeader)">
             <summary>
                 Model Skeleton Data.
             </summary>
@@ -1176,39 +1176,39 @@
             <param name="ignoreVersion"></param>
             <param name="sectionHeader"></param>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MSkeleton.Header">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MSkeleton.Header">
             <summary>
                 Format Header
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MSkeleton.BoneIndices">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MSkeleton.BoneIndices">
             <summary>
                 Bone Remap Index
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MSkeleton.Bones">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MSkeleton.Bones">
             <summary>
                 lsof bones
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MSkeleton.WorldBones">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MSkeleton.WorldBones">
             <summary>
                 lsof world bones
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MSkeleton.SupportedVersion">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MSkeleton.SupportedVersion">
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1ModelSection.G1MSkeleton.Section">
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MSkeleton.Section">
             <inheritdoc />
         </member>
-        <member name="T:Cethleann.G1.G1TextureGroup">
+        <member name="T:Cethleann.Graphics.G1TextureGroup">
             <summary>
                 G1TextureGroup is a bundle of textures.
                 This is how all textures are encoded.
             </summary>
         </member>
-        <member name="M:Cethleann.G1.G1TextureGroup.#ctor(System.Span{System.Byte},System.Boolean,System.Boolean)">
+        <member name="M:Cethleann.Graphics.G1TextureGroup.#ctor(System.Span{System.Byte},System.Boolean,System.Boolean)">
             <summary>
                 Parse G1T from the provided data buffer
             </summary>
@@ -1216,23 +1216,23 @@
             <param name="ignoreVersion"></param>
             <param name="metaOnly">only parse metadata</param>
         </member>
-        <member name="P:Cethleann.G1.G1TextureGroup.Header">
+        <member name="P:Cethleann.Graphics.G1TextureGroup.Header">
             <summary>
                 G1TG Header
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1TextureGroup.Textures">
+        <member name="P:Cethleann.Graphics.G1TextureGroup.Textures">
             <summary>
                 List of textures found in this bundle
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G1TextureGroup.SupportedVersion">
+        <member name="P:Cethleann.Graphics.G1TextureGroup.SupportedVersion">
             <inheritdoc />
         </member>
-        <member name="P:Cethleann.G1.G1TextureGroup.Section">
+        <member name="P:Cethleann.Graphics.G1TextureGroup.Section">
             <inheritdoc />
         </member>
-        <member name="M:Cethleann.G1.G1TextureGroup.UnpackWHM(Cethleann.Structure.Resource.Texture.TextureDataHeader,System.Func{System.Byte,Cethleann.Structure.Resource.Texture.TextureType})">
+        <member name="M:Cethleann.Graphics.G1TextureGroup.UnpackWHM(Cethleann.Structure.Resource.Texture.TextureDataHeader,System.Func{System.Byte,Cethleann.Structure.Resource.Texture.TextureType})">
             <summary>
                 Unpacks Width, Height, Mip Count, and DXGI Format from a G1T data header.
             </summary>
@@ -1240,133 +1240,133 @@
             <param name="rewriteTextureType"></param>
             <returns></returns>
         </member>
-        <member name="T:Cethleann.G1.G2Animation">
+        <member name="T:Cethleann.Graphics.G2Animation">
             <summary>
                 Parser for G2A Files
             </summary>
         </member>
-        <member name="M:Cethleann.G1.G2Animation.#ctor(System.Span{System.Byte})">
+        <member name="M:Cethleann.Graphics.G2Animation.#ctor(System.Span{System.Byte})">
             <summary>
                 Initialize with buffer
             </summary>
             <param name="buffer"></param>
         </member>
-        <member name="P:Cethleann.G1.G2Animation.Section">
+        <member name="P:Cethleann.Graphics.G2Animation.Section">
             <summary>
                 GResource
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G2Animation.Header">
+        <member name="P:Cethleann.Graphics.G2Animation.Header">
             <summary>
                 Underlying Header
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G2Animation.Unknown1">
+        <member name="P:Cethleann.Graphics.G2Animation.Unknown1">
             <summary>
                 V50 + Only!
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G2Animation.Splines">
+        <member name="P:Cethleann.Graphics.G2Animation.Splines">
             <summary>
                 Animation Spline Track Data
             </summary>
         </member>
-        <member name="P:Cethleann.G1.G2Animation.QuantizedData">
+        <member name="P:Cethleann.Graphics.G2Animation.QuantizedData">
             <summary>
                 Animation Interpolation Data
             </summary>
         </member>
-        <member name="T:Cethleann.G1.IKTGLSection">
+        <member name="T:Cethleann.Graphics.IKTGLSection">
             <summary>
                 Boiler interface for G1 Sections.
             </summary>
         </member>
-        <member name="P:Cethleann.G1.IKTGLSection.SupportedVersion">
+        <member name="P:Cethleann.Graphics.IKTGLSection.SupportedVersion">
             <summary>
                 Version implemented by this class
             </summary>
         </member>
-        <member name="P:Cethleann.G1.IKTGLSection.Section">
+        <member name="P:Cethleann.Graphics.IKTGLSection.Section">
             <summary>
                 Section header for this section
             </summary>
         </member>
-        <member name="T:Cethleann.G1.KSLT">
+        <member name="T:Cethleann.Graphics.KSLT">
             <summary>
                 KSLT parser
             </summary>
         </member>
-        <member name="M:Cethleann.G1.KSLT.#ctor(System.Span{System.Byte})">
+        <member name="M:Cethleann.Graphics.KSLT.#ctor(System.Span{System.Byte})">
             <summary>
                 Initialize with byte data
             </summary>
             <param name="data"></param>
         </member>
-        <member name="P:Cethleann.G1.KSLT.Header">
+        <member name="P:Cethleann.Graphics.KSLT.Header">
             <summary>
                 KSLT Header data
             </summary>
         </member>
-        <member name="P:Cethleann.G1.KSLT.Matrices">
+        <member name="P:Cethleann.Graphics.KSLT.Matrices">
             <summary>
                 Matrix section
             </summary>
         </member>
-        <member name="P:Cethleann.G1.KSLT.Pointers">
+        <member name="P:Cethleann.Graphics.KSLT.Pointers">
             <summary>
                 Image pointers
             </summary>
         </member>
-        <member name="P:Cethleann.G1.KSLT.Names">
+        <member name="P:Cethleann.Graphics.KSLT.Names">
             <summary>
                 Image names
             </summary>
         </member>
-        <member name="P:Cethleann.G1.KSLT.Entries">
+        <member name="P:Cethleann.Graphics.KSLT.Entries">
             <summary>
                 Images
             </summary>
         </member>
-        <member name="T:Cethleann.G1.MDLK">
+        <member name="T:Cethleann.Graphics.MDLK">
             <summary>
                 Decomposes a MDLK buffer to individual files
             </summary>
         </member>
-        <member name="M:Cethleann.G1.MDLK.#ctor(System.Span{System.Byte})">
+        <member name="M:Cethleann.Graphics.MDLK.#ctor(System.Span{System.Byte})">
             <summary>
                 Decomposes a MDLK buffer to individual files
             </summary>
             <param name="buffer"></param>
             <exception cref="T:System.IO.InvalidDataException"></exception>
         </member>
-        <member name="P:Cethleann.G1.MDLK.Entries">
+        <member name="P:Cethleann.Graphics.MDLK.Entries">
             <summary>
                 Usually models.
             </summary>
         </member>
-        <member name="T:Cethleann.G1.PackedResource">
+        <member name="T:Cethleann.Graphics.PackedResource">
             <summary>
                 Generic reader for KTGLSections
             </summary>
         </member>
-        <member name="M:Cethleann.G1.PackedResource.#ctor">
+        <member name="M:Cethleann.Graphics.PackedResource.#ctor">
             <summary>
                 Initialize with no data
             </summary>
         </member>
-        <member name="M:Cethleann.G1.PackedResource.#ctor(System.Span{System.Byte},System.Int32)">
+        <member name="M:Cethleann.Graphics.PackedResource.#ctor(System.Span{System.Byte},System.Int32)">
             <summary>
                 Initialize with a count
             </summary>
             <param name="data"></param>
             <param name="count"></param>
         </member>
-        <member name="P:Cethleann.G1.PackedResource.Sections">
+        <member name="P:Cethleann.Graphics.PackedResource.Sections">
             <summary>
                 lsof sections in the file.
             </summary>
         </member>
-        <member name="M:Cethleann.G1.PackedResource.WriteWithHeader``1(``0,Cethleann.Structure.DataType,System.Int32)">
+        <member name="M:Cethleann.Graphics.PackedResource.WriteWithHeader``1(``0,Cethleann.Structure.DataType,System.Int32)">
             <summary>
                 Create a file with the given parameters
             </summary>
@@ -1376,18 +1376,18 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
-        <member name="T:Cethleann.G1.SCEN">
+        <member name="T:Cethleann.Graphics.SCEN">
             <summary>
                 SCEN Container
             </summary>
         </member>
-        <member name="M:Cethleann.G1.SCEN.#ctor(System.Span{System.Byte})">
+        <member name="M:Cethleann.Graphics.SCEN.#ctor(System.Span{System.Byte})">
             <summary>
                 Initialize with databuffer
             </summary>
             <param name="data"></param>
         </member>
-        <member name="P:Cethleann.G1.SCEN.Entries">
+        <member name="P:Cethleann.Graphics.SCEN.Entries">
             <summary>
                 lsof data entries
             </summary>

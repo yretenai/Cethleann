@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Cethleann.Koei;
+using Cethleann.Archive;
 using Cethleann.Structure;
 using Cethleann.Structure.KTID;
 using DragonLib.IO;

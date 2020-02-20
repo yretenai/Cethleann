@@ -1,8 +1,10 @@
 ﻿using Cethleann.Structure;
 using DragonLib.CLI;
+using JetBrains.Annotations;
 
 namespace Yshtola.Downloader
 {
+    [PublicAPI]
     public class DownloaderFlags : ICLIFlags
     {
         [CLIFlag("game-dir", Positional = 0, Help = "Game Directory", IsRequired = true, Category = "Downloader Options")]

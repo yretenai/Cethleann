@@ -3,12 +3,14 @@ using System.Runtime.InteropServices;
 using Cethleann.Audio.WBH;
 using Cethleann.Structure.WHD;
 using DragonLib;
+using JetBrains.Annotations;
 
 namespace Cethleann.Audio
 {
     /// <summary>
     ///     Wave Bank Headers
     /// </summary>
+    [PublicAPI]
     public class WaveBankHeader
     {
         /// <summary>
