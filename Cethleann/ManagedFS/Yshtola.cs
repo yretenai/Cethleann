@@ -25,6 +25,9 @@ namespace Cethleann.ManagedFS
             Settings = settings;
         }
 
+        /// <summary>
+        ///     File List for hashes
+        /// </summary>
         public Dictionary<string, string> FileList { get; set; } = new Dictionary<string, string>();
 
         /// <summary>

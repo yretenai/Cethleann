@@ -273,6 +273,10 @@ namespace Cethleann.ManagedFS
             RootEntryCount = 0;
         }
 
+        /// <summary>
+        ///     Load LINKDATA filename patterns
+        /// </summary>
+        /// <param name="filename"></param>
         public void LoadPatterns(string filename = null)
         {
             Patterns = ManagedFSHelper.GetFileList(ManagedFSHelper.GetFileListLocation(filename, "LINKDATAPatterns", "link"), 4).Select(x => (x[0], x[2], x[1].ToCharArray(), x[3])).ToList();

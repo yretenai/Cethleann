@@ -29,6 +29,9 @@ namespace Cethleann
             for (var i = 0; i < Header.PointerCount; ++i) Entries.Add(sizes[i] > 0 ? new Memory<byte>(buffer.Slice(Pointers[i], sizes[i]).ToArray()) : Memory<byte>.Empty);
         }
 
+        /// <summary>
+        ///     List of pointers defined by the RESPACK
+        /// </summary>
         public int[] Pointers { get; set; }
 
         /// <summary>

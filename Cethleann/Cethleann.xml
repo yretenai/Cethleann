@@ -521,6 +521,93 @@
             <param name="data"></param>
             <returns></returns>
         </member>
+        <member name="T:Cethleann.Compression.DzCompression">
+            <summary>
+                Compression helper class for TN's fork of KTGL
+            </summary>
+        </member>
+        <member name="M:Cethleann.Compression.DzCompression.Decompress(System.Span{System.Byte},System.Int32)">
+            <summary>
+                Decompresses a .dz stream.
+            </summary>
+            <param name="data"></param>
+            <param name="align"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Compression.DzCompression.Compress(System.Span{System.Byte},System.Int32)">
+            <summary>
+                Compresses a stream into a .gz stream.
+            </summary>
+            <param name="data"></param>
+            <param name="blockSize"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.Compression.Stream8000Compression">
+            <summary>
+                Compression helper class for TN's fork of KTGL
+            </summary>
+        </member>
+        <member name="M:Cethleann.Compression.Stream8000Compression.Decompress(System.Span{System.Byte},System.Int32)">
+            <summary>
+                Decompresses a .gz stream.
+            </summary>
+            <param name="data"></param>
+            <param name="decompressedSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Compression.Stream8000Compression.Compress(System.Span{System.Byte},System.Int32)">
+            <summary>
+                Compresses a stream into a .gz stream.
+            </summary>
+            <param name="data"></param>
+            <param name="blockSize"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.Compression.StreamCompression">
+            <summary>
+                Decompress Standard KTGL streams
+            </summary>
+        </member>
+        <member name="M:Cethleann.Compression.StreamCompression.Decompress(System.Span{System.Byte},System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+                Decompresses a Gz stream
+            </summary>
+            <param name="data"></param>
+            <param name="decompressedSize"></param>
+            <param name="compressionFunc"></param>
+            <param name="blockSize"></param>
+            <param name="sizePrefix"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.Compression.TableCompression">
+            <summary>
+                Compression helper class for KTGL.
+            </summary>
+        </member>
+        <member name="M:Cethleann.Compression.TableCompression.Compress(System.Span{System.Byte},System.Int32)">
+            <summary>
+                Compresses a stream into a .gz stream.
+            </summary>
+            <param name="data"></param>
+            <param name="blockSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Compression.TableCompression.Decompress(System.Span{System.Byte},System.Boolean)">
+            <summary>
+                Decompresses a .gz stream.
+            </summary>
+            <param name="data"></param>
+            <param name="checkSanity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Compression.TableCompression.Decompress(System.IO.Stream,System.Int64)">
+            <summary>
+                Wrapper for Stream based buffers
+            </summary>
+            <param name="stream"></param>
+            <param name="compressedSize"></param>
+            <returns></returns>
+        </member>
         <member name="T:Cethleann.DataTables.DataTable">
             <summary>
                 Main blob bundle of the game.
@@ -692,6 +779,13 @@
         <member name="M:Cethleann.Extensions.IsPointerBundle(System.Span{System.Byte})">
             <summary>
                 Guesses if the stream is a valid bundle.
+            </summary>
+            <param name="buffer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Extensions.IsDDSBundle(System.Span{System.Byte})">
+            <summary>
+                Guesses if the stream is a valid dds bundle.
             </summary>
             <param name="buffer"></param>
             <returns></returns>
@@ -1455,21 +1549,6 @@
             <param name="data"></param>
             <param name="key"></param>
         </member>
-        <member name="T:Cethleann.Koei.Compression">
-            <summary>
-                Decompress Standard KTGL streams
-            </summary>
-        </member>
-        <member name="M:Cethleann.Koei.Compression.Decompress(System.Span{System.Byte},System.Int32,System.Int32,System.Int32)">
-            <summary>
-                Decompresses a Gz stream
-            </summary>
-            <param name="data"></param>
-            <param name="decompressedSize"></param>
-            <param name="compressionFunc"></param>
-            <param name="blockSize"></param>
-            <returns></returns>
-        </member>
         <member name="T:Cethleann.Koei.DATA0">
             <summary>
                 DATA0 is a list of information for which to read DATA1 with.
@@ -1514,18 +1593,16 @@
                 INFO0 is a list of information for which to read the patch RomFS with.
             </summary>
         </member>
-        <member name="M:Cethleann.Koei.INFO0.#ctor(Cethleann.Structure.INFO2,System.String)">
+        <member name="M:Cethleann.Koei.INFO0.#ctor(System.String)">
             <summary>
                 Reads a INFO0 file list from a path
             </summary>
-            <param name="info2"></param>
             <param name="path">File path to read</param>
         </member>
-        <member name="M:Cethleann.Koei.INFO0.#ctor(Cethleann.Structure.INFO2,System.IO.Stream,System.Boolean)">
+        <member name="M:Cethleann.Koei.INFO0.#ctor(System.IO.Stream,System.Boolean)">
             <summary>
                 Reads a INFO0 file list from a stream
             </summary>
-            <param name="info2"></param>
             <param name="stream"></param>
             <param name="leaveOpen"></param>
             <exception cref="T:System.InvalidOperationException"></exception>
@@ -1565,20 +1642,18 @@
                 Usually this means that the files are contained in a DLC.
             </summary>
         </member>
-        <member name="M:Cethleann.Koei.INFO1.#ctor(Cethleann.Structure.INFO2,System.IO.Stream,System.Boolean)">
+        <member name="M:Cethleann.Koei.INFO1.#ctor(System.IO.Stream,System.Boolean)">
             <summary>
                 Reads a INFO1 file list from a stream
             </summary>
-            <param name="info2"></param>
             <param name="stream"></param>
             <param name="leaveOpen"></param>
             <exception cref="T:System.InvalidOperationException"></exception>
         </member>
-        <member name="M:Cethleann.Koei.INFO1.#ctor(Cethleann.Structure.INFO2,System.String)">
+        <member name="M:Cethleann.Koei.INFO1.#ctor(System.String)">
             <summary>
                 Reads a INFO1 file list from a path
             </summary>
-            <param name="info2"></param>
             <param name="path">File path to read</param>
         </member>
         <member name="P:Cethleann.Koei.INFO1.Entries">
@@ -1740,34 +1815,46 @@
             <param name="text"></param>
             <returns></returns>
         </member>
-        <member name="T:Cethleann.Koei.TableCompression">
+        <member name="T:Cethleann.KTID.NAME">
             <summary>
-                Compression helper class for KTGL.
+                Parser for RDB NAME databases
             </summary>
         </member>
-        <member name="M:Cethleann.Koei.TableCompression.Compress(System.Span{System.Byte},System.Int32)">
+        <member name="M:Cethleann.KTID.NAME.#ctor">
             <summary>
-                Compresses a stream into a .gz stream.
+                Initialize with no data (for compatability)
             </summary>
-            <param name="data"></param>
-            <param name="blockSize"></param>
-            <returns></returns>
         </member>
-        <member name="M:Cethleann.Koei.TableCompression.Decompress(System.Span{System.Byte},System.Boolean)">
+        <member name="M:Cethleann.KTID.NAME.#ctor(System.Span{System.Byte})">
             <summary>
-                Decompresses a .gz stream.
+                Initialize with stream data
             </summary>
-            <param name="data"></param>
-            <param name="checkSanity"></param>
-            <returns></returns>
+            <param name="buffer"></param>
         </member>
-        <member name="M:Cethleann.Koei.TableCompression.Decompress(System.IO.Stream,System.Int64)">
+        <member name="P:Cethleann.KTID.NAME.Header">
             <summary>
-                Wrapper for Stream based buffers
+                NAME Header
             </summary>
-            <param name="stream"></param>
-            <param name="compressedSize"></param>
-            <returns></returns>
+        </member>
+        <member name="P:Cethleann.KTID.NAME.Entries">
+            <summary>
+                Lsof entries with strings
+            </summary>
+        </member>
+        <member name="P:Cethleann.KTID.NAME.NameMap">
+            <summary>
+                Hashes mapped to strings
+            </summary>
+        </member>
+        <member name="P:Cethleann.KTID.NAME.ExtMap">
+            <summary>
+                Type infos hashes mapped to guessed extensions
+            </summary>
+        </member>
+        <member name="P:Cethleann.KTID.NAME.ExtMapRaw">
+            <summary>
+                Type info hash map
+            </summary>
         </member>
         <member name="T:Cethleann.ManagedFS.Flayn">
             <summary>
@@ -1780,19 +1867,19 @@
             </summary>
             <param name="game"></param>
         </member>
-        <member name="P:Cethleann.ManagedFS.Flayn.RootData">
-            <summary>
-                Game data
-            </summary>
-        </member>
         <member name="P:Cethleann.ManagedFS.Flayn.Data">
             <summary>
-                DLC data
+                Game data
             </summary>
         </member>
         <member name="P:Cethleann.ManagedFS.Flayn.Patch">
             <summary>
                 Patch data
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Flayn.Patterns">
+            <summary>
+                LINKIDX/LINKDATA patterns
             </summary>
         </member>
         <member name="P:Cethleann.ManagedFS.Flayn.PatchRomFS">
@@ -1813,11 +1900,6 @@
         <member name="P:Cethleann.ManagedFS.Flayn.PatchEntryCount">
             <summary>
                 Maximum number of entries found in the latest patch container.
-            </summary>
-        </member>
-        <member name="P:Cethleann.ManagedFS.Flayn.Name">
-            <summary>
-                LINKDATA Name
             </summary>
         </member>
         <member name="P:Cethleann.ManagedFS.Flayn.PrefixLinkData">
@@ -1864,21 +1946,19 @@
                 Cleanup
             </summary>
         </member>
-        <member name="M:Cethleann.ManagedFS.Flayn.AddLinkFS(System.String,System.String,System.String)">
-            <summary>
-                Adds a LINKDATA container, usually base games
-            </summary>
-            <param name="path"></param>
-            <param name="idxHint"></param>
-            <param name="binHint"></param>
-            <exception cref="T:System.IO.FileNotFoundException"></exception>
-        </member>
-        <member name="M:Cethleann.ManagedFS.Flayn.AddPatchFS(System.String)">
+        <member name="M:Cethleann.ManagedFS.Flayn.AddInfoFSInternal(System.String,System.String)">
             <summary>
                 Adds a patch container.
             </summary>
-            <param name="path"></param>
+            <param name="info0Path"></param>
+            <param name="info1Path"></param>
             <exception cref="T:System.IO.DirectoryNotFoundException"></exception>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Flayn.LoadPatterns(System.String)">
+            <summary>
+                Load LINKDATA filename patterns
+            </summary>
+            <param name="filename"></param>
         </member>
         <member name="T:Cethleann.ManagedFS.IManagedFS">
             <summary>
@@ -2189,13 +2269,17 @@
                 Manages TN files
             </summary>
         </member>
-        <member name="M:Cethleann.ManagedFS.Yshtola.#ctor(Cethleann.Structure.DataGame,System.String,Cethleann.ManagedFS.Support.YshtolaSettings)">
+        <member name="M:Cethleann.ManagedFS.Yshtola.#ctor(Cethleann.Structure.DataGame,Cethleann.ManagedFS.Support.YshtolaSettings)">
             <summary>
                 Initialize with standard data.
             </summary>
             <param name="gameId"></param>
-            <param name="root"></param>
             <param name="settings"></param>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Yshtola.FileList">
+            <summary>
+                File List for hashes
+            </summary>
         </member>
         <member name="P:Cethleann.ManagedFS.Yshtola.Settings">
             <summary>
@@ -2233,26 +2317,31 @@
         <member name="M:Cethleann.ManagedFS.Yshtola.AddDataFS(System.String)">
             <inheritdoc />
         </member>
-        <member name="T:Cethleann.Ninja.Compression">
+        <member name="T:Cethleann.Ninja.BTIF">
             <summary>
-                Compression helper class for TN's fork of KTGL
+                PKGINFO BTIF section parser.
             </summary>
         </member>
-        <member name="M:Cethleann.Ninja.Compression.Decompress(System.Span{System.Byte},System.Int32)">
+        <member name="M:Cethleann.Ninja.BTIF.#ctor(System.Span{System.Byte})">
             <summary>
-                Decompresses a .gz stream.
+                initialize with stream data
             </summary>
-            <param name="data"></param>
-            <param name="decompressedSize"></param>
-            <returns></returns>
+            <param name="buffer"></param>
         </member>
-        <member name="M:Cethleann.Ninja.Compression.Compress(System.Span{System.Byte},System.Int32)">
+        <member name="P:Cethleann.Ninja.BTIF.Header">
             <summary>
-                Compresses a stream into a .gz stream.
+                BTIF Header
             </summary>
-            <param name="data"></param>
-            <param name="blockSize"></param>
-            <returns></returns>
+        </member>
+        <member name="P:Cethleann.Ninja.BTIF.Entries">
+            <summary>
+                lsof file entries
+            </summary>
+        </member>
+        <member name="P:Cethleann.Ninja.BTIF.UnknownBuffer">
+            <summary>
+                Unknown byte buffer at the end of the stream
+            </summary>
         </member>
         <member name="T:Cethleann.Ninja.DFFNTSave">
             <summary>
@@ -2294,27 +2383,6 @@
             <param name="key"></param>
             <returns></returns>
         </member>
-        <member name="T:Cethleann.Ninja.DzCompression">
-            <summary>
-                Compression helper class for TN's fork of KTGL
-            </summary>
-        </member>
-        <member name="M:Cethleann.Ninja.DzCompression.Decompress(System.Span{System.Byte},System.Int32)">
-            <summary>
-                Decompresses a .dz stream.
-            </summary>
-            <param name="data"></param>
-            <param name="align"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Cethleann.Ninja.DzCompression.Compress(System.Span{System.Byte},System.Int32)">
-            <summary>
-                Compresses a stream into a .gz stream.
-            </summary>
-            <param name="data"></param>
-            <param name="blockSize"></param>
-            <returns></returns>
-        </member>
         <member name="T:Cethleann.Ninja.Encryption">
             <summary>
                 Encryption helper for TN games.
@@ -2336,59 +2404,6 @@
             </summary>
             <param name="data"></param>
             <param name="key"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Cethleann.Ninja.IDTable">
-            <summary>
-                ID Table parser
-            </summary>
-        </member>
-        <member name="M:Cethleann.Ninja.IDTable.#ctor(System.Span{System.Byte},Cethleann.Structure.IDTableFlags,System.Byte[],System.UInt64,System.UInt64)">
-            <summary>
-                Initialize table with decryption constants
-            </summary>
-            <param name="data"></param>
-            <param name="flags"></param>
-            <param name="truth"></param>
-            <param name="multiplier"></param>
-            <param name="divisor"></param>
-        </member>
-        <member name="P:Cethleann.Ninja.IDTable.Entries">
-            <summary>
-                File ID table entries
-            </summary>
-        </member>
-        <member name="P:Cethleann.Ninja.IDTable.Header">
-            <summary>
-                Header of the file
-            </summary>
-        </member>
-        <member name="P:Cethleann.Ninja.IDTable.Buffer">
-            <summary>
-                Raw table
-            </summary>
-        </member>
-        <member name="M:Cethleann.Ninja.IDTable.Read(System.Span{System.Byte},Cethleann.Structure.IDTableEntry,System.Byte[],System.UInt64,System.UInt64)">
-            <summary>
-                Read a file with decryption constants using an id table entry
-            </summary>
-            <param name="file"></param>
-            <param name="entry"></param>
-            <param name="truth"></param>
-            <param name="multiplier"></param>
-            <param name="divisor"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Cethleann.Ninja.IDTable.Read(System.Span{System.Byte},System.UInt32,Cethleann.Structure.IDTableFlags,System.Byte[],System.UInt64,System.UInt64)">
-            <summary>
-                Read a file with decryption constants
-            </summary>
-            <param name="file"></param>
-            <param name="size"></param>
-            <param name="flags"></param>
-            <param name="truth"></param>
-            <param name="multiplier"></param>
-            <param name="divisor"></param>
             <returns></returns>
         </member>
         <member name="T:Cethleann.Ninja.LINKARCHIVE">
@@ -2467,6 +2482,89 @@
             <param name="index"></param>
             <returns></returns>
         </member>
+        <member name="T:Cethleann.Ninja.PackageTable">
+            <summary>
+                ID Table parser for both versions
+            </summary>
+        </member>
+        <member name="M:Cethleann.Ninja.PackageTable.#ctor(System.Span{System.Byte},Cethleann.Structure.DataGame,Cethleann.Structure.IDTableFlags,System.Byte[],System.UInt64,System.UInt64)">
+            <summary>
+                Initialize table with decryption constants
+            </summary>
+            <param name="data"></param>
+            <param name="game"></param>
+            <param name="flags"></param>
+            <param name="truth"></param>
+            <param name="multiplier"></param>
+            <param name="divisor"></param>
+        </member>
+        <member name="P:Cethleann.Ninja.PackageTable.PackageInfo">
+            <summary>
+                Loaded PKGINFO
+            </summary>
+        </member>
+        <member name="P:Cethleann.Ninja.PackageTable.Entries">
+            <summary>
+                File ID table entries
+            </summary>
+        </member>
+        <member name="P:Cethleann.Ninja.PackageTable.Header">
+            <summary>
+                Header of the file
+            </summary>
+        </member>
+        <member name="P:Cethleann.Ninja.PackageTable.Buffer">
+            <summary>
+                Raw table
+            </summary>
+        </member>
+        <member name="M:Cethleann.Ninja.PackageTable.Read(System.Span{System.Byte},Cethleann.Structure.DataGame,Cethleann.Structure.IDTableEntry,System.Byte[],System.UInt64,System.UInt64)">
+            <summary>
+                Read a file with decryption constants using an id table entry
+            </summary>
+            <param name="file"></param>
+            <param name="game"></param>
+            <param name="entry"></param>
+            <param name="truth"></param>
+            <param name="multiplier"></param>
+            <param name="divisor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Ninja.PackageTable.Read(System.Span{System.Byte},Cethleann.Structure.DataGame,System.UInt32,System.UInt32,Cethleann.Structure.IDTableFlags,System.Byte[],System.UInt64,System.UInt64)">
+            <summary>
+                Read a file with decryption constants
+            </summary>
+            <param name="file"></param>
+            <param name="game"></param>
+            <param name="compressedSize"></param>
+            <param name="size"></param>
+            <param name="flags"></param>
+            <param name="truth"></param>
+            <param name="multiplier"></param>
+            <param name="divisor"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.Ninja.PKGINFO">
+            <summary>
+                Package Info parser
+            </summary>
+        </member>
+        <member name="M:Cethleann.Ninja.PKGINFO.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize with buffer data
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="P:Cethleann.Ninja.PKGINFO.Resource">
+            <summary>
+                underlying RESPACK resource
+            </summary>
+        </member>
+        <member name="P:Cethleann.Ninja.PKGINFO.InfoTable">
+            <summary>
+                Binary Table Information? Lol idk.
+            </summary>
+        </member>
         <member name="T:Cethleann.OId">
             <summary>
                 Object ID / Bone ID list
@@ -2488,19 +2586,6 @@
             <summary>
                 Write to buffer
             </summary>
-            <returns></returns>
-        </member>
-        <member name="T:Cethleann.Omega.Compression">
-            <summary>
-                (De)compress Omega streams
-            </summary>
-        </member>
-        <member name="M:Cethleann.Omega.Compression.Decompress(System.Span{System.Byte},System.Int32)">
-            <summary>
-                Decompresses a Gz stream
-            </summary>
-            <param name="data"></param>
-            <param name="decompressedSize"></param>
             <returns></returns>
         </member>
         <member name="T:Cethleann.Omega.LINKDATA">
@@ -2586,6 +2671,11 @@
                 Initialize with a buffer
             </summary>
             <param name="buffer"></param>
+        </member>
+        <member name="P:Cethleann.RESPACK.Pointers">
+            <summary>
+                List of pointers defined by the RESPACK
+            </summary>
         </member>
         <member name="P:Cethleann.RESPACK.Header">
             <summary>

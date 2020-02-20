@@ -9,11 +9,21 @@ using JetBrains.Annotations;
 
 namespace Cethleann.KTID
 {
+    /// <summary>
+    ///     Parser for RDB NAME databases
+    /// </summary>
     [PublicAPI]
     public class NAME
     {
+        /// <summary>
+        ///     Initialize with no data (for compatability)
+        /// </summary>
         public NAME() { }
 
+        /// <summary>
+        ///     Initialize with stream data
+        /// </summary>
+        /// <param name="buffer"></param>
         public NAME(Span<byte> buffer)
         {
             Header = MemoryMarshal.Read<NAMEHeader>(buffer);
@@ -53,10 +63,29 @@ namespace Cethleann.KTID
             }
         }
 
+        /// <summary>
+        ///     NAME Header
+        /// </summary>
         public NAMEHeader Header { get; set; }
+
+        /// <summary>
+        ///     Lsof entries with strings
+        /// </summary>
         public List<(NAMEEntry entry, string[] strings)> Entries { get; set; } = new List<(NAMEEntry entry, string[] strings)>();
+
+        /// <summary>
+        ///     Hashes mapped to strings
+        /// </summary>
         public Dictionary<uint, string> NameMap { get; set; } = new Dictionary<uint, string>();
+
+        /// <summary>
+        ///     Type infos hashes mapped to guessed extensions
+        /// </summary>
         public Dictionary<uint, string> ExtMap { get; set; } = new Dictionary<uint, string>();
+
+        /// <summary>
+        ///     Type info hash map
+        /// </summary>
         public Dictionary<uint, string> ExtMapRaw { get; set; } = new Dictionary<uint, string>();
     }
 }
