@@ -5,6 +5,5 @@ namespace Cethleann.Pack
     [PublicAPI]
     public class Elixir
     {
-        
     }
 }

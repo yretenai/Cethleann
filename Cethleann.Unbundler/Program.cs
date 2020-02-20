@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Cethleann.Tables;
 using Cethleann.Graphics;
+using Cethleann.Tables;
 using DragonLib.CLI;
 using DragonLib.IO;
 
