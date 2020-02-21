@@ -85,10 +85,10 @@ namespace Cethleann.Structure
         SPK3 = '3' << 0 | 'S' << 8 | 'P' << 16 | 'K' << 24,
 
         /// <summary>
-        ///     Shader Pack?
+        ///     Swing Quantized Data
         /// </summary>
-        [FileExtension("swgq")]
-        SWGQ = 'S' << 0 | 'W' << 8 | 'G' << 16 | 'Q' << 24,
+        [FileExtension("swg")]
+        SwingDefinition = 'S' << 0 | 'W' << 8 | 'G' << 16 | 'Q' << 24,
 
         /// <summary>
         ///     River?

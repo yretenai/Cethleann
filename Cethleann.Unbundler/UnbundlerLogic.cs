@@ -26,11 +26,11 @@ namespace Cethleann.Unbundler
                 var datablob = blobs[index];
                 var name = $"{index:X4}";
                 var foundName = names?.ElementAtOrDefault(index);
-                var ext = extension ?? GetExtension(datablob.Span);
-                ext = string.IsNullOrWhiteSpace(Path.GetExtension(name)) ? string.Empty : $".{ext}";
+                var ext = $".{extension ?? GetExtension(datablob.Span)}";
                 if (foundName != null)
                 {
                     name = foundName.SanitizeFilename();
+                    ext = !string.IsNullOrWhiteSpace(Path.GetExtension(name)) ? string.Empty : ext;
                     if (File.Exists($@"{pathBase}\{name}{ext}"))
                     {
                         var oname = name + "_";
@@ -272,7 +272,7 @@ namespace Cethleann.Unbundler
                     // there probably is a smart way of doing this
                     // but this works 9 out of 10 times.
                     if (blob.Span.GetDataType() == DataType.TextureGroup) nameIndex--;
-                    if (blob.Span.GetDataType() == DataType.SWGQ) nameIndex--;
+                    if (blob.Span.GetDataType() == DataType.SwingDefinition) nameIndex--;
                     if (nameIndex >= blobs.NameMap.Names.Count) break;
                     names.Add(blobs.NameMap.Names[nameIndex]);
                     nameIndex++;
