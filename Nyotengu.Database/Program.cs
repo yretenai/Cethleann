@@ -35,7 +35,7 @@ namespace Nyotengu.Database
                             if (strings.Length > 1)
                             {
                                 text += $",{RDB.Hash(strings[1]):x8},{strings[1]}";
-                                if (strings.Length > 2) text += string.Join(",", strings.Skip(2));
+                                if (strings.Length > 2) text += string.Join("", strings.Skip(2));
                             }
 
                             Console.WriteLine(text);

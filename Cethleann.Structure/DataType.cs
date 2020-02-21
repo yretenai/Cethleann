@@ -34,7 +34,7 @@ namespace Cethleann.Structure
         ///     Elixir Archive
         /// </summary>
         [FileExtension("elixir")]
-        ElixirArchive = 'E' << 0 | 'A' << 8 | 'R' << 16 | 'C' << 24,
+        ElixirArchive = 'E' << 24 | 'A' << 16 | 'R' << 8 | 'C' << 0,
 
         /// <summary>
         ///     S-Package?

@@ -14,7 +14,7 @@ namespace Cethleann.DataExporter
         [CLIFlag("game-dirs", Positional = 1, Help = "List of Game Directories", IsRequired = true, Category = "DataExporter Options")]
         public List<string> GameDirs { get; set; } = new List<string>();
 
-        [CLIFlag("filelist", Help = "File List to load. Unspecified is automatically determined based on GameId,", Category = "DataExporter Options")]
+        [CLIFlag("filelist", Help = "File List to load. Unspecified is automatically determined based on GameId", Category = "DataExporter Options")]
         public string FileList { get; set; }
 
         [CLIFlag("no-filelist", Help = "Don't use a filelist", Category = "DataExporter Options")]

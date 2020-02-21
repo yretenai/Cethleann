@@ -127,7 +127,7 @@ namespace Cethleann.Archive
                 }
                 catch (Exception e)
                 {
-                    Logger.Error("PKGINFO", e.ToString());
+                    Logger.Error("PKGINFO", e);
                 }
 
             return file;

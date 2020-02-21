@@ -27,35 +27,36 @@ namespace Cethleann.Unbundler
                 var name = $"{index:X4}";
                 var foundName = names?.ElementAtOrDefault(index);
                 var ext = extension ?? GetExtension(datablob.Span);
+                ext = string.IsNullOrWhiteSpace(Path.GetExtension(name)) ? string.Empty : $".{ext}";
                 if (foundName != null)
                 {
                     name = foundName.SanitizeFilename();
-                    if (File.Exists($@"{pathBase}\{name}.{ext}"))
+                    if (File.Exists($@"{pathBase}\{name}{ext}"))
                     {
                         var oname = name + "_";
                         var i = 1;
-                        while (File.Exists($@"{pathBase}\{name}.{ext}")) name = oname + $"{i++:X}";
+                        while (File.Exists($@"{pathBase}\{name}{ext}")) name = oname + $"{i++:X}";
                     }
                 }
 
-                var path = $@"{pathBase}\{name}.{ext}";
+                var path = $@"{pathBase}\{name}{ext}";
                 if (singleFile && blobs.Count == 1)
                 {
                     if (useDirnameAsName)
                         path = pathBase + $".{ext}";
                     else
-                        path = Path.Combine(Path.GetDirectoryName(pathBase), $"{name}.{ext}");
+                        path = Path.Combine(Path.GetDirectoryName(pathBase), $"{name}{ext}");
                 }
 
-                TryExtractBlob(path, datablob.Span, allTypes, flags);
+                TryExtractBlob(path, datablob.Span, allTypes, flags, false);
             }
         }
 
-        public static int TryExtractBlob(string blobBase, Span<byte> datablob, bool allTypes, UnbundlerFlags flags)
+        public static int TryExtractBlob(string blobBase, Span<byte> datablob, bool allTypes, UnbundlerFlags flags, bool skipUnknown)
         {
             if (datablob.Length == 0 && !flags.WriteZero)
             {
-                Logger.Error("Cethleann", $"{blobBase} is zero!");
+                Logger.Warn("Cethleann", $"{blobBase} is zero!");
                 return 0;
             }
 
@@ -93,6 +94,7 @@ namespace Cethleann.Unbundler
                         case DataType.GMPK when TryExtractGMPK(blobBase, datablob, flags):
                         case DataType.Lazy when TryExtractG1L(blobBase, datablob, flags):
                         case DataType.KOVS when TryExtractKOVS(blobBase, datablob, flags):
+                        case DataType.ElixirArchive when TryExtractElixir(blobBase, datablob, flags):
                         case DataType.RTRPK when TryExtractRESPACK(blobBase, datablob, flags):
                         case DataType.EffectPack when TryExtractRESPACK(blobBase, datablob, flags):
                         case DataType.TDPack when TryExtractRESPACK(blobBase, datablob, flags):
@@ -119,21 +121,23 @@ namespace Cethleann.Unbundler
                     var decompressed = TableCompression.Decompress(datablob);
                     if (decompressed.Length == 0)
                     {
-                        Logger.Info("Cethleann", $"{blobBase} is zero!");
+                        Logger.Warn("Cethleann", $"{blobBase} is zero!");
                         return 0;
                     }
 
                     var pathBase = blobBase;
                     if (pathBase.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase)) pathBase = pathBase.Substring(0, pathBase.Length - 3);
 
-                    var result = TryExtractBlob(pathBase, decompressed, allTypes, flags);
+                    var result = TryExtractBlob(pathBase, decompressed, allTypes, flags, skipUnknown);
 
                     if (result > 0) return result;
                 }
                 catch (Exception e)
                 {
-                    Logger.Error("Cethleann", $"Failed decompressing blob, {e}");
+                    Logger.Error("Cethleann", "Failed decompressing blob", e);
                 }
+
+            if (skipUnknown) return 2;
 
             var basedir = Path.GetDirectoryName(blobBase);
             if (!Directory.Exists(basedir))
@@ -193,7 +197,7 @@ namespace Cethleann.Unbundler
             }
             catch (Exception e)
             {
-                Logger.Error("GAPK", $"Failed unpacking GAPK, {e}");
+                Logger.Error("GAPK", "Failed unpacking GAPK", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -213,7 +217,7 @@ namespace Cethleann.Unbundler
             }
             catch (Exception e)
             {
-                Logger.Error("RESPACK", $"Failed unpacking RTRPK, {e}");
+                Logger.Error("RESPACK", "Failed unpacking RTRPK", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -239,13 +243,13 @@ namespace Cethleann.Unbundler
                         var wav = blobs.WBD.ReconstructWave(stream, !flags.SkipADPCM);
                         var name = $@"{pathBase}\{(names?.ElementAtOrDefault(index)?.SanitizeDirname() ?? index.ToString("X8"))}".Trim();
                         if (streams.Length > 1) name += $@"\{streamIndex:X8}";
-                        TryExtractBlob($@"{name}.wav", wav.Span, false, flags);
+                        TryExtractBlob($@"{name}.wav", wav.Span, false, flags, false);
                     }
                 }
             }
             catch (Exception e)
             {
-                Logger.Error("WHD", $"Failed unpacking WHD, {e}");
+                Logger.Error("WHD", "Failed unpacking WHD", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -278,7 +282,26 @@ namespace Cethleann.Unbundler
             }
             catch (Exception e)
             {
-                Logger.Error("GMPK", $"Failed unpacking GMPK, {e}");
+                Logger.Error("GMPK", "Failed unpacking GMPK", e);
+                if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool TryExtractElixir(string pathBase, Span<byte> data, UnbundlerFlags flags)
+        {
+            try
+            {
+                var elixir = new Elixir(data);
+                if (elixir.Blobs.Count == 0) return true;
+                TryExtractBlobs(pathBase, elixir.Blobs, false, elixir.Entries.Select(x => x.filename).ToList(), true, false, null, flags);
+            }
+            catch (Exception e)
+            {
+                Logger.Error("ELIXIR", "Failed unpacking ELIXIR", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -309,7 +332,7 @@ namespace Cethleann.Unbundler
             }
             catch (Exception e)
             {
-                Logger.Error("DTBL", $"Failed unpacking DataTable, {e}");
+                Logger.Error("DTBL", "Failed unpacking DataTable", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -329,7 +352,7 @@ namespace Cethleann.Unbundler
             }
             catch (Exception e)
             {
-                Logger.Error("SCEN", $"Failed unpacking SCEN, {e}");
+                Logger.Error("SCEN", "Failed unpacking SCEN", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -349,7 +372,7 @@ namespace Cethleann.Unbundler
             }
             catch (Exception e)
             {
-                Logger.Error("BUN", $"Failed unpacking Bundle, {e}");
+                Logger.Error("BUN", "Failed unpacking Bundle", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -369,7 +392,7 @@ namespace Cethleann.Unbundler
             }
             catch (Exception e)
             {
-                Logger.Error("PBUN", $"Failed unpacking Pointer Bundle, {e}");
+                Logger.Error("PBUN", "Failed unpacking Pointer Bundle", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -389,7 +412,7 @@ namespace Cethleann.Unbundler
             }
             catch (Exception e)
             {
-                Logger.Error("MDLK", $"Failed unpacking MDLK, {e}");
+                Logger.Error("MDLK", "Failed unpacking MDLK", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -425,7 +448,7 @@ namespace Cethleann.Unbundler
             }
             catch (Exception e)
             {
-                Logger.Error("LX", $"Failed unpacking LX, {e}");
+                Logger.Error("LX", "Failed unpacking LX", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -445,12 +468,12 @@ namespace Cethleann.Unbundler
                 {
                     var sectionData = blobs.SectionRoot.Sections[index];
                     var magic = MemoryMarshal.Read<DataType>(sectionData.Span);
-                    TryExtractBlob($@"{pathBase}\{index:X4}.{string.Join("", magic.ToFourCC(true).Reverse())}", sectionData.Span, false, flags);
+                    TryExtractBlob($@"{pathBase}\{index:X4}.{string.Join("", magic.ToFourCC(true).Reverse())}", sectionData.Span, false, flags, false);
                 }
             }
             catch (Exception e)
             {
-                Logger.Error("G1M", $"Failed unpacking G1M, {e}");
+                Logger.Error("G1M", "Failed unpacking G1M", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -489,7 +512,7 @@ namespace Cethleann.Unbundler
                                         break;
                                     }
                                     default:
-                                        TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}_{adcpmSection.Base.Id:X8}.{GetExtension(adcpmSection.FullBuffer.Span)}", adcpmSection.FullBuffer.Span, false, flags);
+                                        TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}_{adcpmSection.Base.Id:X8}.{GetExtension(adcpmSection.FullBuffer.Span)}", adcpmSection.FullBuffer.Span, false, flags, false);
                                         break;
                                 }
                             }
@@ -515,7 +538,7 @@ namespace Cethleann.Unbundler
                                 OGGSound sample => sample.Data,
                                 _ => datablob.FullBuffer
                             };
-                            TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}.{GetExtension(buffer.Span)}", buffer.Span, false, flags);
+                            TryExtractBlob($@"{pathBase}\{datablob.Base.Id:X8}.{GetExtension(buffer.Span)}", buffer.Span, false, flags, false);
                             break;
                         }
                     }
@@ -525,7 +548,7 @@ namespace Cethleann.Unbundler
             }
             catch (Exception e)
             {
-                Logger.Error("KTSR", $"Failed unpacking KTSR, {e}");
+                Logger.Error("KTSR", "Failed unpacking KTSR", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -540,14 +563,14 @@ namespace Cethleann.Unbundler
                 for (var index = 0; index < blobs.KTSR.Count; index++)
                 {
                     var ktsr = blobs.KTSR[index];
-                    TryExtractBlob($@"{pathBase}\{blobs.Identifiers[index]:X8}.{GetExtension(ktsr.Span)}", ktsr.Span, false, flags);
+                    TryExtractBlob($@"{pathBase}\{blobs.Identifiers[index]:X8}.{GetExtension(ktsr.Span)}", ktsr.Span, false, flags, false);
                 }
 
                 return true;
             }
             catch (Exception e)
             {
-                Logger.Error("KTSR", $"Failed unpacking KTSR, {e}");
+                Logger.Error("KTSR", "Failed unpacking KTSR", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -560,11 +583,11 @@ namespace Cethleann.Unbundler
             {
                 var blobs = new G1L(data);
                 var buffer = blobs.Buffer;
-                TryExtractBlob(Path.ChangeExtension(pathBase, "kvs"), buffer.Span, false, flags);
+                TryExtractBlob(Path.ChangeExtension(pathBase, "kvs"), buffer.Span, false, flags, false);
             }
             catch (Exception e)
             {
-                Logger.Error("G1L", $"Failed unpacking G1L, {e}");
+                Logger.Error("G1L", "Failed unpacking G1L", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
@@ -579,11 +602,11 @@ namespace Cethleann.Unbundler
             {
                 var blobs = new KOVSSound(data);
                 var buffer = blobs.Stream;
-                TryExtractBlob(Path.ChangeExtension(pathBase, "ogg"), buffer.Span, false, flags);
+                TryExtractBlob(Path.ChangeExtension(pathBase, "ogg"), buffer.Span, false, flags, false);
             }
             catch (Exception e)
             {
-                Logger.Error("KOVS", $"Failed unpacking KOVS, {e}");
+                Logger.Error("KOVS", "Failed unpacking KOVS", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;

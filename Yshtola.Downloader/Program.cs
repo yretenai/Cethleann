@@ -74,7 +74,7 @@ namespace Yshtola.Downloader
                 catch (Exception e)
                 {
                     File.WriteAllBytes(dest, new byte[0]);
-                    Logger.Error("Yshtola", e.Message);
+                    Logger.Error("Yshtola", e);
                 }
             });
         }

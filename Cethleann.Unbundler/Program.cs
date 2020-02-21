@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using Cethleann.Graphics;
-using Cethleann.Tables;
 using DragonLib.CLI;
 using DragonLib.IO;
 
@@ -25,34 +21,14 @@ namespace Cethleann.Unbundler
                     continue;
                 }
 
-                if (flags.Bundle)
-                {
-                    Logger.Info("Cethleann", arg);
-                    var ext = ".datatable";
-                    if (File.Exists(Path.Combine(arg, "originaltype.cethleann"))) ext = File.ReadAllText(Path.Combine(arg, "originaltype.cethleann"));
-                    var originalName = arg + ext;
-                    switch (ext)
-                    {
-                        case ".datatable":
-                        case ".bin":
-                            TryPackDatatable(Path.ChangeExtension(originalName, "mod.datatable"), arg);
-                            break;
-                        case ".g1m":
-                            TryPackG1M(Path.ChangeExtension(originalName, "mod.g1m"), arg);
-                            break;
-                    }
-
-                    continue;
-                }
-
-                files.AddRange(Directory.GetFiles(arg, "*", SearchOption.TopDirectoryOnly));
+                if (flags.Recursive) files.AddRange(Directory.GetFiles(arg, flags.Mask, SearchOption.AllDirectories));
             }
 
             foreach (var arg in files)
             {
                 try
                 {
-                    Logger.Info("Cethleann", arg);
+                    Logger.Info("Cethleann", $"Extracting {Path.GetFileName(arg)}...");
                     var data = File.ReadAllBytes(arg);
                     var pathBase = arg;
                     if (!arg.EndsWith(".text"))
@@ -63,39 +39,16 @@ namespace Cethleann.Unbundler
                             pathBase = Path.Combine(Path.GetDirectoryName(arg), Path.GetFileNameWithoutExtension(arg));
                     }
 
-                    UnbundlerLogic.TryExtractBlob(pathBase, data, true, flags);
-
-                    if (!Directory.Exists(pathBase) || Path.GetFileName(arg) == Path.GetFileNameWithoutExtension(arg)) continue;
-                    // TODO: Get TryExtractBlob to write this file with relevant file metadata.
-                    File.WriteAllText(Path.Combine(pathBase, "originaltype.cethleann"), Path.GetExtension(arg));
-                    Logger.Info("Cethleann", $"Writing meta file {Path.Combine(pathBase, "originaltype.cethleann")}");
+                    UnbundlerLogic.TryExtractBlob(pathBase, data, true, flags, true);
                 }
                 catch (Exception e)
                 {
-                    Logger.Error("Cethleann", e.ToString());
+                    Logger.Error("Cethleann", e);
 #if DEBUG
                     throw;
 #endif
                 }
             }
-        }
-
-        public static void TryPackG1M(string path, string dir)
-        {
-            var files = Directory.GetFiles(dir).OrderBy(x => int.Parse(Path.GetFileNameWithoutExtension(x).Split('_')[0], NumberStyles.Integer)).ToArray();
-            var model = new G1Model();
-            foreach (var file in files) model.SectionRoot.Sections.Add(new Memory<byte>(File.ReadAllBytes(file)));
-            File.WriteAllBytes(path, model.WriteFromRoot().ToArray());
-        }
-
-        private static void TryPackDatatable(string path, string dir)
-        {
-            var files = Directory.GetFiles(dir).OrderBy(x => int.Parse(Path.GetFileNameWithoutExtension(x), NumberStyles.HexNumber)).ToArray();
-            var dataTable = new DataTable
-            {
-                Entries = files.Select(x => new Memory<byte>(File.ReadAllBytes(x))).ToList()
-            }.Write().ToArray();
-            File.WriteAllBytes(path, dataTable);
         }
     }
 }

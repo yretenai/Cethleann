@@ -140,11 +140,11 @@ namespace Gust.EncFinder
 
                 Console.WriteLine();
 
-                Logger.Log24Bit(ConsoleSwatch.COLOR_RESET, null, false, Console.Out, "Gust", "All table entries are prime? ");
+                Logger.Log(ConsoleSwatch.COLOR_RESET, null, false, Console.Out, "Gust", null, "All table entries are prime? ");
                 if (main.All(x => x.IsPrime()) && lengths.All(x => x.IsPrime()) && table.All(x => x.IsPrime()))
-                    Logger.Log24Bit(ConsoleSwatch.XTermColor.GreenYellow, false, Console.Out, "Gust", "Yes");
+                    Logger.Log(ConsoleSwatch.XTermColor.GreenYellow, false, Console.Out, "Gust", null, "Yes");
                 else
-                    Logger.Log24Bit(ConsoleSwatch.XTermColor.Red, false, Console.Out, "Gust", "No");
+                    Logger.Log(ConsoleSwatch.XTermColor.Red, false, Console.Out, "Gust", null, "No");
 
                 Console.WriteLine();
 
@@ -167,14 +167,14 @@ namespace Gust.EncFinder
 
         private static void LogNumber(string message, int number)
         {
-            Logger.Log24Bit(ConsoleSwatch.COLOR_RESET, null, false, Console.Out, "Gust", $"{message}: ");
-            Logger.Log24Bit(ConsoleSwatch.XTermColor.Fuchsia, true, Console.Out, "Gust", $"0x{number:X8}");
+            Logger.Log(ConsoleSwatch.COLOR_RESET, null, false, Console.Out, "Gust", null, $"{message}: ");
+            Logger.Log(ConsoleSwatch.XTermColor.Fuchsia, true, Console.Out, "Gust", null, $"0x{number:X8}");
         }
 
         private static void LogNumberImportant(string message, int number)
         {
-            Logger.Log24Bit(ConsoleSwatch.COLOR_RESET, null, false, Console.Out, "Gust", $"{message}: ");
-            Logger.Log24Bit(ConsoleSwatch.XTermColor.OrangeRed, true, Console.Out, "Gust", $"0x{number:X2}");
+            Logger.Log(ConsoleSwatch.COLOR_RESET, null, false, Console.Out, "Gust", null, $"{message}: ");
+            Logger.Log(ConsoleSwatch.XTermColor.OrangeRed, true, Console.Out, "Gust", null, $"0x{number:X2}");
         }
     }
 }

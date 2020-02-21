@@ -45,7 +45,7 @@ namespace Cethleann.DataExporter
             else if (flags.Reisalin)
             {
                 fs = new Reisalin(flags.GameId);
-                foreach (var gamedir in flags.GameDirs) fs.AddDataFS(gamedir);
+                foreach (var gamedir in flags.GameDirs.SelectMany(gameDir => Directory.GetFiles(gameDir, "*.pak"))) fs.AddDataFS(gamedir);
             }
             else if (flags.Yshtola)
             {
@@ -101,11 +101,11 @@ namespace Cethleann.DataExporter
                     }
 
                     var pathBase = $@"{flags.OutputDirectory}\{filepath}";
-                    UnbundlerLogic.TryExtractBlob(pathBase, data, false, flags);
+                    UnbundlerLogic.TryExtractBlob(pathBase, data, false, flags, false);
                 }
                 catch (Exception e)
                 {
-                    Logger.Error("Cethleann", e.ToString());
+                    Logger.Error("Cethleann", e);
 #if DEBUG
                     throw;
 #endif

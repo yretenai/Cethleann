@@ -5,8 +5,7 @@ namespace Cethleann.Structure
     [PublicAPI]
     public enum DataSystem : uint
     {
-        // Assumption, I could not find G1Ts with this value but it fits the timeline.
-        PS2 = 0x0,
+        Unspecified = 0x0,
 
         // Special Tiled Z Morton Swizzling
         PS3 = 0x1,
