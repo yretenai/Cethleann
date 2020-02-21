@@ -15,7 +15,7 @@ namespace Yshtola.Downloader
     {
         private static void Main(string[] args)
         {
-            Logger.PrintVersion("Nyotengu");
+            Logger.PrintVersion("Yshtola");
             var flags = CommandLineFlags.ParseFlags<DownloaderFlags>(CommandLineFlags.PrintHelp, args);
 
 
