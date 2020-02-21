@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Cethleann.Archive;
 using Cethleann.Structure;
+using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Cethleann.ManagedFS
@@ -83,6 +85,7 @@ namespace Cethleann.ManagedFS
         /// <param name="a18"></param>
         public void AddDataFS(string path, bool a18)
         {
+            Logger.Success("Reisalin", $"Loading {Path.GetFileName(path)}...");
             var pak = new PAK(path, a18);
             EntryCount += pak.Entries.Count;
             PAKs.Add(pak);

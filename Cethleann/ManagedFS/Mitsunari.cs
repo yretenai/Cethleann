@@ -4,6 +4,7 @@ using System.IO;
 using Cethleann.Archive;
 using Cethleann.Structure;
 using DragonLib;
+using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Cethleann.ManagedFS
@@ -116,6 +117,7 @@ namespace Cethleann.ManagedFS
             var archives = Directory.GetFiles(path, "*.lnk");
             foreach (var archive in archives)
             {
+                Logger.Success("Mitsunari", $"Loading {Path.GetFileName(archive)}...");
                 var linkarchive = new LINKARCHIVE(File.OpenRead(archive));
                 var name = Path.GetFileNameWithoutExtension(archive);
                 var linkname = new LINKNAME(File.OpenRead(Path.Combine(path, "lfm_order_" + name.Substring(8) + ".bin")).ToSpan());

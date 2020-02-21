@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Cethleann.Archive;
 using Cethleann.Structure;
+using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Cethleann.ManagedFS
@@ -116,6 +117,7 @@ namespace Cethleann.ManagedFS
 
             foreach (var file in files)
             {
+                Logger.Success("Leonhart", $"Loading {Path.GetFileName(file)}...");
                 var linkdata = new LINKDATA(File.OpenRead(file));
                 Data.Add((linkdata, Path.GetFileNameWithoutExtension(file)));
                 EntryCount += linkdata.Entries.Length;

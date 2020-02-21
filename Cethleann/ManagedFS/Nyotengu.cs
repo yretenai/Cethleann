@@ -73,6 +73,7 @@ namespace Cethleann.ManagedFS
         /// <inheritdoc />
         public void AddDataFS(string path)
         {
+            Logger.Success("Nyotengu", $"Loading {Path.GetFileName(path)}...");
             var rdb = new RDB(File.ReadAllBytes(path), Path.GetFileNameWithoutExtension(path), Path.GetDirectoryName(path));
             EntryCount += rdb.Entries.Count;
             RDBs.Add(rdb);

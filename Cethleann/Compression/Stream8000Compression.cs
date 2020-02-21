@@ -43,8 +43,6 @@ namespace Cethleann.Compression
                         {
                             data.Slice((int) stream.Position, (int) size).CopyTo(chunk);
                             decPtr += (int) size;
-                            Logger.Assert(decPtr == decompressedSize, "decPtr == decompressedSize");
-                            Logger.Assert(size <= 0xFF, "size <= 0xFF");
                         }
                         else
                         {

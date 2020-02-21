@@ -112,6 +112,11 @@ namespace Cethleann.Archive
         {
             if (compressedSize > file.Length) Logger.Warn("PKGINFO", "Compressed Size is larger than actual file! The package info might have drifted from the saved files. Please verify game data!");
 
+            if (game == DataGame.VenusVacation && file.IsKnown())
+            {
+                return file;
+            }
+            
             if (flags.HasFlag(IDTableFlags.Encrypted) && (game != DataGame.VenusVacation || flags.HasFlag(IDTableFlags.Compressed)))
             {
                 var key = XOREncryption.Xor(size, truth, multiplier, divisor);
@@ -119,7 +124,7 @@ namespace Cethleann.Archive
             }
 
             // ReSharper disable once InvertIf
-            if (flags.HasFlag(IDTableFlags.Compressed))
+            if (flags.HasFlag(IDTableFlags.Compressed) && file[4] == 0x78)
                 try
                 {
                     var decompressedData = Stream8000Compression.Decompress(file, (int) size);

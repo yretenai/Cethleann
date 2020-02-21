@@ -4,6 +4,7 @@ using System.IO;
 using Cethleann.Archive;
 using Cethleann.ManagedFS.Support;
 using Cethleann.Structure;
+using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Cethleann.ManagedFS
@@ -111,7 +112,12 @@ namespace Cethleann.ManagedFS
             foreach (var root in Root)
             {
                 var tablePath = Path.Combine(root, path);
-                if (!File.Exists(tablePath)) continue;
+                if (!File.Exists(tablePath))
+                {
+                    Logger.Error("Yshtola", $"{path} doesn't exist!");
+                    continue;
+                }
+                Logger.Success("Yshtola", $"Loading {path}...");
                 var table = new PKGTBL(File.ReadAllBytes(tablePath), GameId, IDTableFlags.Compressed | IDTableFlags.Encrypted, Settings.XorTruth, Settings.Multiplier, Settings.Divisor);
                 Tables.Add(table);
                 EntryCount += table.Entries.Length;

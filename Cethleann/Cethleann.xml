@@ -2457,6 +2457,32 @@
             <param name="data"></param>
             <returns></returns>
         </member>
+        <member name="T:Cethleann.Pack.Elixir">
+            <summary>
+                Gust Elixir parser
+            </summary>
+        </member>
+        <member name="M:Cethleann.Pack.Elixir.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize from buffer
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="P:Cethleann.Pack.Elixir.Header">
+            <summary>
+                File Header
+            </summary>
+        </member>
+        <member name="P:Cethleann.Pack.Elixir.Blobs">
+            <summary>
+                File Buffers
+            </summary>
+        </member>
+        <member name="P:Cethleann.Pack.Elixir.Entries">
+            <summary>
+                File Meta Entries
+            </summary>
+        </member>
         <member name="T:Cethleann.Pack.GAPK">
             <summary>
                 KTGL Animation Pack
