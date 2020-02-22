@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Cethleann.Archive;
+using Cethleann.ManagedFS.Options;
 using Cethleann.Structure;
 using DragonLib.IO;
 using JetBrains.Annotations;
@@ -18,10 +19,10 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Loads data
         /// </summary>
-        /// <param name="game"></param>
-        public Flayn(DataGame game = DataGame.None)
+        /// <param name="options"></param>
+        public Flayn(IManagedFSOptionsBase options)
         {
-            GameId = game;
+            if (options is IManagedFSOptions optionsLayer) GameId = optionsLayer.GameId;
         }
 
         /// <summary>
@@ -240,7 +241,7 @@ namespace Cethleann.ManagedFS
         private void AddDataFSInternal(string idxPath, string binPath)
         {
             GC.ReRegisterForFinalize(this);
-            
+
             Logger.Success("Flayn", $"Loading {Path.GetFileName(idxPath)}...");
 
             var fullPath = Path.GetFullPath(Path.GetDirectoryName(idxPath));

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Cethleann.Archive;
+using Cethleann.ManagedFS.Options;
 using Cethleann.Structure;
 using DragonLib.IO;
 using JetBrains.Annotations;
@@ -18,10 +19,10 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Loads data
         /// </summary>
-        /// <param name="game"></param>
-        public Leonhart(DataGame game = DataGame.None)
+        /// <param name="options"></param>
+        public Leonhart(IManagedFSOptionsBase options)
         {
-            GameId = game;
+            if (options is IManagedFSOptions optionsLayer) GameId = optionsLayer.GameId;
         }
 
         /// <summary>

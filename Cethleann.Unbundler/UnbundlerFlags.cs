@@ -1,9 +1,10 @@
+using Cethleann.ManagedFS.Options;
 using Cethleann.Structure;
 using DragonLib.CLI;
 
 namespace Cethleann.Unbundler
 {
-    public class UnbundlerFlags : ICLIFlags
+    public class UnbundlerFlags : ICLIFlags, IManagedFSOptions
     {
         [CLIFlag("recursive", Aliases = new[] { "R" }, Help = "Recursively parse and unbundle files", Category = "Unbundler Options")]
         public bool Recursive { get; set; }
@@ -29,10 +30,11 @@ namespace Cethleann.Unbundler
         [CLIFlag("ktsr-raw", Help = "Output Raw KTSR streams", Category = "Unbundler Options")]
         public bool RawKTSR { get; set; }
 
-        [CLIFlag("platform", Default = DataPlatform.Windows, Aliases = new[] { "P" }, Help = "Platform the game is from", Category = "Unbundler Options")]
-        public DataPlatform Platform { get; set; }
+        #region IManagedFSOptions
 
-        [CLIFlag("game", Default = DataGame.None, Aliases = new[] { "g" }, Help = "Game being loaded", Category = "Unbundler Options")]
+        public DataPlatform Platform { get; set; }
         public DataGame GameId { get; set; }
+
+        #endregion
     }
 }

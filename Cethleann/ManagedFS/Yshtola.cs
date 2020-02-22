@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Cethleann.Archive;
+using Cethleann.ManagedFS.Options;
 using Cethleann.ManagedFS.Support;
 using Cethleann.Structure;
 using DragonLib.IO;
@@ -18,12 +19,12 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Initialize with standard data.
         /// </summary>
-        /// <param name="gameId"></param>
+        /// <param name="options"></param>
         /// <param name="settings"></param>
-        public Yshtola(DataGame gameId, YshtolaSettings settings)
+        public Yshtola(IManagedFSOptionsBase options, YshtolaSettings settings)
         {
-            GameId = gameId;
             Settings = settings;
+            if (options is IManagedFSOptions optionsLayer) GameId = optionsLayer.GameId;
         }
 
         /// <summary>
@@ -117,6 +118,7 @@ namespace Cethleann.ManagedFS
                     Logger.Error("Yshtola", $"{path} doesn't exist!");
                     continue;
                 }
+
                 Logger.Success("Yshtola", $"Loading {path}...");
                 var table = new PKGTBL(File.ReadAllBytes(tablePath), GameId, IDTableFlags.Compressed | IDTableFlags.Encrypted, Settings.XorTruth, Settings.Multiplier, Settings.Divisor);
                 Tables.Add(table);

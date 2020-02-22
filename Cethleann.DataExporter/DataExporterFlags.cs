@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using Cethleann.ManagedFS.Options;
 using Cethleann.Unbundler;
 using DragonLib.CLI;
 using JetBrains.Annotations;
 
 namespace Cethleann.DataExporter
 {
-    public class DataExporterFlags : UnbundlerFlags
+    public class DataExporterFlags : UnbundlerFlags, IReisalinOptions, INyotenguOptions
     {
         [CLIFlag("out-dir", Positional = 0, Help = "Extraction Directory", IsRequired = true, Category = "DataExporter Options")]
         public string OutputDirectory { get; set; }
@@ -37,11 +38,15 @@ namespace Cethleann.DataExporter
 
         [CLIFlag("yshtola", Aliases = new[] { "pkg", "common" }, Help = "Game is contained in PKG containers (COMMON directory)", Category = "ManagedFS Options")]
         public bool Yshtola { get; set; }
-
-        [CLIFlag("32bit", Aliases = new[] { "a17" }, Help = "Parse older, 32-bit Atelier PAKs", Category = "Reisalin Options")]
-        public bool A17 { get; set; }
-
+        
         [CLIFlag("manifest-only", Help = "Only dump package manifest", Category = "Y'shtola Options")]
         public bool ManifestOnly { get; set; }
+
+        #region IManagedFSOptions
+        public bool A17 { get; set; }
+
+        [CLIFlag("rdb-prefix-id", Help = "Debug Filenames", Hidden = true, Category = "Nyotengu Options")]
+        public bool PrefixFilenames { get; set; }
+        #endregion
     }
 }

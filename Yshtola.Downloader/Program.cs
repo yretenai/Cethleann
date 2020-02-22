@@ -31,7 +31,7 @@ namespace Yshtola.Downloader
                 return;
             }
 
-            using var fs = new Cethleann.ManagedFS.Yshtola(flags.GameId, settings)
+            using var fs = new Cethleann.ManagedFS.Yshtola(flags, settings)
             {
                 Root = new[] { flags.GameDir, flags.OutputDirectory }
             };

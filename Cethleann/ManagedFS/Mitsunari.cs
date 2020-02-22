@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Cethleann.Archive;
+using Cethleann.ManagedFS.Options;
 using Cethleann.Structure;
 using DragonLib;
 using DragonLib.IO;
@@ -18,10 +19,10 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Loads data
         /// </summary>
-        /// <param name="game"></param>
-        public Mitsunari(DataGame game = DataGame.None)
+        /// <param name="options"></param>
+        public Mitsunari(IManagedFSOptionsBase options)
         {
-            GameId = game;
+            if (options is IManagedFSOptions optionsLayer) GameId = optionsLayer.GameId;
         }
 
         /// <summary>

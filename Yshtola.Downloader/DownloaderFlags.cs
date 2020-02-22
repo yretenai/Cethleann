@@ -1,11 +1,12 @@
-﻿using Cethleann.Structure;
+﻿using Cethleann.ManagedFS.Options;
+using Cethleann.Structure;
 using DragonLib.CLI;
 using JetBrains.Annotations;
 
 namespace Yshtola.Downloader
 {
     [PublicAPI]
-    public class DownloaderFlags : ICLIFlags
+    public class DownloaderFlags : ICLIFlags, IManagedFSOptions
     {
         [CLIFlag("game-dir", Positional = 0, Help = "Game Directory", IsRequired = true, Category = "Downloader Options")]
         public string GameDir { get; set; }
@@ -22,7 +23,7 @@ namespace Yshtola.Downloader
         [CLIFlag("threads", Default = 1, Aliases = new[] { "t" }, Help = "Number of download threads", Category = "Downloader Options")]
         public int Threads { get; set; }
 
-        [CLIFlag("game", Default = DataGame.None, Aliases = new[] { "g" }, Help = "Game being loaded", Category = "Unbundler Options")]
+        public DataPlatform Platform { get; set; }
         public DataGame GameId { get; set; }
     }
 }

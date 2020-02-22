@@ -26,8 +26,8 @@ namespace Cethleann.Archive
         private static readonly Regex ADDRESS_REGEX = new Regex("([a-fA-F0-9]*)@([a-fA-F0-9]*)(?:#([a-fA-F0-9]*))?(?:\\&([a-fA-F0-9])*)?");
         private static byte[] HASH_PREFIX = { 0xEF, 0xBC, 0xBB };
         private static byte[] HASH_SUFFIX = { 0xEF, 0xBC, 0xBD };
-        private static readonly string HASH_PREFIX_STR = Encoding.UTF8.GetString(HASH_PREFIX);
-        private static readonly string HASH_SUFFIX_STR = Encoding.UTF8.GetString(HASH_SUFFIX);
+        internal static readonly string HASH_PREFIX_STR = Encoding.UTF8.GetString(HASH_PREFIX);
+        internal static readonly string HASH_SUFFIX_STR = Encoding.UTF8.GetString(HASH_SUFFIX);
 
         /// <summary>
         ///     Initialize with buffer and basic info about the FS

@@ -21,30 +21,30 @@ namespace Cethleann.DataExporter
             IManagedFS fs = default;
             if (flags.Flayn)
             {
-                fs = new Flayn(flags.GameId);
+                fs = new Flayn(flags);
                 ((Flayn) fs).LoadPatterns();
                 foreach (var gamedir in flags.GameDirs) fs.AddDataFS(gamedir);
             }
             else if (flags.Leonhart)
             {
-                fs = new Leonhart(flags.GameId);
+                fs = new Leonhart(flags);
                 foreach (var gamedir in flags.GameDirs) fs.AddDataFS(gamedir);
             }
             else if (flags.Mitsunari)
             {
-                fs = new Mitsunari(flags.GameId);
+                fs = new Mitsunari(flags);
                 foreach (var gamedir in flags.GameDirs) fs.AddDataFS(gamedir);
             }
             else if (flags.Nyotengu)
             {
-                fs = new Nyotengu(flags.GameId);
+                fs = new Nyotengu(flags);
                 foreach (var rdb in flags.GameDirs.SelectMany(gamedir => Directory.GetFiles(gamedir, "*.rdb"))) fs.AddDataFS(rdb);
 
                 ((Nyotengu) fs).LoadExtList();
             }
             else if (flags.Reisalin)
             {
-                fs = new Reisalin(flags.GameId);
+                fs = new Reisalin(flags);
                 foreach (var gamedir in flags.GameDirs.SelectMany(gameDir => Directory.GetFiles(gameDir, "*.pak"))) fs.AddDataFS(gamedir);
             }
             else if (flags.Yshtola)
@@ -61,7 +61,7 @@ namespace Cethleann.DataExporter
                     return;
                 }
 
-                fs = new Yshtola(flags.GameId, settings);
+                fs = new Yshtola(flags, settings);
                 var yshtola = (Yshtola) fs;
                 yshtola.Root = flags.GameDirs.ToArray();
                 foreach (var tableName in settings.TableNames) fs.AddDataFS(tableName);

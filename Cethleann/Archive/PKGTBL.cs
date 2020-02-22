@@ -112,11 +112,8 @@ namespace Cethleann.Archive
         {
             if (compressedSize > file.Length) Logger.Warn("PKGINFO", "Compressed Size is larger than actual file! The package info might have drifted from the saved files. Please verify game data!");
 
-            if (game == DataGame.VenusVacation && file.IsKnown())
-            {
-                return file;
-            }
-            
+            if (game == DataGame.VenusVacation && file.IsKnown()) return file;
+
             if (flags.HasFlag(IDTableFlags.Encrypted) && (game != DataGame.VenusVacation || flags.HasFlag(IDTableFlags.Compressed)))
             {
                 var key = XOREncryption.Xor(size, truth, multiplier, divisor);

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Cethleann.Archive;
+using Cethleann.ManagedFS.Options;
+using Cethleann.ManagedFS.Options.Default;
 using Cethleann.Structure;
 using DragonLib.IO;
 using JetBrains.Annotations;
@@ -15,13 +17,16 @@ namespace Cethleann.ManagedFS
     public class Reisalin : IManagedFS
     {
         /// <summary>
-        ///     Initialize with game ID
+        ///     Loads data
         /// </summary>
-        /// <param name="gameid"></param>
-        public Reisalin(DataGame gameid)
+        /// <param name="options"></param>
+        public Reisalin(IManagedFSOptionsBase options)
         {
-            GameId = gameid;
+            if (options is IManagedFSOptions optionsLayer) GameId = optionsLayer.GameId;
+            if (options is IReisalinOptions reisalinOptions) Options = reisalinOptions;
         }
+        
+        public IReisalinOptions Options { get; set; } = new ReisalinOptions();
 
         /// <summary>
         ///     Lsof PAKs mounted
@@ -69,26 +74,19 @@ namespace Cethleann.ManagedFS
         }
 
         /// <inheritdoc />
-        public void AddDataFS(string path) => AddDataFS(path, true);
+        public void AddDataFS(string path)
+        {
+            Logger.Success("Reisalin", $"Loading {Path.GetFileName(path)}...");
+            var pak = new PAK(path, !Options.A17);
+            EntryCount += pak.Entries.Count;
+            PAKs.Add(pak);
+        }
 
         private void Dispose(bool disposing)
         {
             foreach (var pak in PAKs) pak.Dispose();
             if (!disposing) return;
             PAKs.Clear();
-        }
-
-        /// <summary>
-        ///     Mounts a PAK
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="a18"></param>
-        public void AddDataFS(string path, bool a18)
-        {
-            Logger.Success("Reisalin", $"Loading {Path.GetFileName(path)}...");
-            var pak = new PAK(path, a18);
-            EntryCount += pak.Entries.Count;
-            PAKs.Add(pak);
         }
 
         /// <summary>

@@ -4,6 +4,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Cethleann.Archive;
+using Cethleann.ManagedFS.Options;
+using Cethleann.ManagedFS.Options.Default;
 using Cethleann.Structure;
 using Cethleann.Structure.KTID;
 using DragonLib.IO;
@@ -20,11 +22,14 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Loads data
         /// </summary>
-        /// <param name="game"></param>
-        public Nyotengu(DataGame game = DataGame.None)
+        /// <param name="options"></param>
+        public Nyotengu(IManagedFSOptionsBase options)
         {
-            GameId = game;
+            if (options is IManagedFSOptions optionsLayer) GameId = optionsLayer.GameId;
+            if (options is INyotenguOptions nyotenguOptions) Options = nyotenguOptions;
         }
+        
+        public INyotenguOptions Options { get; set; } = new NyotenguOptions();
 
         private Dictionary<uint, string> ExtList { get; set; }
 
@@ -120,9 +125,10 @@ namespace Cethleann.ManagedFS
 
             prefix += $@"\{ext}";
 
-            if (selectedRdb.NameDatabase.NameMap.TryGetValue(entry.FileKTID, out var path)) path = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + $".{ext}");
-            else if (FileList.TryGetValue(entry.FileKTID, out path)) path = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + $".{ext}");
-            else path = $"{entry.FileKTID:x8}.{ext}";
+            if (!selectedRdb.NameDatabase.NameMap.TryGetValue(entry.FileKTID, out var path) && !
+                FileList.TryGetValue(entry.FileKTID, out path)) path = $"{entry.FileKTID:x8}.{ext}";
+            else if (Options.PrefixFilenames) path = Path.Combine(Path.GetDirectoryName(path), $"{entry.FileKTID:x8}{RDB.HASH_PREFIX_STR}{Path.GetFileNameWithoutExtension(path)}{RDB.HASH_SUFFIX_STR}.{Path.GetExtension(path)}");
+
             return $@"{prefix}\{path}";
         }
 
