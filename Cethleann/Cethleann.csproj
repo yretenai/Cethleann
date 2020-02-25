@@ -36,9 +36,6 @@
         <None Update="filelist-LINKDATAPatterns-link.csv">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="filelist-DeadOrAlive6-rdb-generated.csv">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
         <None Update="filelist-RDBExt-rdb.csv">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
