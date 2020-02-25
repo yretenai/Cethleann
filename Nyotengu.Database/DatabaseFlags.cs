@@ -13,10 +13,7 @@ namespace Nyotengu.Database
 
         [CLIFlag("hash-all", Category = "Database Options")]
         public bool HashAll { get; set; }
-
-        [CLIFlag("generate-filelist", Category = "Database Options")]
-        public bool GenerateFileList { get; set; }
-
+        
         [CLIFlag("filelist", Help = "File List to load. Unspecified is automatically determined based on GameId", Category = "Database Options")]
         public string FileList { get; set; }
 

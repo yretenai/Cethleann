@@ -35,8 +35,6 @@ namespace Nyotengu.Database
                 {
                     if (flags.HashAll)
                         HashNDB(buffer, flags);
-                    else if (flags.GenerateFileList)
-                        ProcessNDBFileList(buffer, flags);
                     else
                         ProcessNDB(buffer, flags);
 
@@ -83,16 +81,7 @@ namespace Nyotengu.Database
                 Console.WriteLine(text);
             }
         }
-
-        private static void ProcessNDBFileList(Span<byte> buffer, DatabaseFlags flags)
-        {
-            var name = new NDB(buffer);
-            var ns = Path.GetFileName(flags.Path).Split('.')[0];
-            var filelist = Cethleann.ManagedFS.Nyotengu.LoadKTIDFileListEx(flags.FileList, flags.GameId);
-            foreach (var (entry, strings) in name.Entries) filelist[entry.KTID] = (ns, name.NameMap[entry.KTID]);
-            Console.WriteLine(string.Join('\n', filelist.Select(x => $"{x.Value.Item1},{x.Key:x8},{x.Value.Item2}")));
-        }
-
+        
         private static void HashNDB(Span<byte> buffer, DatabaseFlags flags)
         {
             var name = new NDB(buffer);

@@ -115,7 +115,7 @@ namespace Cethleann.ManagedFS
             var fileList = new Dictionary<uint, string>();
             foreach (var (key, value) in csv.Select(x => (key: uint.Parse(x[1].ToLower(), NumberStyles.HexNumber), value: x[2])))
             {
-                if (fileList.ContainsKey(key)) Logger.Warn("NYO", $"File List contains filename hash twice! ({key}, {value}, {fileList[key]})");
+                if (fileList.ContainsKey(key)) Logger.Warn("NYO", $"File List contains filename hash twice! ({key:x8}, {value}, {fileList[key]})");
                 fileList[key] = value;
             }
 
