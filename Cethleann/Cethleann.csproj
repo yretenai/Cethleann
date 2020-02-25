@@ -30,6 +30,9 @@
         <None Update="TXTH\.ktgcadpcm.txth">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <None Update="filelist-DeadOrAlive6-rdb.csv">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
         <None Update="filelist-ThreeHouses-link.csv">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
