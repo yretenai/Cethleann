@@ -1,8 +1,10 @@
 ﻿using Cethleann.Structure;
 using DragonLib.CLI;
+using JetBrains.Annotations;
 
 namespace Nyotengu.Database
 {
+    [UsedImplicitly]
     public class DatabaseFlags : ICLIFlags
     {
         [CLIFlag("path", Positional = 0, IsRequired = false, Help = "Database file to load", Category = "Database Options")]
@@ -13,7 +15,7 @@ namespace Nyotengu.Database
 
         [CLIFlag("hash-all", Category = "Database Options")]
         public bool HashAll { get; set; }
-        
+
         [CLIFlag("filelist", Help = "File List to load. Unspecified is automatically determined based on GameId", Category = "Database Options")]
         public string FileList { get; set; }
 

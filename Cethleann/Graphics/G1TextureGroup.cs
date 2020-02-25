@@ -6,7 +6,6 @@ using Cethleann.Structure.Resource;
 using Cethleann.Structure.Resource.Texture;
 using DragonLib;
 using DragonLib.Imaging.DXGI;
-using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Cethleann.Graphics
@@ -32,15 +31,15 @@ namespace Cethleann.Graphics
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1T version {Section.Version.ToVersion()} is not supported!");
 
             Header = MemoryMarshal.Read<TextureGroupHeader>(data.Slice(SizeHelper.SizeOf<ResourceSectionHeader>()));
-            var blobSize = sizeof(int) * Header.EntrySize;
+            var blobSize = sizeof(int) * Header.Count;
             var usage = MemoryMarshal.Cast<byte, TextureUsage>(data.Slice(SizeHelper.SizeOf<ResourceSectionHeader>() + SizeHelper.SizeOf<TextureGroupHeader>(), blobSize));
             var offsets = MemoryMarshal.Cast<byte, int>(data.Slice(Header.TableOffset, blobSize));
 
-            for (var i = 0; i < Header.EntrySize; i++)
+            for (var i = 0; i < Header.Count; i++)
             {
                 var dataHeader = MemoryMarshal.Read<TextureDataHeader>(data.Slice(Header.TableOffset + offsets[i]));
                 var nextOffset = data.Length - Header.TableOffset - offsets[i];
-                if (i < Header.EntrySize - 1)
+                if (i < Header.Count - 1)
                 {
                     nextOffset = offsets[i + 1] - offsets[i];
                     if (dataHeader.Type == TextureType.BrokenETC1)
@@ -51,7 +50,6 @@ namespace Cethleann.Graphics
                 }
 
                 var imageData = data.Slice(Header.TableOffset + offsets[i], nextOffset);
-                var offset = SizeHelper.SizeOf<TextureDataHeader>();
                 var extra = new TextureDataHeaderExtended
                 {
                     Size = 0xC
@@ -59,19 +57,14 @@ namespace Cethleann.Graphics
 
                 if (dataHeader.ExtraDataVersion > 0)
                 {
+                    var offset = SizeHelper.SizeOf<TextureDataHeader>();
                     var extraData = new Span<byte>(new byte[SizeHelper.SizeOf<TextureDataHeaderExtended>()]);
                     var size = MemoryMarshal.Read<int>(imageData.Slice(offset));
                     imageData.Slice(offset, size).CopyTo(extraData);
                     extra = MemoryMarshal.Read<TextureDataHeaderExtended>(extraData);
-                    offset += extra.Size;
                 }
 
-                if (dataHeader.Type.ToString("G") == dataHeader.Type.ToString("D")) Logger.Warn("G1T", $"Texture Type {dataHeader.Type:X} at offset {(Header.TableOffset + offsets[i]):X16} (entry {i}) is unsupported!");
-
-                var imagePixelData = Memory<byte>.Empty;
-                if (!metaOnly) imagePixelData = new Memory<byte>(imageData.Slice(offset, nextOffset - offset).ToArray());
-
-                Textures.Add((usage[i], dataHeader, extra, imagePixelData));
+                Textures.Add((usage[i], dataHeader, extra, metaOnly ? Memory<byte>.Empty : new Memory<byte>(imageData.ToArray())));
             }
         }
 

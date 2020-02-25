@@ -204,9 +204,8 @@ namespace Cethleann.ManagedFS
         {
             var filelist = LoadKTIDFileListEx(filename, game ?? GameId);
             foreach (var rdb in RDBs)
-            {
-                foreach (var (hash, name) in rdb.NameDatabase.NameMap) filelist[hash] = (rdb.Name, name);
-            }
+            foreach (var (hash, name) in rdb.NameDatabase.NameMap)
+                filelist[hash] = (rdb.Name, name);
 
             File.WriteAllText(ManagedFSHelper.GetFileListLocation(filename, game ?? GameId, "rdb-generated"), string.Join("\n", filelist.OrderBy(x => $"{x.Value.Item1}{x.Key:x8}").Select(x => $"{x.Value.Item1},{x.Key:x8},{x.Value.Item2}")));
         }

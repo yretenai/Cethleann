@@ -81,7 +81,7 @@ namespace Nyotengu.Database
                 Console.WriteLine(text);
             }
         }
-        
+
         private static void HashNDB(Span<byte> buffer, DatabaseFlags flags)
         {
             var name = new NDB(buffer);
