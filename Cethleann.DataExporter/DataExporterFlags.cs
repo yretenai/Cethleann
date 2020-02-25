@@ -38,15 +38,18 @@ namespace Cethleann.DataExporter
 
         [CLIFlag("yshtola", Aliases = new[] { "pkg", "common" }, Help = "Game is contained in PKG containers (COMMON directory)", Category = "ManagedFS Options")]
         public bool Yshtola { get; set; }
-        
-        [CLIFlag("manifest-only", Help = "Only dump package manifest", Category = "Y'shtola Options")]
-        public bool ManifestOnly { get; set; }
+
+        [CLIFlag("yshtola-manifest-only", Help = "Only dump package manifest", Category = "Y'shtola Options")]
+        public bool YshtolaManifestOnly { get; set; }
+
+        [CLIFlag("nyotengu-generate-filelist", Help = "Generate CSV filelist", Hidden = true, Category = "Nyotengu Options")]
+        public bool NyotenguGeneratedFileList { get; set; }
 
         #region IManagedFSOptions
-        public bool A17 { get; set; }
 
-        [CLIFlag("rdb-prefix-id", Help = "Debug Filenames", Hidden = true, Category = "Nyotengu Options")]
-        public bool PrefixFilenames { get; set; }
+        public bool ReisalinA17 { get; set; }
+        public bool NyotenguPrefixFilenames { get; set; }
+
         #endregion
     }
 }

@@ -4,6 +4,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Cethleann.Structure;
+using Cethleann.Structure.Archive;
 using DragonLib;
 using JetBrains.Annotations;
 

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Cethleann.Structure;
+using Cethleann.Structure.Resource;
 using DragonLib.IO;
 using JetBrains.Annotations;
 

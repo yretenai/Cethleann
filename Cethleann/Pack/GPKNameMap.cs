@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
-using Cethleann.Structure;
+using Cethleann.Structure.Pack;
 using DragonLib;
 using JetBrains.Annotations;
 

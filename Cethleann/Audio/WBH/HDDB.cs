@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
-using Cethleann.Structure.WHD;
+using Cethleann.Structure.Resource.Audio.WHD;
 using DragonLib;
 using JetBrains.Annotations;
 

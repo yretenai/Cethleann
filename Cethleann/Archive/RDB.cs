@@ -54,7 +54,7 @@ namespace Cethleann.Archive
             if (!KTIDToEntryId.TryGetValue(Header.NameDatabaseKTID, out var nameDatabaseId)) return;
             var nameBuffer = ReadEntry(nameDatabaseId);
             if (nameBuffer.Length == 0) return;
-            NameDatabase = new NAME(nameBuffer.Span);
+            NameDatabase = new NDB(nameBuffer.Span);
         }
 
         private Dictionary<string, Stream> Streams { get; set; } = new Dictionary<string, Stream>();
@@ -92,7 +92,7 @@ namespace Cethleann.Archive
         /// <summary>
         ///     Name Database for this RDB
         /// </summary>
-        public NAME NameDatabase { get; set; } = new NAME();
+        public NDB NameDatabase { get; set; } = new NDB();
 
         /// <summary>
         ///     Clean up streams
@@ -150,6 +150,8 @@ namespace Cethleann.Archive
         /// <returns></returns>
         public Memory<byte> ReadEntry(int index)
         {
+            if (index < 0) return Memory<byte>.Empty;
+
             var (entry, _, (offset, size, _, _)) = Entries[index];
 
             Span<byte> blob;

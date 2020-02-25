@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Cethleann.Structure;
+using Cethleann.Structure.Table;
 using DragonLib;
 using JetBrains.Annotations;
 

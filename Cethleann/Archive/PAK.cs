@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Cethleann.Structure;
+using Cethleann.Structure.Archive;
 using DragonLib;
 using DragonLib.IO;
 using JetBrains.Annotations;

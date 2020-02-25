@@ -7,6 +7,6 @@
         public int HeaderSize { get; set; }
         public DataSystem System { get; set; }
         public int Count { get; set; }
-        public uint NameDatabaseKTID { get; set; }
+        public KTIDReference NameDatabaseKTID { get; set; }
     }
 }

@@ -69,7 +69,7 @@ namespace Cethleann.Graphics
                 if (dataHeader.Type.ToString("G") == dataHeader.Type.ToString("D")) Logger.Warn("G1T", $"Texture Type {dataHeader.Type:X} at offset {(Header.TableOffset + offsets[i]):X16} (entry {i}) is unsupported!");
 
                 var imagePixelData = Memory<byte>.Empty;
-                if (!metaOnly) imagePixelData = new Memory<byte>(imageData.Slice(offset).ToArray());
+                if (!metaOnly) imagePixelData = new Memory<byte>(imageData.Slice(offset, nextOffset - offset).ToArray());
 
                 Textures.Add((usage[i], dataHeader, extra, imagePixelData));
             }

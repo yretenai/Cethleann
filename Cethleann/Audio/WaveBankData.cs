@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using Cethleann.Structure.Resource;
-using Cethleann.Structure.WHD;
+using Cethleann.Structure.Resource.Audio.WHD;
 using DragonLib;
 using DragonLib.Audio;
 using JetBrains.Annotations;

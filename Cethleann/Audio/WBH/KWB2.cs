@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Cethleann.Structure.Resource.Audio;
-using Cethleann.Structure.WHD;
+using Cethleann.Structure.Resource.Audio.WHD;
 using DragonLib;
 using JetBrains.Annotations;
 

@@ -2,6 +2,6 @@
 {
     public class ReisalinOptions : IReisalinOptions
     {
-        public bool A17 { get; set; }
+        public bool ReisalinA17 { get; set; }
     }
 }

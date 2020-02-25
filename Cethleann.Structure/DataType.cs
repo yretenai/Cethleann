@@ -421,25 +421,25 @@ namespace Cethleann.Structure
         ///     Koei Name Database File
         /// </summary>
         [FileExtension("name")]
-        NAME = 'K' << 24 | 'N' << 16 | 'R' << 8 | '_' << 0,
+        NDB = 'K' << 24 | 'N' << 16 | 'R' << 8 | '_' << 0,
 
         /// <summary>
         ///     Koei Name Database Index
         /// </summary>
         [FileExtension("name.bin")]
-        NAMEIndex = 'K' << 24 | 'N' << 16 | 'R' << 8 | 'I' << 0,
+        NDBIndex = 'K' << 24 | 'N' << 16 | 'R' << 8 | 'I' << 0,
 
         /// <summary>
         ///     Koei Object Database File
         /// </summary>
         [FileExtension("rdb")]
-        KOD = 'K' << 24 | 'O' << 16 | 'D' << 8 | '_' << 0,
+        OBJDB = 'K' << 24 | 'O' << 16 | 'D' << 8 | '_' << 0,
 
         /// <summary>
         ///     Koei Object Database Index
         /// </summary>
         [FileExtension("rdb.bin")]
-        KODIndex = 'K' << 24 | 'O' << 16 | 'D' << 8 | 'I' << 0,
+        OBJDBIndex = 'K' << 24 | 'O' << 16 | 'D' << 8 | 'I' << 0,
 
         /// <summary>
         ///     DEFLATE Compressed File.

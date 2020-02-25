@@ -74,7 +74,7 @@ namespace Cethleann.DataExporter
                     File.WriteAllBytes(Path.Combine(flags.OutputDirectory, name), table.Buffer.ToArray());
                 }
 
-                if (flags.ManifestOnly) return;
+                if (flags.YshtolaManifestOnly) return;
             }
 
             if (fs == default)
@@ -84,6 +84,11 @@ namespace Cethleann.DataExporter
             }
 
             if (!flags.NoFilelist) fs.LoadFileList(flags.FileList);
+            if (flags.NyotenguGeneratedFileList && fs is Nyotengu nyotengu)
+            {
+                nyotengu.SaveGeneratedFileList(flags.FileList);
+                return;
+            }
 
             for (var index = 0; index < fs.EntryCount; index++)
             {

@@ -2,6 +2,6 @@
 {
     public class NyotenguOptions : INyotenguOptions
     {
-        public bool PrefixFilenames { get; set; }
+        public bool NyotenguPrefixFilenames { get; set; }
     }
 }

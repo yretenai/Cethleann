@@ -5,6 +5,7 @@ using Cethleann.Archive;
 using Cethleann.ManagedFS.Options;
 using Cethleann.ManagedFS.Support;
 using Cethleann.Structure;
+using Cethleann.Structure.Archive;
 using DragonLib.IO;
 using JetBrains.Annotations;
 

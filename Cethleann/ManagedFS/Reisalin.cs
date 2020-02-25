@@ -25,7 +25,7 @@ namespace Cethleann.ManagedFS
             if (options is IManagedFSOptions optionsLayer) GameId = optionsLayer.GameId;
             if (options is IReisalinOptions reisalinOptions) Options = reisalinOptions;
         }
-        
+
         public IReisalinOptions Options { get; set; } = new ReisalinOptions();
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Cethleann.ManagedFS
         public void AddDataFS(string path)
         {
             Logger.Success("Reisalin", $"Loading {Path.GetFileName(path)}...");
-            var pak = new PAK(path, !Options.A17);
+            var pak = new PAK(path, !Options.ReisalinA17);
             EntryCount += pak.Entries.Count;
             PAKs.Add(pak);
         }

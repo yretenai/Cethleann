@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Cethleann.Structure.WHD;
+using Cethleann.Structure.Resource.Audio.WHD;
 using JetBrains.Annotations;
 
 namespace Cethleann.Audio.WBH
