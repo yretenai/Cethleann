@@ -9,11 +9,22 @@ using JetBrains.Annotations;
 
 namespace Cethleann.KTID
 {
+    /// <summary>
+    ///     KTID System Object Database
+    /// </summary>
     [PublicAPI]
     public class OBJDB
     {
+        /// <summary>
+        ///     Callback for Property loaders
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="count"></param>
         public delegate object?[] PropertyCallbackDelegate(Span<byte> buffer, int count);
 
+        /// <summary>
+        ///     Property Loaders
+        /// </summary>
         public static Dictionary<OBJDBPropertyType, (int size, PropertyCallbackDelegate processor)> PropertyTypeMap = new Dictionary<OBJDBPropertyType, (int, PropertyCallbackDelegate)>
         {
             { OBJDBPropertyType.Bool, CreateDelegate<bool>() },
@@ -22,6 +33,11 @@ namespace Cethleann.KTID
             { OBJDBPropertyType.KTID, CreateDelegate<KTIDReference>() }
         };
 
+        /// <summary>
+        ///     Initialize with buffer, and with an optional Name Database
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="ndb"></param>
         public OBJDB(Span<byte> buffer, NDB? ndb = default)
         {
             Header = MemoryMarshal.Read<OBJDBHeader>(buffer);
@@ -64,9 +80,21 @@ namespace Cethleann.KTID
             }
         }
 
+        /// <summary>
+        ///     KIDSOBJDB header
+        /// </summary>
         public OBJDBHeader Header { get; set; }
+
+        /// <summary>
+        ///     Entries in the database
+        /// </summary>
         public Dictionary<KTIDReference, (OBJDBEntry entry, Dictionary<OBJDBProperty, object?[]> properties)> Entries { get; set; } = new Dictionary<KTIDReference, (OBJDBEntry, Dictionary<OBJDBProperty, object?[]>)>();
 
+        /// <summary>
+        ///     Helper function to create primitive readers
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static (int, PropertyCallbackDelegate) CreateDelegate<T>() where T : struct
         {
             return (SizeHelper.SizeOf<T>(), (b, c) => MemoryMarshal.Cast<byte, T>(b.Slice(0, SizeHelper.SizeOf<T>() * c)).ToArray().Select(x => (object?) x).ToArray());

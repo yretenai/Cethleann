@@ -26,6 +26,9 @@ namespace Cethleann.ManagedFS
             if (options is IReisalinOptions reisalinOptions) Options = reisalinOptions;
         }
 
+        /// <summary>
+        ///     Reisalin specific options
+        /// </summary>
         public IReisalinOptions Options { get; set; } = new ReisalinOptions();
 
         /// <summary>

@@ -14,6 +14,9 @@ namespace Cethleann.Audio.WBH
     [PublicAPI]
     public class HDDB
     {
+        /// <summary>
+        ///     Default initializer
+        /// </summary>
         public HDDB()
         {
         }

@@ -50,7 +50,7 @@
         </member>
         <member name="P:Cethleann.Archive.DATA0.Entries">
             <summary>
-                lsof <seealso cref="T:Cethleann.Structure.DATA0Entry" />
+                lsof <seealso cref="T:Cethleann.Structure.Archive.DATA0Entry" />
             </summary>
         </member>
         <member name="M:Cethleann.Archive.DATA0.ReadEntry(System.IO.Stream,System.Int32)">
@@ -61,7 +61,7 @@
             <param name="index">Entry Index to read</param>
             <returns>memory stream of uncompressed bytes</returns>
         </member>
-        <member name="M:Cethleann.Archive.DATA0.ReadEntry(System.IO.Stream,Cethleann.Structure.DATA0Entry)">
+        <member name="M:Cethleann.Archive.DATA0.ReadEntry(System.IO.Stream,Cethleann.Structure.Archive.DATA0Entry)">
             <summary>
                 Reads a file entry from DATA1
             </summary>
@@ -109,7 +109,7 @@
             <param name="index"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.Archive.INFO0.ReadEntry(System.String,Cethleann.Structure.INFO0Entry)">
+        <member name="M:Cethleann.Archive.INFO0.ReadEntry(System.String,Cethleann.Structure.Archive.INFO0Entry)">
             <summary>
                 Attempts to read a Patch ROMFS entry
             </summary>
@@ -158,7 +158,7 @@
             <param name="index"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.Archive.INFO1.ReadEntry(System.String,Cethleann.Structure.INFO1Entry)">
+        <member name="M:Cethleann.Archive.INFO1.ReadEntry(System.String,Cethleann.Structure.Archive.INFO1Entry)">
             <summary>
                 Attempts to read a Patch ROMFS entry
             </summary>
@@ -197,7 +197,7 @@
                 Dispose <see cref="P:Cethleann.Archive.LINKARCHIVE.DataStream" />
             </summary>
         </member>
-        <member name="M:Cethleann.Archive.LINKARCHIVE.ReadEntry(Cethleann.Structure.LFMArchiveEntry)">
+        <member name="M:Cethleann.Archive.LINKARCHIVE.ReadEntry(Cethleann.Structure.Archive.LFMArchiveEntry)">
             <summary>
                 Read an entry from the data stream
             </summary>
@@ -235,7 +235,7 @@
                 Dispose of <seealso cref="P:Cethleann.Archive.LINKDATA.DataStream" />
             </summary>
         </member>
-        <member name="M:Cethleann.Archive.LINKDATA.ReadEntry(Cethleann.Structure.LINKDATAEntry)">
+        <member name="M:Cethleann.Archive.LINKDATA.ReadEntry(Cethleann.Structure.Archive.LINKDATAEntry)">
             <summary>
                 Read file entry
             </summary>
@@ -327,7 +327,7 @@
                 Disposes
             </summary>
         </member>
-        <member name="M:Cethleann.Archive.PAK.TryGetEntry(System.String,Cethleann.Structure.PAKEntry@)">
+        <member name="M:Cethleann.Archive.PAK.TryGetEntry(System.String,Cethleann.Structure.Archive.PAKEntry@)">
             <summary>
                 Gets an entry from it's filepath.
             </summary>
@@ -335,7 +335,7 @@
             <param name="entry"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.Archive.PAK.ReadEntry(Cethleann.Structure.PAKEntry)">
+        <member name="M:Cethleann.Archive.PAK.ReadEntry(Cethleann.Structure.Archive.PAKEntry)">
             <summary>
                 Read entry via entry struct
             </summary>
@@ -375,7 +375,7 @@
                 ID Table parser for both versions
             </summary>
         </member>
-        <member name="M:Cethleann.Archive.PKGTBL.#ctor(System.Span{System.Byte},Cethleann.Structure.DataGame,Cethleann.Structure.IDTableFlags,System.Byte[],System.UInt64,System.UInt64)">
+        <member name="M:Cethleann.Archive.PKGTBL.#ctor(System.Span{System.Byte},Cethleann.Structure.DataGame,Cethleann.Structure.Archive.IDTableFlags,System.Byte[],System.UInt64,System.UInt64)">
             <summary>
                 Initialize table with decryption constants
             </summary>
@@ -406,7 +406,7 @@
                 Raw table
             </summary>
         </member>
-        <member name="M:Cethleann.Archive.PKGTBL.Read(System.Span{System.Byte},Cethleann.Structure.DataGame,Cethleann.Structure.IDTableEntry,System.Byte[],System.UInt64,System.UInt64)">
+        <member name="M:Cethleann.Archive.PKGTBL.Read(System.Span{System.Byte},Cethleann.Structure.DataGame,Cethleann.Structure.Archive.IDTableEntry,System.Byte[],System.UInt64,System.UInt64)">
             <summary>
                 Read a file with decryption constants using an id table entry
             </summary>
@@ -418,7 +418,7 @@
             <param name="divisor"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.Archive.PKGTBL.Read(System.Span{System.Byte},Cethleann.Structure.DataGame,System.UInt32,System.UInt32,Cethleann.Structure.IDTableFlags,System.Byte[],System.UInt64,System.UInt64)">
+        <member name="M:Cethleann.Archive.PKGTBL.Read(System.Span{System.Byte},Cethleann.Structure.DataGame,System.UInt32,System.UInt32,Cethleann.Structure.Archive.IDTableFlags,System.Byte[],System.UInt64,System.UInt64)">
             <summary>
                 Read a file with decryption constants
             </summary>
@@ -929,7 +929,7 @@
                 Underlying header
             </summary>
         </member>
-        <member name="M:Cethleann.Audio.WaveBankData.ReconstructWave(Cethleann.Structure.WHD.WBHEntry,System.Boolean)">
+        <member name="M:Cethleann.Audio.WaveBankData.ReconstructWave(Cethleann.Structure.Resource.Audio.WHD.WBHEntry,System.Boolean)">
             <summary>
                 Reconstruct a stream from WBH data.
             </summary>
@@ -962,6 +962,11 @@
         <member name="T:Cethleann.Audio.WBH.HDDB">
             <summary>
                 HDDB File Name Table
+            </summary>
+        </member>
+        <member name="M:Cethleann.Audio.WBH.HDDB.#ctor">
+            <summary>
+                Default initializer
             </summary>
         </member>
         <member name="M:Cethleann.Audio.WBH.HDDB.#ctor(System.Span{System.Byte},System.Int32)">
@@ -1806,6 +1811,22 @@
                 Images
             </summary>
         </member>
+        <member name="T:Cethleann.Graphics.KTIDTextureSet">
+            <summary>
+                KTID / KTIDSOBJDB Texture Set File
+            </summary>
+        </member>
+        <member name="M:Cethleann.Graphics.KTIDTextureSet.#ctor(System.Span{System.Byte})">
+            <summary>
+                Parse from Buffer
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="P:Cethleann.Graphics.KTIDTextureSet.Textures">
+            <summary>
+                List of KTID References
+            </summary>
+        </member>
         <member name="T:Cethleann.Graphics.MDLK">
             <summary>
                 Decomposes a MDLK buffer to individual files
@@ -1871,57 +1892,128 @@
                 lsof data entries
             </summary>
         </member>
-        <member name="T:Cethleann.KTID.NAME">
+        <member name="T:Cethleann.KTID.KTIDExtensions">
             <summary>
-                Parser for RDB NAME databases
+                KTID Extensions
             </summary>
         </member>
-        <member name="M:Cethleann.KTID.NAME.#ctor">
+        <member name="M:Cethleann.KTID.KTIDExtensions.Dereference(Cethleann.Structure.KTID.KTIDReference,Cethleann.KTID.OBJDB)">
+            <summary>
+                Load a referenced KTID structure.
+            </summary>
+            <param name="instance"></param>
+            <param name="db"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.KTID.KTIDExtensions.Dereference(Cethleann.Structure.KTID.KTIDReference,Cethleann.ManagedFS.Nyotengu)">
+            <summary>
+                Load a referenced KTID file
+            </summary>
+            <param name="instance"></param>
+            <param name="nyotengu"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.KTID.KTIDExtensions.GetName(Cethleann.Structure.KTID.KTIDReference,Cethleann.KTID.NDB,System.Collections.Generic.Dictionary{System.UInt32,System.String})">
+            <summary>
+                Attempt to retrieve a KTID file
+            </summary>
+            <param name="instance"></param>
+            <param name="ndb"></param>
+            <param name="nameList"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.KTID.NDB">
+            <summary>
+                Parser for RDB NAME databases (NDB)
+            </summary>
+        </member>
+        <member name="M:Cethleann.KTID.NDB.#ctor">
             <summary>
                 Initialize with no data (for compatability)
             </summary>
         </member>
-        <member name="M:Cethleann.KTID.NAME.#ctor(System.Span{System.Byte})">
+        <member name="M:Cethleann.KTID.NDB.#ctor(System.Span{System.Byte})">
             <summary>
                 Initialize with stream data
             </summary>
             <param name="buffer"></param>
         </member>
-        <member name="P:Cethleann.KTID.NAME.Header">
+        <member name="P:Cethleann.KTID.NDB.Header">
             <summary>
-                NAME Header
+                NDB Header
             </summary>
         </member>
-        <member name="P:Cethleann.KTID.NAME.Entries">
+        <member name="P:Cethleann.KTID.NDB.Entries">
             <summary>
                 Lsof entries with strings
             </summary>
         </member>
-        <member name="P:Cethleann.KTID.NAME.NameMap">
+        <member name="P:Cethleann.KTID.NDB.NameMap">
             <summary>
                 Hashes mapped to strings
             </summary>
         </member>
-        <member name="P:Cethleann.KTID.NAME.ExtMap">
+        <member name="P:Cethleann.KTID.NDB.HashMap">
+            <summary>
+                Hashes of both names and typeinfos.
+            </summary>
+        </member>
+        <member name="P:Cethleann.KTID.NDB.ExtMap">
             <summary>
                 Type infos hashes mapped to guessed extensions
             </summary>
         </member>
-        <member name="P:Cethleann.KTID.NAME.ExtMapRaw">
+        <member name="T:Cethleann.KTID.OBJDB">
             <summary>
-                Type info hash map
+                KTID System Object Database
             </summary>
+        </member>
+        <member name="T:Cethleann.KTID.OBJDB.PropertyCallbackDelegate">
+            <summary>
+                Callback for Property loaders
+            </summary>
+            <param name="buffer"></param>
+            <param name="count"></param>
+        </member>
+        <member name="F:Cethleann.KTID.OBJDB.PropertyTypeMap">
+            <summary>
+                Property Loaders
+            </summary>
+        </member>
+        <member name="M:Cethleann.KTID.OBJDB.#ctor(System.Span{System.Byte},Cethleann.KTID.NDB)">
+            <summary>
+                Initialize with buffer, and with an optional Name Database
+            </summary>
+            <param name="buffer"></param>
+            <param name="ndb"></param>
+        </member>
+        <member name="P:Cethleann.KTID.OBJDB.Header">
+            <summary>
+                KIDSOBJDB header
+            </summary>
+        </member>
+        <member name="P:Cethleann.KTID.OBJDB.Entries">
+            <summary>
+                Entries in the database
+            </summary>
+        </member>
+        <member name="M:Cethleann.KTID.OBJDB.CreateDelegate``1">
+            <summary>
+                Helper function to create primitive readers
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
         </member>
         <member name="T:Cethleann.ManagedFS.Flayn">
             <summary>
                 Management class for DATA0 and INFO0 files.
             </summary>
         </member>
-        <member name="M:Cethleann.ManagedFS.Flayn.#ctor(Cethleann.Structure.DataGame)">
+        <member name="M:Cethleann.ManagedFS.Flayn.#ctor(Cethleann.ManagedFS.Options.IManagedFSOptionsBase)">
             <summary>
                 Loads data
             </summary>
-            <param name="game"></param>
+            <param name="options"></param>
         </member>
         <member name="P:Cethleann.ManagedFS.Flayn.Data">
             <summary>
@@ -2066,11 +2158,11 @@
                 Management class for DATA0 and INFO0 files.
             </summary>
         </member>
-        <member name="M:Cethleann.ManagedFS.Leonhart.#ctor(Cethleann.Structure.DataGame)">
+        <member name="M:Cethleann.ManagedFS.Leonhart.#ctor(Cethleann.ManagedFS.Options.IManagedFSOptionsBase)">
             <summary>
                 Loads data
             </summary>
-            <param name="game"></param>
+            <param name="options"></param>
         </member>
         <member name="P:Cethleann.ManagedFS.Leonhart.Data">
             <summary>
@@ -2180,11 +2272,11 @@
                 Nioh archive_*.bin file management
             </summary>
         </member>
-        <member name="M:Cethleann.ManagedFS.Mitsunari.#ctor(Cethleann.Structure.DataGame)">
+        <member name="M:Cethleann.ManagedFS.Mitsunari.#ctor(Cethleann.ManagedFS.Options.IManagedFSOptionsBase)">
             <summary>
                 Loads data
             </summary>
-            <param name="game"></param>
+            <param name="options"></param>
         </member>
         <member name="P:Cethleann.ManagedFS.Mitsunari.Data">
             <summary>
@@ -2227,11 +2319,16 @@
                 RDB Manager
             </summary>
         </member>
-        <member name="M:Cethleann.ManagedFS.Nyotengu.#ctor(Cethleann.Structure.DataGame)">
+        <member name="M:Cethleann.ManagedFS.Nyotengu.#ctor(Cethleann.ManagedFS.Options.IManagedFSOptionsBase)">
             <summary>
                 Loads data
             </summary>
-            <param name="game"></param>
+            <param name="options"></param>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Nyotengu.Options">
+            <summary>
+                Nyotengu specific Options
+            </summary>
         </member>
         <member name="P:Cethleann.ManagedFS.Nyotengu.RDBs">
             <summary>
@@ -2264,6 +2361,29 @@
         <member name="M:Cethleann.ManagedFS.Nyotengu.LoadFileList(System.String,System.Nullable{Cethleann.Structure.DataGame})">
             <inheritdoc />
         </member>
+        <member name="M:Cethleann.ManagedFS.Nyotengu.ReadEntry(System.UInt32)">
+            <summary>
+                Read entry via KTID
+            </summary>
+            <param name="ktid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Nyotengu.LoadKTIDFileList(System.String,Cethleann.Structure.DataGame)">
+            <summary>
+                Read a KTID File list
+            </summary>
+            <param name="filename"></param>
+            <param name="game"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Nyotengu.LoadKTIDFileListEx(System.String,Cethleann.Structure.DataGame)">
+            <summary>
+                Read a KTID file list preserving the namespace
+            </summary>
+            <param name="filename"></param>
+            <param name="game"></param>
+            <returns></returns>
+        </member>
         <member name="M:Cethleann.ManagedFS.Nyotengu.LoadExtList(System.String)">
             <summary>
                 Load typeid extension list
@@ -2275,16 +2395,84 @@
                 Disposes
             </summary>
         </member>
+        <member name="M:Cethleann.ManagedFS.Nyotengu.SaveGeneratedFileList(System.String,System.Nullable{Cethleann.Structure.DataGame})">
+            <summary>
+                Save filelist to disk
+            </summary>
+            <param name="filename"></param>
+            <param name="game"></param>
+        </member>
+        <member name="T:Cethleann.ManagedFS.Options.Default.NyotenguOptions">
+            <summary>
+                Nyotengu specific options implementation
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Options.Default.NyotenguOptions.NyotenguPrefixFilenames">
+            <inheritdoc />
+        </member>
+        <member name="T:Cethleann.ManagedFS.Options.Default.ReisalinOptions">
+            <summary>
+                Reisalin specific options implementation
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Options.Default.ReisalinOptions.ReisalinA17">
+            <inheritdoc />
+        </member>
+        <member name="T:Cethleann.ManagedFS.Options.IManagedFSOptions">
+            <summary>
+                Generic ManagedFS Options
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Options.IManagedFSOptions.Platform">
+            <summary>
+                Platform the game is from
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Options.IManagedFSOptions.GameId">
+            <summary>
+                Game being loaded
+            </summary>
+        </member>
+        <member name="T:Cethleann.ManagedFS.Options.IManagedFSOptionsBase">
+            <summary>
+                Empty stub interface
+            </summary>
+        </member>
+        <member name="T:Cethleann.ManagedFS.Options.INyotenguOptions">
+            <summary>
+                Nyotengu specific options
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Options.INyotenguOptions.NyotenguPrefixFilenames">
+            <summary>
+                Debug Filenames
+            </summary>
+        </member>
+        <member name="T:Cethleann.ManagedFS.Options.IReisalinOptions">
+            <summary>
+                Reisalin specific options
+            </summary>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Options.IReisalinOptions.ReisalinA17">
+            <summary>
+                Parse older, 32-bit Atelier PAKs
+            </summary>
+        </member>
         <member name="T:Cethleann.ManagedFS.Reisalin">
             <summary>
                 Manages PAK files
             </summary>
         </member>
-        <member name="M:Cethleann.ManagedFS.Reisalin.#ctor(Cethleann.Structure.DataGame)">
+        <member name="M:Cethleann.ManagedFS.Reisalin.#ctor(Cethleann.ManagedFS.Options.IManagedFSOptionsBase)">
             <summary>
-                Initialize with game ID
+                Loads data
             </summary>
-            <param name="gameid"></param>
+            <param name="options"></param>
+        </member>
+        <member name="P:Cethleann.ManagedFS.Reisalin.Options">
+            <summary>
+                Reisalin specific options
+            </summary>
         </member>
         <member name="P:Cethleann.ManagedFS.Reisalin.PAKs">
             <summary>
@@ -2311,13 +2499,6 @@
         </member>
         <member name="M:Cethleann.ManagedFS.Reisalin.AddDataFS(System.String)">
             <inheritdoc />
-        </member>
-        <member name="M:Cethleann.ManagedFS.Reisalin.AddDataFS(System.String,System.Boolean)">
-            <summary>
-                Mounts a PAK
-            </summary>
-            <param name="path"></param>
-            <param name="a18"></param>
         </member>
         <member name="M:Cethleann.ManagedFS.Reisalin.Finalize">
             <summary>
@@ -2374,11 +2555,11 @@
                 Manages TN files
             </summary>
         </member>
-        <member name="M:Cethleann.ManagedFS.Yshtola.#ctor(Cethleann.Structure.DataGame,Cethleann.ManagedFS.Support.YshtolaSettings)">
+        <member name="M:Cethleann.ManagedFS.Yshtola.#ctor(Cethleann.ManagedFS.Options.IManagedFSOptionsBase,Cethleann.ManagedFS.Support.YshtolaSettings)">
             <summary>
                 Initialize with standard data.
             </summary>
-            <param name="gameId"></param>
+            <param name="options"></param>
             <param name="settings"></param>
         </member>
         <member name="P:Cethleann.ManagedFS.Yshtola.FileList">

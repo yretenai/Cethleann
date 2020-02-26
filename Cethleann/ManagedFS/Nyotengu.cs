@@ -29,6 +29,9 @@ namespace Cethleann.ManagedFS
             if (options is INyotenguOptions nyotenguOptions) Options = nyotenguOptions;
         }
 
+        /// <summary>
+        ///     Nyotengu specific Options
+        /// </summary>
         public INyotenguOptions Options { get; set; } = new NyotenguOptions();
 
         private Dictionary<uint, string> ExtList { get; set; } = new Dictionary<uint, string>();
@@ -93,6 +96,11 @@ namespace Cethleann.ManagedFS
             return FileList.ToDictionary(x => x.Key.ToString(), y => y.Value);
         }
 
+        /// <summary>
+        ///     Read entry via KTID
+        /// </summary>
+        /// <param name="ktid"></param>
+        /// <returns></returns>
         public Memory<byte> ReadEntry(uint ktid)
         {
             foreach (var rdb in RDBs)
@@ -107,6 +115,12 @@ namespace Cethleann.ManagedFS
             return Memory<byte>.Empty;
         }
 
+        /// <summary>
+        ///     Read a KTID File list
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="game"></param>
+        /// <returns></returns>
         public static Dictionary<uint, string> LoadKTIDFileList(string? filename = null, DataGame game = DataGame.None)
         {
             var loc = ManagedFSHelper.GetFileListLocation(filename, game, "rdb");
@@ -118,6 +132,12 @@ namespace Cethleann.ManagedFS
             return fileList;
         }
 
+        /// <summary>
+        ///     Read a KTID file list preserving the namespace
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="game"></param>
+        /// <returns></returns>
         public static Dictionary<uint, (string, string)> LoadKTIDFileListEx(string? filename = null, DataGame game = DataGame.None)
         {
             var loc = ManagedFSHelper.GetFileListLocation(filename, game, "rdb");
@@ -196,6 +216,11 @@ namespace Cethleann.ManagedFS
             EntryCount = 0;
         }
 
+        /// <summary>
+        ///     Save filelist to disk
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="game"></param>
         public void SaveGeneratedFileList(string? filename = null, DataGame? game = null)
         {
             var filelist = LoadKTIDFileListEx(filename, game ?? GameId);
