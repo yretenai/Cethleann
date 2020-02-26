@@ -46,7 +46,7 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Root directory, the one that contains COMMON.
         /// </summary>
-        public string[] Root { get; set; }
+        public string[]? Root { get; set; }
 
         /// <inheritdoc />
         public void Dispose() { }
@@ -64,9 +64,9 @@ namespace Cethleann.ManagedFS
             {
                 if (index < table.Entries.Length)
                 {
-                    foreach (var root in Root)
+                    foreach (var root in Root ?? Array.Empty<string>())
                     {
-                        var filepath = Path.Combine(root, table.Entries[index].Path(table.Buffer, table.Header.Offset));
+                        var filepath = Path.Combine(root, table.Entries[index].Path(table.Buffer, table.Header.Offset) ?? string.Empty);
                         if (File.Exists(filepath)) return new Memory<byte>(table.Read(File.ReadAllBytes(filepath), GameId, table.Entries[index], Settings.XorTruth, Settings.Multiplier, Settings.Divisor).ToArray());
                     }
 
@@ -80,14 +80,14 @@ namespace Cethleann.ManagedFS
         }
 
         /// <inheritdoc />
-        public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null)
+        public Dictionary<string, string> LoadFileList(string? filename = null, DataGame? game = null)
         {
             FileList = ManagedFSHelper.GetSimpleFileList(filename, game ?? GameId, "pkginfo");
             return FileList;
         }
 
         /// <inheritdoc />
-        public string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
+        public string? GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
         {
             foreach (var table in Tables)
             {
@@ -97,7 +97,7 @@ namespace Cethleann.ManagedFS
                     if (entry.OriginalPathOffset > -1)
                         return entry.OriginalPath(table.Buffer, table.Header.Offset);
 
-                    var path = entry.Path(table.Buffer, table.Header.Offset);
+                    var path = entry.Path(table.Buffer, table.Header.Offset) ?? string.Empty;
                     if (!FileList.TryGetValue(path, out var resultPath)) resultPath = path + $".{ext}";
                     return resultPath;
                 }
@@ -111,6 +111,7 @@ namespace Cethleann.ManagedFS
         /// <inheritdoc />
         public void AddDataFS(string path)
         {
+            if (Root == null) return;
             foreach (var root in Root)
             {
                 var tablePath = Path.Combine(root, path);

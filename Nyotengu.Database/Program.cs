@@ -6,6 +6,7 @@ using Cethleann;
 using Cethleann.Archive;
 using Cethleann.KTID;
 using Cethleann.Structure;
+using Cethleann.Structure.KTID;
 using DragonLib.CLI;
 using DragonLib.IO;
 using JetBrains.Annotations;
@@ -19,6 +20,7 @@ namespace Nyotengu.Database
         {
             Logger.PrintVersion("Nyotengu");
             var flags = CommandLineFlags.ParseFlags<DatabaseFlags>(CommandLineFlags.PrintHelp, args);
+            if (flags == null) return;
 
             Span<byte> buffer = File.ReadAllBytes(flags.Path);
             // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
@@ -50,19 +52,23 @@ namespace Nyotengu.Database
         {
             var db = new OBJDB(buffer, ndb);
             var filelist = Cethleann.ManagedFS.Nyotengu.LoadKTIDFileList(flags.FileList, flags.GameId);
-            var filters = flags.TypeInfoFilter?.Split(',').Select(x => x.Trim()).ToHashSet() ?? new HashSet<string>();
-            foreach (var (ktid, (entry, instance)) in db.Entries)
+            var filters = flags.TypeInfoFilter?.Split(',').Select(x => RDB.Hash(x.Trim())).ToHashSet() ?? new HashSet<uint>();
+            foreach (var (ktid, (entry, properties)) in db.Entries)
             {
-                if (filters.Count != 0 && !filters.Contains(entry.TypeInfoKTID.GetName(ndb, filelist)) && !filters.Contains(entry.TypeInfoKTID.ToString("x8"))) continue;
+                if (filters.Count != 0 && !filters.Contains(entry.TypeInfoKTID)) continue;
                 var lines = new List<string>
                 {
                     $"KTID: {ktid:x8}",
                     $"KTID Name: {ktid.GetName(ndb, filelist) ?? "unnamed"}",
                     $"TypeInfo: {entry.TypeInfoKTID:x8}",
-                    $"TypeInfo Name: {entry.TypeInfoKTID.GetName(ndb, filelist) ?? "unnamed"}",
-                    $"Implementation: {instance.GetType().FullName}"
+                    $"TypeInfo Name: {entry.TypeInfoKTID.GetName(ndb, filelist) ?? "unnamed"}"
                 };
-                lines.AddRange(instance.Dump(ndb, filelist));
+
+                foreach (var (property, values) in properties)
+                {
+                    lines.Add($"{property.PropertyKTID:x8} ({property.TypeId}): {string.Join(", ", values.Select(x => x?.ToString() ?? "null"))}");
+                    if (property.TypeId == OBJDBPropertyType.KTID) lines.Add($"{property.PropertyKTID:x8} ({property.TypeId}) Names: {string.Join(", ", values.Select(x => (x is KTIDReference reference ? reference.GetName(ndb, filelist) : null) ?? "unnamed"))}");
+                }
 
                 foreach (var line in lines) Console.Out.WriteLine(line);
 
@@ -77,7 +83,7 @@ namespace Nyotengu.Database
             {
                 var filename = name.NameMap[entry.KTID];
                 var text = $"{entry.KTID:x8},{RDB.Hash(strings[0]):x8},{strings.ElementAt(0)},{filename},{RDB.Hash(strings[1]):x8},{strings[1]}";
-                if (strings.Length > 2) text += string.Join("", strings.Skip(2));
+                if (strings.Length > 2) text += string.Join(string.Empty, strings.Skip(2));
                 Console.WriteLine(text);
             }
         }

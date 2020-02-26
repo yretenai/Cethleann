@@ -31,7 +31,7 @@ namespace Cethleann.ManagedFS
 
         public INyotenguOptions Options { get; set; } = new NyotenguOptions();
 
-        private Dictionary<uint, string> ExtList { get; set; }
+        private Dictionary<uint, string> ExtList { get; set; } = new Dictionary<uint, string>();
 
         /// <summary>
         ///     List of RDBs loaded
@@ -72,7 +72,7 @@ namespace Cethleann.ManagedFS
         }
 
         /// <inheritdoc />
-        public string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
+        public string? GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
         {
             return GetFilenameInternal(index);
         }
@@ -81,13 +81,13 @@ namespace Cethleann.ManagedFS
         public void AddDataFS(string path)
         {
             Logger.Success("Nyotengu", $"Loading {Path.GetFileName(path)}...");
-            var rdb = new RDB(File.ReadAllBytes(path), Path.GetFileNameWithoutExtension(path), Path.GetDirectoryName(path));
+            var rdb = new RDB(File.ReadAllBytes(path), Path.GetFileNameWithoutExtension(path), Path.GetDirectoryName(path) ?? string.Empty);
             EntryCount += rdb.Entries.Count;
             RDBs.Add(rdb);
         }
 
         /// <inheritdoc />
-        public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null)
+        public Dictionary<string, string> LoadFileList(string? filename = null, DataGame? game = null)
         {
             FileList = LoadKTIDFileList(filename, game ?? GameId);
             return FileList.ToDictionary(x => x.Key.ToString(), y => y.Value);
@@ -107,22 +107,18 @@ namespace Cethleann.ManagedFS
             return Memory<byte>.Empty;
         }
 
-        public static Dictionary<uint, string> LoadKTIDFileList(string filename = null, DataGame game = DataGame.None)
+        public static Dictionary<uint, string> LoadKTIDFileList(string? filename = null, DataGame game = DataGame.None)
         {
             var loc = ManagedFSHelper.GetFileListLocation(filename, game, "rdb");
             var locShared = ManagedFSHelper.GetFileListLocation(filename, "RDBSHared", "rdb");
             var csv = ManagedFSHelper.GetFileList(locShared, 3).Concat(ManagedFSHelper.GetFileList(loc, 3)).ToArray();
             var fileList = new Dictionary<uint, string>();
-            foreach (var (key, value) in csv.Select(x => (key: uint.Parse(x[1].ToLower(), NumberStyles.HexNumber), value: x[2])))
-            {
-                if (fileList.ContainsKey(key)) Logger.Warn("NYO", $"File List contains filename hash twice! ({key:x8}, {value}, {fileList[key]})");
-                fileList[key] = value;
-            }
+            foreach (var (key, value) in csv.Select(x => (key: uint.Parse(x[1].ToLower(), NumberStyles.HexNumber), value: x[2]))) fileList[key] = value;
 
             return fileList;
         }
 
-        public static Dictionary<uint, (string, string)> LoadKTIDFileListEx(string filename = null, DataGame game = DataGame.None)
+        public static Dictionary<uint, (string, string)> LoadKTIDFileListEx(string? filename = null, DataGame game = DataGame.None)
         {
             var loc = ManagedFSHelper.GetFileListLocation(filename, game, "rdb");
             var locShared = ManagedFSHelper.GetFileListLocation(filename, "RDBSHared", "rdb");
@@ -137,9 +133,9 @@ namespace Cethleann.ManagedFS
             return fileList;
         }
 
-        private string GetFilenameInternal(int index)
+        private string? GetFilenameInternal(int index)
         {
-            var prefix = "";
+            var prefix = string.Empty;
             var entry = default(RDBEntry);
             var selectedRdb = default(RDB);
             foreach (var rdb in RDBs)
@@ -169,7 +165,7 @@ namespace Cethleann.ManagedFS
             else
             {
                 if (string.IsNullOrEmpty(Path.GetExtension(path))) path += $".{ext}";
-                if (Options.NyotenguPrefixFilenames) path = Path.Combine(Path.GetDirectoryName(path), $"{entry.FileKTID:x8}{RDB.HASH_PREFIX_STR}{Path.GetFileNameWithoutExtension(path)}{RDB.HASH_SUFFIX_STR}.{Path.GetExtension(path)}");
+                if (Options.NyotenguPrefixFilenames) path = Path.Combine(Path.GetDirectoryName(path) ?? string.Empty, $"{entry.FileKTID:x8}{RDB.HASH_PREFIX_STR}{Path.GetFileNameWithoutExtension(path)}{RDB.HASH_SUFFIX_STR}.{Path.GetExtension(path)}");
             }
 
             return $@"{prefix}\{path}";
@@ -179,7 +175,7 @@ namespace Cethleann.ManagedFS
         ///     Load typeid extension list
         /// </summary>
         /// <param name="filename"></param>
-        public void LoadExtList(string filename = null)
+        public void LoadExtList(string? filename = null)
         {
             ExtList = ManagedFSHelper.GetSimpleFileList(ManagedFSHelper.GetFileListLocation(filename, "RDBExt", "rdb"), DataGame.None, "rdb").ToDictionary(x => uint.Parse(x.Key, NumberStyles.HexNumber), y => y.Value);
         }
@@ -200,7 +196,7 @@ namespace Cethleann.ManagedFS
             EntryCount = 0;
         }
 
-        public void SaveGeneratedFileList(string filename = null, DataGame? game = null)
+        public void SaveGeneratedFileList(string? filename = null, DataGame? game = null)
         {
             var filelist = LoadKTIDFileListEx(filename, game ?? GameId);
             foreach (var rdb in RDBs)

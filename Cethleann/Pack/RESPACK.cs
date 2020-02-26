@@ -34,7 +34,7 @@ namespace Cethleann.Pack
         /// <summary>
         ///     List of pointers defined by the RESPACK
         /// </summary>
-        public int[] Pointers { get; set; }
+        public int[] Pointers { get; set; } = new int[0];
 
         /// <summary>
         ///     Underlying Header

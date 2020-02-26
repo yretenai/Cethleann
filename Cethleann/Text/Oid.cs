@@ -18,19 +18,19 @@ namespace Cethleann.Text
         /// </summary>
         /// <param name="buffer"></param>
         /// <param name="encoding"></param>
-        public Oid(Span<byte> buffer, Encoding encoding = null)
+        public Oid(Span<byte> buffer, Encoding? encoding = null)
         {
             var pointer = 0;
             while (pointer < buffer.Length)
             {
                 var size = buffer[pointer];
                 pointer += 1;
-                var str = default(string);
+                var str = string.Empty;
                 if (size == 0xFF) break;
                 if (size > 0)
                 {
-                    str = (encoding ?? Encoding.UTF8).GetString(buffer.Slice(pointer, size));
-                    pointer += str?.Length ?? 0;
+                    str = buffer.Slice(pointer, size).ReadStringNonNull();
+                    pointer += str.Length;
                 }
 
                 Names.Add(str);

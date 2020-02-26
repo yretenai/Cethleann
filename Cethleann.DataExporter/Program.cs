@@ -17,8 +17,9 @@ namespace Cethleann.DataExporter
         {
             Logger.PrintVersion("Cethleann");
             var flags = CommandLineFlags.ParseFlags<DataExporterFlags>(CommandLineFlags.PrintHelp, args);
+            if (flags == null) return;
 
-            IManagedFS fs = default;
+            IManagedFS? fs = default;
             if (flags.Flayn)
             {
                 fs = new Flayn(flags);
@@ -49,7 +50,7 @@ namespace Cethleann.DataExporter
             }
             else if (flags.Yshtola)
             {
-                YshtolaSettings settings = flags.GameId switch
+                YshtolaSettings? settings = flags.GameId switch
                 {
                     DataGame.DissidiaNT => new YshtolaDissidiaSettings(),
                     DataGame.VenusVacation => new YshtolaVenusVacationSettings(),
@@ -97,7 +98,7 @@ namespace Cethleann.DataExporter
                     var data = fs.ReadEntry(index).Span;
                     var dt = data.GetDataType();
                     var ext = UnbundlerLogic.GetExtension(data);
-                    var filepath = fs.GetFilename(index, ext, dt);
+                    var filepath = fs.GetFilename(index, ext, dt) ?? $"{index}.{ext}";
                     while (filepath.StartsWith("\\") || filepath.StartsWith("/")) filepath = filepath.Substring(1);
                     if (flags.Reisalin && filepath.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase))
                     {

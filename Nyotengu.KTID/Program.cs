@@ -6,8 +6,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Cethleann.Graphics;
 using Cethleann.KTID;
-using Cethleann.KTID.Types.Render;
 using Cethleann.Structure;
+using Cethleann.Structure.KTID;
 using Cethleann.Structure.Resource;
 using Cethleann.Structure.Resource.Texture;
 using DragonLib;
@@ -22,6 +22,7 @@ namespace Nyotengu.KTID
         {
             Logger.PrintVersion("Nyotengu");
             var flags = CommandLineFlags.ParseFlags<KTIDFlags>(CommandLineFlags.PrintHelp, args);
+            if (flags == null) return;
 
             var ndb = new NDB();
             if (!string.IsNullOrEmpty(flags.NDBPath) && File.Exists(flags.NDBPath)) ndb = new NDB(File.ReadAllBytes(flags.NDBPath));
@@ -44,26 +45,24 @@ namespace Nyotengu.KTID
             {
                 if (!File.Exists(ktid)) continue;
                 var ktidgroup = new KTIDTextureSet(File.ReadAllBytes(ktid));
-                var ktidsystem = ktidgroup.Textures.Select(x => objdb.Entries.TryGetValue(x, out var textureInfo) ? textureInfo.instance : default).ToArray();
-                if (ktidsystem.Any(x => !(x is StaticTexture)))
+                var ktidsystem = ktidgroup.Textures.Select(x => objdb.Entries.TryGetValue(x, out var tuple) ? tuple.properties : default).ToArray();
+                var texturePaths = ktidsystem.SelectMany(x => x.Where(y => y.Key.TypeId == OBJDBPropertyType.KTID).SelectMany(y =>
                 {
-                    Logger.Error("Nyotengu", $"KTID file {ktid} defines an object that isn't a static texture?");
-                    continue;
-                }
-
-                var texturePaths = ktidsystem.Cast<StaticTexture>().Select(x =>
-                {
-                    var targetPath = Path.Combine(flags.MaterialFolderPath, x.Data.TextureKTID.GetName(ndb, filelist) ?? $"{x.Data.TextureKTID:x8}");
-                    if (!targetPath.EndsWith(".g1t")) targetPath += ".g1t";
-                    if (!File.Exists(targetPath)) targetPath = Path.Combine(flags.MaterialFolderPath, $"{x.Data.TextureKTID:x8}.g1t");
-                    if (!File.Exists(targetPath)) targetPath = Path.Combine(flags.MaterialFolderPath, $"0x{x.Data.TextureKTID:x8}.g1t");
-                    return targetPath;
-                }).ToArray();
+                    return y.Value.Select(z =>
+                    {
+                        if (z == null || !(z is KTIDReference reference)) return null;
+                        var targetPath = Path.Combine(flags.MaterialFolderPath, reference.GetName(ndb, filelist) ?? $"{reference:x8}");
+                        if (!targetPath.EndsWith(".g1t")) targetPath += ".g1t";
+                        if (!File.Exists(targetPath)) targetPath = Path.Combine(flags.MaterialFolderPath, $"{reference:x8}.g1t");
+                        if (!File.Exists(targetPath)) targetPath = Path.Combine(flags.MaterialFolderPath, $"0x{reference:x8}.g1t");
+                        return targetPath;
+                    }).ToArray();
+                })).ToArray();
                 var textureBlobs = new List<Memory<byte>>();
                 var textureInfo = new List<int>();
                 foreach (var texturePath in texturePaths)
                 {
-                    if (!File.Exists(texturePath))
+                    if (string.IsNullOrEmpty(texturePath) || !File.Exists(texturePath))
                     {
                         Logger.Error("Nyotengu", $"KTID file {ktid} defines a texture that doesn't exist! {texturePath}");
                         continue;

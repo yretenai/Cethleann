@@ -7,7 +7,6 @@ namespace Cethleann.Structure.KTID
         public ResourceSectionHeader SectionHeader { get; set; }
         public KTIDReference KTID { get; set; }
         public KTIDReference TypeInfoKTID { get; set; }
-        public int Count { get; set; }
-        public int Version { get; set; }
+        public int PropertyCount { get; set; }
     }
 }

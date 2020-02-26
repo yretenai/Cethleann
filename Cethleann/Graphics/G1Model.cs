@@ -83,7 +83,7 @@ namespace Cethleann.Graphics
         ///     Look for <seealso cref="G1MGeometry" /> for Geometry.
         ///     Look for <seealso cref="G1MSkeleton" /> for Skeleton.
         /// </summary>
-        public List<IKTGLSection> Sections { get; } = new List<IKTGLSection>();
+        public List<IKTGLSection?> Sections { get; } = new List<IKTGLSection?>();
 
         /// <inheritdoc />
         public int SupportedVersion { get; } = 37;

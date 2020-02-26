@@ -64,7 +64,7 @@ namespace Cethleann.Archive
                 var encrypted = key.Any(x => x != 0);
                 if (encrypted) Recode(filenameBlob, key);
 
-                var filename = filenameBlob.ReadString(returnNull: false);
+                var filename = filenameBlob.ReadStringNonNull();
 
                 Entries.Add(new PAKEntry
                 {

@@ -19,7 +19,7 @@ namespace Cethleann.Unbundler
     [PublicAPI]
     public static class UnbundlerLogic
     {
-        public static void TryExtractBlobs(string pathBase, List<Memory<byte>> blobs, bool allTypes, List<string> names, bool singleFile, bool useDirnameAsName, string extension, UnbundlerFlags flags)
+        public static void TryExtractBlobs(string pathBase, List<Memory<byte>> blobs, bool allTypes, List<string>? names, bool singleFile, bool useDirnameAsName, string? extension, UnbundlerFlags flags)
         {
             for (var index = 0; index < blobs.Count; index++)
             {
@@ -45,7 +45,7 @@ namespace Cethleann.Unbundler
                     if (useDirnameAsName)
                         path = pathBase + $".{ext}";
                     else
-                        path = Path.Combine(Path.GetDirectoryName(pathBase), $"{name}{ext}");
+                        path = Path.Combine(Path.GetDirectoryName(pathBase) ?? string.Empty, $"{name}{ext}");
                 }
 
                 TryExtractBlob(path, datablob.Span, allTypes, flags, false);
@@ -158,9 +158,9 @@ namespace Cethleann.Unbundler
                     var filename = Path.GetFileNameWithoutExtension(blobBase);
                     var ext = Path.GetExtension(blobBase);
                     var i = 1;
-                    while (File.Exists(Path.Combine(basedir, $"{filename}_{i}{ext}"))) i += 1;
+                    while (File.Exists(Path.Combine(basedir ?? string.Empty, $"{filename}_{i}{ext}"))) i += 1;
 
-                    blobBase = Path.Combine(basedir, $"{filename}_{i}{ext}");
+                    blobBase = Path.Combine(basedir ?? string.Empty, $"{filename}_{i}{ext}");
                 }
                 else if (flags.Overwrite)
                 {
@@ -231,7 +231,7 @@ namespace Cethleann.Unbundler
             try
             {
                 var blobs = new KoeiWaveBank(data, flags.WBHAlternateNames);
-                if (blobs.WBH.Soundbank.Entries.Count == 0) return true;
+                if (blobs.WBH.Soundbank == null || blobs.WBH.Soundbank.Entries.Count == 0) return true;
 
                 var names = blobs.WBH.Soundbank.Names;
                 for (var index = 0; index < blobs.WBH.Soundbank.Entries.Count; index++)
@@ -241,7 +241,7 @@ namespace Cethleann.Unbundler
                     {
                         var stream = streams[streamIndex];
                         var wav = blobs.WBD.ReconstructWave(stream, !flags.SkipADPCM);
-                        var name = $@"{pathBase}\{(names?.ElementAtOrDefault(index)?.SanitizeDirname() ?? index.ToString("X8"))}".Trim();
+                        var name = $@"{pathBase}\{(names.ElementAtOrDefault(index)?.SanitizeDirname() ?? index.ToString("X8"))}".Trim();
                         if (streams.Length > 1) name += $@"\{streamIndex:X8}";
                         TryExtractBlob($@"{name}.wav", wav.Span, false, flags, false);
                     }
@@ -468,7 +468,7 @@ namespace Cethleann.Unbundler
                 {
                     var sectionData = blobs.SectionRoot.Sections[index];
                     var magic = MemoryMarshal.Read<DataType>(sectionData.Span);
-                    TryExtractBlob($@"{pathBase}\{index:X4}.{string.Join("", magic.ToFourCC(true).Reverse())}", sectionData.Span, false, flags, false);
+                    TryExtractBlob($@"{pathBase}\{index:X4}.{string.Join(string.Empty, magic.ToFourCC(true).Reverse())}", sectionData.Span, false, flags, false);
                 }
             }
             catch (Exception e)

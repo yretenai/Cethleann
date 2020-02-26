@@ -30,6 +30,7 @@ namespace Cethleann.Pack
                 ptr += SizeHelper.SizeOf<ElixirEntry>();
                 var filename = buffer.Slice(ptr, textLength).ReadString();
                 ptr += textLength;
+                if (filename == null) continue;
                 Entries.Add((entry, filename));
                 Blobs.Add(entry.Size > 0 ? new Memory<byte>(buffer.Slice(entry.Offset, entry.Size).ToArray()) : Memory<byte>.Empty);
             }

@@ -36,7 +36,7 @@ namespace Cethleann.Archive
                 {
                     stream.Read(buffer);
                     var entry = MemoryMarshal.Read<INFO1Entry>(buffer);
-                    var path = buffer.Slice(SizeHelper.SizeOf<INFO1Entry>()).ReadString(returnNull: false);
+                    var path = buffer.Slice(SizeHelper.SizeOf<INFO1Entry>()).ReadStringNonNull();
                     Entries.Add((entry, path));
                 }
             }
@@ -82,7 +82,7 @@ namespace Cethleann.Archive
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public string GetPath(int index)
+        public string? GetPath(int index)
         {
             var (_, path) = Entries.ElementAtOrDefault(index);
             return path?.Substring(12, path.Length - 12 - (path.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase) ? 3 : 0));

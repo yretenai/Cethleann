@@ -26,7 +26,7 @@ namespace Cethleann.Archive
         /// <param name="truth"></param>
         /// <param name="multiplier"></param>
         /// <param name="divisor"></param>
-        public PKGTBL(Span<byte> data, DataGame game, IDTableFlags flags = IDTableFlags.Encrypted | IDTableFlags.Compressed, byte[] truth = null, ulong multiplier = 0, ulong divisor = 0)
+        public PKGTBL(Span<byte> data, DataGame game, IDTableFlags flags, byte[] truth, ulong multiplier, ulong divisor)
         {
             if (flags != IDTableFlags.None)
             {
@@ -65,7 +65,7 @@ namespace Cethleann.Archive
         /// <summary>
         ///     Loaded PKGINFO
         /// </summary>
-        public PKGINFO PackageInfo { get; set; }
+        public PKGINFO? PackageInfo { get; set; }
 
         /// <summary>
         ///     File ID table entries

@@ -40,14 +40,14 @@ namespace Cethleann.Archive
             Name = name;
             Header = MemoryMarshal.Read<RDBHeader>(buffer);
             RDBDirectory = directory;
-            Directory = Path.Combine(directory, buffer.Slice(SizeHelper.SizeOf<RDBHeader>(), Header.HeaderSize - SizeHelper.SizeOf<RDBHeader>()).ReadString());
+            Directory = Path.Combine(directory, buffer.Slice(SizeHelper.SizeOf<RDBHeader>(), Header.HeaderSize - SizeHelper.SizeOf<RDBHeader>()).ReadString() ?? string.Empty);
 
             var offset = Header.HeaderSize;
             for (var i = 0; i < Header.Count; ++i)
             {
                 var (entry, typeblob, data) = ReadRDBEntry(buffer.Slice(offset));
                 offset += (int) entry.EntrySize.Align(4);
-                Entries.Add((entry, typeblob, DecodeOffset(((Span<byte>) data).ReadString())));
+                Entries.Add((entry, typeblob, DecodeOffset(((Span<byte>) data).ReadString() ?? "0")));
                 KTIDToEntryId[entry.FileKTID] = i;
             }
 
@@ -82,7 +82,7 @@ namespace Cethleann.Archive
         /// <summary>
         ///     List of RDB entries found in this file
         /// </summary>
-        public List<(RDBEntry entry, byte[] typeBuffer, (long offset, long size, int binId, int binSubId))> Entries { get; set; } = new List<(RDBEntry, byte[], (long, long, int, int))>();
+        public List<(RDBEntry entry, byte[]? typeBuffer, (long offset, long size, int binId, int binSubId))> Entries { get; set; } = new List<(RDBEntry, byte[]?, (long, long, int, int))>();
 
         /// <summary>
         ///     KTID to Entry ID map
@@ -209,7 +209,7 @@ namespace Cethleann.Archive
             return buffer;
         }
 
-        private (RDBEntry entry, byte[] typeblob, byte[] data) ReadRDBEntry(Span<byte> buffer)
+        private (RDBEntry entry, byte[]? typeblob, byte[]? data) ReadRDBEntry(Span<byte> buffer)
         {
             var entry = MemoryMarshal.Read<RDBEntry>(buffer);
             if (entry.Magic != DataType.RDBIndex) return (default, null, null);
@@ -228,8 +228,8 @@ namespace Cethleann.Archive
             var groups = regex.Groups;
             var offset = long.Parse(groups[1].Value, NumberStyles.HexNumber);
             var size = long.Parse(groups[2].Value, NumberStyles.HexNumber);
-            var binId = groups[3].Value != "" ? int.Parse(groups[3].Value, NumberStyles.HexNumber) : -1;
-            var binSubId = groups[4].Value != "" ? int.Parse(groups[4].Value, NumberStyles.HexNumber) : -1;
+            var binId = groups[3].Value != string.Empty ? int.Parse(groups[3].Value, NumberStyles.HexNumber) : -1;
+            var binSubId = groups[4].Value != string.Empty ? int.Parse(groups[4].Value, NumberStyles.HexNumber) : -1;
             return (offset, size, binId, binSubId);
         }
 
@@ -315,9 +315,9 @@ namespace Cethleann.Archive
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static (string name, string ext) StripName(string text)
+        public static (string name, string? ext) StripName(string text)
         {
-            string ext = null;
+            string? ext = null;
             var index = text.IndexOf(HASH_PREFIX_STR, StringComparison.Ordinal);
             if (text.StartsWith("R_") && index > 2) ext = text.Substring(2, index - 2);
 

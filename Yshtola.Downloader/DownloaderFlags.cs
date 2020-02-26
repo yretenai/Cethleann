@@ -9,13 +9,13 @@ namespace Yshtola.Downloader
     public class DownloaderFlags : ICLIFlags, IManagedFSOptions
     {
         [CLIFlag("game-dir", Positional = 0, Help = "Game Directory", IsRequired = true, Category = "Downloader Options")]
-        public string GameDir { get; set; }
+        public string GameDir { get; set; } = string.Empty;
 
         [CLIFlag("root-server", Positional = 1, Help = "Download root", IsRequired = true, Category = "Downloader Options")]
-        public string Server { get; set; }
+        public string Server { get; set; } = string.Empty;
 
         [CLIFlag("out-dir", Positional = 2, Help = "Output directory", IsRequired = true, Category = "Downloader Options")]
-        public string OutputDirectory { get; set; }
+        public string OutputDirectory { get; set; } = string.Empty;
 
         [CLIFlag("dry", Aliases = new[] { "n" }, Help = "Just output download links", Category = "Downloader Options")]
         public bool Dry { get; set; }

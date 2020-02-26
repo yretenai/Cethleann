@@ -37,6 +37,6 @@ namespace Cethleann.Audio
         /// <summary>
         ///     Specific soundbank
         /// </summary>
-        public IWBHSoundbank Soundbank { get; set; }
+        public IWBHSoundbank? Soundbank { get; set; }
     }
 }

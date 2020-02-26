@@ -21,7 +21,7 @@ namespace Cethleann.Pack
         public GPKNameMap(Span<byte> data)
         {
             var offset = 8;
-            Name = data.Slice(0, 8).ReadString();
+            Name = data.Slice(0, 8).ReadString() ?? string.Empty;
             Header = MemoryMarshal.Read<GPKNameMapHeader>(data.Slice(offset));
             offset += SizeHelper.SizeOf<GPKNameMapHeader>();
             Entries = MemoryMarshal.Cast<byte, GPKNameMapEntry>(data.Slice(offset, SizeHelper.SizeOf<GPKNameMapEntry>() * Header.Count)).ToArray();

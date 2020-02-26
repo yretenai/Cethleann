@@ -8,10 +8,10 @@ namespace Nyotengu.Hasher
     public class HasherFlags : ICLIFlags
     {
         [CLIFlag("prefix", Default = "R_", Help = "Hash Prefix", Category = "Hasher Options")]
-        public string Prefix { get; set; }
+        public string Prefix { get; set; } = "R_";
 
         [CLIFlag("format", Help = "File type of the filename", Category = "Hasher Options")]
-        public string Format { get; set; }
+        public string? Format { get; set; }
 
         [CLIFlag("raw", Help = "Skip string formatting", Category = "Hasher Options")]
         public bool Raw { get; set; }

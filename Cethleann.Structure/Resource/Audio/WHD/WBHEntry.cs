@@ -9,6 +9,6 @@ namespace Cethleann.Structure.Resource.Audio.WHD
         public WAVECodec Codec { get; set; }
         public int Frequency { get; set; }
         public short BlockAlign { get; set; }
-        public object Setup { get; set; }
+        public object? Setup { get; set; }
     }
 }

@@ -17,9 +17,10 @@ namespace Yshtola.Downloader
         {
             Logger.PrintVersion("Yshtola");
             var flags = CommandLineFlags.ParseFlags<DownloaderFlags>(CommandLineFlags.PrintHelp, args);
+            if (flags == null) return;
 
 
-            YshtolaSettings settings = flags.GameId switch
+            YshtolaSettings? settings = flags.GameId switch
             {
                 DataGame.DissidiaNT => new YshtolaDissidiaSettings(),
                 DataGame.VenusVacation => new YshtolaVenusVacationSettings(),

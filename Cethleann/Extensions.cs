@@ -20,7 +20,7 @@ namespace Cethleann
         /// <param name="value"></param>
         /// <param name="onlyAlphaNum"></param>
         /// <returns></returns>
-        public static string ToFourCC(this int value, bool onlyAlphaNum) => string.Join("", BitConverter.GetBytes(value).Select(x => x >= 48 && x <= 122 ? ((char) x).ToString() : onlyAlphaNum ? "" : $@"\x{x:X2}"));
+        public static string ToFourCC(this int value, bool onlyAlphaNum) => string.Join(string.Empty, BitConverter.GetBytes(value).Select(x => x >= 48 && x <= 122 ? ((char) x).ToString() : onlyAlphaNum ? string.Empty : $@"\x{x:X2}"));
 
         /// <summary>
         ///     Converts a DataType to a FourCC

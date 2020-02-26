@@ -12,6 +12,8 @@ namespace Cethleann.Unbundler
         {
             Logger.PrintVersion("Cethleann");
             var flags = CommandLineFlags.ParseFlags<UnbundlerToolFlags>(CommandLineFlags.PrintHelp, args);
+            if (flags == null) return;
+
             var files = new List<string>();
             foreach (var arg in flags.Paths)
             {
@@ -36,7 +38,7 @@ namespace Cethleann.Unbundler
                         if (Path.GetFileName(arg) == Path.GetFileNameWithoutExtension(arg))
                             pathBase += "_contents";
                         else
-                            pathBase = Path.Combine(Path.GetDirectoryName(arg), Path.GetFileNameWithoutExtension(arg));
+                            pathBase = Path.Combine(Path.GetDirectoryName(arg) ?? string.Empty, Path.GetFileNameWithoutExtension(arg));
                     }
 
                     UnbundlerLogic.TryExtractBlob(pathBase, data, true, flags, true);

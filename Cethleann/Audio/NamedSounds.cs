@@ -26,7 +26,7 @@ namespace Cethleann.Audio
             Header = MemoryMarshal.Read<NamedSoundHeader>(blob);
             Logger.Assert(Header.Count == 1, "Header.Count == 1");
             var offset = SizeHelper.SizeOf<NamedSoundHeader>();
-            Filenames = new List<string>(Header.Count);
+            Filenames = new List<string?>(Header.Count);
             for (var i = 0; i < Header.Count; ++i)
             {
                 var pointer = MemoryMarshal.Read<int>(blob.Slice(offset));
@@ -37,7 +37,7 @@ namespace Cethleann.Audio
             offset = Header.PointersTablePointer;
             for (var i = 0; i < Header.Count; ++i)
             {
-                var name = blob.Slice(offset).ReadString(null, false);
+                var name = blob.Slice(offset).ReadStringNonNull();
                 offset += (name?.Length ?? 0) + 1;
                 Filenames.Add(name);
             }
@@ -59,7 +59,7 @@ namespace Cethleann.Audio
         /// <summary>
         ///     Filenames (if any)
         /// </summary>
-        public List<string> Filenames { get; set; }
+        public List<string?> Filenames { get; set; }
 
         /// <inheritdoc />
         public SoundResourceEntry Base => Header.Base;

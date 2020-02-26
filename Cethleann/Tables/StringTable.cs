@@ -21,11 +21,11 @@ namespace Cethleann.Tables
         {
             var count = MemoryMarshal.Read<int>(buffer);
             var tableInfo = MemoryMarshal.Cast<byte, DataTableRecord>(buffer.Slice(sizeof(int), SizeHelper.SizeOf<DataTableRecord>() * count));
-            var entries = new List<string>();
+            var entries = new List<string?>();
             foreach (var info in tableInfo)
             {
                 var block = buffer.Slice(info.Offset);
-                entries.Add(block.ReadString(returnNull: false));
+                entries.Add(block.ReadString());
             }
 
             Entries = entries;
@@ -34,6 +34,6 @@ namespace Cethleann.Tables
         /// <summary>
         ///     Lsof Entries found in the table
         /// </summary>
-        public List<string> Entries { get; }
+        public List<string?> Entries { get; }
     }
 }

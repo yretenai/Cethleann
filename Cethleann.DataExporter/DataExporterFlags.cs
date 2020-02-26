@@ -9,14 +9,14 @@ namespace Cethleann.DataExporter
     public class DataExporterFlags : UnbundlerFlags, IReisalinOptions, INyotenguOptions
     {
         [CLIFlag("out-dir", Positional = 0, Help = "Extraction Directory", IsRequired = true, Category = "DataExporter Options")]
-        public string OutputDirectory { get; set; }
+        public string OutputDirectory { get; set; } = string.Empty;
 
         [UsedImplicitly]
         [CLIFlag("game-dirs", Positional = 1, Help = "List of Game Directories", IsRequired = true, Category = "DataExporter Options")]
         public List<string> GameDirs { get; set; } = new List<string>();
 
         [CLIFlag("filelist", Help = "File List to load. Unspecified is automatically determined based on GameId", Category = "DataExporter Options")]
-        public string FileList { get; set; }
+        public string? FileList { get; set; }
 
         [CLIFlag("no-filelist", Help = "Don't use a filelist", Category = "DataExporter Options")]
         public bool NoFilelist { get; set; }

@@ -45,7 +45,7 @@ namespace Cethleann.KTID
                     for (var index = 0; index < pointers.Length; index++)
                     {
                         var pointer = pointers[index];
-                        strings[index] = buffer.Slice(offset + pointer).ReadString();
+                        strings[index] = buffer.Slice(offset + pointer).ReadString() ?? string.Empty;
                     }
                 }
 

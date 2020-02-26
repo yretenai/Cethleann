@@ -25,7 +25,7 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
             {
                 var count = MemoryMarshal.Read<int>(data.Slice(offset));
                 offset += sizeof(int);
-                var @params = new List<(ModelGeometryShaderParam, string, Array)>();
+                var @params = new List<(ModelGeometryShaderParam, string, Array?)>();
                 for (var j = 0; j < count; ++j)
                 {
                     var blockHeader = MemoryMarshal.Read<ModelGeometryShaderParam>(data.Slice(offset));
@@ -34,7 +34,7 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
                     try
                     {
                         var block = data.Slice(offset + localOffset, blockHeader.Size - localOffset);
-                        name = block.ReadString(returnNull: false);
+                        name = block.ReadStringNonNull();
                         localOffset = (name.Length + 1).Align(4);
                         var paramsBlock = block.Slice(localOffset);
                         var paramData = blockHeader.Type switch
@@ -64,7 +64,7 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
         ///     Two dimensional list of param values.
         ///     I think count usually matches the number of materials.
         /// </summary>
-        public List<List<(ModelGeometryShaderParam param, string name, Array values)>> ParamGroups { get; } = new List<List<(ModelGeometryShaderParam param, string name, Array values)>>();
+        public List<List<(ModelGeometryShaderParam param, string name, Array? values)>> ParamGroups { get; } = new List<List<(ModelGeometryShaderParam param, string name, Array? values)>>();
 
         /// <inheritdoc />
         public ModelGeometryType Type => ModelGeometryType.ShaderParam;

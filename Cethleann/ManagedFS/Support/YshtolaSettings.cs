@@ -11,12 +11,12 @@ namespace Cethleann.ManagedFS.Support
         /// <summary>
         ///     ID Table name
         /// </summary>
-        public string[] TableNames { get; set; }
+        public string[] TableNames { get; set; } = new string[0];
 
         /// <summary>
         ///     Key truth
         /// </summary>
-        public byte[] XorTruth { get; set; }
+        public byte[] XorTruth { get; set; } = new byte[0];
 
         /// <summary>
         ///     Key multiplier constant

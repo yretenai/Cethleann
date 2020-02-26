@@ -31,9 +31,9 @@ namespace Cethleann.ManagedFS
         /// <param name="game"></param>
         /// <param name="system"></param>
         /// <returns></returns>
-        public static string GetFileListLocation(string filename, DataGame game, string system)
+        public static string GetFileListLocation(string? filename, DataGame game, string system)
         {
-            return GetFileListLocation(filename, game == DataGame.None ? "" : game.ToString(), system);
+            return GetFileListLocation(filename, game == DataGame.None ? string.Empty : game.ToString(), system);
         }
 
         /// <summary>
@@ -43,10 +43,10 @@ namespace Cethleann.ManagedFS
         /// <param name="type"></param>
         /// <param name="system"></param>
         /// <returns></returns>
-        public static string GetFileListLocation(string filename, string type, string system)
+        public static string GetFileListLocation(string? filename, string type, string system)
         {
             if (!string.IsNullOrWhiteSpace(filename) && File.Exists(filename)) return Path.GetFullPath(filename);
-            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), filename ?? $"filelist{(type?.Length == 0 ? "" : $"-{type}")}-{system}.csv");
+            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "./", filename ?? $"filelist{(type?.Length == 0 ? string.Empty : $"-{type}")}-{system}.csv");
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Cethleann.ManagedFS
         /// <param name="game"></param>
         /// <param name="system"></param>
         /// <returns></returns>
-        public static Dictionary<string, string> GetSimpleFileList(string filename, DataGame game, string system)
+        public static Dictionary<string, string> GetSimpleFileList(string? filename, DataGame game, string system)
         {
             var loc = GetFileListLocation(filename, game, system);
             if (!File.Exists(loc)) return new Dictionary<string, string>();
@@ -71,7 +71,7 @@ namespace Cethleann.ManagedFS
         /// <param name="game"></param>
         /// <param name="system"></param>
         /// <returns></returns>
-        public static Dictionary<string, string> GetNamedFileList(string filename, DataGame game, string system)
+        public static Dictionary<string, string> GetNamedFileList(string? filename, DataGame game, string system)
         {
             var loc = GetFileListLocation(filename, game, system);
             if (!File.Exists(loc)) return new Dictionary<string, string>();

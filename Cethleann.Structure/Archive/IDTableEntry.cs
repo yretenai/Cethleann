@@ -16,12 +16,12 @@ namespace Cethleann.Structure.Archive
 
         public string Path(Memory<byte> table, int offset)
         {
-            return table.Span.Slice(offset + PathOffset).ReadString();
+            return table.Span.Slice(offset + PathOffset).ReadStringNonNull();
         }
 
         public string OriginalPath(Memory<byte> table, int offset)
         {
-            return table.Span.Slice(offset + OriginalPathOffset).ReadString();
+            return table.Span.Slice(offset + OriginalPathOffset).ReadStringNonNull();
         }
     }
 }

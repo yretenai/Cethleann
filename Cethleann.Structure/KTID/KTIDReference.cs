@@ -19,8 +19,10 @@ namespace Cethleann.Structure.KTID
             };
         }
 
-        public string ToString(string format, IFormatProvider formatProvider) => KTID.ToString(format, formatProvider);
+        public string ToString(string? format, IFormatProvider? formatProvider) => KTID.ToString(format, formatProvider);
 
-        public string ToString(string format) => KTID.ToString(format);
+        public string ToString(string? format) => KTID.ToString(format);
+
+        public override string ToString() => KTID.ToString("x8");
     }
 }

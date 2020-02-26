@@ -62,7 +62,7 @@ namespace Cethleann.Graphics
         /// <summary>
         ///     Image names
         /// </summary>
-        public List<string> Names { get; set; } = new List<string>();
+        public List<string?> Names { get; set; } = new List<string?>();
 
         /// <summary>
         ///     Images

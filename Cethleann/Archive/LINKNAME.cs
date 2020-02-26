@@ -28,12 +28,12 @@ namespace Cethleann.Archive
         /// <summary>
         ///     Source file name
         /// </summary>
-        public string SourceName { get; set; }
+        public string? SourceName { get; set; }
 
         /// <summary>
         ///     Lsof names for the files
         /// </summary>
-        public List<string> Names { get; set; } = new List<string>();
+        public List<string?> Names { get; set; } = new List<string?>();
 
         /// <summary>
         ///     LFM Order entry list
@@ -50,7 +50,7 @@ namespace Cethleann.Archive
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public string GetName(int index)
+        public string? GetName(int index)
         {
             for (var i = 0; i < Entries.Length; i++)
             {

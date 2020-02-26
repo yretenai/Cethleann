@@ -14,6 +14,10 @@ namespace Cethleann.Audio.WBH
     [PublicAPI]
     public class HDDB
     {
+        public HDDB()
+        {
+        }
+
         /// <summary>
         ///     Initialize with buffer and count
         /// </summary>
@@ -33,7 +37,7 @@ namespace Cethleann.Audio.WBH
                 for (var index = 0; index < pointers.Length; index++)
                 {
                     var pointer = pointers[index];
-                    if (pointer > 0) strings[index] = buffer.Slice(offset + pointer).ReadString(Encoding.GetEncoding(932));
+                    if (pointer > 0) strings[index] = buffer.Slice(offset + pointer).ReadString(Encoding.GetEncoding(932)) ?? string.Empty;
                 }
 
                 Entries.Add(strings);
@@ -48,7 +52,7 @@ namespace Cethleann.Audio.WBH
         /// <summary>
         ///     Filename
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         ///     Lsof tags

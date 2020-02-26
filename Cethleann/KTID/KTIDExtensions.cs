@@ -9,7 +9,7 @@ namespace Cethleann.KTID
     [PublicAPI]
     public static class KTIDExtensions
     {
-        public static (OBJDBEntry entry, IKTIDSystemType instance) Dereference(this KTIDReference instance, OBJDB db)
+        public static (OBJDBEntry entry, Dictionary<OBJDBProperty, object?[]> properties)? Dereference(this KTIDReference instance, OBJDB db)
         {
             return db.Entries.TryGetValue(instance.KTID, out var ktidInstance) ? ktidInstance : default;
         }
@@ -19,10 +19,9 @@ namespace Cethleann.KTID
             return nyotengu.ReadEntry(instance.KTID);
         }
 
-        public static string GetName(this KTIDReference instance, NDB ndb, Dictionary<uint, string> nameList)
+        public static string? GetName(this KTIDReference instance, NDB ndb, Dictionary<uint, string> nameList)
         {
             if (ndb.HashMap.TryGetValue(instance, out var name)) return name;
-            if (TypeInfo.Instance.Value.NameMap.TryGetValue(instance, out name)) return name;
             return !nameList.TryGetValue(instance, out name) ? null : name;
         }
     }

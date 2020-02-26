@@ -32,7 +32,7 @@ namespace Cethleann.ManagedFS
         /// <param name="filename"></param>
         /// <param name="game"></param>
         /// <returns></returns>
-        Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null);
+        Dictionary<string, string>? LoadFileList(string? filename = null, DataGame? game = null);
 
         /// <summary>
         ///     Attempts to get a valid filename/filepath.
@@ -41,7 +41,7 @@ namespace Cethleann.ManagedFS
         /// <param name="ext"></param>
         /// <param name="dataType"></param>
         /// <returns></returns>
-        string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None);
+        string? GetFilename(int index, string ext = "bin", DataType dataType = DataType.None);
 
         /// <summary>
         ///     Adds a container

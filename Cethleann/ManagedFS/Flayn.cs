@@ -43,7 +43,7 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Root directory of the Patch rom:/
         /// </summary>
-        public string PatchRomFS { get; private set; }
+        public string? PatchRomFS { get; private set; }
 
         /// <summary>
         ///     Maximum number of entries found in the base container
@@ -94,7 +94,7 @@ namespace Cethleann.ManagedFS
             var localId = index;
             for (var i = 0; i < Data.Count + (PatchEntryCount > 0 ? 1 : 0); ++i)
             {
-                if (PatchEntryCount > 0)
+                if (PatchEntryCount > 0 && PatchRomFS != null)
                 {
                     var (info0, info1) = Patch;
                     if (i == 1)
@@ -128,20 +128,22 @@ namespace Cethleann.ManagedFS
         }
 
         /// <inheritdoc />
-        public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null)
+        public Dictionary<string, string> LoadFileList(string? filename = null, DataGame? game = null)
         {
             FileList = ManagedFSHelper.GetNamedFileList(filename, game ?? GameId, "link");
             return FileList;
         }
 
         /// <inheritdoc />
-        public string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
+        public string GetFilename(int index, string? ext = "bin", DataType dataType = DataType.None)
         {
             if (dataType == DataType.Compressed || dataType == DataType.CompressedChonky) ext = ext == "gz" ? "bin.gz" : ext + ".gz";
 
+            ext ??= "bin";
+
             var id = "0";
             var generatedPrefix = index.ToString();
-            var prefix = "";
+            var prefix = string.Empty;
             var localId = index;
             for (var i = 0; i < Data.Count + (PatchEntryCount > 0 ? 1 : 0); ++i)
             {
@@ -174,25 +176,24 @@ namespace Cethleann.ManagedFS
 
                 generatedPrefix = GameId switch
                 {
-                    DataGame.ThreeHouses => i == 0 ? "" : "DLC - ",
-                    _ => ""
+                    DataGame.ThreeHouses => i == 0 ? string.Empty : "DLC - ",
+                    _ => string.Empty
                 };
                 id = GameId switch
                 {
-                    DataGame.ThreeHouses => $"{(i == 0 ? "" : "DLC_")}{localId}",
+                    DataGame.ThreeHouses => $"{(i == 0 ? string.Empty : "DLC_")}{localId}",
                     _ => $"{linkname}_{localId}"
                 };
                 prefix = GameId switch
                 {
-                    DataGame.ThreeHouses => $"{(i == 0 ? "" : "dlc")}/",
+                    DataGame.ThreeHouses => $"{(i == 0 ? string.Empty : "dlc")}/",
                     _ => $"{linkname}"
                 };
                 break;
             }
 
-
             if (!FileList.TryGetValue(id, out var path)) path = (ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{generatedPrefix}{localId}.{ext}" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{generatedPrefix}{localId}.{ext}");
-            else path = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + $".{ext}");
+            else path = Path.Combine(Path.GetDirectoryName(path) ?? string.Empty, Path.GetFileNameWithoutExtension(path) + $".{ext}");
             if (ext.EndsWith(".gz") && !path.EndsWith(".gz")) path += ".gz";
             return $@"{prefix}\{path}";
         }
@@ -244,7 +245,7 @@ namespace Cethleann.ManagedFS
 
             Logger.Success("Flayn", $"Loading {Path.GetFileName(idxPath)}...");
 
-            var fullPath = Path.GetFullPath(Path.GetDirectoryName(idxPath));
+            var fullPath = Path.GetFullPath(Path.GetDirectoryName(idxPath) ?? string.Empty);
             if (Data.Any(x => x.romfs == fullPath)) return;
             var set = (new DATA0(idxPath), File.OpenRead(binPath), fullPath, Path.GetFileNameWithoutExtension(idxPath));
             Data.Add(set);
@@ -262,7 +263,7 @@ namespace Cethleann.ManagedFS
         /// <exception cref="DirectoryNotFoundException"></exception>
         public void AddInfoFSInternal(string info0Path, string info1Path)
         {
-            PatchRomFS = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(info0Path), ".."));
+            PatchRomFS = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(info0Path) ?? string.Empty, ".."));
             Patch = (new INFO0(info0Path), new INFO1(info1Path));
             PatchEntryCount = Patch.INFO1?.Entries.Count ?? 0;
         }
@@ -281,7 +282,7 @@ namespace Cethleann.ManagedFS
         ///     Load LINKDATA filename patterns
         /// </summary>
         /// <param name="filename"></param>
-        public void LoadPatterns(string filename = null)
+        public void LoadPatterns(string? filename = null)
         {
             Patterns = ManagedFSHelper.GetFileList(ManagedFSHelper.GetFileListLocation(filename, "LINKDATAPatterns", "link"), 4).Select(x => (x[0], x[2], x[1].ToCharArray(), x[3])).ToList();
         }

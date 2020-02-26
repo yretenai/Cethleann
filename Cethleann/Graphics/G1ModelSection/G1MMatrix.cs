@@ -37,7 +37,7 @@ namespace Cethleann.Graphics.G1ModelSection
         ///     List of matrices found in the file.
         ///     They're all weird.
         /// </summary>
-        public Matrix4x4[] Matrices { get; }
+        public Matrix4x4[] Matrices { get; } = new Matrix4x4[0];
 
         /// <inheritdoc />
         public int SupportedVersion { get; } = 20;

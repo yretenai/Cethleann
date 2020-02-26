@@ -80,7 +80,7 @@ namespace Cethleann.Audio.WBH
         /// <summary>
         ///     Filename database
         /// </summary>
-        public HDDB NameDatabase { get; set; }
+        public HDDB NameDatabase { get; set; } = new HDDB();
 
         /// <summary>
         ///     Underlying header
@@ -132,6 +132,6 @@ namespace Cethleann.Audio.WBH
         }).ToArray()).ToList();
 
         /// <inheritdoc />
-        public List<string> Names => NameDatabase?.Entries?.Select(x => x.ElementAtOrDefault(NameIndex) ?? x.ElementAtOrDefault(SecondaryNameIndex) ?? x.FirstOrDefault(y => y != null)).ToList();
+        public List<string> Names => NameDatabase.Entries.Select(x => x.ElementAtOrDefault(NameIndex) ?? x.ElementAtOrDefault(SecondaryNameIndex) ?? x.FirstOrDefault(y => y != null)).ToList();
     }
 }

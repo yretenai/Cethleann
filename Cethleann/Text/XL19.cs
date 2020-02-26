@@ -40,7 +40,7 @@ namespace Cethleann.Text
                         continue;
                     }
 
-                    set.Add(buffer.Slice(header.TableOffset + rip).ReadString(returnNull: false));
+                    set.Add(buffer.Slice(header.TableOffset + rip).ReadStringNonNull());
                 }
 
                 Entries.Add(set);

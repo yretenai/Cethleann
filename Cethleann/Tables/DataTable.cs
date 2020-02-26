@@ -45,7 +45,7 @@ namespace Cethleann.Tables
         /// <summary>
         ///     Lsof Entries found in the table
         /// </summary>
-        public List<Memory<byte>> Entries { get; set; }
+        public List<Memory<byte>> Entries { get; set; } = new List<Memory<byte>>();
 
         /// <summary>
         ///     Writes a data buffer for this structure.

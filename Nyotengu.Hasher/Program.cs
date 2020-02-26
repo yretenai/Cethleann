@@ -14,6 +14,7 @@ namespace Nyotengu.Hasher
         {
             Logger.PrintVersion("Softness");
             var flags = CommandLineFlags.ParseFlags<HasherFlags>(CommandLineFlags.PrintHelp, args);
+            if (flags == null) return;
             foreach (var str in flags.Strings) Console.WriteLine($"{(flags.Raw ? RDB.Hash(str) : RDB.Hash(Path.GetFileNameWithoutExtension(str), flags.Format ?? Path.GetExtension(str).Substring(1).ToUpper(), flags.Prefix)):x8},{str}");
         }
     }

@@ -73,7 +73,7 @@ namespace Cethleann.Pack
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static int[] Validate(Span<byte> data)
+        public static int[]? Validate(Span<byte> data)
         {
             if (data.Length < 0x10) return null;
             var count = MemoryMarshal.Read<int>(data);

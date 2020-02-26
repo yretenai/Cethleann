@@ -62,7 +62,7 @@ namespace Cethleann.ManagedFS
         }
 
         /// <inheritdoc />
-        public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null)
+        public Dictionary<string, string> LoadFileList(string? filename = null, DataGame? game = null)
         {
             FileList = ManagedFSHelper.GetNamedFileList(filename, game ?? GameId, "archive");
             return FileList;
@@ -103,7 +103,7 @@ namespace Cethleann.ManagedFS
             }
             else
             {
-                path = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + $".{ext}");
+                path = Path.Combine(Path.GetDirectoryName(path) ?? string.Empty, Path.GetFileNameWithoutExtension(path) + $".{ext}");
             }
 
             if (ext.EndsWith(".gz") && !path.EndsWith(".gz")) path += ".gz";

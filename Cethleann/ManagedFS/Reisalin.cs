@@ -59,10 +59,10 @@ namespace Cethleann.ManagedFS
         }
 
         /// <inheritdoc />
-        public Dictionary<string, string> LoadFileList(string filename = null, DataGame? game = null) => null;
+        public Dictionary<string, string>? LoadFileList(string? filename = null, DataGame? game = null) => null;
 
         /// <inheritdoc />
-        public string GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
+        public string? GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
         {
             foreach (var pak in PAKs)
             {
