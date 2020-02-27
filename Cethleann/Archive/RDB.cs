@@ -87,7 +87,7 @@ namespace Cethleann.Archive
         /// <summary>
         ///     KTID to Entry ID map
         /// </summary>
-        public Dictionary<uint, int> KTIDToEntryId { get; set; } = new Dictionary<uint, int>();
+        public Dictionary<KTIDReference, int> KTIDToEntryId { get; set; } = new Dictionary<KTIDReference, int>();
 
         /// <summary>
         ///     Name Database for this RDB
@@ -138,7 +138,7 @@ namespace Cethleann.Archive
         /// </summary>
         /// <param name="fileId"></param>
         /// <returns></returns>
-        public string GetExternalPath(uint fileId)
+        public string GetExternalPath(KTIDReference fileId)
         {
             return Path.Combine(Directory, $"0x{fileId:x8}.file");
         }
@@ -255,7 +255,7 @@ namespace Cethleann.Archive
         /// <param name="iv"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static uint Hash(Span<byte> text, int iv, int key)
+        public static KTIDReference Hash(Span<byte> text, int iv, int key)
         {
             unchecked
             {
@@ -277,7 +277,7 @@ namespace Cethleann.Archive
         /// <param name="ext"></param>
         /// <param name="prefix"></param>
         /// <returns></returns>
-        public static uint Hash(string text, string ext, string prefix = "R_")
+        public static KTIDReference Hash(string text, string ext, string prefix = "R_")
         {
             return Hash(Encoding.UTF8.GetBytes(text), ext, prefix);
         }
@@ -289,7 +289,7 @@ namespace Cethleann.Archive
         /// <param name="ext"></param>
         /// <param name="prefix"></param>
         /// <returns></returns>
-        public static uint Hash(Span<byte> text, string ext, string prefix = "R_")
+        public static KTIDReference Hash(Span<byte> text, string ext, string prefix = "R_")
         {
             Span<byte> buffer = new byte[ext.Length + prefix.Length + HASH_PREFIX.Length + HASH_SUFFIX.Length + text.Length];
             prefix.ToSpan().CopyTo(buffer);
@@ -305,7 +305,7 @@ namespace Cethleann.Archive
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static uint Hash(string text)
+        public static KTIDReference Hash(string text)
         {
             return Hash(Encoding.UTF8.GetBytes(text.Substring(1)), text[0] * HASH_KEY, HASH_KEY);
         }

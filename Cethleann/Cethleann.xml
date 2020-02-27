@@ -502,7 +502,7 @@
             <returns></returns>
             <exception cref="T:System.IndexOutOfRangeException"></exception>
         </member>
-        <member name="M:Cethleann.Archive.RDB.GetExternalPath(System.UInt32)">
+        <member name="M:Cethleann.Archive.RDB.GetExternalPath(Cethleann.Structure.KTID.KTIDReference)">
             <summary>
                 Gets an external file path for a given index
             </summary>
@@ -1913,7 +1913,7 @@
             <param name="nyotengu"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.KTID.KTIDExtensions.GetName(Cethleann.Structure.KTID.KTIDReference,Cethleann.KTID.NDB,System.Collections.Generic.Dictionary{System.UInt32,System.String})">
+        <member name="M:Cethleann.KTID.KTIDExtensions.GetName(Cethleann.Structure.KTID.KTIDReference,Cethleann.KTID.NDB,System.Collections.Generic.Dictionary{Cethleann.Structure.KTID.KTIDReference,System.String})">
             <summary>
                 Attempt to retrieve a KTID file
             </summary>
@@ -1980,12 +1980,11 @@
                 Property Loaders
             </summary>
         </member>
-        <member name="M:Cethleann.KTID.OBJDB.#ctor(System.Span{System.Byte},Cethleann.KTID.NDB)">
+        <member name="M:Cethleann.KTID.OBJDB.#ctor(System.Span{System.Byte})">
             <summary>
                 Initialize with buffer, and with an optional Name Database
             </summary>
             <param name="buffer"></param>
-            <param name="ndb"></param>
         </member>
         <member name="P:Cethleann.KTID.OBJDB.Header">
             <summary>
@@ -2002,6 +2001,42 @@
                 Helper function to create primitive readers
             </summary>
             <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.KTID.OBJDBStructure">
+            <summary>
+                Wrapper for tuple to provide some extra helpers
+            </summary>
+        </member>
+        <member name="M:Cethleann.KTID.OBJDBStructure.#ctor(Cethleann.Structure.KTID.OBJDBEntry,System.Collections.Generic.Dictionary{Cethleann.Structure.KTID.OBJDBProperty,System.Object[]})">
+            <summary>
+                Initialize
+            </summary>
+            <param name="entry"></param>
+            <param name="properties"></param>
+        </member>
+        <member name="P:Cethleann.KTID.OBJDBStructure.Entry">
+            <summary>
+                Proxy for Item1
+            </summary>
+        </member>
+        <member name="P:Cethleann.KTID.OBJDBStructure.Properties">
+            <summary>
+                Proxy for Item2
+            </summary>
+        </member>
+        <member name="M:Cethleann.KTID.OBJDBStructure.GetProperty(System.String)">
+            <summary>
+                Get property values by name
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.KTID.OBJDBStructure.GetProperty(Cethleann.Structure.KTID.KTIDReference)">
+            <summary>
+                Get property values by KTID
+            </summary>
+            <param name="ktid"></param>
             <returns></returns>
         </member>
         <member name="T:Cethleann.ManagedFS.Flayn">
@@ -2361,7 +2396,7 @@
         <member name="M:Cethleann.ManagedFS.Nyotengu.LoadFileList(System.String,System.Nullable{Cethleann.Structure.DataGame})">
             <inheritdoc />
         </member>
-        <member name="M:Cethleann.ManagedFS.Nyotengu.ReadEntry(System.UInt32)">
+        <member name="M:Cethleann.ManagedFS.Nyotengu.ReadEntry(Cethleann.Structure.KTID.KTIDReference)">
             <summary>
                 Read entry via KTID
             </summary>
@@ -2369,6 +2404,14 @@
             <returns></returns>
         </member>
         <member name="M:Cethleann.ManagedFS.Nyotengu.LoadKTIDFileList(System.String,Cethleann.Structure.DataGame)">
+            <summary>
+                Read a KTID File list
+            </summary>
+            <param name="filename"></param>
+            <param name="game"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.ManagedFS.Nyotengu.LoadKTIDFileList(System.String,System.String)">
             <summary>
                 Read a KTID File list
             </summary>

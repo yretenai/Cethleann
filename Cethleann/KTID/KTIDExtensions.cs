@@ -18,7 +18,7 @@ namespace Cethleann.KTID
         /// <param name="instance"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        public static (OBJDBEntry entry, Dictionary<OBJDBProperty, object?[]> properties)? Dereference(this KTIDReference instance, OBJDB db)
+        public static OBJDBStructure? Dereference(this KTIDReference instance, OBJDB db)
         {
             return db.Entries.TryGetValue(instance.KTID, out var ktidInstance) ? ktidInstance : default;
         }
@@ -41,10 +41,11 @@ namespace Cethleann.KTID
         /// <param name="ndb"></param>
         /// <param name="nameList"></param>
         /// <returns></returns>
-        public static string? GetName(this KTIDReference instance, NDB ndb, Dictionary<uint, string> nameList)
+        public static string? GetName(this KTIDReference instance, NDB ndb, Dictionary<KTIDReference, string> nameList)
         {
-            if (ndb.HashMap.TryGetValue(instance, out var name)) return name;
-            return !nameList.TryGetValue(instance, out name) ? null : name;
+            if (instance == 0) return "NULL";
+            if (ndb.HashMap.TryGetValue(instance, out var name) && !string.IsNullOrWhiteSpace(name)) return name;
+            return !nameList.TryGetValue(instance, out name) || string.IsNullOrWhiteSpace(name) ? null : name;
         }
     }
 }

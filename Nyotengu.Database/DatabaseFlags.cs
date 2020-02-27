@@ -1,4 +1,5 @@
-﻿using Cethleann.Structure;
+﻿using System.Collections.Generic;
+using Cethleann.Structure;
 using DragonLib.CLI;
 using JetBrains.Annotations;
 
@@ -7,14 +8,17 @@ namespace Nyotengu.Database
     [UsedImplicitly]
     public class DatabaseFlags : ICLIFlags
     {
-        [CLIFlag("path", Positional = 0, IsRequired = true, Help = "Database file to load", Category = "Database Options")]
-        public string Path { get; set; } = string.Empty;
+        [CLIFlag("path", Positional = 0, IsRequired = true, Help = "Database files to load", Category = "Database Options")]
+        public HashSet<string> Paths { get; set; } = new HashSet<string>();
 
-        [CLIFlag("namedb", Positional = 1, Help = "Name Database file to load", Category = "Database Options")]
+        [CLIFlag("ndb", Help = "Directory with namedb files when loading OBJDB files", Category = "Database Options")]
         public string? NDBPath { get; set; }
 
-        [CLIFlag("hash-all", Category = "Database Options")]
+        [CLIFlag("hash-all", Help = "Hash all NDB values", Category = "Database Options")]
         public bool HashAll { get; set; }
+
+        [CLIFlag("show-ktids", Help = "Show KTIDs rather than named value", Category = "Database Options")]
+        public bool ShowKTIDs { get; set; }
 
         [CLIFlag("filelist", Help = "File List to load. Unspecified is automatically determined based on GameId", Category = "Database Options")]
         public string? FileList { get; set; }

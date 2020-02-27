@@ -3,8 +3,15 @@
     public enum OBJDBPropertyType : uint
     {
         Bool = 0,
+
+        // Byte = 1,
+        // Int16 = 2,
+        // UInt16 = 3,
         Int32 = 4,
-        KTID = 5, // Could also be UInt32.
+        UInt32 = 5,
+
+        // Int64 = 6,
+        // UInt64 = 7,
         Float32 = 8
     }
 }

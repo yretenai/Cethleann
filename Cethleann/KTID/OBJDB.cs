@@ -30,15 +30,14 @@ namespace Cethleann.KTID
             { OBJDBPropertyType.Bool, CreateDelegate<bool>() },
             { OBJDBPropertyType.Float32, CreateDelegate<float>() },
             { OBJDBPropertyType.Int32, CreateDelegate<int>() },
-            { OBJDBPropertyType.KTID, CreateDelegate<KTIDReference>() }
+            { OBJDBPropertyType.UInt32, CreateDelegate<uint>() }
         };
 
         /// <summary>
         ///     Initialize with buffer, and with an optional Name Database
         /// </summary>
         /// <param name="buffer"></param>
-        /// <param name="ndb"></param>
-        public OBJDB(Span<byte> buffer, NDB? ndb = default)
+        public OBJDB(Span<byte> buffer)
         {
             Header = MemoryMarshal.Read<OBJDBHeader>(buffer);
             var offset = Header.SectionHeader.Size;
@@ -74,7 +73,7 @@ namespace Cethleann.KTID
                     kodOffset = (kodOffset + propertySize * property.Count).Align(4);
                 }
 
-                Entries[entry.KTID] = (entry, propertyMap);
+                Entries[entry.KTID] = new OBJDBStructure(entry, propertyMap);
                 offset += entry.SectionHeader.Size;
                 offset = offset.Align(4);
             }
@@ -88,7 +87,7 @@ namespace Cethleann.KTID
         /// <summary>
         ///     Entries in the database
         /// </summary>
-        public Dictionary<KTIDReference, (OBJDBEntry entry, Dictionary<OBJDBProperty, object?[]> properties)> Entries { get; set; } = new Dictionary<KTIDReference, (OBJDBEntry, Dictionary<OBJDBProperty, object?[]>)>();
+        public Dictionary<KTIDReference, OBJDBStructure> Entries { get; set; } = new Dictionary<KTIDReference, OBJDBStructure>();
 
         /// <summary>
         ///     Helper function to create primitive readers

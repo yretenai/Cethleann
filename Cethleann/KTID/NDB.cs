@@ -28,9 +28,9 @@ namespace Cethleann.KTID
         {
             Header = MemoryMarshal.Read<NDBHeader>(buffer);
             Entries = new List<(NDBEntry entry, string[] strings)>(Header.Count);
-            NameMap = new Dictionary<uint, string>(Header.Count);
-            HashMap = new Dictionary<uint, string>(Header.Count);
-            ExtMap = new Dictionary<uint, string>(Header.Count);
+            NameMap = new Dictionary<KTIDReference, string>(Header.Count);
+            HashMap = new Dictionary<KTIDReference, string>(Header.Count);
+            ExtMap = new Dictionary<KTIDReference, string>(Header.Count);
 
             var offset = Header.SectionHeader.Size;
             var entrySize = SizeHelper.SizeOf<NDBEntry>();
@@ -61,7 +61,7 @@ namespace Cethleann.KTID
                 var hash = RDB.Hash(strings[1]);
                 if (ext != null) ExtMap[hash] = ext.ToLower();
 
-                HashMap[hash] = strings[1];
+                foreach (var str in strings) HashMap[RDB.Hash(str)] = str;
             }
         }
 
@@ -78,16 +78,16 @@ namespace Cethleann.KTID
         /// <summary>
         ///     Hashes mapped to strings
         /// </summary>
-        public Dictionary<uint, string> NameMap { get; set; } = new Dictionary<uint, string>();
+        public Dictionary<KTIDReference, string> NameMap { get; set; } = new Dictionary<KTIDReference, string>();
 
         /// <summary>
         ///     Hashes of both names and typeinfos.
         /// </summary>
-        public Dictionary<uint, string> HashMap { get; set; } = new Dictionary<uint, string>();
+        public Dictionary<KTIDReference, string> HashMap { get; set; } = new Dictionary<KTIDReference, string>();
 
         /// <summary>
         ///     Type infos hashes mapped to guessed extensions
         /// </summary>
-        public Dictionary<uint, string> ExtMap { get; set; } = new Dictionary<uint, string>();
+        public Dictionary<KTIDReference, string> ExtMap { get; set; } = new Dictionary<KTIDReference, string>();
     }
 }

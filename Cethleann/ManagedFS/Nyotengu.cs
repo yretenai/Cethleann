@@ -34,7 +34,7 @@ namespace Cethleann.ManagedFS
         /// </summary>
         public INyotenguOptions Options { get; set; } = new NyotenguOptions();
 
-        private Dictionary<uint, string> ExtList { get; set; } = new Dictionary<uint, string>();
+        private Dictionary<KTIDReference, string> ExtList { get; set; } = new Dictionary<KTIDReference, string>();
 
         /// <summary>
         ///     List of RDBs loaded
@@ -44,7 +44,7 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Loaded FileList.csv
         /// </summary>
-        public Dictionary<uint, string> FileList { get; set; } = new Dictionary<uint, string>();
+        public Dictionary<KTIDReference, string> FileList { get; set; } = new Dictionary<KTIDReference, string>();
 
         /// <inheritdoc />
         public void Dispose()
@@ -101,7 +101,7 @@ namespace Cethleann.ManagedFS
         /// </summary>
         /// <param name="ktid"></param>
         /// <returns></returns>
-        public Memory<byte> ReadEntry(uint ktid)
+        public Memory<byte> ReadEntry(KTIDReference ktid)
         {
             foreach (var rdb in RDBs)
             {
@@ -121,12 +121,23 @@ namespace Cethleann.ManagedFS
         /// <param name="filename"></param>
         /// <param name="game"></param>
         /// <returns></returns>
-        public static Dictionary<uint, string> LoadKTIDFileList(string? filename = null, DataGame game = DataGame.None)
+        public static Dictionary<KTIDReference, string> LoadKTIDFileList(string? filename = null, DataGame game = DataGame.None)
+        {
+            return LoadKTIDFileList(filename, game.ToString());
+        }
+
+        /// <summary>
+        ///     Read a KTID File list
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="game"></param>
+        /// <returns></returns>
+        public static Dictionary<KTIDReference, string> LoadKTIDFileList(string? filename = null, string game = "None")
         {
             var loc = ManagedFSHelper.GetFileListLocation(filename, game, "rdb");
             var locShared = ManagedFSHelper.GetFileListLocation(filename, "RDBSHared", "rdb");
             var csv = ManagedFSHelper.GetFileList(locShared, 3).Concat(ManagedFSHelper.GetFileList(loc, 3)).ToArray();
-            var fileList = new Dictionary<uint, string>();
+            var fileList = new Dictionary<KTIDReference, string>();
             foreach (var (key, value) in csv.Select(x => (key: uint.Parse(x[1].ToLower(), NumberStyles.HexNumber), value: x[2]))) fileList[key] = value;
 
             return fileList;
@@ -138,12 +149,12 @@ namespace Cethleann.ManagedFS
         /// <param name="filename"></param>
         /// <param name="game"></param>
         /// <returns></returns>
-        public static Dictionary<uint, (string, string)> LoadKTIDFileListEx(string? filename = null, DataGame game = DataGame.None)
+        public static Dictionary<KTIDReference, (string, string)> LoadKTIDFileListEx(string? filename = null, DataGame game = DataGame.None)
         {
             var loc = ManagedFSHelper.GetFileListLocation(filename, game, "rdb");
             var locShared = ManagedFSHelper.GetFileListLocation(filename, "RDBSHared", "rdb");
             var csv = ManagedFSHelper.GetFileList(locShared, 3).Concat(ManagedFSHelper.GetFileList(loc, 3)).ToArray();
-            var fileList = new Dictionary<uint, (string, string)>();
+            var fileList = new Dictionary<KTIDReference, (string, string)>();
             foreach (var (key, value) in csv.Select(x => (key: uint.Parse(x[1].ToLower(), NumberStyles.HexNumber), value: (x[0], x[2]))))
             {
                 if (fileList.ContainsKey(key)) Logger.Warn("NYO", $"File List contains filename hash twice! ({key}, {value}, {fileList[key]})");
@@ -197,7 +208,7 @@ namespace Cethleann.ManagedFS
         /// <param name="filename"></param>
         public void LoadExtList(string? filename = null)
         {
-            ExtList = ManagedFSHelper.GetSimpleFileList(ManagedFSHelper.GetFileListLocation(filename, "RDBExt", "rdb"), DataGame.None, "rdb").ToDictionary(x => uint.Parse(x.Key, NumberStyles.HexNumber), y => y.Value);
+            ExtList = ManagedFSHelper.GetSimpleFileList(ManagedFSHelper.GetFileListLocation(filename, "RDBExt", "rdb"), DataGame.None, "rdb").ToDictionary(x => (KTIDReference) uint.Parse(x.Key, NumberStyles.HexNumber), y => y.Value);
         }
 
         /// <summary>

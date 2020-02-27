@@ -3,6 +3,7 @@ using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using Cethleann.Graphics;
 using Cethleann.KTID;
@@ -27,7 +28,7 @@ namespace Nyotengu.KTID
             var ndb = new NDB();
             if (!string.IsNullOrEmpty(flags.NDBPath) && File.Exists(flags.NDBPath)) ndb = new NDB(File.ReadAllBytes(flags.NDBPath));
 
-            var objdb = new OBJDB(File.ReadAllBytes(flags.OBJDBPath), ndb);
+            var objdb = new OBJDB(File.ReadAllBytes(flags.OBJDBPath));
             var filelist = Cethleann.ManagedFS.Nyotengu.LoadKTIDFileList(flags.FileList, flags.GameId);
 
             var textureSection = new ResourceSectionHeader
@@ -45,19 +46,21 @@ namespace Nyotengu.KTID
             {
                 if (!File.Exists(ktid)) continue;
                 var ktidgroup = new KTIDTextureSet(File.ReadAllBytes(ktid));
-                var ktidsystem = ktidgroup.Textures.Select(x => objdb.Entries.TryGetValue(x, out var tuple) ? tuple.properties : default).ToArray();
-                var texturePaths = ktidsystem.SelectMany(x => x.Where(y => y.Key.TypeId == OBJDBPropertyType.KTID).SelectMany(y =>
+                var ktidsystem = ktidgroup.Textures.Select(x => objdb.Entries.TryGetValue(x, out var tuple) ? tuple : default).ToArray();
+                var texturePaths = ktidsystem.SelectMany(x =>
                 {
-                    return y.Value.Select(z =>
+                    var property = x?.GetProperty("KTGLTexContextResourceHash");
+                    return property?.values.Select(y =>
                     {
-                        if (z == null || !(z is KTIDReference reference)) return null;
+                        if (y == null || !(y is uint hash)) return null;
+                        var reference = (KTIDReference) hash;
                         var targetPath = Path.Combine(flags.MaterialFolderPath, reference.GetName(ndb, filelist) ?? $"{reference:x8}");
                         if (!targetPath.EndsWith(".g1t")) targetPath += ".g1t";
                         if (!File.Exists(targetPath)) targetPath = Path.Combine(flags.MaterialFolderPath, $"{reference:x8}.g1t");
                         if (!File.Exists(targetPath)) targetPath = Path.Combine(flags.MaterialFolderPath, $"0x{reference:x8}.g1t");
                         return targetPath;
-                    }).ToArray();
-                })).ToArray();
+                    });
+                });
                 var textureBlobs = new List<Memory<byte>>();
                 var textureInfo = new List<int>();
                 foreach (var texturePath in texturePaths)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Cethleann;
@@ -22,58 +23,79 @@ namespace Nyotengu.Database
             var flags = CommandLineFlags.ParseFlags<DatabaseFlags>(CommandLineFlags.PrintHelp, args);
             if (flags == null) return;
 
-            Span<byte> buffer = File.ReadAllBytes(flags.Path);
-            // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
-            switch (buffer.GetDataType())
+            var files = new HashSet<string>();
+            foreach (var path in flags.Paths)
             {
-                case DataType.OBJDB:
-                {
-                    var ndb = new NDB();
-                    if (!string.IsNullOrWhiteSpace(flags.NDBPath) && File.Exists(flags.NDBPath)) ndb = new NDB(File.ReadAllBytes(flags.NDBPath));
-                    ProcessOBJDB(buffer, ndb, flags);
-                    break;
-                }
-                case DataType.NDB:
-                {
-                    if (flags.HashAll)
-                        HashNDB(buffer, flags);
-                    else
-                        ProcessNDB(buffer, flags);
+                if (File.Exists(path)) files.Add(path);
+                if (!Directory.Exists(path)) continue;
+                foreach (var file in Directory.GetFiles(path)) files.Add(file);
+            }
 
-                    break;
+            var ndbFiles = new Dictionary<KTIDReference, string>();
+            if (!string.IsNullOrWhiteSpace(flags.NDBPath) && Directory.Exists(flags.NDBPath))
+                foreach (var nameFile in Directory.GetFiles(flags.NDBPath))
+                {
+                    ndbFiles[RDB.Hash(Path.GetFileName(nameFile))] = nameFile;
+                    if (uint.TryParse(Path.GetFileNameWithoutExtension(nameFile), NumberStyles.HexNumber, null, out var hashedName)) ndbFiles[hashedName] = nameFile;
                 }
-                default:
-                    Logger.Error("Nyotengu", $"Format for {flags.Path} is unknown!");
-                    break;
+
+            var filelist = Cethleann.ManagedFS.Nyotengu.LoadKTIDFileList(flags.FileList, flags.GameId);
+            var propertyList = Cethleann.ManagedFS.Nyotengu.LoadKTIDFileList(null, "PropertyNames");
+            var filters = flags.TypeInfoFilter?.Split(',').Select(x => RDB.Hash(x.Trim())).ToHashSet() ?? new HashSet<KTIDReference>();
+
+            foreach (var buffer in files.Select(File.ReadAllBytes))
+            {
+                // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+                switch (((Span<byte>) buffer).GetDataType())
+                {
+                    case DataType.OBJDB:
+                    {
+                        ProcessOBJDB((Span<byte>) buffer, ndbFiles, filelist, propertyList, filters, flags);
+                        break;
+                    }
+                    case DataType.NDB:
+                    {
+                        if (flags.HashAll)
+                            HashNDB((Span<byte>) buffer, flags);
+                        else
+                            ProcessNDB((Span<byte>) buffer, flags);
+
+                        break;
+                    }
+                    default:
+                        Logger.Error("Nyotengu", $"Format for {flags.Paths} is unknown!");
+                        break;
+                }
             }
         }
 
-        private static void ProcessOBJDB(Span<byte> buffer, NDB ndb, DatabaseFlags flags)
+        private static void ProcessOBJDB(Span<byte> buffer, Dictionary<KTIDReference, string> ndbFiles, Dictionary<KTIDReference, string> filelist, Dictionary<KTIDReference, string> propertyList, HashSet<KTIDReference> filters, DatabaseFlags flags)
         {
-            var db = new OBJDB(buffer, ndb);
-            var filelist = Cethleann.ManagedFS.Nyotengu.LoadKTIDFileList(flags.FileList, flags.GameId);
-            var filters = flags.TypeInfoFilter?.Split(',').Select(x => RDB.Hash(x.Trim())).ToHashSet() ?? new HashSet<uint>();
+            var db = new OBJDB(buffer);
+            var ndb = new NDB();
+            if (ndbFiles.TryGetValue(db.Header.NameKTID, out var ndbPath)) ndb = new NDB(File.ReadAllBytes(ndbPath));
+
             foreach (var (ktid, (entry, properties)) in db.Entries)
             {
                 if (filters.Count != 0 && !filters.Contains(entry.TypeInfoKTID)) continue;
                 var lines = new List<string>
                 {
-                    $"KTID: {ktid:x8}",
-                    $"KTID Name: {ktid.GetName(ndb, filelist) ?? "unnamed"}",
-                    $"TypeInfo: {entry.TypeInfoKTID:x8}",
-                    $"TypeInfo Name: {entry.TypeInfoKTID.GetName(ndb, filelist) ?? "unnamed"}"
+                    $"KTID: {GetKTIDNameValue(ktid, flags.ShowKTIDs, ndb, filelist)}",
+                    $"TypeInfo: {GetKTIDNameValue(entry.TypeInfoKTID, flags.ShowKTIDs, ndb, filelist)}"
                 };
 
-                foreach (var (property, values) in properties)
-                {
-                    lines.Add($"{property.PropertyKTID:x8} ({property.TypeId}): {string.Join(", ", values.Select(x => x?.ToString() ?? "null"))}");
-                    if (property.TypeId == OBJDBPropertyType.KTID) lines.Add($"{property.PropertyKTID:x8} ({property.TypeId}) Names: {string.Join(", ", values.Select(x => (x is KTIDReference reference ? reference.GetName(ndb, filelist) : null) ?? "unnamed"))}");
-                }
+                foreach (var (property, values) in properties) lines.Add($"{property.TypeId} {GetKTIDNameValue(property.PropertyKTID, flags.ShowKTIDs, ndb, propertyList)}: {(values.Length == 0 ? "NULL" : string.Join(", ", values.Select(x => property.TypeId == OBJDBPropertyType.UInt32 && x != null ? GetKTIDNameValue((uint) x, flags.ShowKTIDs, ndb, filelist) : x?.ToString() ?? "NULL")))}");
 
                 foreach (var line in lines) Console.Out.WriteLine(line);
 
                 Console.Out.WriteLine();
             }
+        }
+
+        private static string GetKTIDNameValue(KTIDReference ktid, bool ignoreNames, NDB ndb, Dictionary<KTIDReference, string> filelist)
+        {
+            var name = $"{ktid:x8}";
+            return ignoreNames ? name : $"{ktid.GetName(ndb, filelist) ?? name}";
         }
 
         private static void ProcessNDB(Span<byte> buffer, DatabaseFlags flags)
