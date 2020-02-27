@@ -55,7 +55,7 @@ namespace Nyotengu.Database
                     }
                     case DataType.NDB:
                     {
-                        if (flags.HashAll)
+                        if (flags.HashNames || flags.HashTypes || flags.HashExtra)
                             HashNDB((Span<byte>) buffer, flags);
                         else
                             ProcessNDB((Span<byte>) buffer, flags);
@@ -123,11 +123,18 @@ namespace Nyotengu.Database
                 foreach (var str in strings.Skip(2)) extra[RDB.Hash(str)] = str;
             }
 
-            foreach (var (hash, text) in hashes) Console.WriteLine($"{hash:x8}, {text}");
+            if (flags.HashNames)
+                foreach (var (hash, text) in hashes)
+                    Console.WriteLine($"{hash:x8}, {text}");
 
-            foreach (var (hash, text) in typeInfo) Console.WriteLine($"{hash:x8}, {text}");
+            if (flags.HashTypes)
+                foreach (var (hash, text) in typeInfo)
+                    Console.WriteLine($"{hash:x8}, {text}");
 
-            foreach (var (hash, text) in extra) Console.WriteLine($"{hash:x8}, {text}");
+            // ReSharper disable once InvertIf
+            if (flags.HashExtra)
+                foreach (var (hash, text) in extra)
+                    Console.WriteLine($"{hash:x8}, {text}");
         }
     }
 }
