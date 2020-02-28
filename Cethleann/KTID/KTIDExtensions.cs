@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cethleann.ManagedFS;
 using Cethleann.Structure.KTID;
 using JetBrains.Annotations;
@@ -39,13 +40,13 @@ namespace Cethleann.KTID
         /// </summary>
         /// <param name="instance"></param>
         /// <param name="ndb"></param>
-        /// <param name="nameList"></param>
+        /// <param name="nameLists"></param>
         /// <returns></returns>
-        public static string? GetName(this KTIDReference instance, NDB ndb, Dictionary<KTIDReference, string> nameList)
+        public static string? GetName(this KTIDReference instance, NDB ndb, params Dictionary<KTIDReference, string>[] nameLists)
         {
             if (instance == 0) return "NULL";
             if (ndb.HashMap.TryGetValue(instance, out var name) && !string.IsNullOrWhiteSpace(name)) return name;
-            return !nameList.TryGetValue(instance, out name) || string.IsNullOrWhiteSpace(name) ? null : name;
+            return nameLists.Any(nameList => nameList.TryGetValue(instance, out name) && !string.IsNullOrWhiteSpace(name)) ? name : null;
         }
     }
 }

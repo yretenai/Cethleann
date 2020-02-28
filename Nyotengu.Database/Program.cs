@@ -40,7 +40,7 @@ namespace Nyotengu.Database
                 }
 
             var filelist = Cethleann.ManagedFS.Nyotengu.LoadKTIDFileListShared(flags.FileList, flags.GameId);
-            var propertyList = Cethleann.ManagedFS.Nyotengu.LoadKTIDFileList(null, "PropertyNames");
+            var propertyList = Cethleann.ManagedFS.Nyotengu.LoadKTIDFileList(null, "PropertyList");
             var filters = flags.TypeInfoFilter?.Split(',').Select(x => RDB.Hash(x.Trim())).ToHashSet() ?? new HashSet<KTIDReference>();
 
             var typeHashes = new Dictionary<KTIDReference, string>();
@@ -93,12 +93,12 @@ namespace Nyotengu.Database
                 if (filters.Count != 0 && !filters.Contains(entry.TypeInfoKTID)) continue;
                 var lines = new List<string>
                 {
-                    $"KTID: {GetKTIDNameValue(ktid, flags.ShowKTIDs, ndb, filelist)}",
-                    $"TypeInfo: {GetKTIDNameValue(entry.TypeInfoKTID, flags.ShowKTIDs, ndb, filelist)}",
-                    $"Parent: {GetKTIDNameValue(entry.ParentKTID, flags.ShowKTIDs, ndb, filelist)}"
+                    $"KTID: {GetKTIDNameValue(ktid, flags.ShowKTIDs, ndb, filelist, propertyList)}",
+                    $"TypeInfo: {GetKTIDNameValue(entry.TypeInfoKTID, flags.ShowKTIDs, ndb, filelist, propertyList)}",
+                    $"Parent: {GetKTIDNameValue(entry.ParentKTID, flags.ShowKTIDs, ndb, filelist, propertyList)}"
                 };
 
-                foreach (var (property, values) in properties) lines.Add($"{property.TypeId} {GetKTIDNameValue(property.PropertyKTID, flags.ShowKTIDs, ndb, propertyList)}: {(values.Length == 0 ? "NULL" : string.Join(", ", values.Select(x => property.TypeId == OBJDBPropertyType.UInt32 && x != null ? GetKTIDNameValue((uint) x, flags.ShowKTIDs, ndb, filelist) : x?.ToString() ?? "NULL")))}");
+                foreach (var (property, values) in properties) lines.Add($"{property.TypeId} {GetKTIDNameValue(property.PropertyKTID, flags.ShowKTIDs, ndb, propertyList)}: {(values.Length == 0 ? "NULL" : string.Join(", ", values.Select(x => property.TypeId == OBJDBPropertyType.UInt32 && x != null ? GetKTIDNameValue((uint) x, flags.ShowKTIDs, ndb, filelist, propertyList) : x?.ToString() ?? "NULL")))}");
 
                 foreach (var line in lines) Console.Out.WriteLine(line);
 
@@ -106,10 +106,10 @@ namespace Nyotengu.Database
             }
         }
 
-        private static string GetKTIDNameValue(KTIDReference ktid, bool ignoreNames, NDB ndb, Dictionary<KTIDReference, string> filelist)
+        private static string GetKTIDNameValue(KTIDReference ktid, bool ignoreNames, NDB ndb, params Dictionary<KTIDReference, string>[] filelists)
         {
             var name = $"{ktid:x8}";
-            return ignoreNames ? name : $"{ktid.GetName(ndb, filelist) ?? name}";
+            return ignoreNames ? name : $"{ktid.GetName(ndb, filelists) ?? name}";
         }
 
         private static void ProcessNDB(Span<byte> buffer, DatabaseFlags flags)

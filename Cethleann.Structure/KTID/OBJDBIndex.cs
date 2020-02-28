@@ -15,7 +15,7 @@ namespace Cethleann.Structure.KTID
             {
                 SectionHeader = index.SectionHeader,
                 KTID = index.KTID,
-                TypeInfoKTID = index.KTID,
+                TypeInfoKTID = index.TypeInfoKTID,
                 PropertyCount = index.PropertyCount
             };
         }
