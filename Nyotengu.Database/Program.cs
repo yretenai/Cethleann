@@ -36,37 +36,50 @@ namespace Nyotengu.Database
                 foreach (var nameFile in Directory.GetFiles(flags.NDBPath))
                 {
                     ndbFiles[RDB.Hash(Path.GetFileName(nameFile))] = nameFile;
-                    if (uint.TryParse(Path.GetFileNameWithoutExtension(nameFile), NumberStyles.HexNumber, null, out var hashedName)) ndbFiles[hashedName] = nameFile;
+                    if (KTIDReference.TryParse(Path.GetFileNameWithoutExtension(nameFile), NumberStyles.HexNumber, null, out var hashedName)) ndbFiles[hashedName] = nameFile;
                 }
 
-            var filelist = Cethleann.ManagedFS.Nyotengu.LoadKTIDFileList(flags.FileList, flags.GameId);
+            var filelist = Cethleann.ManagedFS.Nyotengu.LoadKTIDFileListShared(flags.FileList, flags.GameId);
             var propertyList = Cethleann.ManagedFS.Nyotengu.LoadKTIDFileList(null, "PropertyNames");
             var filters = flags.TypeInfoFilter?.Split(',').Select(x => RDB.Hash(x.Trim())).ToHashSet() ?? new HashSet<KTIDReference>();
 
-            foreach (var buffer in files.Select(File.ReadAllBytes))
+            var typeHashes = new Dictionary<KTIDReference, string>();
+            var extraHashes = new Dictionary<KTIDReference, string>();
+
+            foreach (var file in files)
             {
+                Logger.Log(ConsoleSwatch.XTermColor.White, true, Console.Error, "Nyotengu", "INFO", file);
+                Span<byte> buffer = File.ReadAllBytes(file);
                 // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
-                switch (((Span<byte>) buffer).GetDataType())
+                switch (buffer.GetDataType())
                 {
                     case DataType.OBJDB:
                     {
-                        ProcessOBJDB((Span<byte>) buffer, ndbFiles, filelist, propertyList, filters, flags);
+                        ProcessOBJDB(buffer, ndbFiles, filelist, propertyList, filters, flags);
                         break;
                     }
                     case DataType.NDB:
                     {
-                        if (flags.HashNames || flags.HashTypes || flags.HashExtra)
-                            HashNDB((Span<byte>) buffer, flags);
+                        if (flags.HashTypes || flags.HashExtra)
+                            HashNDB(buffer, typeHashes, extraHashes, flags);
                         else
-                            ProcessNDB((Span<byte>) buffer, flags);
-
+                            ProcessNDB(buffer, flags);
                         break;
                     }
                     default:
-                        Logger.Error("Nyotengu", $"Format for {flags.Paths} is unknown!");
+                        Logger.Error("Nyotengu", $"Format for {file} is unknown!");
                         break;
                 }
             }
+
+            if (flags.HashTypes)
+                foreach (var (hash, text) in typeHashes.OrderBy(x => x.Key))
+                    Console.WriteLine($"TypeInfo,{hash:x8},{text}");
+
+            // ReSharper disable once InvertIf
+            if (flags.HashExtra)
+                foreach (var (hash, text) in extraHashes.OrderBy(x => x.Key))
+                    Console.WriteLine($"Property,{hash:x8},{text}");
         }
 
         private static void ProcessOBJDB(Span<byte> buffer, Dictionary<KTIDReference, string> ndbFiles, Dictionary<KTIDReference, string> filelist, Dictionary<KTIDReference, string> propertyList, HashSet<KTIDReference> filters, DatabaseFlags flags)
@@ -81,7 +94,8 @@ namespace Nyotengu.Database
                 var lines = new List<string>
                 {
                     $"KTID: {GetKTIDNameValue(ktid, flags.ShowKTIDs, ndb, filelist)}",
-                    $"TypeInfo: {GetKTIDNameValue(entry.TypeInfoKTID, flags.ShowKTIDs, ndb, filelist)}"
+                    $"TypeInfo: {GetKTIDNameValue(entry.TypeInfoKTID, flags.ShowKTIDs, ndb, filelist)}",
+                    $"Parent: {GetKTIDNameValue(entry.ParentKTID, flags.ShowKTIDs, ndb, filelist)}"
                 };
 
                 foreach (var (property, values) in properties) lines.Add($"{property.TypeId} {GetKTIDNameValue(property.PropertyKTID, flags.ShowKTIDs, ndb, propertyList)}: {(values.Length == 0 ? "NULL" : string.Join(", ", values.Select(x => property.TypeId == OBJDBPropertyType.UInt32 && x != null ? GetKTIDNameValue((uint) x, flags.ShowKTIDs, ndb, filelist) : x?.ToString() ?? "NULL")))}");
@@ -110,31 +124,14 @@ namespace Nyotengu.Database
             }
         }
 
-        private static void HashNDB(Span<byte> buffer, DatabaseFlags flags)
+        private static void HashNDB(Span<byte> buffer, Dictionary<KTIDReference, string> typeInfo, Dictionary<KTIDReference, string> extra, DatabaseFlags flags)
         {
             var name = new NDB(buffer);
-            var hashes = new Dictionary<uint, string>();
-            var typeInfo = new Dictionary<uint, string>();
-            var extra = new Dictionary<uint, string>();
             foreach (var (_, strings) in name.Entries)
             {
-                hashes[RDB.Hash(strings[0])] = strings[0];
                 typeInfo[RDB.Hash(strings[1])] = strings[1];
                 foreach (var str in strings.Skip(2)) extra[RDB.Hash(str)] = str;
             }
-
-            if (flags.HashNames)
-                foreach (var (hash, text) in hashes)
-                    Console.WriteLine($"{hash:x8}, {text}");
-
-            if (flags.HashTypes)
-                foreach (var (hash, text) in typeInfo)
-                    Console.WriteLine($"{hash:x8}, {text}");
-
-            // ReSharper disable once InvertIf
-            if (flags.HashExtra)
-                foreach (var (hash, text) in extra)
-                    Console.WriteLine($"{hash:x8}, {text}");
         }
     }
 }

@@ -9,21 +9,21 @@ namespace Cethleann.KTID
     /// <summary>
     ///     Wrapper for tuple to provide some extra helpers
     /// </summary>
-    public class OBJDBStructure : Tuple<OBJDBEntry, Dictionary<OBJDBProperty, object?[]>>
+    public class OBJDBStructure : Tuple<OBJDBRecord, Dictionary<OBJDBProperty, object?[]>>
     {
         /// <summary>
         ///     Initialize
         /// </summary>
-        /// <param name="entry"></param>
+        /// <param name="record"></param>
         /// <param name="properties"></param>
-        public OBJDBStructure(OBJDBEntry entry, Dictionary<OBJDBProperty, object?[]> properties) : base(entry, properties)
+        public OBJDBStructure(OBJDBRecord record, Dictionary<OBJDBProperty, object?[]> properties) : base(record, properties)
         {
         }
 
         /// <summary>
         ///     Proxy for Item1
         /// </summary>
-        public OBJDBEntry Entry => Item1;
+        public OBJDBRecord Record => Item1;
 
         /// <summary>
         ///     Proxy for Item2

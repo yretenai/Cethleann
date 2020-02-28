@@ -15,7 +15,7 @@ namespace Cethleann.Graphics
         /// <param name="buffer"></param>
         public KTIDTextureSet(Span<byte> buffer)
         {
-            var data = MemoryMarshal.Cast<byte, uint>(buffer);
+            var data = MemoryMarshal.Cast<byte, KTIDReference>(buffer);
             Textures = new KTIDReference[buffer.Length / 0x8];
             for (var i = 0; i < data.Length; i += 2)
             {

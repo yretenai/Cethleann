@@ -2411,6 +2411,14 @@
             <param name="game"></param>
             <returns></returns>
         </member>
+        <member name="M:Cethleann.ManagedFS.Nyotengu.LoadKTIDFileListShared(System.String,Cethleann.Structure.DataGame)">
+            <summary>
+                Read a KTID File list with RDBShared
+            </summary>
+            <param name="filename"></param>
+            <param name="game"></param>
+            <returns></returns>
+        </member>
         <member name="M:Cethleann.ManagedFS.Nyotengu.LoadKTIDFileList(System.String,System.String)">
             <summary>
                 Read a KTID File list

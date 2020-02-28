@@ -78,7 +78,7 @@ namespace Cethleann.DataExporter
                 if (flags.YshtolaManifestOnly) return;
             }
 
-            if (fs == default)
+            if (fs == null)
             {
                 Logger.Error("Cethleann", "No FS specified! Prove --flayn, --reisalin, --leonhart, --mitsunari, --nyotengu, or --yshtola!");
                 return;

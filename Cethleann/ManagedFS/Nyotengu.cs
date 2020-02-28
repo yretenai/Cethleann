@@ -92,8 +92,8 @@ namespace Cethleann.ManagedFS
         /// <inheritdoc />
         public Dictionary<string, string> LoadFileList(string? filename = null, DataGame? game = null)
         {
-            FileList = LoadKTIDFileList(filename, game ?? GameId);
-            return FileList.ToDictionary(x => x.Key.ToString(), y => y.Value);
+            FileList = LoadKTIDFileListShared(filename, game ?? GameId);
+            return FileList.ToDictionary(x => x.Key.ToString(CultureInfo.InvariantCulture), y => y.Value);
         }
 
         /// <summary>
@@ -127,6 +127,19 @@ namespace Cethleann.ManagedFS
         }
 
         /// <summary>
+        ///     Read a KTID File list with RDBShared
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="game"></param>
+        /// <returns></returns>
+        public static Dictionary<KTIDReference, string> LoadKTIDFileListShared(string? filename = null, DataGame game = DataGame.None)
+        {
+            Dictionary<KTIDReference, string> dictionary = new Dictionary<KTIDReference, string>();
+            foreach (var (key, value) in LoadKTIDFileList(filename, game.ToString()).Concat(LoadKTIDFileList(filename, "RDBShared"))) dictionary[key] = value;
+            return dictionary;
+        }
+
+        /// <summary>
         ///     Read a KTID File list
         /// </summary>
         /// <param name="filename"></param>
@@ -135,10 +148,9 @@ namespace Cethleann.ManagedFS
         public static Dictionary<KTIDReference, string> LoadKTIDFileList(string? filename = null, string game = "None")
         {
             var loc = ManagedFSHelper.GetFileListLocation(filename, game, "rdb");
-            var locShared = ManagedFSHelper.GetFileListLocation(filename, "RDBSHared", "rdb");
-            var csv = ManagedFSHelper.GetFileList(locShared, 3).Concat(ManagedFSHelper.GetFileList(loc, 3)).ToArray();
+            var csv = ManagedFSHelper.GetFileList(loc, 3);
             var fileList = new Dictionary<KTIDReference, string>();
-            foreach (var (key, value) in csv.Select(x => (key: uint.Parse(x[1].ToLower(), NumberStyles.HexNumber), value: x[2]))) fileList[key] = value;
+            foreach (var (key, value) in csv.Select(x => (key: KTIDReference.Parse(x[1].ToLower(), NumberStyles.HexNumber), value: x[2]))) fileList[key] = value;
 
             return fileList;
         }
@@ -152,10 +164,9 @@ namespace Cethleann.ManagedFS
         public static Dictionary<KTIDReference, (string, string)> LoadKTIDFileListEx(string? filename = null, DataGame game = DataGame.None)
         {
             var loc = ManagedFSHelper.GetFileListLocation(filename, game, "rdb");
-            var locShared = ManagedFSHelper.GetFileListLocation(filename, "RDBSHared", "rdb");
-            var csv = ManagedFSHelper.GetFileList(locShared, 3).Concat(ManagedFSHelper.GetFileList(loc, 3)).ToArray();
+            var csv = ManagedFSHelper.GetFileList(loc, 3);
             var fileList = new Dictionary<KTIDReference, (string, string)>();
-            foreach (var (key, value) in csv.Select(x => (key: uint.Parse(x[1].ToLower(), NumberStyles.HexNumber), value: (x[0], x[2]))))
+            foreach (var (key, value) in csv.Select(x => (key: KTIDReference.Parse(x[1].ToLower(), NumberStyles.HexNumber), value: (x[0], x[2]))))
             {
                 if (fileList.ContainsKey(key)) Logger.Warn("NYO", $"File List contains filename hash twice! ({key}, {value}, {fileList[key]})");
                 fileList[key] = value;
@@ -208,7 +219,7 @@ namespace Cethleann.ManagedFS
         /// <param name="filename"></param>
         public void LoadExtList(string? filename = null)
         {
-            ExtList = ManagedFSHelper.GetSimpleFileList(ManagedFSHelper.GetFileListLocation(filename, "RDBExt", "rdb"), DataGame.None, "rdb").ToDictionary(x => (KTIDReference) uint.Parse(x.Key, NumberStyles.HexNumber), y => y.Value);
+            ExtList = ManagedFSHelper.GetSimpleFileList(ManagedFSHelper.GetFileListLocation(filename, "RDBExt", "rdb"), DataGame.None, "rdb").ToDictionary(x => KTIDReference.Parse(x.Key, NumberStyles.HexNumber), y => y.Value);
         }
 
         /// <summary>

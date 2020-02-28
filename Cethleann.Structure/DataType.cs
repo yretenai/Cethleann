@@ -432,14 +432,20 @@ namespace Cethleann.Structure
         /// <summary>
         ///     Koei Object Database File
         /// </summary>
-        [FileExtension("rdb")]
+        [FileExtension("kidsobjdb")]
         OBJDB = 'K' << 24 | 'O' << 16 | 'D' << 8 | '_' << 0,
 
         /// <summary>
         ///     Koei Object Database Index
         /// </summary>
-        [FileExtension("rdb.bin")]
+        [FileExtension("kidsobjdb.bin")]
         OBJDBIndex = 'K' << 24 | 'O' << 16 | 'D' << 8 | 'I' << 0,
+
+        /// <summary>
+        ///     Koei Object Database Record
+        /// </summary>
+        [FileExtension("kidsobjdb.bin")]
+        OBJDBRecord = 'K' << 24 | 'O' << 16 | 'D' << 8 | 'R' << 0,
 
         /// <summary>
         ///     DEFLATE Compressed File.

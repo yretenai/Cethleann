@@ -8,19 +8,17 @@ namespace Nyotengu.Database
     [UsedImplicitly]
     public class DatabaseFlags : ICLIFlags
     {
+        [UsedImplicitly]
         [CLIFlag("path", Positional = 0, IsRequired = true, Help = "Database files to load", Category = "Database Options")]
         public HashSet<string> Paths { get; set; } = new HashSet<string>();
 
         [CLIFlag("ndb", Help = "Directory with namedb files when loading OBJDB files", Category = "Database Options")]
         public string? NDBPath { get; set; }
 
-        [CLIFlag("hash", Help = "Hash NDB values", Category = "Database Options")]
-        public bool HashNames { get; set; }
-
-        [CLIFlag("hash", Help = "Hash NDB type values", Category = "Database Options")]
+        [CLIFlag("hash-types", Aliases = new[] { "T" }, Help = "Hash NDB type values", Category = "Database Options")]
         public bool HashTypes { get; set; }
 
-        [CLIFlag("hash-extra", Help = "Hash extra values", Category = "Database Options")]
+        [CLIFlag("hash-extra", Aliases = new[] { "E" }, Help = "Hash extra values", Category = "Database Options")]
         public bool HashExtra { get; set; }
 
         [CLIFlag("show-ktids", Help = "Show KTIDs rather than named value", Category = "Database Options")]
