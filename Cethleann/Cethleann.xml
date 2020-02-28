@@ -2008,14 +2008,14 @@
                 Wrapper for tuple to provide some extra helpers
             </summary>
         </member>
-        <member name="M:Cethleann.KTID.OBJDBStructure.#ctor(Cethleann.Structure.KTID.OBJDBEntry,System.Collections.Generic.Dictionary{Cethleann.Structure.KTID.OBJDBProperty,System.Object[]})">
+        <member name="M:Cethleann.KTID.OBJDBStructure.#ctor(Cethleann.Structure.KTID.OBJDBRecord,System.Collections.Generic.Dictionary{Cethleann.Structure.KTID.OBJDBProperty,System.Object[]})">
             <summary>
                 Initialize
             </summary>
-            <param name="entry"></param>
+            <param name="record"></param>
             <param name="properties"></param>
         </member>
-        <member name="P:Cethleann.KTID.OBJDBStructure.Entry">
+        <member name="P:Cethleann.KTID.OBJDBStructure.Record">
             <summary>
                 Proxy for Item1
             </summary>
