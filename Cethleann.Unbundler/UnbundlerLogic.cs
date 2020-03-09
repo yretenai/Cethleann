@@ -19,7 +19,7 @@ namespace Cethleann.Unbundler
     [PublicAPI]
     public static class UnbundlerLogic
     {
-        public static void TryExtractBlobs(string pathBase, List<Memory<byte>> blobs, bool allTypes, List<string>? names, bool singleFile, bool useDirnameAsName, string? extension, UnbundlerFlags flags)
+        public static void TryExtractBlobs(string pathBase, List<Memory<byte>> blobs, bool allTypes, List<string>? names, bool singleFile, bool useDirnameAsName, bool forceExtension, string? extension, UnbundlerFlags flags)
         {
             for (var index = 0; index < blobs.Count; index++)
             {
@@ -30,7 +30,7 @@ namespace Cethleann.Unbundler
                 if (foundName != null)
                 {
                     name = foundName.SanitizeFilename();
-                    ext = !string.IsNullOrWhiteSpace(Path.GetExtension(name)) ? string.Empty : ext;
+                    ext = !string.IsNullOrWhiteSpace(Path.GetExtension(name)) && !forceExtension ? string.Empty : ext;
                     if (File.Exists($@"{pathBase}\{name}{ext}"))
                     {
                         var oname = name + "_";
@@ -193,7 +193,7 @@ namespace Cethleann.Unbundler
                     names.Insert(0, blobs.NameMap.Name ?? Path.GetFileName(pathBase));
                 }
 
-                TryExtractBlobs(pathBase, blobs.Blobs, false, names, false, false, null, flags);
+                TryExtractBlobs(pathBase, blobs.Blobs, false, names, false, false, false, null, flags);
             }
             catch (Exception e)
             {
@@ -213,7 +213,7 @@ namespace Cethleann.Unbundler
                 var blobs = new RESPACK(data);
                 if (blobs.Entries.Count == 0) return true;
 
-                TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, null, flags);
+                TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, false, null, flags);
             }
             catch (Exception e)
             {
@@ -271,14 +271,14 @@ namespace Cethleann.Unbundler
                 {
                     // there probably is a smart way of doing this
                     // but this works 9 out of 10 times.
-                    if (blob.Span.GetDataType() == DataType.TextureGroup) nameIndex--;
-                    if (blob.Span.GetDataType() == DataType.SwingDefinition) nameIndex--;
+                    if (blob.Span.GetDataType() == DataType.TextureGroup && nameIndex > 0) nameIndex--;
+                    if (blob.Span.GetDataType() == DataType.SwingDefinition && nameIndex > 0) nameIndex--;
                     if (nameIndex >= blobs.NameMap.Names.Count) break;
-                    names.Add(blobs.NameMap.Names[nameIndex]);
+                    names.Add(nameIndex > 0 ? blobs.NameMap.Names[nameIndex] : null);
                     nameIndex++;
                 }
 
-                TryExtractBlobs(pathBase, blobs.Blobs, false, names, false, false, null, flags);
+                TryExtractBlobs(pathBase, blobs.Blobs, false, names, false, false, true, null, flags);
             }
             catch (Exception e)
             {
@@ -297,7 +297,7 @@ namespace Cethleann.Unbundler
             {
                 var elixir = new Elixir(data);
                 if (elixir.Blobs.Count == 0) return true;
-                TryExtractBlobs(pathBase, elixir.Blobs, false, elixir.Entries.Select(x => x.filename).ToList(), true, false, null, flags);
+                TryExtractBlobs(pathBase, elixir.Blobs, false, elixir.Entries.Select(x => x.filename).ToList(), true, false, false, null, flags);
             }
             catch (Exception e)
             {
@@ -328,7 +328,7 @@ namespace Cethleann.Unbundler
                 var blobs = new DataTable(data);
                 if (blobs.Entries.Count == 0) return true;
 
-                TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, null, flags);
+                TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, false, null, flags);
             }
             catch (Exception e)
             {
@@ -348,7 +348,7 @@ namespace Cethleann.Unbundler
                 var blobs = new SCEN(data);
                 if (blobs.Entries.Count == 0) return true;
 
-                TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, null, flags);
+                TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, false, null, flags);
             }
             catch (Exception e)
             {
@@ -368,7 +368,7 @@ namespace Cethleann.Unbundler
                 var blobs = new Bundle(data);
                 if (blobs.Entries.Count == 0) return true;
 
-                TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, null, flags);
+                TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, false, null, flags);
             }
             catch (Exception e)
             {
@@ -388,7 +388,7 @@ namespace Cethleann.Unbundler
                 var blobs = new PointerBundle(data);
                 if (blobs.Entries.Count == 0) return true;
 
-                TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, null, flags);
+                TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, false, null, flags);
             }
             catch (Exception e)
             {
@@ -408,7 +408,7 @@ namespace Cethleann.Unbundler
                 var blobs = new MDLK(data);
                 if (blobs.Entries.Count == 0) return true;
 
-                TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, null, flags);
+                TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, false, null, flags);
             }
             catch (Exception e)
             {
@@ -502,13 +502,13 @@ namespace Cethleann.Unbundler
                                     case GCADPCMSound gcadpcm:
                                     {
                                         var streams = !flags.RawKTSR && !flags.SkipADPCM ? gcadpcm.ReconstructWave(!flags.SkipADPCM) : gcadpcm.ReconstructAsIndividual();
-                                        TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{gcadpcm.Base.Id:X8}", streams, false, null, streams.Count == 1, true, !flags.RawKTSR && !flags.SkipADPCM ? "wav" : "ktgcadpcm", flags);
+                                        TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{gcadpcm.Base.Id:X8}", streams, false, null, streams.Count == 1, true, false, !flags.RawKTSR && !flags.SkipADPCM ? "wav" : "ktgcadpcm", flags);
                                         break;
                                     }
                                     case MSADPCMSound msadpcm:
                                     {
                                         var streams = flags.RawKTSR ? msadpcm.ReconstructAsIndividual() : msadpcm.ReconstructWave(!flags.SkipADPCM);
-                                        TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{msadpcm.Base.Id:X8}", streams, false, null, streams.Count == 1, true, flags.RawKTSR ? "ktmsadpcm" : "wav", flags);
+                                        TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{msadpcm.Base.Id:X8}", streams, false, null, streams.Count == 1, true, false, flags.RawKTSR ? "ktmsadpcm" : "wav", flags);
                                         break;
                                     }
                                     default:
@@ -522,13 +522,13 @@ namespace Cethleann.Unbundler
                         case GCADPCMSound gcadpcm:
                         {
                             var streams = !flags.RawKTSR && !flags.SkipADPCM ? gcadpcm.ReconstructWave(!flags.SkipADPCM) : gcadpcm.ReconstructAsIndividual();
-                            TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{gcadpcm.Base.Id:X8}", streams, false, null, streams.Count == 1, true, !flags.RawKTSR && !flags.SkipADPCM ? "wav" : "ktgcadpcm", flags);
+                            TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{gcadpcm.Base.Id:X8}", streams, false, null, streams.Count == 1, true, false, !flags.RawKTSR && !flags.SkipADPCM ? "wav" : "ktgcadpcm", flags);
                             break;
                         }
                         case MSADPCMSound msadpcm:
                         {
                             var streams = flags.RawKTSR ? msadpcm.ReconstructAsIndividual() : msadpcm.ReconstructWave(!flags.SkipADPCM);
-                            TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{msadpcm.Base.Id:X8}", streams, false, null, streams.Count == 1, true, flags.RawKTSR ? "ktmsadpcm" : "wav", flags);
+                            TryExtractBlobs($@"{pathBase}\{datablob.Base.Id:X8}_{msadpcm.Base.Id:X8}", streams, false, null, streams.Count == 1, true, false, flags.RawKTSR ? "ktmsadpcm" : "wav", flags);
                             break;
                         }
                         default:

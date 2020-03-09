@@ -353,44 +353,50 @@ namespace Cethleann.Structure
         /// <summary>
         ///     Model Pack
         /// </summary>
-        [FileExtension(".gmpk")]
+        [FileExtension("gmpk")]
         GMPK = 'G' << 0 | 'M' << 8 | 'P' << 16 | 'K' << 24,
+
+        /// <summary>
+        ///     Model Pack
+        /// </summary>
+        [FileExtension("lmpk")]
+        LMPK = 'L' << 0 | 'M' << 8 | 'P' << 16 | 'K' << 24,
 
         /// <summary>
         ///     Animation Pack
         /// </summary>
-        [FileExtension(".gapk")]
+        [FileExtension("gapk")]
         GAPK = 'G' << 0 | 'A' << 8 | 'P' << 16 | 'K' << 24,
 
 
         /// <summary>
         ///     Effect Pack
         /// </summary>
-        [FileExtension(".gepk")]
+        [FileExtension("gepk")]
         GEPK = 'G' << 0 | 'E' << 8 | 'P' << 16 | 'K' << 24,
 
 
         /// <summary>
         /// </summary>
-        [FileExtension(".rtrpk")]
+        [FileExtension("rtrpk")]
         RTRPK = 'R' << 0 | 'T' << 8 | 'P' << 16 | 'K' << 24,
 
         /// <summary>
         ///     Wave Header Data
         /// </summary>
-        [FileExtension(".wave")]
+        [FileExtension("wave")]
         RIFF = 'R' << 0 | 'I' << 8 | 'F' << 16 | 'F' << 24,
 
         /// <summary>
         ///     Wave Header Data
         /// </summary>
-        [FileExtension(".sed")]
+        [FileExtension("sed")]
         WHD = 'W' << 0 | 'H' << 8 | 'D' << 16 | '1' << 24,
 
         /// <summary>
         ///     HDDB
         /// </summary>
-        [FileExtension(".hdb")]
+        [FileExtension("hdb")]
         HDDB = 'H' << 0 | 'D' << 8 | 'D' << 16 | 'B' << 24,
 
         /// <summary>
