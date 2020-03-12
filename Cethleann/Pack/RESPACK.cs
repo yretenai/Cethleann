@@ -23,7 +23,7 @@ namespace Cethleann.Pack
             Pointers = MemoryMarshal.Cast<byte, int>(buffer.Slice(Header.PointerTablePointer, Header.PointerCount * 4)).ToArray();
             var sizes = new int[Header.PointerCount];
             if (Header.SizeTablePointer > 0)
-                MemoryMarshal.Cast<byte, int>(buffer.Slice(Header.SizeTablePointer, Header.PointerCount * 4));
+                sizes = MemoryMarshal.Cast<byte, int>(buffer.Slice(Header.SizeTablePointer, Header.PointerCount * 4)).ToArray();
             else
                 for (var i = 0; i < Header.PointerCount; ++i)
                     sizes[i] = (i < Header.PointerCount - 1 ? Pointers[i + 1] : buffer.Length) - Pointers[i];

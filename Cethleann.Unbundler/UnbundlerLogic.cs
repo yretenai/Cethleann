@@ -19,7 +19,7 @@ namespace Cethleann.Unbundler
     [PublicAPI]
     public static class UnbundlerLogic
     {
-        public static void TryExtractBlobs(string pathBase, List<Memory<byte>> blobs, bool allTypes, List<string>? names, bool singleFile, bool useDirnameAsName, bool forceExtension, string? extension, UnbundlerFlags flags)
+        public static void TryExtractBlobs(string pathBase, List<Memory<byte>> blobs, bool allTypes, List<string?>? names, bool singleFile, bool useDirnameAsName, bool forceExtension, string? extension, UnbundlerFlags flags)
         {
             for (var index = 0; index < blobs.Count; index++)
             {
@@ -266,7 +266,7 @@ namespace Cethleann.Unbundler
                 if (blobs.Blobs.Count == 0) return true;
 
                 var nameIndex = 0;
-                var names = new List<string>();
+                var names = new List<string?>();
                 foreach (var blob in blobs.Blobs)
                 {
                     // there probably is a smart way of doing this

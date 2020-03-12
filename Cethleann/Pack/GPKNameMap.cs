@@ -57,6 +57,6 @@ namespace Cethleann.Pack
         /// <summary>
         ///     Assembled Names
         /// </summary>
-        public List<string> Names { get; set; } = new List<string>();
+        public List<string?> Names { get; set; } = new List<string?>();
     }
 }

@@ -49,6 +49,6 @@ namespace Cethleann.Pack
         /// <summary>
         ///     File Meta Entries
         /// </summary>
-        public List<(ElixirEntry info, string filename)> Entries { get; set; } = new List<(ElixirEntry, string)>();
+        public List<(ElixirEntry info, string? filename)> Entries { get; set; } = new List<(ElixirEntry, string?)>();
     }
 }
