@@ -28,6 +28,18 @@ namespace Nyotengu.AnimationGraph
             var CE1DB = new OBJDB(File.ReadAllBytes(flags.OBJDBPath));
             var CE1Singleton = new OBJDB(File.ReadAllBytes(flags.SingletonPath));
             var filelist = Cethleann.ManagedFS.Nyotengu.LoadKTIDFileList(flags.FileList, flags.GameId);
+            var animationFiles = new Dictionary<KTIDReference, string>();
+            foreach (var directory in flags.AnimationDirectories ?? new []{})
+            {
+                if (directory == null || !Directory.Exists(directory)) continue;
+                foreach (var file in Directory.GetFiles(directory))
+                {
+                    var basename = Path.GetFileNameWithoutExtension(file);
+                    if (basename.Length != 8 || !KTIDReference.TryParse(basename, out var reference)) reference = RDB.Hash(file, "G1A");
+
+                    animationFiles[reference] = file;
+                }
+            }
 
             var typeKTID = RDB.Hash("TypeInfo::Object::MotorCharacterSetting");
             foreach (var entry in CE1DB.Entries.Select(x => x.Value).Where(entry => entry.Record.TypeInfoKTID == typeKTID))
@@ -75,6 +87,11 @@ namespace Nyotengu.AnimationGraph
                         {
                             if (!done.Add(animationHashActual)) continue;
                             Logger.Info("ANIM", GetKTIDNameValue(animationHashActual, false, singletonNdb, filelist));
+
+                            if (string.IsNullOrWhiteSpace(flags.Output) || !animationFiles.TryGetValue(animationHashActual, out var path)) continue;
+
+                            if (!Directory.Exists(flags.Output)) Directory.CreateDirectory(flags.Output);
+                            File.Copy(path, Path.Combine(flags.Output, Path.GetFileName(path)), true);
                         }
                     }
                 }

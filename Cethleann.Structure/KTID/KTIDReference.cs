@@ -93,7 +93,7 @@ namespace Cethleann.Structure.KTID
 
         public static bool TryParse(string? value, out KTIDReference ktid)
         {
-            if (uint.TryParse(value, out var result))
+            if (uint.TryParse(value, NumberStyles.HexNumber, null, out var result))
             {
                 ktid = result;
                 return true;

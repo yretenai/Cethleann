@@ -1913,13 +1913,13 @@
             <param name="nyotengu"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.KTID.KTIDExtensions.GetName(Cethleann.Structure.KTID.KTIDReference,Cethleann.KTID.NDB,System.Collections.Generic.Dictionary{Cethleann.Structure.KTID.KTIDReference,System.String})">
+        <member name="M:Cethleann.KTID.KTIDExtensions.GetName(Cethleann.Structure.KTID.KTIDReference,Cethleann.KTID.NDB,System.Collections.Generic.Dictionary{Cethleann.Structure.KTID.KTIDReference,System.String}[])">
             <summary>
                 Attempt to retrieve a KTID file
             </summary>
             <param name="instance"></param>
             <param name="ndb"></param>
-            <param name="nameList"></param>
+            <param name="nameLists"></param>
             <returns></returns>
         </member>
         <member name="T:Cethleann.KTID.NDB">

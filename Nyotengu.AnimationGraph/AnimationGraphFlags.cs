@@ -15,7 +15,7 @@ namespace Nyotengu.AnimationGraph
         public string SingletonPath { get; set; } = string.Empty;
 
         [UsedImplicitly]
-        [CLIFlag("paths", Positional = 2, IsRequired = true, Help = "Model hashes to find animation for", Category = "Animation Graph Options")]
+        [CLIFlag("hashes", Positional = 2, IsRequired = true, Help = "Model hashes to find animation for", Category = "Animation Graph Options")]
         public HashSet<uint> Hashes { get; set; } = new HashSet<uint>();
 
         [CLIFlag("objdb-name", Help = "OPBJDB NAME database path", Category = "Animation Graph Options")]
@@ -26,6 +26,13 @@ namespace Nyotengu.AnimationGraph
 
         [CLIFlag("filelist", Help = "File List to load. Unspecified is automatically determined based on GameId", Category = "Animation Graph Options")]
         public string? FileList { get; set; }
+
+        [CLIFlag("output", Aliases = new[] { "out", "o" }, Help = "Output Directory to copy files", Category = "Animation Graph Options")]
+        public string? Output { get; set; }
+
+        [UsedImplicitly]
+        [CLIFlag("dirs", Aliases = new[] { "dir", "d" }, Help = "Directory to find animations from", Category = "Animation Graph Options")]
+        public HashSet<string?> AnimationDirectories { get; set; } = new HashSet<string?>();
 
         [CLIFlag("game", Default = DataGame.None, Aliases = new[] { "g" }, Help = "Game being loaded", Category = "Animation Graph Options")]
         public DataGame GameId { get; set; }
