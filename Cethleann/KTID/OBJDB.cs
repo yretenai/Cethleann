@@ -70,11 +70,8 @@ namespace Cethleann.KTID
                         Logger.Fatal("KTID", $"Unable to handle record type at offset {offset:X}");
                         continue;
                 }
-                
-                if (record.PropertyCount == 0)
-                {
-                    continue;
-                }
+
+                if (record.PropertyCount == 0) continue;
 
                 Span<byte> propertyBuffer;
                 try
@@ -86,6 +83,7 @@ namespace Cethleann.KTID
                     Logger.Fatal("KTID", e);
                     continue;
                 }
+
                 var size = record.SectionHeader.Size - pinPtr - propertyBuffer.Length;
                 var properties = MemoryMarshal.Cast<byte, OBJDBProperty>(propertyBuffer).ToArray();
                 var kodBuffer = buffer.Slice(offset + pinPtr + propertyBuffer.Length, size);
@@ -104,7 +102,7 @@ namespace Cethleann.KTID
                         propertyMap[property] = new object?[0];
                     else
                         propertyMap[property] = processor(kodBuffer.Slice(kodOffset), property.Count);
-                    
+
                     kodOffset += propertySize * property.Count;
                 }
 
