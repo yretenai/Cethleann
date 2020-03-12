@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cethleann.DataExporter", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yshtola.Downloader", "Yshtola.Downloader\Yshtola.Downloader.csproj", "{E26A223D-5FA4-4227-9692-840AA3737D12}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nyotengu.AnimationGraph", "Nyotengu.AnimationGraph\Nyotengu.AnimationGraph.csproj", "{F8063CF8-1195-4E11-AD5E-C11BDF28F80A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -75,6 +77,10 @@ Global
 		{E26A223D-5FA4-4227-9692-840AA3737D12}.Debug|x64.Build.0 = Debug|x64
 		{E26A223D-5FA4-4227-9692-840AA3737D12}.Release|x64.ActiveCfg = Release|x64
 		{E26A223D-5FA4-4227-9692-840AA3737D12}.Release|x64.Build.0 = Release|x64
+		{F8063CF8-1195-4E11-AD5E-C11BDF28F80A}.Debug|x64.ActiveCfg = Debug|x64
+		{F8063CF8-1195-4E11-AD5E-C11BDF28F80A}.Debug|x64.Build.0 = Debug|x64
+		{F8063CF8-1195-4E11-AD5E-C11BDF28F80A}.Release|x64.ActiveCfg = Release|x64
+		{F8063CF8-1195-4E11-AD5E-C11BDF28F80A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,6 +94,7 @@ Global
 		{04EF761D-64F9-42B4-93A9-9C8E95AD3AA3} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
 		{95F1057C-7CAC-45C6-8788-0397304B2522} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
 		{E26A223D-5FA4-4227-9692-840AA3737D12} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
+		{F8063CF8-1195-4E11-AD5E-C11BDF28F80A} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D101D9DD-E806-4794-B9BE-E43298235565}

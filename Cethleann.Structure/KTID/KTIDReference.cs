@@ -20,6 +20,17 @@ namespace Cethleann.Structure.KTID
             };
         }
 
+        public KTIDReference(uint ktid)
+        {
+            KTID = ktid;
+        }
+
+        public KTIDReference(object? obj)
+        {
+            KTID = 0;
+            if (obj != null && obj is uint ktid) KTID = ktid;
+        }
+
         public string ToString(string? format, IFormatProvider? formatProvider) => KTID.ToString(format, formatProvider);
 
         public string ToString(string? format) => KTID.ToString(format);

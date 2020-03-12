@@ -32,8 +32,8 @@ namespace Nyotengu.Database
             }
 
             var ndbFiles = new Dictionary<KTIDReference, string>();
-            if (!string.IsNullOrWhiteSpace(flags.NDBPath) && Directory.Exists(flags.NDBPath))
-                foreach (var nameFile in Directory.GetFiles(flags.NDBPath))
+            if (flags.NDBPaths != null)
+                foreach (var nameFile in flags.NDBPaths.Where(Directory.Exists).SelectMany(Directory.GetFiles).Union(flags.NDBPaths.Where(File.Exists)))
                 {
                     ndbFiles[RDB.Hash(Path.GetFileName(nameFile))] = nameFile;
                     if (KTIDReference.TryParse(Path.GetFileNameWithoutExtension(nameFile), NumberStyles.HexNumber, null, out var hashedName)) ndbFiles[hashedName] = nameFile;
@@ -62,6 +62,8 @@ namespace Nyotengu.Database
                     {
                         if (flags.HashTypes || flags.HashExtra)
                             HashNDB(buffer, typeHashes, extraHashes, flags);
+                        else if (flags.CreateFilelist)
+                            NDBFilelist(buffer, Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(file)), flags, filelist);
                         else
                             ProcessNDB(buffer, flags);
                         break;
@@ -80,6 +82,17 @@ namespace Nyotengu.Database
             if (flags.HashExtra)
                 foreach (var (hash, text) in extraHashes.OrderBy(x => x.Key))
                     Console.WriteLine($"Property,{hash:x8},{text}");
+        }
+
+        private static void NDBFilelist(Span<byte> buffer, string ns, DatabaseFlags? flags, Dictionary<KTIDReference, string> filelist)
+        {
+            var name = new NDB(buffer);
+            foreach (var (entry, _) in name.Entries)
+            {
+                if (filelist.ContainsKey(entry.KTID)) continue;
+                var filename = name.NameMap[entry.KTID];
+                Console.WriteLine($"{ns},{entry.KTID:x8},{filename}");
+            }
         }
 
         private static void ProcessOBJDB(Span<byte> buffer, Dictionary<KTIDReference, string> ndbFiles, Dictionary<KTIDReference, string> filelist, Dictionary<KTIDReference, string> propertyList, HashSet<KTIDReference> filters, DatabaseFlags flags)
