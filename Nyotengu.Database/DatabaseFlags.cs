@@ -13,9 +13,8 @@ namespace Nyotengu.Database
         public HashSet<string> Paths { get; set; } = new HashSet<string>();
 
         [UsedImplicitly]
-        [CanBeNull]
         [CLIFlag("ndb", Help = "Directories with namedb files, or NDB file when loading OBJDB files", Category = "Database Options")]
-        public HashSet<string> NDBPaths { get; set; } = new HashSet<string>();
+        public HashSet<string>? NDBPaths { get; set; } = new HashSet<string>();
 
         [CLIFlag("hash-types", Aliases = new[] { "T" }, Help = "Hash NDB type values", Category = "Database Options")]
         public bool HashTypes { get; set; }
