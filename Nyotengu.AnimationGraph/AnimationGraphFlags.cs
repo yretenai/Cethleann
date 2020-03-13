@@ -31,6 +31,7 @@ namespace Nyotengu.AnimationGraph
         public string? Output { get; set; }
 
         [UsedImplicitly]
+        [CanBeNull]
         [CLIFlag("dirs", Aliases = new[] { "dir", "d" }, Help = "Directory to find animations from", Category = "Animation Graph Options")]
         public HashSet<string?> AnimationDirectories { get; set; } = new HashSet<string?>();
 

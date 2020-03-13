@@ -29,7 +29,7 @@ namespace Nyotengu.AnimationGraph
             var CE1Singleton = new OBJDB(File.ReadAllBytes(flags.SingletonPath));
             var filelist = Cethleann.ManagedFS.Nyotengu.LoadKTIDFileList(flags.FileList, flags.GameId);
             var animationFiles = new Dictionary<KTIDReference, string>();
-            foreach (var directory in flags.AnimationDirectories ?? new []{})
+            foreach (var directory in flags.AnimationDirectories ?? new HashSet<string?>())
             {
                 if (directory == null || !Directory.Exists(directory)) continue;
                 foreach (var file in Directory.GetFiles(directory))
