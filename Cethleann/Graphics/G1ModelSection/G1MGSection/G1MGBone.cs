@@ -13,7 +13,7 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
     [PublicAPI]
     public class G1MGBone : IG1MGSection
     {
-        internal G1MGBone(Span<byte> data, ModelGeometrySection section)
+        internal G1MGBone(Span<byte> data, ModelSection section)
         {
             Section = section;
 
@@ -33,9 +33,9 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
         public List<ModelGeometryBone[]> Bones { get; } = new List<ModelGeometryBone[]>();
 
         /// <inheritdoc />
-        public ModelGeometryType Type => ModelGeometryType.Bone;
+        public ModelGeometrySectionType Type => ModelGeometrySectionType.Bone;
 
         /// <inheritdoc />
-        public ModelGeometrySection Section { get; }
+        public ModelSection Section { get; }
     }
 }

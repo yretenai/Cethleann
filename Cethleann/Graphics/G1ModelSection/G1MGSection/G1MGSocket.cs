@@ -13,7 +13,7 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
     [PublicAPI]
     public class G1MGSocket : IG1MGSection
     {
-        internal G1MGSocket(Span<byte> data, ModelGeometrySection sectionInfo)
+        internal G1MGSocket(Span<byte> data, ModelSection sectionInfo)
         {
             Section = sectionInfo;
             Sockets = MemoryMarshal.Cast<byte, ModelGeometrySocket>(data).ToArray();
@@ -25,9 +25,9 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
         public ModelGeometrySocket[] Sockets { get; }
 
         /// <inheritdoc />
-        public ModelGeometrySection Section { get; }
+        public ModelSection Section { get; }
 
         /// <inheritdoc />
-        public ModelGeometryType Type => ModelGeometryType.Socket;
+        public ModelGeometrySectionType Type => ModelGeometrySectionType.Socket;
     }
 }

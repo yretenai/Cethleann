@@ -12,7 +12,7 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
     [PublicAPI]
     public class G1MGIndexBuffer : IG1MGSection
     {
-        internal G1MGIndexBuffer(Span<byte> block, ModelGeometrySection subSectionHeader)
+        internal G1MGIndexBuffer(Span<byte> block, ModelSection subSectionHeader)
         {
             Section = subSectionHeader;
 
@@ -39,9 +39,9 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
         public List<(ModelGeometryIndexBuffer info, ushort[] buffer)> Buffers { get; set; } = new List<(ModelGeometryIndexBuffer info, ushort[] buffer)>();
 
         /// <inheritdoc />
-        public ModelGeometryType Type => ModelGeometryType.IndexBuffer;
+        public ModelGeometrySectionType Type => ModelGeometrySectionType.IndexBuffer;
 
         /// <inheritdoc />
-        public ModelGeometrySection Section { get; }
+        public ModelSection Section { get; }
     }
 }

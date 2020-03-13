@@ -32,25 +32,24 @@ namespace Cethleann.Graphics.G1ModelSection
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MG version {Section.Version.ToVersion()} is not supported!");
 
             Header = MemoryMarshal.Read<ModelGeometryHeader>(data);
-            Logger.Assert(Header.ModelType.ToFourCC(true) == "NX_", "ModelType == NX_");
 
             var offset = SizeHelper.SizeOf<ModelGeometryHeader>();
             while (offset < data.Length)
             {
-                var subSectionHeader = MemoryMarshal.Read<ModelGeometrySection>(data.Slice(offset));
-                var block = data.Slice(offset + SizeHelper.SizeOf<ModelGeometrySection>(), subSectionHeader.Size - SizeHelper.SizeOf<ModelGeometrySection>());
+                var subSectionHeader = MemoryMarshal.Read<ModelSection>(data.Slice(offset));
+                var block = data.Slice(offset + SizeHelper.SizeOf<ModelSection>(), subSectionHeader.Size - SizeHelper.SizeOf<ModelSection>());
                 offset += subSectionHeader.Size;
                 var section = subSectionHeader.Magic switch
                 {
-                    ModelGeometryType.Socket => (IG1MGSection) new G1MGSocket(block, subSectionHeader),
-                    ModelGeometryType.Material => new G1MGMaterial(block, subSectionHeader),
-                    ModelGeometryType.ShaderParam => new G1MGShaderParam(block, subSectionHeader),
-                    ModelGeometryType.VertexBuffer => new G1MGVertexBuffer(block, subSectionHeader),
-                    ModelGeometryType.VertexAttribute => new G1MGVertexAttribute(block, subSectionHeader),
-                    ModelGeometryType.Bone => new G1MGBone(block, subSectionHeader),
-                    ModelGeometryType.IndexBuffer => new G1MGIndexBuffer(block, subSectionHeader),
-                    ModelGeometryType.SubMesh => new G1MGSubMesh(block, subSectionHeader),
-                    ModelGeometryType.Mesh => new G1MGMesh(block, subSectionHeader),
+                    ModelGeometrySectionType.Socket => (IG1MGSection) new G1MGSocket(block, subSectionHeader),
+                    ModelGeometrySectionType.Material => new G1MGMaterial(block, subSectionHeader),
+                    ModelGeometrySectionType.ShaderParam => new G1MGShaderParam(block, subSectionHeader),
+                    ModelGeometrySectionType.VertexBuffer => new G1MGVertexBuffer(block, subSectionHeader),
+                    ModelGeometrySectionType.VertexAttribute => new G1MGVertexAttribute(block, subSectionHeader),
+                    ModelGeometrySectionType.Bone => new G1MGBone(block, subSectionHeader),
+                    ModelGeometrySectionType.IndexBuffer => new G1MGIndexBuffer(block, subSectionHeader),
+                    ModelGeometrySectionType.SubMesh => new G1MGSubMesh(block, subSectionHeader),
+                    ModelGeometrySectionType.Mesh => new G1MGMesh(block, subSectionHeader),
                     _ => throw new NotSupportedException($"Can't handle G1MG section {subSectionHeader.Magic:F}")
                 };
                 SubSections.Add(section);

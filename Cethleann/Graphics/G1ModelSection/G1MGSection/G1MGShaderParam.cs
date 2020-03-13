@@ -16,7 +16,7 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
     [PublicAPI]
     public class G1MGShaderParam : IG1MGSection
     {
-        internal G1MGShaderParam(Span<byte> data, ModelGeometrySection sectionHeader)
+        internal G1MGShaderParam(Span<byte> data, ModelSection sectionHeader)
         {
             Section = sectionHeader;
 
@@ -67,9 +67,9 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
         public List<List<(ModelGeometryShaderParam param, string name, Array? values)>> ParamGroups { get; } = new List<List<(ModelGeometryShaderParam param, string name, Array? values)>>();
 
         /// <inheritdoc />
-        public ModelGeometryType Type => ModelGeometryType.ShaderParam;
+        public ModelGeometrySectionType Type => ModelGeometrySectionType.ShaderParam;
 
         /// <inheritdoc />
-        public ModelGeometrySection Section { get; }
+        public ModelSection Section { get; }
     }
 }

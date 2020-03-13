@@ -46,12 +46,16 @@ namespace Cethleann.Graphics
 
             var header = MemoryMarshal.Read<ModelHeader>(data.Slice(0xC));
             SectionRoot = new PackedResource(data.Slice(header.HeaderSize, Section.Size - header.HeaderSize), header.SectionCount);
-            if (!parse) return;
             // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
             foreach (var block in SectionRoot.Sections)
             {
                 var sectionHeader = MemoryMarshal.Read<ResourceSectionHeader>(block.Span);
                 var dataBlock = block.Span.Slice(SizeHelper.SizeOf<ResourceSectionHeader>());
+                if (!parse)
+                {
+                    Sections.Add(new G1MStub(dataBlock, sectionHeader));
+                    continue;
+                }
                 // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
                 var section = sectionHeader.Magic switch
                 {
@@ -60,13 +64,7 @@ namespace Cethleann.Graphics
                     DataType.ModelGeometry => new G1MGeometry(dataBlock, ignoreVersion, sectionHeader),
                     DataType.ModelMatrix => new G1MMatrix(dataBlock, ignoreVersion, sectionHeader),
                     DataType.ModelExtra => new G1Extra(dataBlock, ignoreVersion, sectionHeader),
-                    DataType.ModelCollision => null,
-                    DataType.ModelClothDriver => null,
-                    DataType.ModelClothSurface => null,
-                    DataType.ModelCloth => null,
-                    DataType.ModelSoftbody => null,
-                    DataType.ModelHair => null,
-                    _ => throw new NotImplementedException($"Section {sectionHeader.Magic.ToFourCC(false)} not supported!")
+                    _ => new G1MStub(dataBlock, sectionHeader)
                 };
 
                 Sections.Add(section);

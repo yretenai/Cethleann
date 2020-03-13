@@ -1,6 +1,6 @@
 ﻿namespace Cethleann.Structure.Resource.Model
 {
-    public enum ModelGeometryType : short
+    public enum ModelGeometrySectionType : short
     {
         Socket = 0x1,
         Material = 0x2,
