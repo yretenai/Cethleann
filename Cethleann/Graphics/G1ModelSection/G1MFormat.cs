@@ -20,7 +20,7 @@ namespace Cethleann.Graphics.G1ModelSection
         /// <param name="sectionHeader"></param>
         public G1MFormat(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (sectionHeader.Magic != DataType.ModelFormat) throw new InvalidOperationException("Not an G1MF stream");
+            if (sectionHeader.Magic != DataType.G1MF) throw new InvalidOperationException("Not an G1MF stream");
 
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MF version {Section.Version.ToVersion()} is not supported!");

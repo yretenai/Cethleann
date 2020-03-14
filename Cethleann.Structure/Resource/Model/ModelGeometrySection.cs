@@ -1,9 +1,9 @@
 ﻿namespace Cethleann.Structure.Resource.Model
 {
-    public struct ModelGeometrySection
+    public struct ModelSection
     {
-        public ModelGeometryType Magic { get; set; }
-        public short Index { get; set; }
+        public ModelGeometrySectionType Magic { get; set; }
+        public ModelSectionType Type { get; set; }
         public int Size { get; set; }
         public int Count { get; set; }
     }

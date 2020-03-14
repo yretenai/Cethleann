@@ -13,7 +13,7 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
     [PublicAPI]
     public class G1MGVertexBuffer : IG1MGSection
     {
-        internal G1MGVertexBuffer(Span<byte> block, ModelGeometrySection subSectionHeader)
+        internal G1MGVertexBuffer(Span<byte> block, ModelSection subSectionHeader)
         {
             Section = subSectionHeader;
 
@@ -34,9 +34,9 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
         public List<(ModelGeometryVertexBuffer info, Memory<byte> buffer)> Buffers { get; set; } = new List<(ModelGeometryVertexBuffer info, Memory<byte> buffer)>();
 
         /// <inheritdoc />
-        public ModelGeometryType Type => ModelGeometryType.VertexBuffer;
+        public ModelGeometrySectionType Type => ModelGeometrySectionType.VertexBuffer;
 
         /// <inheritdoc />
-        public ModelGeometrySection Section { get; }
+        public ModelSection Section { get; }
     }
 }

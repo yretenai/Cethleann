@@ -14,7 +14,7 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
     [PublicAPI]
     public class G1MGMaterial : IG1MGSection
     {
-        internal G1MGMaterial(Span<byte> data, ModelGeometrySection sectionInfo)
+        internal G1MGMaterial(Span<byte> data, ModelSection sectionInfo)
         {
             Section = sectionInfo;
             var offset = 0;
@@ -35,9 +35,9 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
         public List<(ModelGeometryMaterial material, ModelGeometryTextureSet[] textureSet)> Materials { get; set; } = new List<(ModelGeometryMaterial, ModelGeometryTextureSet[])>();
 
         /// <inheritdoc />
-        public ModelGeometrySection Section { get; }
+        public ModelSection Section { get; }
 
         /// <inheritdoc />
-        public ModelGeometryType Type => ModelGeometryType.Material;
+        public ModelGeometrySectionType Type => ModelGeometrySectionType.Material;
     }
 }

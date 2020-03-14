@@ -12,11 +12,11 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
         /// <summary>
         ///     Type of this section
         /// </summary>
-        ModelGeometryType Type { get; }
+        ModelGeometrySectionType Type { get; }
 
         /// <summary>
         ///     Section header
         /// </summary>
-        ModelGeometrySection Section { get; }
+        ModelSection Section { get; }
     }
 }

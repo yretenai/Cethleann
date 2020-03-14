@@ -11,7 +11,7 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
     [PublicAPI]
     public class G1MGSubMesh : IG1MGSection
     {
-        internal G1MGSubMesh(Span<byte> data, ModelGeometrySection section)
+        internal G1MGSubMesh(Span<byte> data, ModelSection section)
         {
             Section = section;
             SubMeshes = MemoryMarshal.Cast<byte, ModelGeometrySubMesh>(data).ToArray();
@@ -23,9 +23,9 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
         public ModelGeometrySubMesh[] SubMeshes { get; }
 
         /// <inheritdoc />
-        public ModelGeometryType Type => ModelGeometryType.SubMesh;
+        public ModelGeometrySectionType Type => ModelGeometrySectionType.SubMesh;
 
         /// <inheritdoc />
-        public ModelGeometrySection Section { get; }
+        public ModelSection Section { get; }
     }
 }

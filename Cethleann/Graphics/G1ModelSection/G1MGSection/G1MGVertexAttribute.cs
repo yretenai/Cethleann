@@ -13,7 +13,7 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
     [PublicAPI]
     public class G1MGVertexAttribute : IG1MGSection
     {
-        internal G1MGVertexAttribute(Span<byte> data, ModelGeometrySection section)
+        internal G1MGVertexAttribute(Span<byte> data, ModelSection section)
         {
             Section = section;
             var offset = 0;
@@ -37,9 +37,9 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
         public List<(int[] index, ModelGeometryAttribute[] attributeList)> Attributes { get; } = new List<(int[] sizeMap, ModelGeometryAttribute[] attributeList)>();
 
         /// <inheritdoc />
-        public ModelGeometryType Type => ModelGeometryType.VertexAttribute;
+        public ModelGeometrySectionType Type => ModelGeometrySectionType.VertexAttribute;
 
         /// <inheritdoc />
-        public ModelGeometrySection Section { get; }
+        public ModelSection Section { get; }
     }
 }
