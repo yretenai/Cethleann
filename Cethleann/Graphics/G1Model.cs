@@ -59,11 +59,11 @@ namespace Cethleann.Graphics
                 // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
                 var section = sectionHeader.Magic switch
                 {
-                    DataType.ModelSkeleton => (IKTGLSection) new G1MSkeleton(dataBlock, ignoreVersion, sectionHeader),
-                    DataType.ModelFormat => new G1MFormat(dataBlock, ignoreVersion, sectionHeader),
-                    DataType.ModelGeometry => new G1MGeometry(dataBlock, ignoreVersion, sectionHeader),
-                    DataType.ModelMatrix => new G1MMatrix(dataBlock, ignoreVersion, sectionHeader),
-                    DataType.ModelExtra => new G1Extra(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.G1MS => (IKTGLSection) new G1MSkeleton(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.G1MF => new G1MFormat(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.G1MG => new G1MGeometry(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.G1MM => new G1MMatrix(dataBlock, ignoreVersion, sectionHeader),
+                    DataType.EXTR => new G1Extra(dataBlock, ignoreVersion, sectionHeader),
                     _ => new G1MStub(dataBlock, sectionHeader)
                 };
 

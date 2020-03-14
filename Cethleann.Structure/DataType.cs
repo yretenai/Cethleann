@@ -297,58 +297,58 @@ namespace Cethleann.Structure
         /// <summary>
         ///     KTGL Model Skeleton
         /// </summary>
-        ModelSkeleton = 'G' << 24 | '1' << 16 | 'M' << 8 | 'S' << 0,
+        G1MS = 'G' << 24 | '1' << 16 | 'M' << 8 | 'S' << 0,
 
         /// <summary>
         ///     KTGL Model Format
         /// </summary>
-        ModelFormat = 'G' << 24 | '1' << 16 | 'M' << 8 | 'F' << 0,
+        G1MF = 'G' << 24 | '1' << 16 | 'M' << 8 | 'F' << 0,
 
         /// <summary>
         ///     KTGL Model Geometry
         /// </summary>
-        ModelGeometry = 'G' << 24 | '1' << 16 | 'M' << 8 | 'G' << 0,
+        G1MG = 'G' << 24 | '1' << 16 | 'M' << 8 | 'G' << 0,
 
         /// <summary>
         ///     KTGL Model Matrices
         /// </summary>
-        ModelMatrix = 'G' << 24 | '1' << 16 | 'M' << 8 | 'M' << 0,
+        G1MM = 'G' << 24 | '1' << 16 | 'M' << 8 | 'M' << 0,
 
         /// <summary>
         ///     KTGL Model ExtraData.
         /// </summary>
         [FileExtension("extra")]
-        ModelExtra = 'E' << 24 | 'X' << 16 | 'T' << 8 | 'R' << 0,
+        EXTR = 'E' << 24 | 'X' << 16 | 'T' << 8 | 'R' << 0,
 
         /// <summary>
         ///     KTGL Collision Model.
         /// </summary>
-        ModelCollision = 'C' << 24 | 'O' << 16 | 'L' << 8 | 'L' << 0,
+        COLL = 'C' << 24 | 'O' << 16 | 'L' << 8 | 'L' << 0,
 
         /// <summary>
         ///     KTGL Cloth Driver
         /// </summary>
-        ModelClothDriver = 'N' << 24 | 'U' << 16 | 'N' << 8 | 'O' << 0,
+        NUNO = 'N' << 24 | 'U' << 16 | 'N' << 8 | 'O' << 0,
 
         /// <summary>
-        ///     KTGL Cloth
+        ///     KTGL Cloth Vividly
         /// </summary>
-        ModelCloth = 'N' << 24 | 'U' << 16 | 'N' << 8 | 'V' << 0,
+        NUNV = 'N' << 24 | 'U' << 16 | 'N' << 8 | 'V' << 0,
 
         /// <summary>
-        ///     KTGL Cloth
+        ///     KTGL Cloth Softly
         /// </summary>
-        ModelClothSurface = 'N' << 24 | 'U' << 16 | 'N' << 8 | 'S' << 0,
+        NUNS = 'N' << 24 | 'U' << 16 | 'N' << 8 | 'S' << 0,
 
         /// <summary>
         ///     KTGL Soft Body voxels
         /// </summary>
-        ModelSoftbody = 'S' << 24 | 'O' << 16 | 'F' << 8 | 'T' << 0,
+        SOFT = 'S' << 24 | 'O' << 16 | 'F' << 8 | 'T' << 0,
 
         /// <summary>
         ///     KTGL Hair voxels
         /// </summary>
-        ModelHair = 'H' << 24 | 'A' << 16 | 'I' << 8 | 'R' << 0,
+        HAIR = 'H' << 24 | 'A' << 16 | 'I' << 8 | 'R' << 0,
 
         /// <summary>
         ///     Model Pack

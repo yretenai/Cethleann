@@ -26,7 +26,7 @@ namespace Cethleann.Graphics.G1ModelSection
         /// <param name="sectionHeader"></param>
         public G1MGeometry(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (sectionHeader.Magic != DataType.ModelGeometry) throw new InvalidOperationException("Not an G1MG stream");
+            if (sectionHeader.Magic != DataType.G1MG) throw new InvalidOperationException("Not an G1MG stream");
 
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MG version {Section.Version.ToVersion()} is not supported!");

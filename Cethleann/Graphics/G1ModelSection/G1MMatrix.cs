@@ -21,7 +21,7 @@ namespace Cethleann.Graphics.G1ModelSection
         /// <param name="sectionHeader"></param>
         public G1MMatrix(Span<byte> data, bool ignoreVersion, ResourceSectionHeader sectionHeader)
         {
-            if (sectionHeader.Magic != DataType.ModelMatrix) throw new InvalidOperationException("Not an G1MM stream");
+            if (sectionHeader.Magic != DataType.G1MM) throw new InvalidOperationException("Not an G1MM stream");
 
             Section = sectionHeader;
             if (!ignoreVersion && Section.Version.ToVersion() != SupportedVersion) throw new NotSupportedException($"G1MM version {Section.Version.ToVersion()} is not supported!");
