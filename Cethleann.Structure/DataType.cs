@@ -1,10 +1,12 @@
 ﻿using DragonLib;
+using JetBrains.Annotations;
 
 namespace Cethleann.Structure
 {
     /// <summary>
     ///     Magic Values for most files
     /// </summary>
+    [PublicAPI]
     public enum DataType : uint
     {
         /// <summary>
@@ -263,12 +265,6 @@ namespace Cethleann.Structure
         /// </summary>
         [FileExtension("g1s")]
         Shader = 'G' << 24 | '2' << 16 | 'S' << 8 | '_' << 0,
-
-        /// <summary>
-        ///     KTGL Model Group
-        /// </summary>
-        [FileExtension("g1mg")]
-        ModelGroup = 'G' << 24 | '1' << 16 | 'M' << 8 | 'G' << 0,
 
         /// <summary>
         ///     KTGL Effect Model
