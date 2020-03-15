@@ -35,22 +35,25 @@
         <None Update="filelist-DeadOrAlive6-rdb.csv">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="filelist-ThreeHouses-link.csv">
+        <None Update="filelist-LINKDATAPatterns-link.csv">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="filelist-LINKDATAPatterns-link.csv">
+        <None Update="filelist-PropertyList-rdb.csv">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="filelist-RDBExt-rdb.csv">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="filelist-Scramble-rdb.csv">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
         <None Update="filelist-RDBShared-rdb.csv">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="filelist-PropertyList-rdb.csv">
+        <None Update="filelist-Sangokushi14-rdb.csv">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="filelist-Scramble-rdb.csv">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="filelist-ThreeHouses-link.csv">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
