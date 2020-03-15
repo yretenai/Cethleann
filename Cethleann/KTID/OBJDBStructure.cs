@@ -41,6 +41,16 @@ namespace Cethleann.KTID
         }
 
         /// <summary>
+        ///     Get multple properties by name
+        /// </summary>
+        /// <param name="names"></param>
+        /// <returns></returns>
+        public (OBJDBProperty info, object?[]? values)[] GetProperties(params string[] names)
+        {
+            return GetProperties(names.Select(RDB.Hash).ToArray());
+        }
+
+        /// <summary>
         ///     Get property values by KTID
         /// </summary>
         /// <param name="ktid"></param>
@@ -50,5 +60,19 @@ namespace Cethleann.KTID
             var (key, value) = Properties.FirstOrDefault(x => x.Key.PropertyKTID == ktid);
             return (key, value);
         }
+
+        /// <summary>
+        ///     Get multple properties by KTIDs
+        /// </summary>
+        /// <param name="ktids"></param>
+        /// <returns></returns>
+        public (OBJDBProperty info, object?[]? values)[] GetProperties(params KTIDReference[] ktids)
+        {
+            var properties = new (OBJDBProperty info, object?[]? values)[ktids.Length];
+            for (var i = 0; i < ktids.Length; ++i) properties[i] = GetProperty(ktids[i]);
+            return properties;
+        }
+
+        // TODO: ToClass<T>(); and IsType();
     }
 }

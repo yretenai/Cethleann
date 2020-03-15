@@ -28,6 +28,9 @@ namespace Nyotengu.Database
         [CLIFlag("show-ktids", Help = "Show KTIDs rather than named value", Category = "Database Options")]
         public bool ShowKTIDs { get; set; }
 
+        [CLIFlag("create-missinglist", Aliases = new[] { "missing" }, Help = "Dump missing property hashes to filelist-MissingProperties-rdb.csv", Category = "Database Options", Hidden = true)]
+        public bool CreateMissingList { get; set; }
+
         [CLIFlag("filelist", Help = "File List to load. Unspecified is automatically determined based on GameId", Category = "Database Options")]
         public string? FileList { get; set; }
 

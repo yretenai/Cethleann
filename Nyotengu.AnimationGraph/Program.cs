@@ -60,13 +60,8 @@ namespace Nyotengu.AnimationGraph
                         continue;
                     }
 
-                    var (_, animationDataHashes) = player.GetProperty("AnimationDataObjectNameHashArray");
-                    if (animationDataHashes == null)
-                    {
-                        Logger.Error("ANIM", $"Can't find animation hashes for {GetKTIDNameValue(actionHash, false, singletonNdb, filelist)}");
-                        continue;
-                    }
-
+                    var properties = player.GetProperties("AnimationDataObjectNameHashArray", "SrcAnimationDataObjectNameHash", "DstAnimationDataObjectNameHash", "FCurveAnimationDataObjectNameHash");
+                    var animationDataHashes = properties.SelectMany(x => x.values ?? new object?[0]).ToArray();
                     var ktidHashes = animationDataHashes.Where(x => x != null).Select(x => new KTIDReference(x)).ToArray();
                     foreach (var animationDataHash in ktidHashes)
                     {

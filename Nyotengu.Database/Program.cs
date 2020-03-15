@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Cethleann;
 using Cethleann.Archive;
 using Cethleann.KTID;
+using Cethleann.ManagedFS;
 using Cethleann.Structure;
 using Cethleann.Structure.KTID;
 using DragonLib.CLI;
@@ -45,6 +47,7 @@ namespace Nyotengu.Database
 
             var typeHashes = new Dictionary<KTIDReference, string>();
             var extraHashes = new Dictionary<KTIDReference, string>();
+            var missingProperties = new HashSet<KTIDReference>();
 
             foreach (var file in files)
             {
@@ -55,7 +58,7 @@ namespace Nyotengu.Database
                 {
                     case DataType.OBJDB:
                     {
-                        ProcessOBJDB(buffer, ndbFiles, filelist, propertyList, filters, flags);
+                        ProcessOBJDB(buffer, ndbFiles, filelist, propertyList, filters, flags, missingProperties);
                         break;
                     }
                     case DataType.NDB:
@@ -78,10 +81,19 @@ namespace Nyotengu.Database
                 foreach (var (hash, text) in typeHashes.OrderBy(x => x.Key))
                     Console.WriteLine($"TypeInfo,{hash:x8},{text}");
 
-            // ReSharper disable once InvertIf
             if (flags.HashExtra)
                 foreach (var (hash, text) in extraHashes.OrderBy(x => x.Key))
                     Console.WriteLine($"Property,{hash:x8},{text}");
+
+            // ReSharper disable once InvertIf
+            if (flags.CreateMissingList)
+            {
+                var location = ManagedFSHelper.GetFileListLocation(null, "MissingProperties", "rdb");
+                using var file = File.Open(location, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
+                file.Seek(0, SeekOrigin.End);
+                using var writer = new StreamWriter(file, Encoding.UTF8);
+                foreach (var hash in missingProperties) writer.WriteLine($"Property,{hash:x8},");
+            }
         }
 
         private static void NDBFilelist(Span<byte> buffer, string ns, DatabaseFlags? flags, Dictionary<KTIDReference, string> filelist)
@@ -95,7 +107,7 @@ namespace Nyotengu.Database
             }
         }
 
-        private static void ProcessOBJDB(Span<byte> buffer, Dictionary<KTIDReference, string> ndbFiles, Dictionary<KTIDReference, string> filelist, Dictionary<KTIDReference, string> propertyList, HashSet<KTIDReference> filters, DatabaseFlags flags)
+        private static void ProcessOBJDB(Span<byte> buffer, Dictionary<KTIDReference, string> ndbFiles, Dictionary<KTIDReference, string> filelist, Dictionary<KTIDReference, string> propertyList, HashSet<KTIDReference> filters, DatabaseFlags flags, HashSet<KTIDReference> missingProperties)
         {
             var db = new OBJDB(buffer);
             var ndb = new NDB();
@@ -111,7 +123,11 @@ namespace Nyotengu.Database
                     $"Parent: {GetKTIDNameValue(entry.ParentKTID, flags.ShowKTIDs, ndb, filelist, propertyList)}"
                 };
 
-                foreach (var (property, values) in properties) lines.Add($"{property.TypeId} {GetKTIDNameValue(property.PropertyKTID, flags.ShowKTIDs, ndb, propertyList)}: {(values.Length == 0 ? "NULL" : string.Join(", ", values.Select(x => property.TypeId == OBJDBPropertyType.UInt32 && x != null ? GetKTIDNameValue((uint) x, flags.ShowKTIDs, ndb, filelist, propertyList) : x?.ToString() ?? "NULL")))}");
+                foreach (var (property, values) in properties)
+                {
+                    if (flags.CreateMissingList && !HasKTIDNameValue(property.PropertyKTID, ndb, propertyList)) missingProperties.Add(property.PropertyKTID);
+                    lines.Add($"{property.TypeId} {GetKTIDNameValue(property.PropertyKTID, flags.ShowKTIDs, ndb, propertyList)}: {(values.Length == 0 ? "NULL" : string.Join(", ", values.Select(x => property.TypeId == OBJDBPropertyType.UInt32 && x != null ? GetKTIDNameValue((uint) x, flags.ShowKTIDs, ndb, filelist, propertyList) : x?.ToString() ?? "NULL")))}");
+                }
 
                 foreach (var line in lines) Console.Out.WriteLine(line);
 
@@ -123,6 +139,11 @@ namespace Nyotengu.Database
         {
             var name = $"{ktid:x8}";
             return ignoreNames ? name : $"{ktid.GetName(ndb, filelists) ?? name}";
+        }
+
+        private static bool HasKTIDNameValue(KTIDReference ktid, NDB ndb, params Dictionary<KTIDReference, string>[] filelists)
+        {
+            return ktid.GetName(ndb, filelists) == null;
         }
 
         private static void ProcessNDB(Span<byte> buffer, DatabaseFlags flags)
