@@ -648,6 +648,7 @@ Property,2e30d2c7,Sky2StarMap
 Property,2e34c228,StatisticalOceanWaveShoreBubbleWaterTransparencyDampScale
 Property,2e37fdea,AlbedoRetouch_specularPower
 Property,2e49384c,fHM2BreakAdditionalThreshold
+Property,2e7039b5,OccluderAttachmentNameHash
 Property,2e73d26d,IRim_trsScaler13
 Property,2e7d08da,Weathering_albedoFade
 Property,2ea7b478,IsVisible
@@ -951,6 +952,7 @@ Property,4c403289,DirtArrayTexture
 Property,4c4e1341,StatisticalOceanWaveSurfaceBubbleMaskScale
 Property,4c60f3a3,TerrainDeformHeightMax
 Property,4c82f720,TextureRepeatV
+Property,4c8b5d79,RigAngleRange3
 Property,4cfd293a,DOFDistantBlurIntensity
 Property,4d038c99,DecayTime
 Property,4d07a3f0,DelayTime
@@ -1231,6 +1233,7 @@ Property,6572adc1,StatisticalOceanChoppyFactor
 Property,659f2a5b,IRim_rflScalerLocalAndAmbient9
 Property,65a33188,IndexedRamp_hairSecondaryRimScaler
 Property,65b6c39a,SceneColorRange
+Property,65d53286,RigAngleRange
 Property,6607cb74,IRim_trsScaler7
 Property,660ec2ed,StatisticalOceanWaveInnerBubbleAlphaThreshold
 Property,6619527c,LocationHint
@@ -1487,6 +1490,7 @@ Property,7c80d02b,SkylightKeyLightTransitionSpan
 Property,7ca5a75d,WaveShoreBubbleAnimationSpeed
 Property,7ca93a36,Eyet_eyetLSERGBFade
 Property,7cad7388,PB2Weathering_maskFadeMin21
+Property,7cb21bde,OccluderShapeType
 Property,7cb3d822,UseAmbientOcc
 Property,7ccb09c9,BiasForSubShadowBiasAccessory2
 Property,7cd03d69,ShadowCascade2RectHeight
@@ -1738,6 +1742,7 @@ Property,90c782d7,CloudHeightMultiChannelNoiseSeedPersistence1
 Property,90d2cf18,SourceAirResistance
 Property,90d6ff06,VolumetricCloudHgEccentricity0
 Property,910a2df2,Radius
+Property,9144cccb,OccluderRadius
 Property,9148d7ad,IESLightProfilesMap
 Property,914e514e,IndexedRamp_hairHighlightLightElevationRatio
 Property,91526727,UVTransXY_OfBlendTexture1
@@ -1909,8 +1914,10 @@ Property,9e838ff5,StatisticalOceanGravity
 Property,9e9cfeda,UC_AM_etRot
 Property,9ea1b53a,IRim_tkEmiCurveParam15
 Property,9ecaf4f5,UC_AM_Offset
+Property,9ee605a2,SrcAnimationDataObjectNameHash
 Property,9ee7b536,RigAnimationDataObjectNameHash
 Property,9eeca64d,HeightFogLayer2Fluc0zVelocity
+Property,9eedc1e1,DstAnimationDataObjectNameHash
 Property,9ef70229,HiPartsObjectNameHash
 Property,9efa1768,LightColorAccessoryLight3Scale
 Property,9f277acb,AlbedoRetouch_falloffScaledOffset
@@ -1978,6 +1985,7 @@ Property,a45c7140,VolumetricFogFarDistance
 Property,a4654504,LimitDistanceHoldTime
 Property,a46e75d7,RainDropReflectance
 Property,a470d786,LPVDiffuseScale
+Property,a4746423,FCurveAnimationDataObjectNameHash
 Property,a48c17e9,StarsMap2
 Property,a48ecb2a,SkylightFogMaxDistanceToSky
 Property,a4df0ab1,VertexColorRB
@@ -1999,6 +2007,7 @@ Property,a5f933fa,HemisphereLightScale
 Property,a5f9e687,IRim_rmScaleSharp4
 Property,a616f2eb,LightColorAccessoryScaleZ
 Property,a6624723,ReflectanceMapSpeedZ
+Property,a666c7ba,RigAngleRange4
 Property,a6838d69,OccRegionIndexArray3
 Property,a6966013,AmbientMapsRotation
 Property,a698f445,ProgId0
@@ -2347,6 +2356,7 @@ Property,c76fbd1f,IndexedRamp_rimDirectionType
 Property,c7c7b329,UC_ROT_InitialQuaternion
 Property,c7cb0b89,VolumetricCloudGodRayDecay
 Property,c7e6b64e,StatisticalOceanWaveSurfaceBubbleTextureScaleZ
+Property,c7e719c1,RigEffectorID
 Property,c7fe4e29,EffectDecalEmissiveMap
 Property,c8026ae2,SkyPlaneGlowType
 Property,c81f204d,LensSimulationBloomThreshold
@@ -2818,6 +2828,7 @@ Property,f231e60a,FadePowers
 Property,f23bfe3b,LayeredBRDF_Ly1GlossinessScale2
 Property,f241eaac,HeightFogLayer0Start
 Property,f2a78cdf,TextureRepeatU
+Property,f2aff338,RigAngleRange2
 Property,f2b45c7f,LensSimulationShutterSpeed
 Property,f30fb61b,BubbleSpawnScale
 Property,f3366a84,StatisticalOceanWaveInnerBubbleGlossiness
