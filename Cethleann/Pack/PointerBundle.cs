@@ -85,7 +85,7 @@ namespace Cethleann.Pack
             try
             {
                 var l = data.Length;
-                return pointers[0] == headerSize.Align(0x10) && pointers.All(x => x < l) ? pointers : null;
+                return pointers[0] == (headerSize + 4).Align(0x10) && pointers.All(x => x < l) ? pointers : null;
             }
             catch (ArithmeticException)
             {

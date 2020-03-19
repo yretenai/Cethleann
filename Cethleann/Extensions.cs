@@ -138,6 +138,16 @@ namespace Cethleann
         /// </summary>
         /// <param name="buffer"></param>
         /// <returns></returns>
+        public static bool IsSliceBundle(this Span<byte> buffer)
+        {
+            return SliceBundle.Validate(buffer) != null;
+        }
+
+        /// <summary>
+        ///     Guesses if the stream is a valid bundle.
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
         public static bool IsPointerBundle(this Span<byte> buffer)
         {
             return PointerBundle.Validate(buffer) != null;

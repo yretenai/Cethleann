@@ -75,6 +75,9 @@ namespace Cethleann.Unbundler
                         if (datablob.IsBundle())
                             if (TryExtractBundle(blobBase, datablob, flags))
                                 return 1;
+                        if (datablob.IsSliceBundle())
+                            if (TryExtractSliceBundle(blobBase, datablob, flags))
+                                return 1;
                         if (datablob.IsPointerBundle())
                             if (TryExtractPointerBundle(blobBase, datablob, flags))
                                 return 1;
@@ -316,6 +319,7 @@ namespace Cethleann.Unbundler
             if (data.IsKnown()) return data.GetDataType().GetExtension();
             if (data.IsDataTable()) return "datatable";
             if (data.IsBundle()) return "bundle";
+            if (data.IsSliceBundle()) return "slcbundle";
             if (data.IsPointerBundle()) return "ptrbundle";
             if (data.IsDDSBundle()) return "ddsbundle";
             return "bin";
@@ -373,6 +377,26 @@ namespace Cethleann.Unbundler
             catch (Exception e)
             {
                 Logger.Error("BUN", "Failed unpacking Bundle", e);
+                if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool TryExtractSliceBundle(string pathBase, Span<byte> data, UnbundlerFlags flags)
+        {
+            try
+            {
+                var blobs = new SliceBundle(data);
+                if (blobs.Entries.Count == 0) return true;
+
+                TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, false, null, flags);
+            }
+            catch (Exception e)
+            {
+                Logger.Error("SBUN", "Failed unpacking Bundle", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
