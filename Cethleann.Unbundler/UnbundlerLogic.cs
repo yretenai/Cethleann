@@ -277,7 +277,7 @@ namespace Cethleann.Unbundler
                     if (blob.Span.GetDataType() == DataType.TextureGroup && nameIndex > 0) nameIndex--;
                     if (blob.Span.GetDataType() == DataType.SwingDefinition && nameIndex > 0) nameIndex--;
                     if (nameIndex >= blobs.NameMap.Names.Count) break;
-                    names.Add(nameIndex > 0 ? blobs.NameMap.Names[nameIndex] : null);
+                    names.Add(nameIndex >= 0 ? blobs.NameMap.Names[nameIndex] : null);
                     nameIndex++;
                 }
 
