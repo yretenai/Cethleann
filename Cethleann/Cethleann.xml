@@ -1260,6 +1260,13 @@
             <param name="buffer"></param>
             <returns></returns>
         </member>
+        <member name="M:Cethleann.Extensions.IsSliceBundle(System.Span{System.Byte})">
+            <summary>
+                Guesses if the stream is a valid bundle.
+            </summary>
+            <param name="buffer"></param>
+            <returns></returns>
+        </member>
         <member name="M:Cethleann.Extensions.IsPointerBundle(System.Span{System.Byte})">
             <summary>
                 Guesses if the stream is a valid bundle.
@@ -1686,6 +1693,29 @@
         <member name="P:Cethleann.Graphics.G1ModelSection.G1MSkeleton.Section">
             <inheritdoc />
         </member>
+        <member name="T:Cethleann.Graphics.G1ModelSection.G1MStub">
+            <summary>
+                Stub G1M Section
+            </summary>
+        </member>
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MStub.SupportedVersion">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MStub.Section">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MStub.Data">
+            <summary>
+                Memory Buffer for this section
+            </summary>
+        </member>
+        <member name="M:Cethleann.Graphics.G1ModelSection.G1MStub.#ctor(System.Span{System.Byte},Cethleann.Structure.Resource.ResourceSectionHeader)">
+            <summary>
+                Initialize with memory block
+            </summary>
+            <param name="dataBlock"></param>
+            <param name="sectionHeader"></param>
+        </member>
         <member name="T:Cethleann.Graphics.G1TextureGroup">
             <summary>
                 G1TextureGroup is a bundle of textures.
@@ -1913,7 +1943,7 @@
             <param name="nyotengu"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.KTID.KTIDExtensions.GetName(Cethleann.Structure.KTID.KTIDReference,Cethleann.KTID.NDB,System.Collections.Generic.Dictionary{Cethleann.Structure.KTID.KTIDReference,System.String}[])">
+        <member name="M:Cethleann.KTID.KTIDExtensions.GetName(Cethleann.Structure.KTID.KTIDReference,Cethleann.KTID.RDBINFO,System.Collections.Generic.Dictionary{Cethleann.Structure.KTID.KTIDReference,System.String}[])">
             <summary>
                 Attempt to retrieve a KTID file
             </summary>
@@ -1941,26 +1971,6 @@
         <member name="P:Cethleann.KTID.NDB.Header">
             <summary>
                 NDB Header
-            </summary>
-        </member>
-        <member name="P:Cethleann.KTID.NDB.Entries">
-            <summary>
-                Lsof entries with strings
-            </summary>
-        </member>
-        <member name="P:Cethleann.KTID.NDB.NameMap">
-            <summary>
-                Hashes mapped to strings
-            </summary>
-        </member>
-        <member name="P:Cethleann.KTID.NDB.HashMap">
-            <summary>
-                Hashes of both names and typeinfos.
-            </summary>
-        </member>
-        <member name="P:Cethleann.KTID.NDB.ExtMap">
-            <summary>
-                Type infos hashes mapped to guessed extensions
             </summary>
         </member>
         <member name="T:Cethleann.KTID.OBJDB">
@@ -2032,12 +2042,73 @@
             <param name="name"></param>
             <returns></returns>
         </member>
+        <member name="M:Cethleann.KTID.OBJDBStructure.GetProperties(System.String[])">
+            <summary>
+                Get multple properties by name
+            </summary>
+            <param name="names"></param>
+            <returns></returns>
+        </member>
         <member name="M:Cethleann.KTID.OBJDBStructure.GetProperty(Cethleann.Structure.KTID.KTIDReference)">
             <summary>
                 Get property values by KTID
             </summary>
             <param name="ktid"></param>
             <returns></returns>
+        </member>
+        <member name="M:Cethleann.KTID.OBJDBStructure.GetProperties(Cethleann.Structure.KTID.KTIDReference[])">
+            <summary>
+                Get multple properties by KTIDs
+            </summary>
+            <param name="ktids"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.KTID.RDBINFO">
+            <summary>
+                Parser for RDB INFO lists (NDB)
+            </summary>
+        </member>
+        <member name="M:Cethleann.KTID.RDBINFO.#ctor">
+            <summary>
+                Initialize with no data (for compatability)
+            </summary>
+        </member>
+        <member name="M:Cethleann.KTID.RDBINFO.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize with stream data
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="P:Cethleann.KTID.RDBINFO.Entries">
+            <summary>
+                Lsof entries with strings
+            </summary>
+        </member>
+        <member name="P:Cethleann.KTID.RDBINFO.NameMap">
+            <summary>
+                Hashes mapped to strings
+            </summary>
+        </member>
+        <member name="P:Cethleann.KTID.RDBINFO.HashMap">
+            <summary>
+                Hashes of both names and typeinfos.
+            </summary>
+        </member>
+        <member name="P:Cethleann.KTID.RDBINFO.ExtMap">
+            <summary>
+                Type infos hashes mapped to guessed extensions
+            </summary>
+        </member>
+        <member name="P:Cethleann.KTID.RDBINFO.IsEmpty">
+            <summary>
+                Wild if true.
+            </summary>
+        </member>
+        <member name="M:Cethleann.KTID.RDBINFO.Union(Cethleann.KTID.RDBINFO)">
+            <summary>
+                Merges one RDBINFO with another.
+            </summary>
+            <param name="other"></param>
         </member>
         <member name="T:Cethleann.ManagedFS.Flayn">
             <summary>
@@ -2263,6 +2334,28 @@
                 Parse a CSV with N fields
             </summary>
             <param name="loc"></param>
+            <param name="fields"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.ManagedFS.ManagedFSHelper.GetFileList(System.String)">
+            <summary>
+                Parse a CSV
+            </summary>
+            <param name="loc"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.ManagedFS.ManagedFSHelper.GetFileList(System.Span{System.Byte})">
+            <summary>
+                Parse a CSV
+            </summary>
+            <param name="buffer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.ManagedFS.ManagedFSHelper.GetFileList(System.Span{System.Byte},System.Int32)">
+            <summary>
+                Parse a CSV
+            </summary>
+            <param name="buffer"></param>
             <param name="fields"></param>
             <returns></returns>
         </member>
@@ -2863,6 +2956,30 @@
             <summary>
                 Data Streams found in the PAK
             </summary>
+        </member>
+        <member name="T:Cethleann.Pack.SliceBundle">
+            <summary>
+                Koei Engine Slice Bundle, apparently because DataTable is too boring.
+            </summary>
+        </member>
+        <member name="M:Cethleann.Pack.SliceBundle.#ctor(System.Span{System.Byte})">
+            <summary>
+                Split file into individual chunks
+            </summary>
+            <param name="data"></param>
+            <exception cref="T:System.IO.InvalidDataException"></exception>
+        </member>
+        <member name="P:Cethleann.Pack.SliceBundle.Entries">
+            <summary>
+                lsof data blobs
+            </summary>
+        </member>
+        <member name="M:Cethleann.Pack.SliceBundle.Validate(System.Span{System.Byte})">
+            <summary>
+                Checks if the stream makes sense to be a bundle
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
         </member>
         <member name="T:Cethleann.SaveData.DFFNTSave">
             <summary>

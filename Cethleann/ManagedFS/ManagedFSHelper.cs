@@ -25,7 +25,7 @@ namespace Cethleann.ManagedFS
         {
             return !File.Exists(loc) ? new string[0][] : File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith(";")).Select(x => x.Split(',', fields).Select(y => y.Trim()).ToArray()).ToArray();
         }
-        
+
         /// <summary>
         ///     Parse a CSV
         /// </summary>
@@ -35,7 +35,7 @@ namespace Cethleann.ManagedFS
         {
             return !File.Exists(loc) ? new string[0][] : File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith(";")).Select(x => x.Split(',').Select(y => y.Trim()).ToArray()).ToArray();
         }
-        
+
         /// <summary>
         ///     Parse a CSV
         /// </summary>
@@ -45,7 +45,7 @@ namespace Cethleann.ManagedFS
         {
             return buffer.Length < 1 ? new string[0][] : Encoding.UTF8.GetString(buffer).Split('\n', StringSplitOptions.RemoveEmptyEntries).Where(x => !x.StartsWith(";")).Select(x => x.Trim().Split(',').Select(x => x.Trim()).ToArray()).ToArray();
         }
-        
+
         /// <summary>
         ///     Parse a CSV
         /// </summary>

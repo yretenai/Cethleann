@@ -39,14 +39,6 @@ namespace Cethleann.KTID
             }
         }
 
-        public void Union(RDBINFO other)
-        {
-            Entries = Entries.Union(other.Entries).Distinct().ToList();
-            NameMap = NameMap.Union(other.NameMap).Distinct().ToDictionary(x => x.Key, y => y.Value);
-            HashMap = HashMap.Union(other.HashMap).Distinct().ToDictionary(x => x.Key, y => y.Value);
-            ExtMap = ExtMap.Union(other.ExtMap).Distinct().ToDictionary(x => x.Key, y => y.Value);
-        }
-
         /// <summary>
         ///     Lsof entries with strings
         /// </summary>
@@ -71,5 +63,17 @@ namespace Cethleann.KTID
         ///     Wild if true.
         /// </summary>
         public bool IsEmpty => Entries.Count == 0;
+
+        /// <summary>
+        ///     Merges one RDBINFO with another.
+        /// </summary>
+        /// <param name="other"></param>
+        public void Union(RDBINFO other)
+        {
+            Entries = Entries.Union(other.Entries).Distinct().ToList();
+            NameMap = NameMap.Union(other.NameMap).Distinct().ToDictionary(x => x.Key, y => y.Value);
+            HashMap = HashMap.Union(other.HashMap).Distinct().ToDictionary(x => x.Key, y => y.Value);
+            ExtMap = ExtMap.Union(other.ExtMap).Distinct().ToDictionary(x => x.Key, y => y.Value);
+        }
     }
 }

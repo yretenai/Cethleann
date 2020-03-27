@@ -87,12 +87,8 @@ namespace Cethleann.ManagedFS
             Logger.Success("Nyotengu", $"Loading {Path.GetFileName(path)}...");
             var rdb = new RDB(File.ReadAllBytes(path), Path.GetFileNameWithoutExtension(path), Path.GetDirectoryName(path) ?? string.Empty);
             if (rdb.NameDatabase.IsEmpty)
-            {
                 foreach (var file in Directory.GetFiles(Path.GetDirectoryName(path), rdb.Name + "*.info"))
-                {
                     rdb.NameDatabase.Union(new RDBINFO(File.ReadAllBytes(file)));
-                }
-            }
             EntryCount += rdb.Entries.Count;
             RDBs.Add(rdb);
         }
