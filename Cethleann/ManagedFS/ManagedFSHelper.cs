@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Cethleann.Structure;
 using JetBrains.Annotations;
 
@@ -22,6 +24,37 @@ namespace Cethleann.ManagedFS
         public static string[][] GetFileList(string loc, int fields)
         {
             return !File.Exists(loc) ? new string[0][] : File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith(";")).Select(x => x.Split(',', fields).Select(y => y.Trim()).ToArray()).ToArray();
+        }
+        
+        /// <summary>
+        ///     Parse a CSV
+        /// </summary>
+        /// <param name="loc"></param>
+        /// <returns></returns>
+        public static string[][] GetFileList(string loc)
+        {
+            return !File.Exists(loc) ? new string[0][] : File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith(";")).Select(x => x.Split(',').Select(y => y.Trim()).ToArray()).ToArray();
+        }
+        
+        /// <summary>
+        ///     Parse a CSV
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public static string[][] GetFileList(Span<byte> buffer)
+        {
+            return buffer.Length < 1 ? new string[0][] : Encoding.UTF8.GetString(buffer).Split('\n', StringSplitOptions.RemoveEmptyEntries).Where(x => !x.StartsWith(";")).Select(x => x.Trim().Split(',').Select(x => x.Trim()).ToArray()).ToArray();
+        }
+        
+        /// <summary>
+        ///     Parse a CSV
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public static string[][] GetFileList(Span<byte> buffer, int fields)
+        {
+            return buffer.Length < 1 ? new string[0][] : Encoding.UTF8.GetString(buffer).Split('\n', StringSplitOptions.RemoveEmptyEntries).Where(x => x.Contains(",") && !x.StartsWith(";")).Select(x => x.Trim().Split(',', fields).Select(x => x.Trim()).ToArray()).ToArray();
         }
 
         /// <summary>

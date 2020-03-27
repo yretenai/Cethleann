@@ -92,7 +92,7 @@ namespace Cethleann.Archive
         /// <summary>
         ///     Name Database for this RDB
         /// </summary>
-        public NDB NameDatabase { get; set; } = new NDB();
+        public RDBINFO NameDatabase { get; set; } = new NDB();
 
         /// <summary>
         ///     Clean up streams

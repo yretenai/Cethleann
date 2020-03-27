@@ -50,6 +50,7 @@ namespace Cethleann.Structure
         AttackOnTitan,
         AttackOnTitan2,
         Hyrule,
-        FireEmblemWarriors
+        FireEmblemWarriors,
+        OnePiece4
     }
 }

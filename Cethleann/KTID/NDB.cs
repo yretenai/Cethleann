@@ -13,7 +13,7 @@ namespace Cethleann.KTID
     ///     Parser for RDB NAME databases (NDB)
     /// </summary>
     [PublicAPI]
-    public class NDB
+    public class NDB : RDBINFO
     {
         /// <summary>
         ///     Initialize with no data (for compatability)
@@ -27,7 +27,7 @@ namespace Cethleann.KTID
         public NDB(Span<byte> buffer)
         {
             Header = MemoryMarshal.Read<NDBHeader>(buffer);
-            Entries = new List<(NDBEntry entry, string[] strings)>(Header.Count);
+            Entries = new List<(KTIDReference reference, string[] strings)>(Header.Count);
             NameMap = new Dictionary<KTIDReference, string>(Header.Count);
             HashMap = new Dictionary<KTIDReference, string>(Header.Count);
             ExtMap = new Dictionary<KTIDReference, string>(Header.Count);
@@ -52,7 +52,7 @@ namespace Cethleann.KTID
                 offset += entry.SectionHeader.Size;
                 offset = offset.Align(4);
 
-                Entries.Add((entry, strings));
+                Entries.Add((entry.KTID, strings));
 
                 var (name, ext) = RDB.StripName(strings[0]);
                 NameMap[entry.KTID] = name;
@@ -69,25 +69,5 @@ namespace Cethleann.KTID
         ///     NDB Header
         /// </summary>
         public NDBHeader Header { get; set; }
-
-        /// <summary>
-        ///     Lsof entries with strings
-        /// </summary>
-        public List<(NDBEntry entry, string[] strings)> Entries { get; set; } = new List<(NDBEntry entry, string[] strings)>();
-
-        /// <summary>
-        ///     Hashes mapped to strings
-        /// </summary>
-        public Dictionary<KTIDReference, string> NameMap { get; set; } = new Dictionary<KTIDReference, string>();
-
-        /// <summary>
-        ///     Hashes of both names and typeinfos.
-        /// </summary>
-        public Dictionary<KTIDReference, string> HashMap { get; set; } = new Dictionary<KTIDReference, string>();
-
-        /// <summary>
-        ///     Type infos hashes mapped to guessed extensions
-        /// </summary>
-        public Dictionary<KTIDReference, string> ExtMap { get; set; } = new Dictionary<KTIDReference, string>();
     }
 }

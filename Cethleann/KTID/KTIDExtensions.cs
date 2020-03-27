@@ -42,7 +42,7 @@ namespace Cethleann.KTID
         /// <param name="ndb"></param>
         /// <param name="nameLists"></param>
         /// <returns></returns>
-        public static string? GetName(this KTIDReference instance, NDB ndb, params Dictionary<KTIDReference, string>[] nameLists)
+        public static string? GetName(this KTIDReference instance, RDBINFO ndb, params Dictionary<KTIDReference, string>[] nameLists)
         {
             if (instance == 0) return "NULL";
             if (ndb.HashMap.TryGetValue(instance, out var name) && !string.IsNullOrWhiteSpace(name)) return name;
