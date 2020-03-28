@@ -2,6 +2,7 @@
 using System.Buffers.Binary;
 using System.IO;
 using System.IO.Compression;
+using Cethleann.Structure;
 using DragonLib;
 using DragonLib.IO;
 using JetBrains.Annotations;
@@ -23,7 +24,7 @@ namespace Cethleann.Compression
         /// <param name="blockSize"></param>
         /// <param name="sizePrefix"></param>
         /// <returns></returns>
-        public static Span<byte> Decompress(Span<byte> data, int decompressedSize, int compressionFunc, int blockSize = 0x4000, bool sizePrefix = false)
+        public static Span<byte> Decompress(Span<byte> data, int decompressedSize, DataCompression compressionFunc, int blockSize = 0x4000, bool sizePrefix = false)
         {
             unsafe
             {
@@ -46,7 +47,7 @@ namespace Cethleann.Compression
 
                     switch (compressionFunc)
                     {
-                        case 1:
+                        case DataCompression.Deflate:
                         {
                             var chunk = data.Slice(comPtr + 2, chunkSize - 2);
                             fixed (byte* pin = &chunk.GetPinnableReference())
@@ -69,7 +70,7 @@ namespace Cethleann.Compression
 
                             break;
                         }
-                        case 2:
+                        case DataCompression.Lz4:
                         {
                             var chunk = data.Slice(comPtr, chunkSize);
                             Span<byte> block = new byte[blockSize * 4];
@@ -93,6 +94,17 @@ namespace Cethleann.Compression
                 Logger.Assert(comPtr == data.Length, "comPtr == data.Length");
                 return decompressed.Slice(0, decPtr);
             }
+        }
+
+        /// <summary>
+        ///     Compresses a stream into a .gz stream.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="blockSize"></param>
+        /// <returns></returns>
+        public static Span<byte> Compress(Span<byte> data, int blockSize = 0x4000)
+        {
+            throw new NotImplementedException();
         }
     }
 }

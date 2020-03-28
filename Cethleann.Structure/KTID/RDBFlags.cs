@@ -5,6 +5,6 @@
         External = 0x00010000,
         Internal = 0x00020000,
         ZlibCompressed = 0x00100000,
-        LZ77Compressed = 0x00200000
+        Lz4Compressed = 0x00200000
     }
 }

@@ -64,10 +64,11 @@ namespace Cethleann.Compression
         /// </summary>
         /// <param name="data"></param>
         /// <param name="blockSize"></param>
+        /// <param name="align"></param>
         /// <returns></returns>
-        public static Span<byte> Compress(Span<byte> data, int blockSize = 0x4000)
+        public static Span<byte> Compress(Span<byte> data, int blockSize = 0x4000, int align = 0x80)
         {
-            return Span<byte>.Empty;
+            throw new NotImplementedException();
         }
     }
 }

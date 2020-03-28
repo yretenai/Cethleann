@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Cethleann.Audio;
-using Cethleann.Compression;
 using Cethleann.Graphics;
 using Cethleann.Pack;
 using Cethleann.Structure;
@@ -117,28 +116,6 @@ namespace Cethleann.Unbundler
                     flags.Depth = recursionLevel;
                 }
             }
-
-            if (dataType == DataType.Compressed || dataType == DataType.CompressedChonky)
-                try
-                {
-                    var decompressed = TableCompression.Decompress(datablob);
-                    if (decompressed.Length == 0)
-                    {
-                        Logger.Warn("Cethleann", $"{blobBase} is zero!");
-                        return 0;
-                    }
-
-                    var pathBase = blobBase;
-                    if (pathBase.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase)) pathBase = pathBase.Substring(0, pathBase.Length - 3);
-
-                    var result = TryExtractBlob(pathBase, decompressed, allTypes, flags, skipUnknown);
-
-                    if (result > 0) return result;
-                }
-                catch (Exception e)
-                {
-                    Logger.Error("Cethleann", "Failed decompressing blob", e);
-                }
 
             if (skipUnknown) return 2;
 

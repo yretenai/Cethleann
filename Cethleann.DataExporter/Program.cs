@@ -102,7 +102,7 @@ namespace Cethleann.DataExporter
                     while (filepath.StartsWith("\\") || filepath.StartsWith("/")) filepath = filepath.Substring(1);
                     if (flags.Reisalin && filepath.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        if (data[4] == 0x78) data = StreamCompression.Decompress(data, -1, 1);
+                        if (data[4] == 0x78) data = StreamCompression.Decompress(data, -1, DataCompression.Deflate);
                         filepath = filepath.Substring(0, filepath.Length - 3);
                     }
 

@@ -201,11 +201,8 @@ namespace Cethleann.Archive
 
             var (fileEntry, _, buffer) = ReadRDBEntry(blob);
             if (fileEntry.Size == 0) return Memory<byte>.Empty;
-            if (entry.Flags.HasFlag(RDBFlags.ZlibCompressed))
-                return StreamCompression.Decompress(buffer, (int) fileEntry.Size, 1).ToArray();
-            // ReSharper disable once ConvertIfStatementToReturnStatement
-            if (entry.Flags.HasFlag(RDBFlags.LZ77Compressed))
-                return StreamCompression.Decompress(buffer, (int) fileEntry.Size, 2).ToArray();
+            if (entry.Flags.HasFlag(RDBFlags.ZlibCompressed) || entry.Flags.HasFlag(RDBFlags.Lz4Compressed))
+                return StreamCompression.Decompress(buffer, (int) fileEntry.Size, (DataCompression) ((int) entry.Flags >> 20 & 0xF)).ToArray();
             return buffer;
         }
 

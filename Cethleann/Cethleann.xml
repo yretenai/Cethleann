@@ -1062,12 +1062,13 @@
             <param name="align"></param>
             <returns></returns>
         </member>
-        <member name="M:Cethleann.Compression.DzCompression.Compress(System.Span{System.Byte},System.Int32)">
+        <member name="M:Cethleann.Compression.DzCompression.Compress(System.Span{System.Byte},System.Int32,System.Int32)">
             <summary>
                 Compresses a stream into a .gz stream.
             </summary>
             <param name="data"></param>
             <param name="blockSize"></param>
+            <param name="align"></param>
             <returns></returns>
         </member>
         <member name="T:Cethleann.Compression.Stream8000Compression">
@@ -1096,7 +1097,7 @@
                 Decompress Standard KTGL streams
             </summary>
         </member>
-        <member name="M:Cethleann.Compression.StreamCompression.Decompress(System.Span{System.Byte},System.Int32,System.Int32,System.Int32,System.Boolean)">
+        <member name="M:Cethleann.Compression.StreamCompression.Decompress(System.Span{System.Byte},System.Int32,Cethleann.Structure.DataCompression,System.Int32,System.Boolean)">
             <summary>
                 Decompresses a Gz stream
             </summary>
@@ -1105,6 +1106,14 @@
             <param name="compressionFunc"></param>
             <param name="blockSize"></param>
             <param name="sizePrefix"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Compression.StreamCompression.Compress(System.Span{System.Byte},System.Int32)">
+            <summary>
+                Compresses a stream into a .gz stream.
+            </summary>
+            <param name="data"></param>
+            <param name="blockSize"></param>
             <returns></returns>
         </member>
         <member name="T:Cethleann.Compression.TableCompression">
