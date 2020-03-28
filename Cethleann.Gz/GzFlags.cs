@@ -24,7 +24,7 @@ namespace Cethleann.Gz
         [CLIFlag("l", Aliases = new[] { "length" }, Help = "Length for Stream8000 decompression", Category = "Gz Options")]
         public int Length { get; set; }
 
-        [CLIFlag("p", Default = true, Aliases = new[] { "prefixed-size" }, Help = "Decompressed Size is prefixed to the stream", Category = "Gz Options")]
+        [CLIFlag("p", Default = false, Aliases = new[] { "prefixed-size" }, Help = "Decompressed Size is prefixed to the stream", Category = "Gz Options")]
         public bool PrefixedSize { get; set; }
 
         [CLIFlag("c", Aliases = new[] { "compress" }, Help = "Compress files rather than decompress", Category = "Gz Options")]
