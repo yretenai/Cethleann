@@ -29,14 +29,14 @@ namespace Cethleann.Compression
             unsafe
             {
                 var decPtr = 0;
-                Span<byte> decompressed = new byte[decompressedSize == -1 ? data.Length : decompressedSize];
                 var comPtr = 0;
                 if (sizePrefix)
                 {
-                    var size = BinaryPrimitives.ReadInt32LittleEndian(data);
+                    decompressedSize = BinaryPrimitives.ReadInt32LittleEndian(data);
                     comPtr += 4;
-                    Logger.Assert(size == decompressedSize, "size == decompressedSize");
                 }
+
+                Span<byte> decompressed = new byte[decompressedSize == -1 ? data.Length : decompressedSize];
 
                 while (true)
                 {
