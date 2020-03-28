@@ -86,6 +86,8 @@ namespace Cethleann.Compression
                             decPtr += decRead;
                             break;
                         }
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(compressionFunc), compressionFunc, null);
                     }
 
                     comPtr += chunkSize;
