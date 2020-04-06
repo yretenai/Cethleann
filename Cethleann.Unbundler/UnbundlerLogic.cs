@@ -117,7 +117,7 @@ namespace Cethleann.Unbundler
                 }
             }
 
-            if (skipUnknown) return 2;
+            if (skipUnknown) return 0;
 
             var basedir = Path.GetDirectoryName(blobBase);
             if (!Directory.Exists(basedir))

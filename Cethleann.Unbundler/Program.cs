@@ -41,7 +41,7 @@ namespace Cethleann.Unbundler
                             pathBase = Path.Combine(Path.GetDirectoryName(file) ?? string.Empty, Path.GetFileNameWithoutExtension(file));
                     }
 
-                    UnbundlerLogic.TryExtractBlob(pathBase, data, true, flags, true);
+                    if (UnbundlerLogic.TryExtractBlob(pathBase, data, true, flags, true) == 0) continue;
                     
                     if(flags.Delete) File.Delete(file);
                 }
