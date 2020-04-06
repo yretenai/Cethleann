@@ -21,8 +21,7 @@ namespace Cethleann.Pack
         public Elixir(Span<byte> buffer)
         {
             Header = MemoryMarshal.Read<ElixirHeader>(buffer);
-            Logger.Assert(Header.Version <= 2, "Header.Version <= 2");
-            var textLength = 0x20 + Header.Version * 0x10;
+            var textLength = 0x20 + (Header.BlockSize << 4);
             var ptr = Header.HeaderSize;
             for (var i = 0; i < Header.Count; ++i)
             {

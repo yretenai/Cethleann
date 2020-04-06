@@ -3,7 +3,7 @@
     public struct ElixirHeader
     {
         public DataType Magic { get; set; }
-        public int Version { get; set; }
+        public int BlockSize { get; set; }
         public int Size { get; set; }
         public int HeaderSize { get; set; }
         public int TableSize { get; set; }
