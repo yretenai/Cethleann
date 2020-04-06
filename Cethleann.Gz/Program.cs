@@ -66,7 +66,7 @@ namespace Cethleann.Gz
                 var baseTarget = target;
                 var modulo = 0;
                 while (File.Exists(target) && flags.Compress) target = baseTarget + $"_{++modulo}";
-                Logger.Info("Cethleann", $"Decompressing {Path.GetFileName(file)} to {target}");
+                Logger.Info("Cethleann", $"{(flags.Compress ? "C" : "Dec")}ompressing {Path.GetFileName(file)} to {target}");
 
                 File.WriteAllBytes(target, method(File.ReadAllBytes(file)));
 
