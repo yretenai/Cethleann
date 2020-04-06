@@ -12,5 +12,8 @@ namespace Cethleann.Unbundler
 
         [CLIFlag("mask", Default = "*", Help = "Filename mask for recursive search", Category = "Unbundler Options")]
         public string Mask { get; set; } = "*";
+
+        [CLIFlag("delete", Help = "Delete source files after unbundling", Category = "Unbundler Options")]
+        public bool Delete { get; set; }
     }
 }

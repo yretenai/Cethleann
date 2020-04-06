@@ -26,22 +26,24 @@ namespace Cethleann.Unbundler
                 if (flags.Recursive) files.AddRange(Directory.GetFiles(arg, flags.Mask, SearchOption.AllDirectories));
             }
 
-            foreach (var arg in files)
+            foreach (var file in files)
             {
                 try
                 {
-                    Logger.Info("Cethleann", $"Extracting {Path.GetFileName(arg)}...");
-                    var data = File.ReadAllBytes(arg);
-                    var pathBase = arg;
-                    if (!arg.EndsWith(".text"))
+                    Logger.Info("Cethleann", $"Extracting {Path.GetFileName(file)}...");
+                    var data = File.ReadAllBytes(file);
+                    var pathBase = file;
+                    if (!file.EndsWith(".text"))
                     {
-                        if (Path.GetFileName(arg) == Path.GetFileNameWithoutExtension(arg))
+                        if (Path.GetFileName(file) == Path.GetFileNameWithoutExtension(file))
                             pathBase += "_contents";
                         else
-                            pathBase = Path.Combine(Path.GetDirectoryName(arg) ?? string.Empty, Path.GetFileNameWithoutExtension(arg));
+                            pathBase = Path.Combine(Path.GetDirectoryName(file) ?? string.Empty, Path.GetFileNameWithoutExtension(file));
                     }
 
                     UnbundlerLogic.TryExtractBlob(pathBase, data, true, flags, true);
+                    
+                    if(flags.Delete) File.Delete(file);
                 }
                 catch (Exception e)
                 {
