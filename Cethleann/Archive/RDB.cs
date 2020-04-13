@@ -46,9 +46,10 @@ namespace Cethleann.Archive
             for (var i = 0; i < Header.Count; ++i)
             {
                 var (entry, typeblob, data) = ReadRDBEntry(buffer.Slice(offset));
-                offset += (int) entry.EntrySize.Align(4);
-                Entries.Add((entry, typeblob, DecodeOffset(((Span<byte>) data).ReadString() ?? "0")));
-                KTIDToEntryId[entry.FileKTID] = i;
+                var fileEntry = entry.GetValueOrDefault();
+                offset += (int) fileEntry.EntrySize.Align(4);
+                Entries.Add((fileEntry, typeblob, DecodeOffset(((Span<byte>) data).ReadString() ?? "0")));
+                KTIDToEntryId[fileEntry.FileKTID] = i;
             }
 
             if (!KTIDToEntryId.TryGetValue(Header.NameDatabaseKTID, out var nameDatabaseId)) return;
@@ -138,10 +139,7 @@ namespace Cethleann.Archive
         /// </summary>
         /// <param name="fileId"></param>
         /// <returns></returns>
-        public string GetExternalPath(KTIDReference fileId)
-        {
-            return Path.Combine(Directory, $"0x{fileId:x8}.file");
-        }
+        public string GetExternalPath(KTIDReference fileId) => Path.Combine(Directory, $"0x{fileId:x8}.file");
 
         /// <summary>
         ///     Reads a file by the given index
@@ -200,18 +198,19 @@ namespace Cethleann.Archive
             if (blob.Length < SizeHelper.SizeOf<RDBEntry>()) return Memory<byte>.Empty;
 
             var (fileEntry, _, buffer) = ReadRDBEntry(blob);
-            if (fileEntry.Size == 0) return Memory<byte>.Empty;
+            var fileEntryA = fileEntry.GetValueOrDefault();
+            if (fileEntryA.Size == 0) return Memory<byte>.Empty;
             if (entry.Flags.HasFlag(RDBFlags.ZlibCompressed) || entry.Flags.HasFlag(RDBFlags.Lz4Compressed))
-                return StreamCompression.Decompress(buffer, (int) fileEntry.Size, (DataCompression) ((int) entry.Flags >> 20 & 0xF)).ToArray();
+                return StreamCompression.Decompress(buffer, (int) fileEntryA.Size, (DataCompression) ((int) entry.Flags >> 20 & 0xF)).ToArray();
             return buffer;
         }
 
-        private (RDBEntry entry, byte[]? typeblob, byte[]? data) ReadRDBEntry(Span<byte> buffer)
+        private (RDBEntry? entry, byte[]? typeblob, byte[]? data) ReadRDBEntry(Span<byte> buffer)
         {
             var entry = MemoryMarshal.Read<RDBEntry>(buffer);
-            if (entry.Magic != DataType.RDBIndex) return (default, null, null);
+            if (entry.Magic != DataType.RDBIndex) return (null, null, null);
             var unknownsSize = entry.EntrySize - SizeHelper.SizeOf<RDBEntry>() - entry.ContentSize;
-            var unknowns = unknownsSize < 1 ? new byte[0] : buffer.Slice(SizeHelper.SizeOf<RDBEntry>(), (int) (unknownsSize)).ToArray();
+            var unknowns = unknownsSize < 1 ? new byte[0] : buffer.Slice(SizeHelper.SizeOf<RDBEntry>(), (int) unknownsSize).ToArray();
             var data = buffer.Slice((int) (entry.EntrySize - entry.ContentSize), (int) entry.ContentSize).ToArray();
             return (entry, unknowns, data);
         }
@@ -233,10 +232,7 @@ namespace Cethleann.Archive
         /// <summary>
         ///     Disposes
         /// </summary>
-        ~RDB()
-        {
-            Dispose(false);
-        }
+        ~RDB() => Dispose(false);
 
         private void Dispose(bool disposing)
         {
@@ -274,10 +270,7 @@ namespace Cethleann.Archive
         /// <param name="ext"></param>
         /// <param name="prefix"></param>
         /// <returns></returns>
-        public static KTIDReference Hash(string text, string ext, string prefix = "R_")
-        {
-            return Hash(Encoding.UTF8.GetBytes(text), ext, prefix);
-        }
+        public static KTIDReference Hash(string text, string ext, string prefix = "R_") => Hash(Encoding.UTF8.GetBytes(text), ext, prefix);
 
         /// <summary>
         ///     Hash filename given formatting
@@ -302,10 +295,7 @@ namespace Cethleann.Archive
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static KTIDReference Hash(string text)
-        {
-            return Hash(Encoding.UTF8.GetBytes(text.Substring(1)), text[0] * HASH_KEY, HASH_KEY);
-        }
+        public static KTIDReference Hash(string text) => Hash(Encoding.UTF8.GetBytes(text.Substring(1)), text[0] * HASH_KEY, HASH_KEY);
 
         /// <summary>
         ///     Strips formatting from a string

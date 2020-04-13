@@ -62,7 +62,7 @@ namespace Cethleann.Tables
 
             var record = new DataTableRecord();
             var dataOffset = baseLength;
-            for (int i = 0; i < Entries.Count; ++i)
+            for (var i = 0; i < Entries.Count; ++i)
             {
                 record.Offset = dataOffset;
                 record.Size = Entries[i].Length;

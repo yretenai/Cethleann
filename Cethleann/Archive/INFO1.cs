@@ -32,7 +32,7 @@ namespace Cethleann.Archive
                 var buffer = new Span<byte>(new byte[SizeHelper.SizeOf<INFO1Entry>() + 0x100]);
                 var entryCount = (int) (stream.Length / buffer.Length);
                 Entries = new List<(INFO1Entry entry, string path)>(entryCount);
-                for (int i = 0; i < Entries.Capacity; ++i)
+                for (var i = 0; i < Entries.Capacity; ++i)
                 {
                     stream.Read(buffer);
                     var entry = MemoryMarshal.Read<INFO1Entry>(buffer);

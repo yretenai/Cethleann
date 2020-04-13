@@ -69,10 +69,10 @@ namespace Cethleann.Audio
             var sectionData = buffer.Slice(0, header.Size);
             return header.SectionType switch
             {
-                SoundResourceSectionType.SoundSample => (ISoundResourceSection) new OGGSound(sectionData),
-                SoundResourceSectionType.ADPCMSound => (ISoundResourceSection) new NamedSounds(sectionData, platform),
-                SoundResourceSectionType.GCADPCMSound when platform == DataPlatform.Switch => (ISoundResourceSection) new GCADPCMSound(sectionData),
-                SoundResourceSectionType.GCADPCMSound when platform == DataPlatform.Windows => (ISoundResourceSection) new MSADPCMSound(sectionData),
+                SoundResourceSectionType.SoundSample => new OGGSound(sectionData),
+                SoundResourceSectionType.ADPCMSound => new NamedSounds(sectionData, platform),
+                SoundResourceSectionType.GCADPCMSound when platform == DataPlatform.Switch => new GCADPCMSound(sectionData),
+                SoundResourceSectionType.GCADPCMSound when platform == DataPlatform.Windows => new MSADPCMSound(sectionData),
                 _ => new UnknownSound(sectionData)
             };
         }

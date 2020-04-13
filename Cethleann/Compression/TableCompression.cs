@@ -34,7 +34,7 @@ namespace Cethleann.Compression
             MemoryMarshal.Write(buffer, ref compInfo);
             var headerCursor = SizeHelper.SizeOf<KTGLCompressionInfo>();
             var cursor = (headerCursor + 4 * compInfo.ChunkCount).Align(0x80);
-            for (int i = 0; i < data.Length; i += blockSize)
+            for (var i = 0; i < data.Length; i += blockSize)
             {
                 using var ms = new MemoryStream(blockSize);
                 using var deflateStream = new DeflateStream(ms, CompressionLevel.Optimal);
@@ -81,7 +81,7 @@ namespace Cethleann.Compression
             var compInfo = MemoryMarshal.Read<KTGLCompressionInfo>(data);
             var cursor = SizeHelper.SizeOf<KTGLCompressionInfo>();
             if (compInfo.ChunkCount < 0 || cursor + compInfo.ChunkCount * 4 > data.Length || compInfo.ChunkSize < 0x4000) return Span<byte>.Empty;
-            if (checkSanity && (compInfo.ChunkSize != 0x4000 && compInfo.ChunkSize != 0x00010000 && compInfo.ChunkSize != 0x00020000)) return Span<byte>.Empty;
+            if (checkSanity && compInfo.ChunkSize != 0x4000 && compInfo.ChunkSize != 0x00010000 && compInfo.ChunkSize != 0x00020000) return Span<byte>.Empty;
             var buffer = new Span<byte>(new byte[compInfo.Size]);
             var chunkSizes = MemoryMarshal.Cast<byte, int>(data.Slice(cursor, 4 * compInfo.ChunkCount)).ToArray();
             if (chunkSizes.Any(x => x < 6)) return Span<byte>.Empty;

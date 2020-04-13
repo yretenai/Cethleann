@@ -99,7 +99,7 @@ namespace Cethleann.ManagedFS
                 break;
             }
 
-            if (!FileList.TryGetValue($"{prefix}_{index}", out var path)) path = (ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{index.ToString()}.{ext}" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{index.ToString()}.{ext}");
+            if (!FileList.TryGetValue($"{prefix}_{index}", out var path)) path = ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{index.ToString()}.{ext}" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{index.ToString()}.{ext}";
             else path = Path.Combine(Path.GetDirectoryName(path) ?? string.Empty, Path.GetFileNameWithoutExtension(path) + $".{ext}");
             if (ext.EndsWith(".gz") && !path.EndsWith(".gz")) path += ".gz";
             return $@"{prefix}\{path}";
@@ -128,10 +128,7 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Cleanup
         /// </summary>
-        ~Leonhart()
-        {
-            Dispose(false);
-        }
+        ~Leonhart() => Dispose(false);
 
         private void Dispose(bool disposing)
         {

@@ -33,7 +33,7 @@ namespace Cethleann.KTID
                 var ktid = RDB.Hash(line[4]);
                 Entries.Add((ktid, line));
 
-                var (name, ext) = RDB.StripName(line[4]);
+                var (name, _) = RDB.StripName(line[4]);
                 NameMap[ktid] = name;
                 HashMap[ktid] = line[4];
             }

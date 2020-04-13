@@ -28,7 +28,7 @@ namespace Cethleann.Graphics
         public PackedResource(Span<byte> data, int count)
         {
             var offset = 0;
-            for (int i = 0; i < count; ++i)
+            for (var i = 0; i < count; ++i)
             {
                 var header = MemoryMarshal.Read<ResourceSectionHeader>(data.Slice(offset));
                 var blob = data.Slice(offset, header.Size);
@@ -53,7 +53,6 @@ namespace Cethleann.Graphics
         public Span<byte> WriteWithHeader<T>(T header, DataType target, int version) where T : struct
         {
             var length = SizeHelper.SizeOf<T>() + Sections.Sum(x => x.Length) + SizeHelper.SizeOf<ResourceSectionHeader>();
-            var pointer = 0;
             var buffer = new Span<byte>(new byte[length]);
             var resourceHeader = new ResourceSectionHeader
             {
@@ -62,7 +61,7 @@ namespace Cethleann.Graphics
                 Version = version.ToVersionA()
             };
             MemoryMarshal.Write(buffer, ref resourceHeader);
-            pointer += SizeHelper.SizeOf<ResourceSectionHeader>();
+            var pointer = SizeHelper.SizeOf<ResourceSectionHeader>();
             MemoryMarshal.Write(buffer.Slice(pointer), ref header);
             pointer += SizeHelper.SizeOf<T>();
             foreach (var stream in Sections)

@@ -69,7 +69,7 @@ namespace Cethleann.Compression
         {
             var buffer = new Span<byte>(new byte[data.Length]);
             var cursor = 0;
-            for (int i = 0; i < data.Length; i += blockSize)
+            for (var i = 0; i < data.Length; i += blockSize)
             {
                 using var ms = new MemoryStream(blockSize);
                 using var deflateStream = new DeflateStream(ms, CompressionLevel.Optimal);

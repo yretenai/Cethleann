@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Cethleann.Structure.Pack;
 using DragonLib;
-using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Cethleann.Pack

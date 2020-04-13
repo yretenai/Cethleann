@@ -21,30 +21,21 @@ namespace Cethleann.ManagedFS
         /// <param name="loc"></param>
         /// <param name="fields"></param>
         /// <returns></returns>
-        public static string[][] GetFileList(string loc, int fields)
-        {
-            return !File.Exists(loc) ? new string[0][] : File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith(";")).Select(x => x.Split(',', fields).Select(y => y.Trim()).ToArray()).ToArray();
-        }
+        public static string[][] GetFileList(string loc, int fields) => !File.Exists(loc) ? new string[0][] : File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith(";")).Select(x => x.Split(',', fields).Select(y => y.Trim()).ToArray()).ToArray();
 
         /// <summary>
         ///     Parse a CSV
         /// </summary>
         /// <param name="loc"></param>
         /// <returns></returns>
-        public static string[][] GetFileList(string loc)
-        {
-            return !File.Exists(loc) ? new string[0][] : File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith(";")).Select(x => x.Split(',').Select(y => y.Trim()).ToArray()).ToArray();
-        }
+        public static string[][] GetFileList(string loc) => !File.Exists(loc) ? new string[0][] : File.ReadAllLines(loc).Select(x => x.Trim()).Where(x => x.Contains(",") && !x.StartsWith(";")).Select(x => x.Split(',').Select(y => y.Trim()).ToArray()).ToArray();
 
         /// <summary>
         ///     Parse a CSV
         /// </summary>
         /// <param name="buffer"></param>
         /// <returns></returns>
-        public static string[][] GetFileList(Span<byte> buffer)
-        {
-            return buffer.Length < 1 ? new string[0][] : Encoding.UTF8.GetString(buffer).Split('\n', StringSplitOptions.RemoveEmptyEntries).Where(x => !x.StartsWith(";")).Select(x => x.Trim().Split(',').Select(x => x.Trim()).ToArray()).ToArray();
-        }
+        public static string[][] GetFileList(Span<byte> buffer) => buffer.Length < 1 ? new string[0][] : Encoding.UTF8.GetString(buffer).Split('\n', StringSplitOptions.RemoveEmptyEntries).Where(x => !x.StartsWith(";")).Select(x => x.Trim().Split(',').Select(y => y.Trim()).ToArray()).ToArray();
 
         /// <summary>
         ///     Parse a CSV
@@ -52,10 +43,7 @@ namespace Cethleann.ManagedFS
         /// <param name="buffer"></param>
         /// <param name="fields"></param>
         /// <returns></returns>
-        public static string[][] GetFileList(Span<byte> buffer, int fields)
-        {
-            return buffer.Length < 1 ? new string[0][] : Encoding.UTF8.GetString(buffer).Split('\n', StringSplitOptions.RemoveEmptyEntries).Where(x => x.Contains(",") && !x.StartsWith(";")).Select(x => x.Trim().Split(',', fields).Select(x => x.Trim()).ToArray()).ToArray();
-        }
+        public static string[][] GetFileList(Span<byte> buffer, int fields) => buffer.Length < 1 ? new string[0][] : Encoding.UTF8.GetString(buffer).Split('\n', StringSplitOptions.RemoveEmptyEntries).Where(x => x.Contains(",") && !x.StartsWith(";")).Select(x => x.Trim().Split(',', fields).Select(y => y.Trim()).ToArray()).ToArray();
 
         /// <summary>
         ///     Get a filelist location via DataGame
@@ -64,10 +52,7 @@ namespace Cethleann.ManagedFS
         /// <param name="game"></param>
         /// <param name="system"></param>
         /// <returns></returns>
-        public static string GetFileListLocation(string? filename, DataGame game, string system)
-        {
-            return GetFileListLocation(filename, game == DataGame.None ? string.Empty : game.ToString(), system);
-        }
+        public static string GetFileListLocation(string? filename, DataGame game, string system) => GetFileListLocation(filename, game == DataGame.None ? string.Empty : game.ToString(), system);
 
         /// <summary>
         ///     Get a filelist location via string

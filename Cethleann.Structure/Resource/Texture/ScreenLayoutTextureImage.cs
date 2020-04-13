@@ -24,15 +24,13 @@ namespace Cethleann.Structure.Resource.Texture
         public int Unknown15 { get; set; }
         public int Unknown16 { get; set; }
 
-        public DXGIPixelFormat ToDXGI()
-        {
-            return Format switch
+        public DXGIPixelFormat ToDXGI() =>
+            Format switch
             {
                 ScreenLayoutTextureFormat.A8R8G8B8 => DXGIPixelFormat.R8G8B8A8_UNORM,
                 ScreenLayoutTextureFormat.R8G8B8A8 => DXGIPixelFormat.R8G8B8A8_UNORM,
                 ScreenLayoutTextureFormat.BC3 => DXGIPixelFormat.BC3_UNORM,
                 _ => DXGIPixelFormat.UNKNOWN
             };
-        }
     }
 }

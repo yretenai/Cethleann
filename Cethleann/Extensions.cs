@@ -45,7 +45,7 @@ namespace Cethleann
         public static int ToVersionI(this int value)
         {
             value -= 0x30303030;
-            return (value & 0xFF) + (((value >> 8) & 0xFF) * 10) + (((value >> 16) & 0xFF) * 100) + (((value >> 24) & 0xFF) * 1000);
+            return (value & 0xFF) + (value >> 8 & 0xFF) * 10 + (value >> 16 & 0xFF) * 100 + (value >> 24 & 0xFF) * 1000;
         }
 
         /// <summary>
@@ -56,9 +56,9 @@ namespace Cethleann
         public static int ToVersionA(this int value)
         {
             var v = 0x30303030;
-            v += ((int) Math.Floor((value % 10000) / 1000d)) << 24;
-            v += ((int) Math.Floor((value % 1000) / 100d)) << 16;
-            v += ((int) Math.Floor((value % 100) / 10d)) << 8;
+            v += (int) Math.Floor(value % 10000 / 1000d) << 24;
+            v += (int) Math.Floor(value % 1000 / 100d) << 16;
+            v += (int) Math.Floor(value % 100 / 10d) << 8;
             v += value % 10;
             return v;
         }
@@ -128,30 +128,28 @@ namespace Cethleann
         /// </summary>
         /// <param name="buffer"></param>
         /// <returns></returns>
-        public static bool IsBundle(this Span<byte> buffer)
-        {
-            return Bundle.Validate(buffer) != null;
-        }
+        public static bool IsBundle(this Span<byte> buffer) => Bundle.Validate(buffer) != null;
 
         /// <summary>
         ///     Guesses if the stream is a valid bundle.
         /// </summary>
         /// <param name="buffer"></param>
         /// <returns></returns>
-        public static bool IsSliceBundle(this Span<byte> buffer)
-        {
-            return SliceBundle.Validate(buffer) != null;
-        }
+        public static bool IsSliceBundle(this Span<byte> buffer) => SliceBundle.Validate(buffer) != null;
 
         /// <summary>
         ///     Guesses if the stream is a valid bundle.
         /// </summary>
         /// <param name="buffer"></param>
         /// <returns></returns>
-        public static bool IsPointerBundle(this Span<byte> buffer)
-        {
-            return PointerBundle.Validate(buffer) != null;
-        }
+        public static bool IsPointerBundle(this Span<byte> buffer) => PointerBundle.Validate(buffer) != null;
+
+        /// <summary>
+        ///     Guesses if the stream is a valid bundle.
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public static bool IsByteBundle(this Span<byte> buffer) => ByteBundle.Validate(buffer) != null;
 
         /// <summary>
         ///     Guesses if the stream is a valid dds bundle.

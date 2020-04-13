@@ -50,7 +50,7 @@ namespace Cethleann.Pack
 
             try
             {
-                return sizes.Select(x => x.Align(0x10)).Sum() + 0x110 != data.Length ? null : sizes.Select(((size, index) => (pointers[index], size))).ToArray();
+                return sizes.Select(x => x.Align(0x10)).Sum() + 0x110 != data.Length ? null : sizes.Select((size, index) => (pointers[index], size)).ToArray();
             }
             catch (ArithmeticException)
             {

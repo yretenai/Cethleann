@@ -18,7 +18,7 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
             Section = section;
 
             var offset = 0;
-            for (int i = 0; i < section.Count; ++i)
+            for (var i = 0; i < section.Count; ++i)
             {
                 var count = MemoryMarshal.Read<int>(data.Slice(offset));
                 offset += 4;

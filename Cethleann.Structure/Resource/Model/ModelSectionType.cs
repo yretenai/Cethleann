@@ -9,6 +9,6 @@
         ClothVivid = 5,
         ClothSoftly = 6,
         Hair = 7,
-        Soft = 8,
+        Soft = 8
     }
 }

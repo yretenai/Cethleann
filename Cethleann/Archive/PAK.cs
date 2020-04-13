@@ -60,7 +60,7 @@ namespace Cethleann.Archive
                 var size = MemoryMarshal.Read<int>(entryBlob.Slice(0x80));
                 var key = entryBlob.Slice(0x84, 20).ToArray();
                 var infoBlob = entryBlob.Slice(0x98);
-                var info = Is64Bit ? MemoryMarshal.Cast<byte, long>(infoBlob).ToArray() : (MemoryMarshal.Cast<byte, uint>(infoBlob).ToArray().Select(x => (long) x).ToArray());
+                var info = Is64Bit ? MemoryMarshal.Cast<byte, long>(infoBlob).ToArray() : MemoryMarshal.Cast<byte, uint>(infoBlob).ToArray().Select(x => (long) x).ToArray();
                 var encrypted = key.Any(x => x != 0);
                 if (encrypted) Recode(filenameBlob, key);
 
@@ -106,10 +106,7 @@ namespace Cethleann.Archive
         /// <summary>
         ///     Disposes
         /// </summary>
-        ~PAK()
-        {
-            Dispose();
-        }
+        ~PAK() => Dispose();
 
         /// <summary>
         ///     Gets an entry from it's filepath.

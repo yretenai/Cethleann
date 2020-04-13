@@ -7,7 +7,6 @@ using Cethleann.Structure;
 using Cethleann.Structure.Resource;
 using Cethleann.Structure.Resource.Model;
 using DragonLib;
-using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Cethleann.Graphics.G1ModelSection
@@ -77,19 +76,13 @@ namespace Cethleann.Graphics.G1ModelSection
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetSection<T>() where T : class, IG1MGSection
-        {
-            return GetSections<T>().FirstOrDefault();
-        }
+        public T GetSection<T>() where T : class, IG1MGSection => GetSections<T>().FirstOrDefault();
 
         /// <summary>
         ///     Gets all geometry components matching
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public IEnumerable<T> GetSections<T>() where T : class, IG1MGSection
-        {
-            return SubSections.OfType<T>();
-        }
+        public IEnumerable<T> GetSections<T>() where T : class, IG1MGSection => SubSections.OfType<T>();
     }
 }

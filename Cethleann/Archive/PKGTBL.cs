@@ -92,10 +92,7 @@ namespace Cethleann.Archive
         /// <param name="multiplier"></param>
         /// <param name="divisor"></param>
         /// <returns></returns>
-        public Span<byte> Read(Span<byte> file, DataGame game, IDTableEntry entry, byte[] truth, ulong multiplier, ulong divisor)
-        {
-            return Read(file, game, entry.CompressedSize, entry.DecompressedSize, entry.Flags, truth, multiplier, divisor);
-        }
+        public Span<byte> Read(Span<byte> file, DataGame game, IDTableEntry entry, byte[] truth, ulong multiplier, ulong divisor) => Read(file, game, entry.CompressedSize, entry.DecompressedSize, entry.Flags, truth, multiplier, divisor);
 
         /// <summary>
         ///     Read a file with decryption constants

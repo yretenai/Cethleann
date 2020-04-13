@@ -2,10 +2,10 @@
 
 namespace Cethleann.Prototype
 {
-    static class Program
+    internal static class Program
     {
         [PublicAPI]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
 #if DEBUG
 #endif

@@ -6,9 +6,9 @@ using DragonLib.IO;
 
 namespace Cethleann.Unbundler
 {
-    static class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Logger.PrintVersion("Cethleann");
             var flags = CommandLineFlags.ParseFlags<UnbundlerToolFlags>(CommandLineFlags.PrintHelp, args);
@@ -42,8 +42,8 @@ namespace Cethleann.Unbundler
                     }
 
                     if (UnbundlerLogic.TryExtractBlob(pathBase, data, true, flags, true) == 0) continue;
-                    
-                    if(flags.Delete) File.Delete(file);
+
+                    if (flags.Delete) File.Delete(file);
                 }
                 catch (Exception e)
                 {

@@ -10,17 +10,6 @@ namespace Cethleann.Graphics.G1ModelSection
     [PublicAPI]
     public class G1MStub : IKTGLSection
     {
-        /// <inheritdoc />
-        public int SupportedVersion { get; } = int.MaxValue;
-
-        /// <inheritdoc />
-        public ResourceSectionHeader Section { get; }
-        
-        /// <summary>
-        ///     Memory Buffer for this section
-        /// </summary>
-        public Memory<byte> Data { get; }
-
         /// <summary>
         ///     Initialize with memory block
         /// </summary>
@@ -31,5 +20,16 @@ namespace Cethleann.Graphics.G1ModelSection
             Data = new Memory<byte>(dataBlock.ToArray());
             Section = sectionHeader;
         }
+
+        /// <summary>
+        ///     Memory Buffer for this section
+        /// </summary>
+        public Memory<byte> Data { get; }
+
+        /// <inheritdoc />
+        public int SupportedVersion { get; } = int.MaxValue;
+
+        /// <inheritdoc />
+        public ResourceSectionHeader Section { get; }
     }
 }

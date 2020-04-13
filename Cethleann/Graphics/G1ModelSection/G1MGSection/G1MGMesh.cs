@@ -19,12 +19,12 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
             Section = section;
 
             var offset = 0;
-            for (int i = 0; i < section.Count; ++i)
+            for (var i = 0; i < section.Count; ++i)
             {
                 var group = MemoryMarshal.Read<ModelGeometryMeshGroup>(data.Slice(offset));
                 offset += SizeHelper.SizeOf<ModelGeometryMeshGroup>();
                 var meshes = new List<(string, ModelGeometryMesh, int[])>();
-                for (int j = 0; j < group.SubMeshCount + group.UnknownCount; ++j)
+                for (var j = 0; j < group.SubMeshCount + group.UnknownCount; ++j)
                 {
                     var name = data.Slice(offset, 0x10).ReadStringNonNull();
                     offset += 0x10;

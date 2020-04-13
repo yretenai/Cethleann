@@ -19,10 +19,7 @@ namespace Cethleann.KTID
         /// <param name="instance"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        public static OBJDBStructure? Dereference(this KTIDReference instance, OBJDB db)
-        {
-            return db.Entries.TryGetValue(instance.KTID, out var ktidInstance) ? ktidInstance : default;
-        }
+        public static OBJDBStructure? Dereference(this KTIDReference instance, OBJDB db) => db.Entries.TryGetValue(instance.KTID, out var ktidInstance) ? ktidInstance : default;
 
         /// <summary>
         ///     Load a referenced KTID file
@@ -30,10 +27,7 @@ namespace Cethleann.KTID
         /// <param name="instance"></param>
         /// <param name="nyotengu"></param>
         /// <returns></returns>
-        public static Memory<byte> Dereference(this KTIDReference instance, Nyotengu nyotengu)
-        {
-            return nyotengu.ReadEntry(instance.KTID);
-        }
+        public static Memory<byte> Dereference(this KTIDReference instance, Nyotengu nyotengu) => nyotengu.ReadEntry(instance.KTID);
 
         /// <summary>
         ///     Attempt to retrieve a KTID file

@@ -7,23 +7,15 @@ namespace Cethleann.Structure.KTID
     {
         public uint KTID { get; set; }
 
-        public static implicit operator uint(KTIDReference reference)
-        {
-            return reference.KTID;
-        }
+        public static implicit operator uint(KTIDReference reference) => reference.KTID;
 
-        public static implicit operator KTIDReference(uint reference)
-        {
-            return new KTIDReference
+        public static implicit operator KTIDReference(uint reference) =>
+            new KTIDReference
             {
                 KTID = reference
             };
-        }
 
-        public KTIDReference(uint ktid)
-        {
-            KTID = ktid;
-        }
+        public KTIDReference(uint ktid) => KTID = ktid;
 
         public KTIDReference(object? obj)
         {
@@ -103,14 +95,8 @@ namespace Cethleann.Structure.KTID
             return false;
         }
 
-        public static KTIDReference Parse(string value, NumberStyles style, IFormatProvider? provider = null)
-        {
-            return uint.Parse(value, style, provider);
-        }
+        public static KTIDReference Parse(string value, NumberStyles style, IFormatProvider? provider = null) => uint.Parse(value, style, provider);
 
-        public static KTIDReference Parse(string value)
-        {
-            return uint.Parse(value);
-        }
+        public static KTIDReference Parse(string value) => uint.Parse(value);
     }
 }

@@ -14,14 +14,8 @@ namespace Cethleann.Structure.Archive
         public uint Padding1 { get; set; }
         public uint Padding2 { get; set; }
 
-        public string Path(Memory<byte> table, int offset)
-        {
-            return table.Span.Slice(offset + PathOffset).ReadStringNonNull();
-        }
+        public string Path(Memory<byte> table, int offset) => table.Span.Slice(offset + PathOffset).ReadStringNonNull();
 
-        public string OriginalPath(Memory<byte> table, int offset)
-        {
-            return table.Span.Slice(offset + OriginalPathOffset).ReadStringNonNull();
-        }
+        public string OriginalPath(Memory<byte> table, int offset) => table.Span.Slice(offset + OriginalPathOffset).ReadStringNonNull();
     }
 }

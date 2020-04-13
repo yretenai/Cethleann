@@ -25,7 +25,7 @@ namespace Cethleann.Graphics
             if (header.Magic != DataType.MDLK) throw new InvalidDataException("Not a KLDM stream");
 
             var offset = 0x10;
-            for (int i = 0; i < header.Size; ++i)
+            for (var i = 0; i < header.Size; ++i)
             {
                 var magic = buffer.Slice(offset).GetDataType();
 

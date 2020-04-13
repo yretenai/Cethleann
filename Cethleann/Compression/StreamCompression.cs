@@ -104,9 +104,6 @@ namespace Cethleann.Compression
         /// <param name="data"></param>
         /// <param name="blockSize"></param>
         /// <returns></returns>
-        public static Span<byte> Compress(Span<byte> data, int blockSize = 0x4000)
-        {
-            throw new NotImplementedException();
-        }
+        public static Span<byte> Compress(Span<byte> data, int blockSize = 0x4000) => throw new NotImplementedException();
     }
 }

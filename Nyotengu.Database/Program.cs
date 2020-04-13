@@ -141,10 +141,7 @@ namespace Nyotengu.Database
             return ignoreNames ? name : $"{ktid.GetName(ndb, filelists) ?? name}";
         }
 
-        private static bool HasKTIDNameValue(KTIDReference ktid, NDB ndb, params Dictionary<KTIDReference, string>[] filelists)
-        {
-            return ktid.GetName(ndb, filelists) == null;
-        }
+        private static bool HasKTIDNameValue(KTIDReference ktid, NDB ndb, params Dictionary<KTIDReference, string>[] filelists) => ktid.GetName(ndb, filelists) == null;
 
         private static void ProcessNDB(Span<byte> buffer, DatabaseFlags flags)
         {

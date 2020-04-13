@@ -19,7 +19,7 @@ namespace Cethleann.Audio.WBH
         ///     KWB2 Entries
         /// </summary>
         // ReSharper disable once InconsistentNaming
-        public List<(KWB2Entry Header, object[] Streams)> KWBEntries = new List<(KWB2Entry, object[])>();
+        public List<(KWB2Entry? Header, object[] Streams)> KWBEntries = new List<(KWB2Entry?, object[])>();
 
         /// <summary>
         ///     Initialize with buffer data.
@@ -43,7 +43,7 @@ namespace Cethleann.Audio.WBH
             {
                 if (pointers[i] == 0)
                 {
-                    KWBEntries.Add((default, new object[0]));
+                    KWBEntries.Add((null, new object[0]));
                     continue;
                 }
 

@@ -127,9 +127,6 @@ namespace Cethleann.KTID
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static (int, PropertyCallbackDelegate) CreateDelegate<T>() where T : struct
-        {
-            return (SizeHelper.SizeOf<T>(), (b, c) => MemoryMarshal.Cast<byte, T>(b.Slice(0, SizeHelper.SizeOf<T>() * c)).ToArray().Select(x => (object?) x).ToArray());
-        }
+        public static (int, PropertyCallbackDelegate) CreateDelegate<T>() where T : struct => (SizeHelper.SizeOf<T>(), (b, c) => MemoryMarshal.Cast<byte, T>(b.Slice(0, SizeHelper.SizeOf<T>() * c)).ToArray().Select(x => (object?) x).ToArray());
     }
 }

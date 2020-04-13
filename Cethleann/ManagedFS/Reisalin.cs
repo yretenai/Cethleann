@@ -95,9 +95,6 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Disposes
         /// </summary>
-        ~Reisalin()
-        {
-            Dispose(false);
-        }
+        ~Reisalin() => Dispose(false);
     }
 }

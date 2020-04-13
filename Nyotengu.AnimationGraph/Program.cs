@@ -25,8 +25,10 @@ namespace Nyotengu.AnimationGraph
             if (!string.IsNullOrEmpty(flags.OBJDBNDBPath) && File.Exists(flags.OBJDBNDBPath)) objdbNdb = new NDB(File.ReadAllBytes(flags.OBJDBNDBPath));
             if (!string.IsNullOrEmpty(flags.SingletonDBNDBPath) && File.Exists(flags.SingletonDBNDBPath)) singletonNdb = new NDB(File.ReadAllBytes(flags.SingletonDBNDBPath));
 
+            // ReSharper disable InconsistentNaming
             var CE1DB = new OBJDB(File.ReadAllBytes(flags.OBJDBPath));
             var CE1Singleton = new OBJDB(File.ReadAllBytes(flags.SingletonPath));
+            // ReSharper restore InconsistentNaming
             var filelist = Cethleann.ManagedFS.Nyotengu.LoadKTIDFileList(flags.FileList, flags.GameId);
             var animationFiles = new Dictionary<KTIDReference, string>();
             foreach (var directory in flags.AnimationDirectories ?? new HashSet<string?>())

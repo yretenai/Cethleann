@@ -56,6 +56,7 @@ namespace Cethleann.Graphics
                     Sections.Add(new G1MStub(dataBlock, sectionHeader));
                     continue;
                 }
+
                 // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
                 var section = sectionHeader.Magic switch
                 {
@@ -125,19 +126,13 @@ namespace Cethleann.Graphics
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetSection<T>() where T : class, IKTGLSection
-        {
-            return GetSections<T>().FirstOrDefault();
-        }
+        public T GetSection<T>() where T : class, IKTGLSection => GetSections<T>().FirstOrDefault();
 
         /// <summary>
         ///     Gets a specific section from the G1M model
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public IEnumerable<T> GetSections<T>() where T : class, IKTGLSection
-        {
-            return Sections.OfType<T>();
-        }
+        public IEnumerable<T> GetSections<T>() where T : class, IKTGLSection => Sections.OfType<T>();
     }
 }

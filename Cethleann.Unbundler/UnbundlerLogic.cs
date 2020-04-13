@@ -61,7 +61,7 @@ namespace Cethleann.Unbundler
 
             var dataType = datablob.GetDataType();
 
-            if (allTypes || (flags.Recursive && flags.Depth > 0))
+            if (allTypes || flags.Recursive && flags.Depth > 0)
             {
                 var recursionLevel = flags.Depth--;
                 try
@@ -79,6 +79,9 @@ namespace Cethleann.Unbundler
                                 return 1;
                         if (datablob.IsPointerBundle())
                             if (TryExtractPointerBundle(blobBase, datablob, flags))
+                                return 1;
+                        if (datablob.IsByteBundle())
+                            if (TryExtractByteBundle(blobBase, datablob, flags))
                                 return 1;
                     }
 
@@ -221,7 +224,7 @@ namespace Cethleann.Unbundler
                     {
                         var stream = streams[streamIndex];
                         var wav = blobs.WBD.ReconstructWave(stream, !flags.SkipADPCM);
-                        var name = $@"{pathBase}\{(names.ElementAtOrDefault(index)?.SanitizeDirname() ?? index.ToString("X8"))}".Trim();
+                        var name = $@"{pathBase}\{names.ElementAtOrDefault(index)?.SanitizeDirname() ?? index.ToString("X8")}".Trim();
                         if (streams.Length > 1) name += $@"\{streamIndex:X8}";
                         TryExtractBlob($@"{name}.wav", wav.Span, false, flags, false);
                     }
@@ -298,6 +301,7 @@ namespace Cethleann.Unbundler
             if (data.IsBundle()) return "bundle";
             if (data.IsSliceBundle()) return "slcbundle";
             if (data.IsPointerBundle()) return "ptrbundle";
+            if (data.IsByteBundle()) return "bytebundle";
             if (data.IsDDSBundle()) return "ddsbundle";
             return "bin";
         }
@@ -394,6 +398,26 @@ namespace Cethleann.Unbundler
             catch (Exception e)
             {
                 Logger.Error("PBUN", "Failed unpacking Pointer Bundle", e);
+                if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool TryExtractByteBundle(string pathBase, Span<byte> data, UnbundlerFlags flags)
+        {
+            try
+            {
+                var blobs = new ByteBundle(data);
+                if (blobs.Entries.Count == 0) return true;
+
+                TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, false, null, flags);
+            }
+            catch (Exception e)
+            {
+                Logger.Error("BBUN", "Failed unpacking Pointer Bundle", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;

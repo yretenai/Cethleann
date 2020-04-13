@@ -35,20 +35,14 @@ namespace Cethleann.KTID
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public (OBJDBProperty info, object?[]? values) GetProperty(string name)
-        {
-            return GetProperty(RDB.Hash(name));
-        }
+        public (OBJDBProperty info, object?[]? values) GetProperty(string name) => GetProperty(RDB.Hash(name));
 
         /// <summary>
         ///     Get multple properties by name
         /// </summary>
         /// <param name="names"></param>
         /// <returns></returns>
-        public (OBJDBProperty info, object?[]? values)[] GetProperties(params string[] names)
-        {
-            return GetProperties(names.Select(RDB.Hash).ToArray());
-        }
+        public (OBJDBProperty info, object?[]? values)[] GetProperties(params string[] names) => GetProperties(names.Select(RDB.Hash).ToArray());
 
         /// <summary>
         ///     Get property values by KTID

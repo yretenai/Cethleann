@@ -58,7 +58,7 @@ namespace Cethleann.Pack
             MemoryMarshal.Write(table, ref count);
 
             var dataOffset = baseLength;
-            for (int i = 0; i < Entries.Count; ++i)
+            for (var i = 0; i < Entries.Count; ++i)
             {
                 MemoryMarshal.Write(table.Slice(4 + 4 * i), ref dataOffset);
                 Entries[i].Span.CopyTo(table.Slice(dataOffset));
@@ -80,7 +80,7 @@ namespace Cethleann.Pack
             if (count <= 0 || count > 0xFF) return null;
 
             var headerSize = count * 4;
-            if (headerSize + 4 > data.Length || headerSize < 0) return null;
+            if (headerSize + 4 > data.Length) return null;
             var pointers = MemoryMarshal.Cast<byte, int>(data.Slice(4, headerSize)).ToArray();
             try
             {

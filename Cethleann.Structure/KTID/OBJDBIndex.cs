@@ -9,15 +9,13 @@ namespace Cethleann.Structure.KTID
         public KTIDReference TypeInfoKTID { get; set; }
         public int PropertyCount { get; set; }
 
-        public static implicit operator OBJDBRecord(OBJDBIndex index)
-        {
-            return new OBJDBRecord
+        public static implicit operator OBJDBRecord(OBJDBIndex index) =>
+            new OBJDBRecord
             {
                 SectionHeader = index.SectionHeader,
                 KTID = index.KTID,
                 TypeInfoKTID = index.TypeInfoKTID,
                 PropertyCount = index.PropertyCount
             };
-        }
     }
 }

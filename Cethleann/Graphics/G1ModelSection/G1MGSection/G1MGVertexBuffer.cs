@@ -18,7 +18,7 @@ namespace Cethleann.Graphics.G1ModelSection.G1MGSection
             Section = subSectionHeader;
 
             var offset = 0;
-            for (int i = 0; i < subSectionHeader.Count; ++i)
+            for (var i = 0; i < subSectionHeader.Count; ++i)
             {
                 var info = MemoryMarshal.Read<ModelGeometryVertexBuffer>(block.Slice(offset));
                 offset += SizeHelper.SizeOf<ModelGeometryVertexBuffer>();

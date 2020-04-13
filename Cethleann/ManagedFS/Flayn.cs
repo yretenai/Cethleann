@@ -192,7 +192,7 @@ namespace Cethleann.ManagedFS
                 break;
             }
 
-            if (!FileList.TryGetValue(id, out var path)) path = (ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{generatedPrefix}{localId}.{ext}" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{generatedPrefix}{localId}.{ext}");
+            if (!FileList.TryGetValue(id, out var path)) path = ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{generatedPrefix}{localId}.{ext}" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{generatedPrefix}{localId}.{ext}";
             else path = Path.Combine(Path.GetDirectoryName(path) ?? string.Empty, Path.GetFileNameWithoutExtension(path) + $".{ext}");
             if (ext.EndsWith(".gz") && !path.EndsWith(".gz")) path += ".gz";
             return $@"{prefix}\{path}";
@@ -234,10 +234,7 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Cleanup
         /// </summary>
-        ~Flayn()
-        {
-            Dispose(false);
-        }
+        ~Flayn() => Dispose(false);
 
         private void AddDataFSInternal(string idxPath, string binPath)
         {
@@ -282,9 +279,6 @@ namespace Cethleann.ManagedFS
         ///     Load LINKDATA filename patterns
         /// </summary>
         /// <param name="filename"></param>
-        public void LoadPatterns(string? filename = null)
-        {
-            Patterns = ManagedFSHelper.GetFileList(ManagedFSHelper.GetFileListLocation(filename, "LINKDATAPatterns", "link"), 4).Select(x => (x[0], x[2], x[1].ToCharArray(), x[3])).ToList();
-        }
+        public void LoadPatterns(string? filename = null) => Patterns = ManagedFSHelper.GetFileList(ManagedFSHelper.GetFileListLocation(filename, "LINKDATAPatterns", "link"), 4).Select(x => (x[0], x[2], x[1].ToCharArray(), x[3])).ToList();
     }
 }

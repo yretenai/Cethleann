@@ -94,7 +94,7 @@ namespace Cethleann.ManagedFS
                 if (Path.GetFileName(filename) == filename)
                 {
                     filename = $"{index}_{filename}";
-                    path = (ext == "bin" || ext == "bin.gz" ? $"MISC/UNKNOWN/{filename}.{ext}" : $"MISC/FORMATS/{ext.ToUpper().Replace('.', '_')}/{filename}.{ext}");
+                    path = ext == "bin" || ext == "bin.gz" ? $"MISC/UNKNOWN/{filename}.{ext}" : $"MISC/FORMATS/{ext.ToUpper().Replace('.', '_')}/{filename}.{ext}";
                 }
                 else
                 {
@@ -139,9 +139,6 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Cleanup
         /// </summary>
-        ~Mitsunari()
-        {
-            Dispose(false);
-        }
+        ~Mitsunari() => Dispose(false);
     }
 }

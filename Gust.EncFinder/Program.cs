@@ -7,7 +7,7 @@ using DragonLib.IO;
 
 namespace Gust.EncFinder
 {
-    static class Program
+    internal static class Program
     {
         private const string SEED_CONSTANT_SIGNATURE = "41 C7 ?? ?? C9 73 9A 3B";
         private const string SEED_CONSTANT_SIGNATURE_2 = "41 C7 ?? C9 73 9A 3B";

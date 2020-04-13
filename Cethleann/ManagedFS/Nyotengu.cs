@@ -76,10 +76,7 @@ namespace Cethleann.ManagedFS
         }
 
         /// <inheritdoc />
-        public string? GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)
-        {
-            return GetFilenameInternal(index);
-        }
+        public string? GetFilename(int index, string ext = "bin", DataType dataType = DataType.None) => GetFilenameInternal(index);
 
         /// <inheritdoc />
         public void AddDataFS(string path)
@@ -125,10 +122,7 @@ namespace Cethleann.ManagedFS
         /// <param name="filename"></param>
         /// <param name="game"></param>
         /// <returns></returns>
-        public static Dictionary<KTIDReference, string> LoadKTIDFileList(string? filename = null, DataGame game = DataGame.None)
-        {
-            return LoadKTIDFileList(filename, game.ToString());
-        }
+        public static Dictionary<KTIDReference, string> LoadKTIDFileList(string? filename = null, DataGame game = DataGame.None) => LoadKTIDFileList(filename, game.ToString());
 
         /// <summary>
         ///     Read a KTID File list with RDBShared
@@ -221,18 +215,12 @@ namespace Cethleann.ManagedFS
         ///     Load typeid extension list
         /// </summary>
         /// <param name="filename"></param>
-        public void LoadExtList(string? filename = null)
-        {
-            ExtList = ManagedFSHelper.GetSimpleFileList(ManagedFSHelper.GetFileListLocation(filename, "RDBExt", "rdb"), DataGame.None, "rdb").ToDictionary(x => KTIDReference.Parse(x.Key, NumberStyles.HexNumber), y => y.Value);
-        }
+        public void LoadExtList(string? filename = null) => ExtList = ManagedFSHelper.GetSimpleFileList(ManagedFSHelper.GetFileListLocation(filename, "RDBExt", "rdb"), DataGame.None, "rdb").ToDictionary(x => KTIDReference.Parse(x.Key, NumberStyles.HexNumber), y => y.Value);
 
         /// <summary>
         ///     Disposes
         /// </summary>
-        ~Nyotengu()
-        {
-            Dispose(false);
-        }
+        ~Nyotengu() => Dispose(false);
 
         private void Dispose(bool disposing)
         {
