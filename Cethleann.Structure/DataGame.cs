@@ -31,6 +31,7 @@ namespace Cethleann.Structure
         Sangokushi14,
         Sangokushi13,
         Bladestorm,
+        NobunagaOnline,
 
         // Omega, honestly they shit out so many games...
         // These are since 2017, unlike Gust which is mostly Atelier since 2009...
