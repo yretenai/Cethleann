@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nyotengu.AnimationGraph", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cethleann.Gz", "Cethleann.Gz\Cethleann.Gz.csproj", "{032269DE-E0B3-4CD6-B3F6-88CFB00C5074}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nyotengu.Filelist", "Nyotengu.Filelist\Nyotengu.Filelist.csproj", "{C12EE43C-3630-41EC-9B5C-8E969F594FF6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -87,6 +89,10 @@ Global
 		{032269DE-E0B3-4CD6-B3F6-88CFB00C5074}.Debug|x64.Build.0 = Debug|x64
 		{032269DE-E0B3-4CD6-B3F6-88CFB00C5074}.Release|x64.ActiveCfg = Release|x64
 		{032269DE-E0B3-4CD6-B3F6-88CFB00C5074}.Release|x64.Build.0 = Release|x64
+		{C12EE43C-3630-41EC-9B5C-8E969F594FF6}.Debug|x64.ActiveCfg = Debug|x64
+		{C12EE43C-3630-41EC-9B5C-8E969F594FF6}.Debug|x64.Build.0 = Debug|x64
+		{C12EE43C-3630-41EC-9B5C-8E969F594FF6}.Release|x64.ActiveCfg = Release|x64
+		{C12EE43C-3630-41EC-9B5C-8E969F594FF6}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,6 +108,7 @@ Global
 		{E26A223D-5FA4-4227-9692-840AA3737D12} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
 		{F8063CF8-1195-4E11-AD5E-C11BDF28F80A} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
 		{032269DE-E0B3-4CD6-B3F6-88CFB00C5074} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
+		{C12EE43C-3630-41EC-9B5C-8E969F594FF6} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D101D9DD-E806-4794-B9BE-E43298235565}
