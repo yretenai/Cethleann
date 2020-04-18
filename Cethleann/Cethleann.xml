@@ -1283,6 +1283,13 @@
             <param name="buffer"></param>
             <returns></returns>
         </member>
+        <member name="M:Cethleann.Extensions.IsByteBundle(System.Span{System.Byte})">
+            <summary>
+                Guesses if the stream is a valid bundle.
+            </summary>
+            <param name="buffer"></param>
+            <returns></returns>
+        </member>
         <member name="M:Cethleann.Extensions.IsDDSBundle(System.Span{System.Byte})">
             <summary>
                 Guesses if the stream is a valid dds bundle.
@@ -1707,23 +1714,23 @@
                 Stub G1M Section
             </summary>
         </member>
-        <member name="P:Cethleann.Graphics.G1ModelSection.G1MStub.SupportedVersion">
-            <inheritdoc />
-        </member>
-        <member name="P:Cethleann.Graphics.G1ModelSection.G1MStub.Section">
-            <inheritdoc />
-        </member>
-        <member name="P:Cethleann.Graphics.G1ModelSection.G1MStub.Data">
-            <summary>
-                Memory Buffer for this section
-            </summary>
-        </member>
         <member name="M:Cethleann.Graphics.G1ModelSection.G1MStub.#ctor(System.Span{System.Byte},Cethleann.Structure.Resource.ResourceSectionHeader)">
             <summary>
                 Initialize with memory block
             </summary>
             <param name="dataBlock"></param>
             <param name="sectionHeader"></param>
+        </member>
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MStub.Data">
+            <summary>
+                Memory Buffer for this section
+            </summary>
+        </member>
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MStub.SupportedVersion">
+            <inheritdoc />
+        </member>
+        <member name="P:Cethleann.Graphics.G1ModelSection.G1MStub.Section">
+            <inheritdoc />
         </member>
         <member name="T:Cethleann.Graphics.G1TextureGroup">
             <summary>
@@ -2787,6 +2794,41 @@
         <member name="M:Cethleann.Pack.Bundle.Validate(System.Span{System.Byte})">
             <summary>
                 Checks if the stream makes sense to be a bundle
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.Pack.ByteBundle">
+            <summary>
+                Koei Engine Byte Bundle, apparently because Pointer Bundle is too boring.
+            </summary>
+        </member>
+        <member name="M:Cethleann.Pack.ByteBundle.#ctor">
+            <summary>
+                Initialize with no data
+            </summary>
+        </member>
+        <member name="M:Cethleann.Pack.ByteBundle.#ctor(System.Span{System.Byte})">
+            <summary>
+                Split file into individual chunks
+            </summary>
+            <param name="data"></param>
+            <exception cref="T:System.IO.InvalidDataException"></exception>
+        </member>
+        <member name="P:Cethleann.Pack.ByteBundle.Entries">
+            <summary>
+                lsof data blobs
+            </summary>
+        </member>
+        <member name="M:Cethleann.Pack.ByteBundle.Write">
+            <summary>
+                Writes bundle data
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Pack.ByteBundle.Validate(System.Span{System.Byte})">
+            <summary>
+                Checks if the stream makes sense to be a byte bundle
             </summary>
             <param name="data"></param>
             <returns></returns>
