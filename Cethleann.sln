@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cethleann.Downloader", "Cet
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cethleann.XORTool", "Cethleann.XORTool\Cethleann.XORTool.csproj", "{D71208C0-8441-4CE0-9219-7CD1E0B648AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cethleann.DataProcessor", "Cethleann.DataProcessor\Cethleann.DataProcessor.csproj", "{78743DFF-391B-4C21-865A-FA9A147F4BDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -105,6 +107,10 @@ Global
 		{D71208C0-8441-4CE0-9219-7CD1E0B648AE}.Debug|x64.Build.0 = Debug|x64
 		{D71208C0-8441-4CE0-9219-7CD1E0B648AE}.Release|x64.ActiveCfg = Release|x64
 		{D71208C0-8441-4CE0-9219-7CD1E0B648AE}.Release|x64.Build.0 = Release|x64
+		{78743DFF-391B-4C21-865A-FA9A147F4BDD}.Debug|x64.ActiveCfg = Debug|x64
+		{78743DFF-391B-4C21-865A-FA9A147F4BDD}.Debug|x64.Build.0 = Debug|x64
+		{78743DFF-391B-4C21-865A-FA9A147F4BDD}.Release|x64.ActiveCfg = Release|x64
+		{78743DFF-391B-4C21-865A-FA9A147F4BDD}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -123,6 +129,7 @@ Global
 		{C12EE43C-3630-41EC-9B5C-8E969F594FF6} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
 		{E0BA7EAD-238D-4475-802B-72261FA1FA1E} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
 		{D71208C0-8441-4CE0-9219-7CD1E0B648AE} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
+		{78743DFF-391B-4C21-865A-FA9A147F4BDD} = {388956EC-D30E-4FF6-85E9-460C20EA944C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D101D9DD-E806-4794-B9BE-E43298235565}

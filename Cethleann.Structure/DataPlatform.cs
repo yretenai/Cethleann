@@ -6,6 +6,11 @@ namespace Cethleann.Structure
     public enum DataPlatform
     {
         /// <summary>
+        ///     Unknown Platform
+        /// </summary>
+        Unspecified,
+        
+        /// <summary>
         ///     Source platform is the Nintendo Switch
         /// </summary>
         Switch,

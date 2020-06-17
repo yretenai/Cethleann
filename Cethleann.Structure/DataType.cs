@@ -237,10 +237,10 @@ namespace Cethleann.Structure
         XL = 'X' << 0 | 'L' << 8 | 0x13 << 16,
 
         /// <summary>
-        ///     teXt Localization, version 14
+        ///     XL, version 20
         /// </summary>
-        [FileExtension("text")]
-        TextLocalization20 = 'X' << 0 | 'L' << 8 | 0x14 << 16,
+        [FileExtension("xlstruct")]
+        XL20 = 'X' << 0 | 'L' << 8 | 0x14 << 16,
 
         /// <summary>
         ///     KTGL Texture Group

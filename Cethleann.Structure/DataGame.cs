@@ -6,6 +6,7 @@ namespace Cethleann.Structure
 
         // Ninja
         DissidiaNT,
+        DissidiaOO,
         DeadOrAlive5,
         DeadOrAlive6,
         VenusVacation,

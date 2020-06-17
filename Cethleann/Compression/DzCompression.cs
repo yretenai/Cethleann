@@ -32,22 +32,21 @@ namespace Cethleann.Compression
             for (var i = 0; i < blockCount; ++i)
             {
                 var chunk = data.Slice(ptr, sizes[i]);
-                var blockSize = MemoryMarshal.Read<int>(chunk);
                 ptr += sizes[i].Align(align);
+                if (i == blockCount - 1 && sizes[i] + decPtr == decompressedSize)
+                {
+                    chunk.CopyTo(buffer.Slice(decPtr));
+                    break;
+                }
+
+                var blockSize = MemoryMarshal.Read<int>(chunk);
                 if (blockSize > 0)
                 {
-                    var compressedChunk = chunk.Slice(6, blockSize - 2);
-                    unsafe
-                    {
-                        fixed (byte* pin = &compressedChunk.GetPinnableReference())
-                        {
-                            using var stream = new UnmanagedMemoryStream(pin, data.Length);
-                            using var inflate = new DeflateStream(stream, CompressionMode.Decompress, true);
-                            var decChunk = buffer.Slice(decPtr);
-                            var r = inflate.Read(decChunk);
-                            decPtr += r;
-                        }
-                    }
+                    using var stream = new MemoryStream(chunk.Slice(6, blockSize - 2).ToArray());
+                    using var inflate = new DeflateStream(stream, CompressionMode.Decompress, true);
+                    var decChunk = buffer.Slice(decPtr);
+                    var r = inflate.Read(decChunk);
+                    decPtr += r;
                 }
                 else
                 {

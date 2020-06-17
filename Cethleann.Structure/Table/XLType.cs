@@ -1,4 +1,4 @@
-﻿namespace Cethleann.Structure
+﻿namespace Cethleann.Structure.Table
 {
     public enum XLType : byte
     {

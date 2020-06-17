@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Cethleann.Structure.Table;
 using DragonLib;
+using DragonLib.IO;
 using JetBrains.Annotations;
 
 namespace Cethleann.Tables
@@ -35,5 +36,17 @@ namespace Cethleann.Tables
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public List<T> Cast<T>() where T : struct => Entries.Select(x => MemoryMarshal.Read<T>(x.Span)).ToList();
+
+        /// <summary>
+        ///     Cast all entries to the specified struct type.
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public List<object?> Cast(Type t) =>
+            Entries.Select(x =>
+            {
+                var cursor = 0;
+                return SpanHelper.ReadStruct(x.Span, t, ref cursor);
+            }).ToList();
     }
 }

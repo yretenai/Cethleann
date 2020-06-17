@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Cethleann.Structure;
+using Cethleann.Structure.Table;
 using DragonLib;
 using DragonLib.IO;
 using JetBrains.Annotations;
 
-namespace Cethleann.Text
+namespace Cethleann.Tables
 {
     /// <summary>
     ///     Text Localization files are used to collect text data.
@@ -21,7 +22,7 @@ namespace Cethleann.Text
         public XL19(Span<byte> buffer)
         {
             var header = MemoryMarshal.Read<XLHeader>(buffer);
-            if (header.Magic != ((uint) DataType.XL & 0xFFFF)) throw new InvalidOperationException("Not an XL stream");
+            if (header.Magic != ((uint) DataType.XL & 0xFFFF) && header.Version != 0x13) throw new InvalidOperationException("Not an XL stream");
 
             var offset = (int) header.TableOffset;
             var sz = SizeHelper.SizeOf<XLHeader>();
