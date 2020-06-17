@@ -8,7 +8,6 @@ using Cethleann.Graphics;
 using Cethleann.Pack;
 using Cethleann.Structure;
 using Cethleann.Tables;
-using Cethleann.Text;
 using DragonLib;
 using DragonLib.IO;
 using JetBrains.Annotations;
@@ -103,17 +102,17 @@ namespace Cethleann.Unbundler
                         case DataType.KOVS when TryExtractKOVS(blobBase, datablob, flags):
                         case DataType.ElixirArchive when TryExtractElixir(blobBase, datablob, flags):
                         case DataType.RTRPK when TryExtractRESPACK(blobBase, datablob, flags):
-                        case DataType.EffectPack when TryExtractRESPACK(blobBase, datablob, flags):
-                        case DataType.TDPack when TryExtractRESPACK(blobBase, datablob, flags):
-                        case DataType.CollisionPack when TryExtractRESPACK(blobBase, datablob, flags):
-                        case DataType.ModelPack when TryExtractRESPACK(blobBase, datablob, flags):
-                        case DataType.ModelTexPack when TryExtractRESPACK(blobBase, datablob, flags):
-                        case DataType.ExtraArg when TryExtractRESPACK(blobBase, datablob, flags):
-                        case DataType.KTFKPack when TryExtractRESPACK(blobBase, datablob, flags):
-                        case DataType.G1EPack when TryExtractRESPACK(blobBase, datablob, flags):
-                        case DataType.G1MPack when TryExtractRESPACK(blobBase, datablob, flags):
-                        case DataType.G2APack when TryExtractRESPACK(blobBase, datablob, flags):
-                        case DataType.G1COPack when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.EFFRESPK when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.TDPACK when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.COLRESPK when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.MDLRESPK when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.MDLTEXPK when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.EXARG when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.TRRRESPK when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.G1E_PACK when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.G1M_PACK when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.G2A_PACK when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.G1COPACK when TryExtractRESPACK(blobBase, datablob, flags):
                         case DataType.WHD when TryExtractWHD(blobBase, datablob, flags):
                             return 1;
                     }
