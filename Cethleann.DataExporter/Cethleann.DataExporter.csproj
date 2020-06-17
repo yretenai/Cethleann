@@ -16,7 +16,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Cethleann.Unbundler\Cethleann.Unbundler.csproj" />
-        <ProjectReference Include="..\Cethleann\Cethleann.csproj" />
     </ItemGroup>
 
 </Project>
