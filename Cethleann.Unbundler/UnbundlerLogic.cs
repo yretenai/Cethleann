@@ -12,6 +12,8 @@ using Cethleann.Text;
 using DragonLib;
 using DragonLib.IO;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Cethleann.Unbundler
 {
@@ -93,7 +95,7 @@ namespace Cethleann.Unbundler
                         case DataType.KTSR when TryExtractKTSR(blobBase, datablob, flags):
                         case DataType.KTSC when TryExtractKTSC(blobBase, datablob, flags):
                         case DataType.Model when !flags.Recursive && TryExtractG1M(blobBase, datablob, flags):
-                        case DataType.TextLocalization19 when TryExtractLX(blobBase, datablob):
+                        case DataType.XL when TryExtractXL(blobBase, datablob):
                         case DataType.GAPK when TryExtractGAPK(blobBase, datablob, flags, false):
                         case DataType.GEPK when TryExtractGAPK(blobBase, datablob, flags, true):
                         case DataType.GMPK when TryExtractGMPK(blobBase, datablob, flags):
@@ -446,34 +448,37 @@ namespace Cethleann.Unbundler
             return true;
         }
 
-        private static bool TryExtractLX(string pathBase, Span<byte> data)
+        private static bool TryExtractXL(string pathBase, Span<byte> data)
         {
             try
             {
                 var blobs = new XL19(data);
                 if (blobs.Entries.Count == 0) return true;
 
-                var ft = Path.ChangeExtension(pathBase, ".txt");
+                var ft = Path.ChangeExtension(pathBase, ".json");
                 var basedir = Path.GetDirectoryName(ft);
 
                 if (!Directory.Exists(basedir))
                 {
                     if (File.Exists(basedir))
                     {
-                        Logger.Warn("LX", $@"Trying to make a directory named {basedir} but it is a file?");
+                        Logger.Warn("XL", $@"Trying to make a directory named {basedir} but it is a file?");
                         return false;
                     }
 
                     Directory.CreateDirectory(basedir);
                 }
 
-                var lines = string.Join(Environment.NewLine, blobs.Entries.SelectMany((x, i) => x.Select((y, j) => $"{i},{j} = " + y.Replace("\\", "\\\\").Replace("\n", "\\n").Replace("\r", "\\r"))));
-                File.WriteAllText(ft, lines);
-                Logger.Info("LX", ft);
+                File.WriteAllText(ft, JsonConvert.SerializeObject(new
+                {
+                    blobs.Types,
+                    blobs.Entries
+                }, Formatting.Indented, new StringEnumConverter()));
+                Logger.Info("XL", ft);
             }
             catch (Exception e)
             {
-                Logger.Error("LX", "Failed unpacking LX", e);
+                Logger.Error("XL", "Failed unpacking XL", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;

@@ -231,10 +231,16 @@ namespace Cethleann.Structure
         Collision = 'G' << 24 | '1' << 16 | 'C' << 8 | 'O' << 0,
 
         /// <summary>
-        ///     teXt Localization, version 19
+        ///     XL, version 19
+        /// </summary>
+        [FileExtension("xl")]
+        XL = 'X' << 0 | 'L' << 8 | 0x13 << 16,
+
+        /// <summary>
+        ///     teXt Localization, version 14
         /// </summary>
         [FileExtension("text")]
-        TextLocalization19 = 'X' << 0 | 'L' << 8 | 0x13 << 16,
+        TextLocalization20 = 'X' << 0 | 'L' << 8 | 0x14 << 16,
 
         /// <summary>
         ///     KTGL Texture Group
