@@ -9,7 +9,7 @@ namespace Cethleann.Structure
         ///     Unknown Platform
         /// </summary>
         Unspecified,
-        
+
         /// <summary>
         ///     Source platform is the Nintendo Switch
         /// </summary>

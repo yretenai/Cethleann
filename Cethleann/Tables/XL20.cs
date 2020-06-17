@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using Cethleann.Structure;
@@ -26,15 +25,15 @@ namespace Cethleann.Tables
             var header = MemoryMarshal.Read<XLHeader>(buffer);
             if (header.Magic != ((uint) DataType.XL & 0xFFFF) && header.Version != 0x14) throw new InvalidOperationException("Not an XL stream");
             UnderlyingType = t;
-            
+
             var offset = (int) header.TableOffset;
             var properties = t.GetProperties();
-            for (var i = 0; i < header.Sets; i++)
+            for (var i = 0; i < header.FileSize; i++)
             {
                 var instance = Activator.CreateInstance(t);
                 var localOffset = 0;
                 var slice = buffer.Slice(offset);
-                foreach(var property in properties)
+                foreach (var property in properties)
                 {
                     var type = property.PropertyType;
                     object? value;
@@ -85,15 +84,17 @@ namespace Cethleann.Tables
                         default:
                             throw new NotImplementedException(type.FullName);
                     }
+
                     property.SetValue(instance, value);
                 }
+
                 Entries.Add(instance);
                 offset += localOffset;
             }
         }
 
         public Type UnderlyingType { get; set; }
-        
+
         /// <summary>
         ///     List of entries in this blob
         /// </summary>
