@@ -141,6 +141,18 @@ namespace Cethleann.Structure
         ModelPack = 'M' << 0 | 'D' << 8 | 'L' << 16 | 'R' << 24, // MDLRESPK
 
         /// <summary>
+        ///     KTGL Model Pack
+        /// </summary>
+        [FileExtension("mdltexpack")]
+        ModelTexPack = 'M' << 0 | 'D' << 8 | 'L' << 16 | 'T' << 24, // MDLTEXPK
+
+        /// <summary>
+        ///     KTGL EXARG
+        /// </summary>
+        [FileExtension("exarg")]
+        ExtraArg = 'E' << 0 | 'X' << 8 | 'A' << 16 | 'R' << 24, // EXARG000
+
+        /// <summary>
         ///     KTGL Effect Pack
         /// </summary>
         [FileExtension("effectpack")]

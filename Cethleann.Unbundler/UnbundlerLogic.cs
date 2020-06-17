@@ -107,6 +107,8 @@ namespace Cethleann.Unbundler
                         case DataType.TDPack when TryExtractRESPACK(blobBase, datablob, flags):
                         case DataType.CollisionPack when TryExtractRESPACK(blobBase, datablob, flags):
                         case DataType.ModelPack when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.ModelTexPack when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.ExtraArg when TryExtractRESPACK(blobBase, datablob, flags):
                         case DataType.KTFKPack when TryExtractRESPACK(blobBase, datablob, flags):
                         case DataType.G1EPack when TryExtractRESPACK(blobBase, datablob, flags):
                         case DataType.G1MPack when TryExtractRESPACK(blobBase, datablob, flags):
@@ -197,7 +199,6 @@ namespace Cethleann.Unbundler
             {
                 var blobs = new RESPACK(data);
                 if (blobs.Entries.Count == 0) return true;
-
                 TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, false, null, flags);
             }
             catch (Exception e)

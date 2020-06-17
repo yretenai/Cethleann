@@ -12,5 +12,6 @@ namespace Cethleann.Structure.Archive
         public int Unknown { get; set; }
         public int PointerTablePointer { get; set; }
         public int SizeTablePointer { get; set; }
+        public int ExtraPointer { get; set; }
     }
 }
