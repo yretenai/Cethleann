@@ -111,7 +111,9 @@ namespace Cethleann.Unbundler
                         case DataType.TRRRESPK when TryExtractRESPACK(blobBase, datablob, flags):
                         case DataType.G1E_PACK when TryExtractRESPACK(blobBase, datablob, flags):
                         case DataType.G1M_PACK when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.G1H_PACK when TryExtractRESPACK(blobBase, datablob, flags):
                         case DataType.G2A_PACK when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.HEADPACK when TryExtractRESPACK(blobBase, datablob, flags):
                         case DataType.G1COPACK when TryExtractRESPACK(blobBase, datablob, flags):
                         case DataType.WHD when TryExtractWHD(blobBase, datablob, flags):
                             return 1;

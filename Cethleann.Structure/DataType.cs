@@ -105,6 +105,12 @@ namespace Cethleann.Structure
         RIGB = 'R' << 0 | 'I' << 8 | 'G' << 16 | 'B' << 24,
 
         /// <summary>
+        ///     Rig B?
+        /// </summary>
+        [FileExtension("rig")]
+        RIGBL = 'R' << 24 | 'I' << 16 | 'G' << 8 | 'B' << 0,
+
+        /// <summary>
         ///     the fuck?
         /// </summary>
         [FileExtension("ertr")]
@@ -179,8 +185,20 @@ namespace Cethleann.Structure
         /// <summary>
         ///     KTGL Animation Pack
         /// </summary>
+        [FileExtension("g1hpack")]
+        G1H_PACK = 'P' << 0 | 'G' << 8 | '1' << 16 | 'H' << 24, // PG1H_DAT
+
+        /// <summary>
+        ///     KTGL Animation Pack
+        /// </summary>
         [FileExtension("g1copack")]
         G1COPACK = 'G' << 0 | '1' << 8 | 'C' << 16 | 'O' << 24, // G1COPACK
+
+        /// <summary>
+        ///     KTGL Animation Pack
+        /// </summary>
+        [FileExtension("exhead")]
+        HEADPACK = 'H' << 0 | 'E' << 8 | 'A' << 16 | 'D' << 24, // HEAD_PAK
 
         /// <summary>
         ///     KTGL KTFK Pack
