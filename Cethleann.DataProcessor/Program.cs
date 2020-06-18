@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Cethleann.Structure;
 using Cethleann.Tables;
 using DragonLib.CLI;
@@ -9,19 +10,26 @@ using Newtonsoft.Json.Converters;
 
 namespace Cethleann.DataProcessor
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Logger.PrintVersion("Cethleann");
             var flags = CommandLineFlags.ParseFlags<DataExporterFlags>(CommandLineFlags.PrintHelp, args);
             if (flags == null) return;
 
-            var typeName = $"{typeof(DataGame).Namespace}.DataStructs.{flags.GameId:G}.{flags.StructName}";
+
+            var typeName = $"{typeof(DataGame).Namespace}.DataStructs.{flags.GameId:G}.{flags.StructName ?? "__UNDEFINED__"}";
             var t = typeof(DataGame).Assembly.GetType(typeName);
-            if (t == null)
+            if (t == null || flags.StructName == null)
             {
-                Logger.Error("Cethleann", $"Cannot find type {typeName}");
+                if (t == null)
+                {
+                    Logger.Error("Cethleann", $"Cannot find type {typeName}");
+                }
+                var ns = $"{typeof(DataGame).Namespace}.DataStructs.{flags.GameId:G}";
+                var types = string.Join("\n\t", typeof(DataGame).Assembly.GetTypes().Where(x => x.Namespace == ns).Select(x => x.Name));
+                Logger.Info("Cethleann", $"Available types for {flags.GameId:G}:\n\t{types}");
                 return;
             }
 
@@ -44,11 +52,9 @@ namespace Cethleann.DataProcessor
 
         private static void ProcessECB(DataExporterFlags flags, Type t)
         {
-            throw new NotImplementedException();
-            /* I would assume it would be something like
             foreach (var file in flags.Paths)
             {
-                var ecb = new EmbeddedBlock(File.ReadAllBytes(file), t);
+                var ecb = new ECB(File.ReadAllBytes(file));
                 var ft = Path.ChangeExtension(file, ".json");
                 var Entries = ecb.Cast(t);
                 File.WriteAllText(ft, JsonConvert.SerializeObject(new
@@ -58,7 +64,6 @@ namespace Cethleann.DataProcessor
                 }, Formatting.Indented, new StringEnumConverter()));
                 Logger.Info("ECB", ft);
             }
-            */
         }
 
         private static void ProcessXL20(DataExporterFlags flags, Type t)

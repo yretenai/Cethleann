@@ -27,6 +27,12 @@ namespace Cethleann.Structure
         StructTable = 0x1612_1900,
 
         /// <summary>
+        ///     <seealso cref="ECB" />
+        /// </summary>
+        [FileExtension("struct")]
+        ECB = 'e' << 0 | 'c' << 8 | 'b' << 16,
+
+        /// <summary>
         ///     S-Archive?
         /// </summary>
         [FileExtension("sarc")]
