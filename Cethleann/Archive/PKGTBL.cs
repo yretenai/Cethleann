@@ -48,7 +48,7 @@ namespace Cethleann.Archive
                     PathOffset = x.NameOffset,
                     OriginalPathOffset = -1,
                     Flags = x.Flags,
-                    Checksum = x.Checksum,
+                    UniqueId = x.Checksum,
                     CompressedSize = x.CompressedSize,
                     DecompressedSize = x.DecompressedSize,
                     Padding1 = PackageInfo.InfoTable.UnknownBuffer[x.UnknownIndex],

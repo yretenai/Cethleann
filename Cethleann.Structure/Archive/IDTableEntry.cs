@@ -8,7 +8,7 @@ namespace Cethleann.Structure.Archive
         public int PathOffset { get; set; }
         public int OriginalPathOffset { get; set; }
         public IDTableFlags Flags { get; set; }
-        public uint Checksum { get; set; }
+        public uint UniqueId { get; set; } // Or path CRC32 checksum?
         public uint CompressedSize { get; set; }
         public uint DecompressedSize { get; set; }
         public uint Padding1 { get; set; }

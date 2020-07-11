@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using Cethleann.Structure;
 using Cethleann.Structure.Table;
 using DragonLib.IO;
 using JetBrains.Annotations;
+using DataType = Cethleann.Structure.DataType;
 
 namespace Cethleann.Tables
 {
@@ -71,12 +73,16 @@ namespace Cethleann.Tables
                         case "System.Double":
                             value = SpanHelper.ReadLittleDouble(slice, ref localOffset);
                             break;
+                        case "System.Decimal":
+                            value = SpanHelper.ReadLittleDecimal(slice, ref localOffset);
+                            break;
                         case "System.Boolean":
                             value = SpanHelper.ReadByte(slice, ref localOffset) == 1;
                             break;
                         case "System.String":
                         {
-                            var size = SpanHelper.ReadLittleInt(slice, ref localOffset);
+                            var stringSize = property.GetCustomAttribute<StringLengthAttribute>();
+                            var size = stringSize?.MaximumLength ?? SpanHelper.ReadLittleInt(slice, ref localOffset);
                             value = size > 0 ? Encoding.UTF8.GetString(slice.Slice(localOffset, size)) : null;
                             localOffset += size;
                             break;
