@@ -84,6 +84,10 @@ namespace Cethleann.Tables
                             var stringSize = property.GetCustomAttribute<StringLengthAttribute>();
                             var size = stringSize?.MaximumLength ?? SpanHelper.ReadLittleInt(slice, ref localOffset);
                             value = size > 0 ? Encoding.UTF8.GetString(slice.Slice(localOffset, size)) : null;
+                            if (stringSize != null && value is string stringValue)
+                            {
+                                value = stringValue.TrimEnd('\u0000');
+                            }
                             localOffset += size;
                             break;
                         }

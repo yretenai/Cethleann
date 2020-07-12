@@ -15,5 +15,6 @@ namespace Cethleann.Structure.DataStructs.DissidiaOO
         [StringLength(0x40)]
         public string End { get; set; }
         public int Unknown5 { get; set; }
+        public int Unknown6 { get; set; }
     }
 }
