@@ -3,6 +3,7 @@ namespace Cethleann.Structure
     public enum DataGame
     {
         None,
+        DEBUG,
 
         // Ninja
         DissidiaNT,
@@ -27,7 +28,8 @@ namespace Cethleann.Structure
         Azure2,
         Reflection,
         ThreeHouses,
-
+        FairyTail,
+        
         // Koei, note this is not Koei Tecmo.
         Sangokushi14,
         Sangokushi13,

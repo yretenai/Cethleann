@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Cethleann.Archive;
 using Cethleann.Structure.KTID;
@@ -58,10 +59,13 @@ namespace Cethleann.KTID
                 NameMap[entry.KTID] = name;
                 HashMap[entry.KTID] = strings[0];
 
-                var hash = RDB.Hash(strings[1]);
-                if (ext != null) ExtMap[hash] = ext.ToLower();
+                if (strings[1].Length > 0)
+                {
+                    var hash = RDB.Hash(strings[1]);
+                    if (ext != null) ExtMap[hash] = ext.ToLower();
+                }
 
-                foreach (var str in strings) HashMap[RDB.Hash(str)] = str;
+                foreach (var str in strings.Where(x => x.Length > 0)) HashMap[RDB.Hash(str)] = str;
             }
         }
 

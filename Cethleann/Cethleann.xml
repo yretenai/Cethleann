@@ -3100,6 +3100,46 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:Cethleann.Tables.ECB">
+            <summary>
+                DFFNT ECB
+            </summary>
+        </member>
+        <member name="M:Cethleann.Tables.ECB.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize with given buffer
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="P:Cethleann.Tables.ECB.Header">
+            <summary>
+                The header.
+            </summary>
+        </member>
+        <member name="P:Cethleann.Tables.ECB.DynamicData">
+            <summary>
+                Dynamic Data Buffer, such as strings
+            </summary>
+        </member>
+        <member name="P:Cethleann.Tables.ECB.Entries">
+            <summary>
+                Lsof Entries found in the struct table
+            </summary>
+        </member>
+        <member name="M:Cethleann.Tables.ECB.Cast``1">
+            <summary>
+                Cast all entries to the specified struct type.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Cethleann.Tables.ECB.Cast(System.Type)">
+            <summary>
+                Cast all entries to the specified struct type.
+            </summary>
+            <param name="t"></param>
+            <returns></returns>
+        </member>
         <member name="T:Cethleann.Tables.StringTable">
             <summary>
                 Main string bundle of the game.
@@ -3138,6 +3178,46 @@
             </summary>
             <typeparam name="T"></typeparam>
             <returns></returns>
+        </member>
+        <member name="M:Cethleann.Tables.StructTable.Cast(System.Type)">
+            <summary>
+                Cast all entries to the specified struct type.
+            </summary>
+            <param name="t"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cethleann.Tables.XL19">
+            <summary>
+                Text Localization files are used to collect text data.
+            </summary>
+        </member>
+        <member name="M:Cethleann.Tables.XL19.#ctor(System.Span{System.Byte})">
+            <summary>
+                Initialize with a span buffer
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="P:Cethleann.Tables.XL19.Entries">
+            <summary>
+                List of string entries in this text blob
+            </summary>
+        </member>
+        <member name="T:Cethleann.Tables.XL20">
+            <summary>
+                Serialization files are used to collect struct data.
+            </summary>
+        </member>
+        <member name="M:Cethleann.Tables.XL20.#ctor(System.Span{System.Byte},System.Type)">
+            <summary>
+                Initialize with a span buffer
+            </summary>
+            <param name="buffer"></param>
+            <param name="t"></param>
+        </member>
+        <member name="P:Cethleann.Tables.XL20.Entries">
+            <summary>
+                List of entries in this blob
+            </summary>
         </member>
         <member name="T:Cethleann.Text.Oid">
             <summary>
@@ -3187,22 +3267,6 @@
                 Write table to buffer
             </summary>
             <returns></returns>
-        </member>
-        <member name="T:Cethleann.Text.XL19">
-            <summary>
-                Text Localization files are used to collect text data.
-            </summary>
-        </member>
-        <member name="M:Cethleann.Text.XL19.#ctor(System.Span{System.Byte})">
-            <summary>
-                Initialize with a span buffer
-            </summary>
-            <param name="buffer"></param>
-        </member>
-        <member name="P:Cethleann.Text.XL19.Entries">
-            <summary>
-                List of string entries in this text blob
-            </summary>
         </member>
     </members>
 </doc>

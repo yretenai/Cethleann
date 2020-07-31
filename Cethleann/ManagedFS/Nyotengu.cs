@@ -83,9 +83,8 @@ namespace Cethleann.ManagedFS
         {
             Logger.Success("Nyotengu", $"Loading {Path.GetFileName(path)}...");
             var rdb = new RDB(File.ReadAllBytes(path), Path.GetFileNameWithoutExtension(path), Path.GetDirectoryName(path) ?? string.Empty);
-            if (rdb.NameDatabase.IsEmpty)
-                foreach (var file in Directory.GetFiles(Path.GetDirectoryName(path), rdb.Name + "*.info"))
-                    rdb.NameDatabase.Union(new RDBINFO(File.ReadAllBytes(file)));
+            foreach (var file in Directory.GetFiles(Path.GetDirectoryName(path), rdb.Name + "*.info"))
+                rdb.NameDatabase.Union(new RDBINFO(File.ReadAllBytes(file)));
             EntryCount += rdb.Entries.Count;
             RDBs.Add(rdb);
         }
@@ -159,7 +158,7 @@ namespace Cethleann.ManagedFS
         /// <param name="filename"></param>
         /// <param name="game"></param>
         /// <returns></returns>
-        public static Dictionary<KTIDReference, (string, string)> LoadKTIDFileListEx(string? filename = null, DataGame game = DataGame.None)
+        public static Dictionary<KTIDReference, (string, string)> LoadKTIDFileListEx(string? filename = null, string game = "None")
         {
             var loc = ManagedFSHelper.GetFileListLocation(filename, game, "rdb");
             var csv = ManagedFSHelper.GetFileList(loc, 3);
@@ -237,12 +236,25 @@ namespace Cethleann.ManagedFS
         /// <param name="game"></param>
         public void SaveGeneratedFileList(string? filename = null, DataGame? game = null)
         {
-            var filelist = LoadKTIDFileListEx(filename, game ?? GameId);
+            var filelist = LoadKTIDFileListEx(filename, (game ?? GameId).ToString("G"));
+            if (filelist == null) return;
             foreach (var rdb in RDBs)
             foreach (var (hash, name) in rdb.NameDatabase.NameMap)
                 filelist[hash] = (rdb.Name, name);
 
-            File.WriteAllText(ManagedFSHelper.GetFileListLocation(filename, game ?? GameId, "rdb-generated"), string.Join("\n", filelist.OrderBy(x => $"{x.Value.Item1}{x.Key:x8}").Select(x => $"{x.Value.Item1},{x.Key:x8},{x.Value.Item2}")));
+            SaveGeneratedFileList(filelist, filename, game ?? GameId);
+        }
+
+        /// <summary>
+        ///     Save filelist to disk
+        /// </summary>
+        /// <param name="filelist"></param>
+        /// <param name="filename"></param>
+        /// <param name="game"></param>
+        public static void SaveGeneratedFileList(Dictionary<KTIDReference, (string, string)> filelist, string? filename = null, DataGame game = DataGame.None)
+        {
+            Logger.Debug("Nyotengu", $"Filelist saved to {ManagedFSHelper.GetFileListLocation(filename, game, "rdb-generated")}");
+            File.WriteAllText(ManagedFSHelper.GetFileListLocation(filename, game, "rdb-generated"), string.Join("\n", filelist.OrderBy(x => $"{x.Value.Item1}{x.Key:x8}").Select(x => $"{x.Value.Item1},{x.Key:x8},{x.Value.Item2}")));
         }
     }
 }
