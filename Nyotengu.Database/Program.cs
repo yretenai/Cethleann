@@ -137,8 +137,17 @@ namespace Nyotengu.Database
 
         private static string GetKTIDNameValue(KTIDReference ktid, bool ignoreNames, NDB ndb, params Dictionary<KTIDReference, string>[] filelists)
         {
-            var name = $"{ktid:x8}";
-            return ignoreNames ? name : $"{ktid.GetName(ndb, filelists) ?? name}";
+            var name = ktid.GetName(ndb, filelists);
+            if (name == null)
+            {
+                name = $"KTID {ktid:x8}";
+            }
+            else if(ignoreNames)
+            {
+                name = $"{name} (KTID {ktid:x8})";
+            }
+
+            return name;
         }
 
         private static bool HasKTIDNameValue(KTIDReference ktid, NDB ndb, params Dictionary<KTIDReference, string>[] filelists) => ktid.GetName(ndb, filelists) == null;
