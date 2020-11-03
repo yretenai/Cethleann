@@ -32,7 +32,7 @@ namespace Cethleann.Gz
             if (flags.IsDz)
             {
                 ext = ".dz";
-                if (flags.Compress) method = bytes => DzCompression.Compress(bytes, flags.BlockSize, flags.Alignment).ToArray();
+                if (flags.Compress) method = bytes => DzCompression.Compress(bytes, flags.BlockSize, flags.Alignment, flags.CompressLast).ToArray();
                 else method = bytes => DzCompression.Decompress(bytes, flags.Alignment).ToArray();
             }
             else if (flags.IsStream)

@@ -30,6 +30,9 @@ namespace Cethleann.Gz
         [CLIFlag("c", Aliases = new[] { "compress" }, Help = "Compress files rather than decompress", Category = "Gz Options")]
         public bool Compress { get; set; }
 
+        [CLIFlag("C", Aliases = new[] { "compress-last-block" }, Help = "Force compress the last block", Category = "Gz Options")]
+        public bool CompressLast { get; set; }
+
         [CLIFlag("b", Default = 0x4000, Aliases = new[] { "block" }, Help = "(de)compress in Blocks this size", Category = "Gz Options")]
         public int BlockSize { get; set; } = 0x4000;
 

@@ -2,7 +2,11 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.InteropServices;
+using System.Text;
+
 using DragonLib;
+using DragonLib.IO;
+
 using JetBrains.Annotations;
 
 namespace Cethleann.Compression
@@ -64,7 +68,54 @@ namespace Cethleann.Compression
         /// <param name="data"></param>
         /// <param name="blockSize"></param>
         /// <param name="align"></param>
+        /// <param name="forceCompressLastChunk"></param>
         /// <returns></returns>
-        public static Span<byte> Compress(Span<byte> data, int blockSize = 0x4000, int align = 0x80) => throw new NotImplementedException();
+        public static Span<byte> Compress(Span<byte> data, int blockSize = 0x10000, int align = 0x80, bool forceCompressLastChunk = false)
+        {
+            var blocks    = (int) Math.Floor(data.Length / (float) blockSize) + (data.Length % blockSize == 0 ? 0 : 1);
+            var dataStart = (4 + 4 * blocks).Align(align);
+            var header    = new Memory<byte>(new byte[dataStart]);
+            var ptr       = 0;
+            SpanHelper.WriteLittleInt(ref header, blocks, ref ptr);
+            SpanHelper.WriteLittleInt(ref header, data.Length, ref ptr);
+            var encPtr = 0;
+            var buffer = new Memory<byte>(new byte[data.Length]);
+            var bufPtr = 0;
+
+            while (encPtr < data.Length)
+            {
+                var chunk = data.Slice(encPtr, Math.Min(blockSize, data.Length - encPtr));
+                encPtr += chunk.Length;
+
+                if (chunk.Length < blockSize && !forceCompressLastChunk)
+                {
+                    SpanHelper.WriteLittleInt(ref header, chunk.Length, ref ptr);
+                    chunk.CopyTo(buffer.Slice(bufPtr).Span);
+                    bufPtr = (bufPtr + chunk.Length).Align(align);
+                }
+                else
+                {
+                    using var stream   = new MemoryStream();
+                    using var inflate  = new DeflateStream(stream, CompressionMode.Compress, true);
+                    inflate.Write(chunk);
+                    inflate.Flush();
+                    inflate.Close();
+                    var comBuffer = new Span<byte>(new byte[stream.Position]);
+                    stream.Position = 0;
+                    stream.Read(comBuffer);
+                    var size = comBuffer.Length + 2;
+                    SpanHelper.WriteLittleInt(ref header, size + 4, ref ptr);
+                    SpanHelper.WriteLittleInt(ref buffer, size, ref bufPtr);
+                    SpanHelper.WriteLittleUShort(ref buffer, 0xDA78, ref bufPtr);
+                    comBuffer.CopyTo(buffer.Slice(bufPtr).Span);
+                    bufPtr = (bufPtr + comBuffer.Length).Align(align);
+                }
+            }
+
+            var totalBuffer = new Span<byte>(new byte[dataStart + bufPtr]);
+            header.Span.CopyTo(totalBuffer);
+            buffer.Span.Slice(0,  bufPtr).CopyTo(totalBuffer.Slice(dataStart));
+            return totalBuffer;
+        }
     }
 }
