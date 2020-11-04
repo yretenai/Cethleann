@@ -201,7 +201,11 @@ namespace Cethleann.Archive
             var fileEntryA = fileEntry.GetValueOrDefault();
             if (fileEntryA.Size == 0) return Memory<byte>.Empty;
             if (entry.Flags.HasFlag(RDBFlags.ZlibCompressed) || entry.Flags.HasFlag(RDBFlags.Lz4Compressed))
-                return StreamCompression.Decompress(buffer, (int) fileEntryA.Size, (DataCompression) ((int) entry.Flags >> 20 & 0xF)).ToArray();
+                return StreamCompression.Decompress(buffer, new CompressionOptions
+                {
+                    Length =  (int) fileEntryA.Size, 
+                    Type = (DataCompression) ((int) entry.Flags >> 20 & 0xF),
+                }).ToArray();
             return buffer;
         }
 

@@ -122,7 +122,7 @@ namespace Cethleann.Archive
             if (flags.HasFlag(IDTableFlags.Compressed) && file[4] == 0x78)
                 try
                 {
-                    var decompressedData = Stream8000Compression.Decompress(file, (int) size);
+                    var decompressedData = Stream8000Compression.Decompress(file, new CompressionOptions { Length = size });
                     if (decompressedData.Length != 0) file = decompressedData;
                 }
                 catch (Exception e)

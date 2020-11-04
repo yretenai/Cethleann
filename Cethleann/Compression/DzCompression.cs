@@ -21,22 +21,23 @@ namespace Cethleann.Compression
         ///     Decompresses a .dz stream.
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="align"></param>
+        /// <param name="options"></param>
         /// <returns></returns>
-        public static Span<byte> Decompress(Span<byte> data, int align = 0x80)
+        public static Span<byte> Decompress(Span<byte> data, CompressionOptions? options = null)
         {
+            options ??= CompressionOptions.Default;
             var blockCount = MemoryMarshal.Read<int>(data);
             var ptr = 4;
             var decompressedSize = MemoryMarshal.Read<int>(data.Slice(ptr));
             ptr += 4;
             var sizes = MemoryMarshal.Cast<byte, int>(data.Slice(ptr, 4 * blockCount));
-            ptr = (ptr + 4 * blockCount).Align(align);
+            ptr = (ptr + 4 * blockCount).Align(options.Alignment);
             var buffer = new Span<byte>(new byte[decompressedSize]);
             var decPtr = 0;
             for (var i = 0; i < blockCount; ++i)
             {
                 var chunk = data.Slice(ptr, sizes[i]);
-                ptr += sizes[i].Align(align);
+                ptr += sizes[i].Align(options.Alignment);
                 if (i == blockCount - 1 && sizes[i] + decPtr == decompressedSize)
                 {
                     chunk.CopyTo(buffer.Slice(decPtr));
@@ -66,14 +67,13 @@ namespace Cethleann.Compression
         ///     Compresses a stream into a .gz stream.
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="blockSize"></param>
-        /// <param name="align"></param>
-        /// <param name="forceCompressLastChunk"></param>
+        /// <param name="options"></param>
         /// <returns></returns>
-        public static Span<byte> Compress(Span<byte> data, int blockSize = 0x10000, int align = 0x80, bool forceCompressLastChunk = false)
+        public static Span<byte> Compress(Span<byte> data, CompressionOptions? options = null)
         {
-            var blocks    = (int) Math.Floor(data.Length / (float) blockSize) + (data.Length % blockSize == 0 ? 0 : 1);
-            var dataStart = (4 + 4 * blocks).Align(align);
+            options ??= CompressionOptions.Default;
+            var blocks    = (int) Math.Floor(data.Length / (float) options.BlockSize) + (data.Length % options.BlockSize == 0 ? 0 : 1);
+            var dataStart = (4 + 4 * blocks).Align(options.Alignment);
             var header    = new Memory<byte>(new byte[dataStart]);
             var ptr       = 0;
             SpanHelper.WriteLittleInt(ref header, blocks, ref ptr);
@@ -84,31 +84,25 @@ namespace Cethleann.Compression
 
             while (encPtr < data.Length)
             {
-                var chunk = data.Slice(encPtr, Math.Min(blockSize, data.Length - encPtr));
+                var chunk = data.Slice(encPtr, Math.Min(options.BlockSize, data.Length - encPtr));
                 encPtr += chunk.Length;
 
-                if (chunk.Length < blockSize && !forceCompressLastChunk)
+                var comBuffer = CompressionEncryption.CompressDEFLATEIonic(chunk, options.CompressionLevel);
+                var size = comBuffer.Length + 2;
+
+                if (chunk.Length < options.BlockSize && size >= chunk.Length && !options.ForceLastBlock)
                 {
                     SpanHelper.WriteLittleInt(ref header, chunk.Length, ref ptr);
                     chunk.CopyTo(buffer.Slice(bufPtr).Span);
-                    bufPtr = (bufPtr + chunk.Length).Align(align);
+                    bufPtr = (bufPtr + chunk.Length).Align(options.Alignment);
                 }
                 else
                 {
-                    using var stream   = new MemoryStream();
-                    using var inflate  = new DeflateStream(stream, CompressionMode.Compress, true);
-                    inflate.Write(chunk);
-                    inflate.Flush();
-                    inflate.Close();
-                    var comBuffer = new Span<byte>(new byte[stream.Position]);
-                    stream.Position = 0;
-                    stream.Read(comBuffer);
-                    var size = comBuffer.Length + 2;
                     SpanHelper.WriteLittleInt(ref header, size + 4, ref ptr);
                     SpanHelper.WriteLittleInt(ref buffer, size, ref bufPtr);
                     SpanHelper.WriteLittleUShort(ref buffer, 0xDA78, ref bufPtr);
                     comBuffer.CopyTo(buffer.Slice(bufPtr).Span);
-                    bufPtr = (bufPtr + comBuffer.Length).Align(align);
+                    bufPtr = (bufPtr + comBuffer.Length).Align(options.Alignment);
                 }
             }
 

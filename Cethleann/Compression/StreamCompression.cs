@@ -19,18 +19,17 @@ namespace Cethleann.Compression
         ///     Decompresses a Gz stream
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="decompressedSize"></param>
-        /// <param name="compressionFunc"></param>
-        /// <param name="blockSize"></param>
-        /// <param name="sizePrefix"></param>
+        /// <param name="options"></param>
         /// <returns></returns>
-        public static Span<byte> Decompress(Span<byte> data, int decompressedSize, DataCompression compressionFunc, int blockSize = 0x4000, bool sizePrefix = false)
+        public static Span<byte> Decompress(Span<byte> data, CompressionOptions? options)
         {
+            options ??= CompressionOptions.Default;
+            var decompressedSize = options.Length;
             unsafe
             {
                 var decPtr = 0;
                 var comPtr = 0;
-                if (sizePrefix)
+                if (options.PrefixSize)
                 {
                     decompressedSize = BinaryPrimitives.ReadInt32LittleEndian(data);
                     comPtr += 4;
@@ -45,7 +44,7 @@ namespace Cethleann.Compression
                     comPtr += 4;
                     if (chunkSize == 0) break;
 
-                    switch (compressionFunc)
+                    switch (options.Type)
                     {
                         case DataCompression.Deflate:
                         {
@@ -55,7 +54,7 @@ namespace Cethleann.Compression
                                 using var stream = new UnmanagedMemoryStream(pin, chunk.Length);
                                 Logger.Assert(data[comPtr] == 0x78, "data[comPtr] == 0x78");
                                 using var inflate = new DeflateStream(stream, CompressionMode.Decompress, true);
-                                Span<byte> block = new byte[blockSize * 4];
+                                Span<byte> block = new byte[options.BlockSize * 4];
                                 var decRead = inflate.Read(block);
                                 if (decPtr + decRead > decompressed.Length)
                                 {
@@ -73,11 +72,11 @@ namespace Cethleann.Compression
                         case DataCompression.Lz4:
                         {
                             var chunk = data.Slice(comPtr, chunkSize);
-                            Span<byte> block = new byte[blockSize * 4];
+                            Span<byte> block = new byte[options.BlockSize * 4];
                             var decRead = CompressionEncryption.DecompressLZ4(chunk, block);
                             if (decPtr + decRead > decompressed.Length)
                             {
-                                Span<byte> temp = new byte[decPtr + decRead + blockSize * 4];
+                                Span<byte> temp = new byte[decPtr + decRead + options.BlockSize * 4];
                                 decompressed.CopyTo(temp);
                                 decompressed = temp;
                             }
@@ -87,7 +86,7 @@ namespace Cethleann.Compression
                             break;
                         }
                         default:
-                            throw new ArgumentOutOfRangeException(nameof(compressionFunc), compressionFunc, null);
+                            throw new ArgumentOutOfRangeException(nameof(options.Type), options.Type, null);
                     }
 
                     comPtr += chunkSize;
@@ -102,8 +101,8 @@ namespace Cethleann.Compression
         ///     Compresses a stream into a .gz stream.
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="blockSize"></param>
+        /// <param name="options"></param>
         /// <returns></returns>
-        public static Span<byte> Compress(Span<byte> data, int blockSize = 0x4000) => throw new NotImplementedException();
+        public static Span<byte> Compress(Span<byte> data, CompressionOptions? options = null) => throw new NotImplementedException();
     }
 }

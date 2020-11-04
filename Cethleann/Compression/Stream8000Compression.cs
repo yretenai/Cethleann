@@ -18,16 +18,17 @@ namespace Cethleann.Compression
         ///     Decompresses a .gz stream.
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="decompressedSize"></param>
+        /// <param name="options"></param>
         /// <returns></returns>
-        public static Span<byte> Decompress(Span<byte> data, int decompressedSize)
+        public static Span<byte> Decompress(Span<byte> data, CompressionOptions? options)
         {
+            options ??= CompressionOptions.Default;
             unsafe
             {
                 fixed (byte* pin = &data.GetPinnableReference())
                 {
                     var decPtr = 0;
-                    Span<byte> decompressed = new byte[decompressedSize];
+                    Span<byte> decompressed = new byte[options.Length];
                     using var stream = new UnmanagedMemoryStream(pin, data.Length);
                     while (true)
                     {
@@ -63,18 +64,19 @@ namespace Cethleann.Compression
         ///     Compresses a stream into a .gz stream.
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="blockSize"></param>
+        /// <param name="options"></param>
         /// <returns></returns>
-        public static Span<byte> Compress(Span<byte> data, int blockSize = 0x4000)
+        public static Span<byte> Compress(Span<byte> data,  CompressionOptions? options)
         {
+            options ??= CompressionOptions.Default;
             var buffer = new Span<byte>(new byte[data.Length]);
             var cursor = 0;
-            for (var i = 0; i < data.Length; i += blockSize)
+            for (var i = 0; i < data.Length; i += options.BlockSize)
             {
-                using var ms = new MemoryStream(blockSize);
+                using var ms = new MemoryStream(options.BlockSize);
                 using var deflateStream = new DeflateStream(ms, CompressionLevel.Optimal);
 
-                var block = data.Slice(i, Math.Min(blockSize, data.Length - i));
+                var block = data.Slice(i, Math.Min(options.BlockSize, data.Length - i));
                 deflateStream.Write(block);
                 deflateStream.Flush();
                 var write = block.Length;

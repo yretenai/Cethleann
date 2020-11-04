@@ -29,29 +29,40 @@ namespace Cethleann.Gz
 
             Func<byte[], byte[]>? method = null;
             string? ext = null;
+
+            var options = new CompressionOptions
+            {
+                BlockSize        = flags.BlockSize,
+                Alignment        = flags.Alignment,
+                CompressionLevel = flags.Level,
+                Length           = flags.Length,
+                ForceLastBlock   = flags.CompressLast,
+                PrefixSize       = flags.PrefixedSize,
+                Type             = flags.Type,
+            };
             if (flags.IsDz)
             {
                 ext = ".dz";
-                if (flags.Compress) method = bytes => DzCompression.Compress(bytes, flags.BlockSize, flags.Alignment, flags.CompressLast).ToArray();
-                else method = bytes => DzCompression.Decompress(bytes, flags.Alignment).ToArray();
+                if (flags.Compress) method = bytes => DzCompression.Compress(bytes, options).ToArray();
+                else method                = bytes => DzCompression.Decompress(bytes, options).ToArray();
             }
             else if (flags.IsStream)
             {
                 ext = ".zl";
-                if (flags.Compress) method = bytes => StreamCompression.Compress(bytes, flags.BlockSize).ToArray();
-                else method = bytes => StreamCompression.Decompress(bytes, flags.Length, flags.Type, flags.BlockSize, flags.PrefixedSize).ToArray();
+                if (flags.Compress) method = bytes => StreamCompression.Compress(bytes, options).ToArray();
+                else method                = bytes => StreamCompression.Decompress(bytes, options).ToArray();
             }
             else if (flags.IsStream8000)
             {
                 ext = ".z";
-                if (flags.Compress) method = bytes => Stream8000Compression.Compress(bytes, flags.BlockSize).ToArray();
-                else method = bytes => Stream8000Compression.Decompress(bytes, flags.Length).ToArray();
+                if (flags.Compress) method = bytes => Stream8000Compression.Compress(bytes, options).ToArray();
+                else method                = bytes => Stream8000Compression.Decompress(bytes, options).ToArray();
             }
             else if (flags.IsTable)
             {
                 ext = ".gz";
-                if (flags.Compress) method = bytes => TableCompression.Compress(bytes, flags.BlockSize).ToArray();
-                else method = bytes => TableCompression.Decompress(bytes).ToArray();
+                if (flags.Compress) method = bytes => TableCompression.Compress(bytes, options).ToArray();
+                else method                = bytes => TableCompression.Decompress(bytes, options).ToArray();
             }
 
             if (method == null)
@@ -62,7 +73,7 @@ namespace Cethleann.Gz
 
             foreach (var file in files)
             {
-                var target = flags.Compress ? file + ext : Path.Combine(Path.GetDirectoryName(file) ?? "dir", Path.GetFileNameWithoutExtension(file) ?? "file");
+                var target = flags.Compress ? file + ext : Path.Combine(Path.GetDirectoryName(file) ?? "", Path.GetFileNameWithoutExtension(file));
                 var baseTarget = target;
                 var modulo = 0;
                 while (File.Exists(target) && flags.Compress) target = baseTarget + $"_{++modulo}";

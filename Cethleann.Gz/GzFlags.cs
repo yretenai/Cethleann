@@ -39,6 +39,9 @@ namespace Cethleann.Gz
         [CLIFlag("a", Default = 0x80, Aliases = new[] { "alignment" }, Help = "Block Alignment, used for Dz", Category = "Gz Options")]
         public int Alignment { get; set; } = 0x80;
 
+        [CLIFlag("L", Default = 9, Aliases = new[] { "compression-level" }, Help = "Compression Level", Category = "Gz Options")]
+        public int Level{ get; set; } = 9;
+
         [CLIFlag("t", Default = DataCompression.Deflate, Aliases = new[] { "type" }, Help = "Stream compression type, used for Stream", Category = "Gz Options")]
         public DataCompression Type { get; set; } = DataCompression.Deflate;
 

@@ -3,7 +3,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Cethleann.Structure;
 using Cethleann.Structure.Archive;
 using DragonLib;
 using JetBrains.Annotations;
@@ -20,26 +19,27 @@ namespace Cethleann.Compression
         ///     Compresses a stream into a .gz stream.
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="blockSize"></param>
+        /// <param name="options"></param>
         /// <returns></returns>
-        public static Span<byte> Compress(Span<byte> data, int blockSize = (int) DataType.Compressed)
+        public static Span<byte> Compress(Span<byte> data, CompressionOptions? options = null)
         {
+            options ??= CompressionOptions.Default;
             var compInfo = new KTGLCompressionInfo
             {
-                ChunkSize = blockSize,
-                ChunkCount = (int) Math.Ceiling((double) data.Length / blockSize),
+                ChunkSize = options.BlockSize,
+                ChunkCount = (int) Math.Ceiling((double) data.Length / options.BlockSize),
                 Size = (uint) data.Length
             };
             var buffer = new Span<byte>(new byte[data.Length]);
             MemoryMarshal.Write(buffer, ref compInfo);
             var headerCursor = SizeHelper.SizeOf<KTGLCompressionInfo>();
             var cursor = (headerCursor + 4 * compInfo.ChunkCount).Align(0x80);
-            for (var i = 0; i < data.Length; i += blockSize)
+            for (var i = 0; i < data.Length; i += options.BlockSize)
             {
-                using var ms = new MemoryStream(blockSize);
+                using var ms = new MemoryStream(options.BlockSize);
                 using var deflateStream = new DeflateStream(ms, CompressionLevel.Optimal);
 
-                var block = data.Slice(i, Math.Min(blockSize, data.Length - i));
+                var block = data.Slice(i, Math.Min(options.BlockSize, data.Length - i));
                 deflateStream.Write(block);
                 deflateStream.Flush();
                 var write = block.Length;
@@ -74,14 +74,15 @@ namespace Cethleann.Compression
         ///     Decompresses a .gz stream.
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="checkSanity"></param>
+        /// <param name="options"></param>
         /// <returns></returns>
-        public static unsafe Span<byte> Decompress(Span<byte> data, bool checkSanity = false)
+        public static unsafe Span<byte> Decompress(Span<byte> data, CompressionOptions? options)
         {
+            options ??= CompressionOptions.Default;
             var compInfo = MemoryMarshal.Read<KTGLCompressionInfo>(data);
             var cursor = SizeHelper.SizeOf<KTGLCompressionInfo>();
             if (compInfo.ChunkCount < 0 || cursor + compInfo.ChunkCount * 4 > data.Length || compInfo.ChunkSize < 0x4000) return Span<byte>.Empty;
-            if (checkSanity && compInfo.ChunkSize != 0x4000 && compInfo.ChunkSize != 0x00010000 && compInfo.ChunkSize != 0x00020000) return Span<byte>.Empty;
+            if (options.Verify && compInfo.ChunkSize != 0x4000 && compInfo.ChunkSize != 0x00010000 && compInfo.ChunkSize != 0x00020000) return Span<byte>.Empty;
             var buffer = new Span<byte>(new byte[compInfo.Size]);
             var chunkSizes = MemoryMarshal.Cast<byte, int>(data.Slice(cursor, 4 * compInfo.ChunkCount)).ToArray();
             if (chunkSizes.Any(x => x < 6)) return Span<byte>.Empty;
@@ -122,13 +123,14 @@ namespace Cethleann.Compression
         ///     Wrapper for Stream based buffers
         /// </summary>
         /// <param name="stream"></param>
-        /// <param name="compressedSize"></param>
+        /// <param name="options"></param>
         /// <returns></returns>
-        public static Memory<byte> Decompress(Stream stream, long compressedSize)
+        public static Memory<byte> Decompress(Stream stream, CompressionOptions? options)
         {
-            var compressedBuffer = new Span<byte>(new byte[compressedSize + SizeHelper.SizeOf<KTGLCompressionInfo>()]);
+            options ??= CompressionOptions.Default;
+            var compressedBuffer = new Span<byte>(new byte[options.Length + SizeHelper.SizeOf<KTGLCompressionInfo>()]);
             stream.Read(compressedBuffer);
-            var decompressed = Decompress(compressedBuffer);
+            var decompressed = Decompress(compressedBuffer, options);
             var result = new Memory<byte>(new byte[decompressed.Length]);
             decompressed.CopyTo(result.Span);
             return result;

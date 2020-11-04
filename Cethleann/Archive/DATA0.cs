@@ -83,7 +83,7 @@ namespace Cethleann.Archive
 
             data1.Position = entry.Offset;
 
-            if (entry.IsCompressed) return TableCompression.Decompress(data1, entry.CompressedSize);
+            if (entry.IsCompressed) return TableCompression.Decompress(data1, new CompressionOptions { Length = entry.CompressedSize });
 
             var buffer = new Memory<byte>(new byte[entry.UncompressedSize]);
             data1.Read(buffer.Span);

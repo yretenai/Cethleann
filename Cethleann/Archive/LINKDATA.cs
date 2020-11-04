@@ -61,7 +61,7 @@ namespace Cethleann.Archive
             var buffer = new Span<byte>(new byte[entry.Size]);
             DataStream.Position = pointer;
             DataStream.Read(buffer);
-            return entry.DecompressedSize > 0 ? new Memory<byte>(StreamCompression.Decompress(buffer, entry.DecompressedSize, DataCompression.Deflate, 0x4000, true).ToArray()) : new Memory<byte>(buffer.ToArray());
+            return entry.DecompressedSize > 0 ? new Memory<byte>(StreamCompression.Decompress(buffer,  new CompressionOptions { Length = entry.DecompressedSize, PrefixSize = true}).ToArray()) : new Memory<byte>(buffer.ToArray());
         }
     }
 }
