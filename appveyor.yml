@@ -9,7 +9,7 @@ dotnet_csproj:
 image: Visual Studio 2019
 branches:
   only:
-  - master
+  - main
 before_build:
   - cmd: git submodule update --init --recursive
   - cmd: dotnet --version
