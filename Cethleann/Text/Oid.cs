@@ -48,7 +48,7 @@ namespace Cethleann.Text
         /// <returns></returns>
         public Span<byte> Write()
         {
-            var buffer = new Span<byte>(new byte[Names.Sum(x => (x?.Length ?? 0) + 1) + 1]);
+            var buffer = new Span<byte>(new byte[Names.Sum(x => x.Length + 1) + 1]);
             var pointer = 0;
             foreach (var name in Names)
             {

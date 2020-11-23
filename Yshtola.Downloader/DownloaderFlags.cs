@@ -24,6 +24,6 @@ namespace Yshtola.Downloader
         public int Threads { get; set; }
 
         public DataPlatform Platform { get; set; }
-        public DataGame GameId { get; set; }
+        public string GameId { get; set; } = "";
     }
 }

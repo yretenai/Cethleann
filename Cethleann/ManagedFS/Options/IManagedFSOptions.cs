@@ -17,7 +17,7 @@ namespace Cethleann.ManagedFS.Options
         /// <summary>
         ///     Game being loaded
         /// </summary>
-        [CLIFlag("game", Default = DataGame.None, Aliases = new[] { "g" }, Help = "Game being loaded", Category = "Unbundler Options")]
-        public DataGame GameId { get; set; }
+        [CLIFlag("game", Default = "", Aliases = new[] { "g" }, Help = "Game being loaded", Category = "Unbundler Options")]
+        public string GameId { get; set; }
     }
 }

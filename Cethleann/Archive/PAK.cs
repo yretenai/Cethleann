@@ -101,12 +101,21 @@ namespace Cethleann.Archive
         public Stream BaseStream { get; set; }
 
         /// <inheritdoc />
-        public void Dispose() => BaseStream?.Dispose();
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            Dispose(false);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            BaseStream.Dispose();
+        }
 
         /// <summary>
         ///     Disposes
         /// </summary>
-        ~PAK() => Dispose();
+        ~PAK() => Dispose(false);
 
         /// <summary>
         ///     Gets an entry from it's filepath.
@@ -117,7 +126,7 @@ namespace Cethleann.Archive
         public bool TryGetEntry(string path, out PAKEntry entry)
         {
             entry = Entries.FirstOrDefault(x => x.Filename == path);
-            return entry.Filename != null && entry.Filename == path;
+            return entry.Filename == path;
         }
 
         /// <summary>

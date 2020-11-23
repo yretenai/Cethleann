@@ -4,7 +4,6 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Cethleann.ManagedFS.Support;
-using Cethleann.Structure;
 using DragonLib;
 using DragonLib.CLI;
 using DragonLib.IO;
@@ -22,8 +21,8 @@ namespace Yshtola.Downloader
 
             YshtolaSettings? settings = flags.GameId switch
             {
-                DataGame.DissidiaNT => new YshtolaDissidiaSettings(),
-                DataGame.VenusVacation => new YshtolaVenusVacationSettings(),
+                "DissidiaNT" => new YshtolaDissidiaSettings(),
+                "VenusVacation" => new YshtolaVenusVacationSettings(),
                 _ => default
             };
             if (settings == default)
@@ -52,7 +51,7 @@ namespace Yshtola.Downloader
                     if (packageEntry.Version <= 0 || File.Exists(path) || File.Exists(Path.Combine(flags.GameDir, filepath))) continue;
                     pending.Enqueue(($"{flags.Server}/{packageEntry.Version}/{filepath}", path, ((ulong) entry.CompressedSize).GetHumanReadableBytes()));
                     var basedir = Path.GetDirectoryName(path);
-                    if (!Directory.Exists(basedir)) Directory.CreateDirectory(basedir);
+                    if (!Directory.Exists(basedir)) Directory.CreateDirectory(basedir ?? "./");
                     totalSize += entry.CompressedSize;
                 }
             }
@@ -74,7 +73,7 @@ namespace Yshtola.Downloader
                 }
                 catch (Exception e)
                 {
-                    File.WriteAllBytes(dest, new byte[0]);
+                    File.WriteAllBytes(dest, Array.Empty<byte>());
                     Logger.Error("Yshtola", e);
                 }
             });

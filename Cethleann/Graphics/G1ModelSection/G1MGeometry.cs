@@ -76,7 +76,7 @@ namespace Cethleann.Graphics.G1ModelSection
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetSection<T>() where T : class, IG1MGSection => GetSections<T>().FirstOrDefault();
+        public T? GetSection<T>() where T : class, IG1MGSection => GetSections<T>().FirstOrDefault();
 
         /// <summary>
         ///     Gets all geometry components matching

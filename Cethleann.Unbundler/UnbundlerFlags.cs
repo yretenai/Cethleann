@@ -33,7 +33,7 @@ namespace Cethleann.Unbundler
         #region IManagedFSOptions
 
         public DataPlatform Platform { get; set; }
-        public DataGame GameId { get; set; }
+        public string GameId { get; set; } = "";
 
         #endregion
     }

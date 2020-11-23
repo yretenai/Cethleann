@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Cethleann.Structure;
 using DragonLib.CLI;
 using JetBrains.Annotations;
 
@@ -37,7 +36,7 @@ namespace Nyotengu.Database
         [CLIFlag("typeinfo-filter", Aliases = new[] { "f" }, Help = "TypeInfo filter", Category = "Database Options")]
         public string? TypeInfoFilter { get; set; }
 
-        [CLIFlag("game", Default = DataGame.None, Aliases = new[] { "g" }, Help = "Game being loaded", Category = "Database Options")]
-        public DataGame GameId { get; set; }
+        [CLIFlag("game", Default = "", Aliases = new[] { "g" }, Help = "Game being loaded", Category = "Database Options")]
+        public string GameId { get; set; } = "";
     }
 }

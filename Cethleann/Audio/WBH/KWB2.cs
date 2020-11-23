@@ -43,7 +43,7 @@ namespace Cethleann.Audio.WBH
             {
                 if (pointers[i] == 0)
                 {
-                    KWBEntries.Add((null, new object[0]));
+                    KWBEntries.Add((null, Array.Empty<object>()));
                     continue;
                 }
 
@@ -132,6 +132,6 @@ namespace Cethleann.Audio.WBH
         }).ToArray()).ToList();
 
         /// <inheritdoc />
-        public List<string> Names => NameDatabase.Entries.Select(x => x.ElementAtOrDefault(NameIndex) ?? x.ElementAtOrDefault(SecondaryNameIndex) ?? x.FirstOrDefault(y => y != null)).ToList();
+        public List<string?> Names => NameDatabase.Entries.Select(x => x.ElementAtOrDefault(NameIndex) ?? x.ElementAtOrDefault(SecondaryNameIndex) ?? x.FirstOrDefault()).ToList();
     }
 }

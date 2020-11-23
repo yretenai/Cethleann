@@ -204,24 +204,23 @@ namespace Cethleann.Archive
                 return StreamCompression.Decompress(buffer, new CompressionOptions
                 {
                     Length =  (int) fileEntryA.Size, 
-                    Type = (DataCompression) ((int) entry.Flags >> 20 & 0xF),
+                    Type = (DataCompression) ((int) entry.Flags >> 20 & 0xF)
                 }).ToArray();
             return buffer;
         }
 
-        private (RDBEntry? entry, byte[]? typeblob, byte[]? data) ReadRDBEntry(Span<byte> buffer)
+        private static (RDBEntry? entry, byte[]? typeblob, byte[]? data) ReadRDBEntry(Span<byte> buffer)
         {
             var entry = MemoryMarshal.Read<RDBEntry>(buffer);
             if (entry.Magic != DataType.RDBIndex) return (null, null, null);
             var unknownsSize = entry.EntrySize - SizeHelper.SizeOf<RDBEntry>() - entry.ContentSize;
-            var unknowns = unknownsSize < 1 ? new byte[0] : buffer.Slice(SizeHelper.SizeOf<RDBEntry>(), (int) unknownsSize).ToArray();
+            var unknowns = unknownsSize < 1 ? Array.Empty<byte>() : buffer.Slice(SizeHelper.SizeOf<RDBEntry>(), (int) unknownsSize).ToArray();
             var data = buffer.Slice((int) (entry.EntrySize - entry.ContentSize), (int) entry.ContentSize).ToArray();
             return (entry, unknowns, data);
         }
 
         private static (long offset, long size, int binId, int binSubId) DecodeOffset(string packed)
         {
-            if (packed == null) return (-1, -1, -1, -1);
             var regex = ADDRESS_REGEX.Match(packed);
             if (!regex.Success) return (-1, -1, -1, -1);
 

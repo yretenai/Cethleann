@@ -126,7 +126,7 @@ namespace Cethleann.Graphics
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetSection<T>() where T : class, IKTGLSection => GetSections<T>().FirstOrDefault();
+        public T? GetSection<T>() where T : class, IKTGLSection => GetSections<T>().FirstOrDefault();
 
         /// <summary>
         ///     Gets a specific section from the G1M model

@@ -136,7 +136,7 @@ namespace Cethleann.Unbundler
                     return 0;
                 }
 
-                Directory.CreateDirectory(basedir);
+                Directory.CreateDirectory(basedir ?? "./");
             }
 
             if (File.Exists(blobBase))
@@ -177,8 +177,8 @@ namespace Cethleann.Unbundler
                 var names = blobs.NameMap.Names;
                 if (prependNames)
                 {
-                    names.Insert(0, blobs.NameMap.Name ?? Path.GetFileName(pathBase));
-                    names.Insert(0, blobs.NameMap.Name ?? Path.GetFileName(pathBase));
+                    names.Insert(0, blobs.NameMap.Name);
+                    names.Insert(0, blobs.NameMap.Name);
                 }
 
                 TryExtractBlobs(pathBase, blobs.Blobs, false, names, false, false, false, null, flags);
@@ -468,7 +468,7 @@ namespace Cethleann.Unbundler
                         return false;
                     }
 
-                    Directory.CreateDirectory(basedir);
+                    Directory.CreateDirectory(basedir ?? "./");
                 }
 
                 File.WriteAllText(ft, JsonConvert.SerializeObject(new

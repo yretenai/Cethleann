@@ -26,7 +26,7 @@ namespace Cethleann.Archive
         /// <param name="truth"></param>
         /// <param name="multiplier"></param>
         /// <param name="divisor"></param>
-        public PKGTBL(Span<byte> data, DataGame game, IDTableFlags flags, byte[] truth, ulong multiplier, ulong divisor)
+        public PKGTBL(Span<byte> data, string game, IDTableFlags flags, byte[] truth, ulong multiplier, ulong divisor)
         {
             if (flags != IDTableFlags.None)
             {
@@ -92,7 +92,7 @@ namespace Cethleann.Archive
         /// <param name="multiplier"></param>
         /// <param name="divisor"></param>
         /// <returns></returns>
-        public Span<byte> Read(Span<byte> file, DataGame game, IDTableEntry entry, byte[] truth, ulong multiplier, ulong divisor) => Read(file, game, entry.CompressedSize, entry.DecompressedSize, entry.Flags, truth, multiplier, divisor);
+        public static Span<byte> Read(Span<byte> file, string game, IDTableEntry entry, byte[] truth, ulong multiplier, ulong divisor) => Read(file, game, entry.CompressedSize, entry.DecompressedSize, entry.Flags, truth, multiplier, divisor);
 
         /// <summary>
         ///     Read a file with decryption constants
@@ -106,13 +106,13 @@ namespace Cethleann.Archive
         /// <param name="multiplier"></param>
         /// <param name="divisor"></param>
         /// <returns></returns>
-        public Span<byte> Read(Span<byte> file, DataGame game, uint compressedSize, uint size, IDTableFlags flags, byte[] truth, ulong multiplier, ulong divisor)
+        public static Span<byte> Read(Span<byte> file, string game, uint compressedSize, uint size, IDTableFlags flags, byte[] truth, ulong multiplier, ulong divisor)
         {
             if (compressedSize > file.Length) Logger.Warn("PKGINFO", "Compressed Size is larger than actual file! The package info might have drifted from the saved files. Please verify game data!");
 
-            if (game == DataGame.VenusVacation && file.IsKnown()) return file;
+            if (game == "VenusVacation" && file.IsKnown()) return file;
 
-            if (flags.HasFlag(IDTableFlags.Encrypted) && (game != DataGame.VenusVacation || flags.HasFlag(IDTableFlags.Compressed)))
+            if (flags.HasFlag(IDTableFlags.Encrypted) && (game != "VenusVacation" || flags.HasFlag(IDTableFlags.Compressed)))
             {
                 var key = XOREncryption.Xor(size, truth, multiplier, divisor);
                 file = XOREncryption.Crypt(file, key);

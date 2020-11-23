@@ -29,17 +29,15 @@ namespace Cethleann.Pack
                     sizes[i] = (i < Header.PointerCount - 1 ? Pointers[i + 1] : buffer.Length) - Pointers[i];
 
             for (var i = 0; i < Header.PointerCount; ++i) Entries.Add(sizes[i] > 0 ? new Memory<byte>(buffer.Slice(Pointers[i], sizes[i]).ToArray()) : Memory<byte>.Empty);
-            if (Header.HeaderSize >= 0x2C && Header.ExtraPointer > 0)
-            {
-                var size = Header.PointerCount > 0 ? Pointers[0] : buffer.Length;
-                Entries.Add(new Memory<byte>(buffer.Slice(Header.ExtraPointer, size - Header.ExtraPointer).ToArray()));
-            }
+            if (Header.HeaderSize < 0x2C || Header.ExtraPointer <= 0) return;
+            var size = Header.PointerCount > 0 ? Pointers[0] : buffer.Length;
+            Entries.Add(new Memory<byte>(buffer.Slice(Header.ExtraPointer, size - Header.ExtraPointer).ToArray()));
         }
 
         /// <summary>
         ///     List of pointers defined by the RESPACK
         /// </summary>
-        public int[] Pointers { get; set; } = new int[0];
+        public int[] Pointers { get; set; } = Array.Empty<int>();
 
         /// <summary>
         ///     Underlying Header

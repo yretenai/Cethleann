@@ -17,7 +17,7 @@ namespace Cethleann.DataProcessor
         [CLIFlag("platform", Default = DataPlatform.Unspecified, Aliases = new[] { "P" }, Help = "Platform the game is from", Category = "DataProcessor Options")]
         public DataPlatform Platform { get; set; }
 
-        [CLIFlag("game", Default = DataGame.None, ValidValues = new[] { "DissidiaNT", "DissidiaOO", "ThreeHouses" }, IsRequired = true, Aliases = new[] { "g" }, Help = "Game being loaded", Category = "DataProcessor Options")]
-        public DataGame GameId { get; set; }
+        [CLIFlag("game", Default = "", ValidValues = new[] { "DissidiaNT", "DissidiaOO", "ThreeHouses" }, IsRequired = true, Aliases = new[] { "g" }, Help = "Game being loaded", Category = "DataProcessor Options")]
+        public string GameId { get; set; } = "";
     }
 }

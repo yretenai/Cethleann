@@ -49,16 +49,16 @@ namespace Nyotengu.KTID
                 var texturePaths = ktidsystem.SelectMany(x =>
                 {
                     var property = x?.GetProperty("KTGLTexContextResourceHash");
-                    return property?.values.Select(y =>
+                    return property?.values?.Select(y =>
                     {
-                        if (y == null || !(y is uint hash)) return null;
+                        if (!(y is uint hash)) return null;
                         var reference = (KTIDReference) hash;
                         var targetPath = Path.Combine(flags.MaterialFolderPath, reference.GetName(ndb, filelist) ?? $"{reference:x8}");
                         if (!targetPath.EndsWith(".g1t")) targetPath += ".g1t";
                         if (!File.Exists(targetPath)) targetPath = Path.Combine(flags.MaterialFolderPath, $"{reference:x8}.g1t");
                         if (!File.Exists(targetPath)) targetPath = Path.Combine(flags.MaterialFolderPath, $"0x{reference:x8}.g1t");
                         return targetPath;
-                    });
+                    }) ?? Array.Empty<string?>();
                 });
                 var textureBlobs = new List<Memory<byte>>();
                 var textureInfo = new List<int>();

@@ -38,7 +38,7 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Game ID of the game.
         /// </summary>
-        public DataGame GameId { get; private set; }
+        public string GameId { get; private set; } = "";
 
 
         /// <inheritdoc />
@@ -71,7 +71,7 @@ namespace Cethleann.ManagedFS
         }
 
         /// <inheritdoc />
-        public Dictionary<string, string> LoadFileList(string? filename = null, DataGame? game = null)
+        public Dictionary<string, string> LoadFileList(string? filename = null, string? game = null)
         {
             FileList = ManagedFSHelper.GetNamedFileList(filename, game ?? GameId, "link");
             return FileList;

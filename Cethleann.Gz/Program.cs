@@ -38,7 +38,7 @@ namespace Cethleann.Gz
                 Length           = flags.Length,
                 ForceLastBlock   = flags.CompressLast,
                 PrefixSize       = flags.PrefixedSize,
-                Type             = flags.Type,
+                Type             = flags.Type
             };
             if (flags.IsDz)
             {

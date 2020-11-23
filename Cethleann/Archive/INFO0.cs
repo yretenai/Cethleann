@@ -72,7 +72,7 @@ namespace Cethleann.Archive
         public Memory<byte> ReadEntry(string romfs, int index)
         {
             var (entry, path) = Entries.FirstOrDefault(x => x.entry.Index == index);
-            return path == null ? Memory<byte>.Empty : ReadEntry(Path.Combine(romfs, path.Substring(5)), entry);
+            return ReadEntry(Path.Combine(romfs, path.Substring(5)), entry);
         }
 
         /// <summary>
@@ -80,10 +80,10 @@ namespace Cethleann.Archive
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public string? GetPath(int index)
+        public string GetPath(int index)
         {
             var (_, path) = Entries.FirstOrDefault(x => x.entry.Index == index);
-            return path?.Substring(12, path.Length - 12 - (path.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase) ? 3 : 0));
+            return path.Substring(12, path.Length - 12 - (path.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase) ? 3 : 0));
         }
 
         /// <summary>

@@ -38,7 +38,7 @@ namespace Cethleann.Audio
             for (var i = 0; i < Header.Count; ++i)
             {
                 var name = blob.Slice(offset).ReadStringNonNull();
-                offset += (name?.Length ?? 0) + 1;
+                offset += name.Length + 1;
                 Filenames.Add(name);
             }
 

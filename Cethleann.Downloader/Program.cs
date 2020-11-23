@@ -20,10 +20,10 @@ namespace Cethleann.Downloader
             var flags = CommandLineFlags.ParseFlags<DownloaderFlags>(CommandLineFlags.PrintHelp, args);
             if (flags == null) return;
 
-            Dictionary<string, FileListEntry> Entries = JsonSerializer.Deserialize<Dictionary<string, FileListEntry>>(File.ReadAllText(flags.DataFile));
+            Dictionary<string, FileListEntry> entries = JsonSerializer.Deserialize<Dictionary<string, FileListEntry>>(File.ReadAllText(flags.DataFile)) ?? throw new NullReferenceException();
             var pending = new ConcurrentQueue<(string url, string destination, string size)>();
             var totalSize = 0UL;
-            foreach (var (name, entry) in Entries)
+            foreach (var (name, entry) in entries)
             {
                 if (!name.Equals(entry.FileName, StringComparison.InvariantCultureIgnoreCase)) Logger.Warn("Cethleann", $"{name} -> {entry.FileName}");
                 var type = Path.GetExtension(entry.FileName).ToUpper().Substring(1);
@@ -38,7 +38,7 @@ namespace Cethleann.Downloader
                 if (File.Exists(path)) continue;
                 pending.Enqueue(($"{flags.Server}/{entry.Directory}/{entry.FileName}", path, entry.Size.GetHumanReadableBytes()));
                 var basedir = Path.GetDirectoryName(path);
-                if (!Directory.Exists(basedir)) Directory.CreateDirectory(basedir);
+                if (!Directory.Exists(basedir)) Directory.CreateDirectory(basedir ?? "./");
                 totalSize += entry.Size;
             }
 
@@ -59,7 +59,7 @@ namespace Cethleann.Downloader
                 }
                 catch (Exception e)
                 {
-                    File.WriteAllBytes(dest, new byte[0]);
+                    File.WriteAllBytes(dest, Array.Empty<byte>());
                     Logger.Error("Cethleann", e);
                 }
             });

@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using Cethleann.Archive;
 using Cethleann.KTID;
-using Cethleann.Structure;
-using Cethleann.Structure.KTID;
 using DragonLib.CLI;
 using DragonLib.IO;
 
@@ -25,7 +22,7 @@ namespace Nyotengu.Filelist
             nyotengu.SaveGeneratedFileList(null, flags.GameId);
             
             Logger.Info("Nyotengu", "Generating KTID property list...");
-            var propertyList = Cethleann.ManagedFS.Nyotengu.LoadKTIDFileListEx(null,  "PropertyList") ?? new Dictionary<KTIDReference, (string, string)>();
+            var propertyList = Cethleann.ManagedFS.Nyotengu.LoadKTIDFileListEx(null,  "PropertyList");
             foreach (var rdb in nyotengu.RDBs)
             {
                 for (var i = 0; i < rdb.Entries.Count; ++i)
@@ -46,7 +43,7 @@ namespace Nyotengu.Filelist
                     }
                 }
             }
-            Cethleann.ManagedFS.Nyotengu.SaveGeneratedFileList(propertyList, null, DataGame.DEBUG);
+            Cethleann.ManagedFS.Nyotengu.SaveGeneratedFileList(propertyList, null, "DEBUG");
         }
     }
 }

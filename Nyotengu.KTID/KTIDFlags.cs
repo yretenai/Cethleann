@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Cethleann.Structure;
 using DragonLib.CLI;
 using JetBrains.Annotations;
 
@@ -24,7 +23,7 @@ namespace Nyotengu.KTID
         [CLIFlag("filelist", Help = "File List to load. Unspecified is automatically determined based on GameId", Category = "KTID Options")]
         public string? FileList { get; set; }
 
-        [CLIFlag("game", Default = DataGame.None, Aliases = new[] { "g" }, Help = "Game being loaded", Category = "KTID Options")]
-        public DataGame GameId { get; set; }
+        [CLIFlag("game", Default = "", Aliases = new[] { "g" }, Help = "Game being loaded", Category = "KTID Options")]
+        public string GameId { get; set; } = "";
     }
 }

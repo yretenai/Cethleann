@@ -71,7 +71,7 @@ namespace Cethleann.ManagedFS
         public Dictionary<string, string> FileList { get; set; } = new Dictionary<string, string>();
 
         /// <inheritdoc />
-        public DataGame GameId { get; private set; }
+        public string GameId { get; private set; } = "";
 
         /// <summary>
         ///     Maximum number of entries found in both containers and patches
@@ -117,7 +117,7 @@ namespace Cethleann.ManagedFS
                 if (localId < dataCount)
                 {
                     var buffer = data.ReadEntry(stream, localId);
-                    if (GameId == DataGame.ThreeHouses && i > 0 && buffer.Length == 0) continue;
+                    if (GameId == "ThreeHouses" && i > 0 && buffer.Length == 0) continue;
                     return buffer;
                 }
 
@@ -128,7 +128,7 @@ namespace Cethleann.ManagedFS
         }
 
         /// <inheritdoc />
-        public Dictionary<string, string> LoadFileList(string? filename = null, DataGame? game = null)
+        public Dictionary<string, string> LoadFileList(string? filename = null, string? game = null)
         {
             FileList = ManagedFSHelper.GetNamedFileList(filename, game ?? GameId, "link");
             return FileList;
@@ -176,17 +176,17 @@ namespace Cethleann.ManagedFS
 
                 generatedPrefix = GameId switch
                 {
-                    DataGame.ThreeHouses => i == 0 ? string.Empty : "DLC - ",
+                    "ThreeHouses" => i == 0 ? string.Empty : "DLC - ",
                     _ => string.Empty
                 };
                 id = GameId switch
                 {
-                    DataGame.ThreeHouses => $"{(i == 0 ? string.Empty : "DLC_")}{localId}",
+                    "ThreeHouses" => $"{(i == 0 ? string.Empty : "DLC_")}{localId}",
                     _ => $"{linkname}_{localId}"
                 };
                 prefix = GameId switch
                 {
-                    DataGame.ThreeHouses => $"{(i == 0 ? string.Empty : "dlc")}/",
+                    "ThreeHouses" => $"{(i == 0 ? string.Empty : "dlc")}/",
                     _ => $"{linkname}"
                 };
                 break;
@@ -262,7 +262,7 @@ namespace Cethleann.ManagedFS
         {
             PatchRomFS = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(info0Path) ?? string.Empty, ".."));
             Patch = (new INFO0(info0Path), new INFO1(info1Path));
-            PatchEntryCount = Patch.INFO1?.Entries.Count ?? 0;
+            PatchEntryCount = Patch.INFO1.Entries.Count;
         }
 
         private void Dispose(bool disposing)

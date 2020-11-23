@@ -63,7 +63,7 @@ namespace Nyotengu.AnimationGraph
                     }
 
                     var properties = player.GetProperties("AnimationDataObjectNameHashArray", "SrcAnimationDataObjectNameHash", "DstAnimationDataObjectNameHash", "FCurveAnimationDataObjectNameHash");
-                    var animationDataHashes = properties.SelectMany(x => x.values ?? new object?[0]).ToArray();
+                    var animationDataHashes = properties.SelectMany(x => x.values ?? Array.Empty<object?>()).ToArray();
                     var ktidHashes = animationDataHashes.Where(x => x != null).Select(x => new KTIDReference(x)).ToArray();
                     foreach (var animationDataHash in ktidHashes)
                     {

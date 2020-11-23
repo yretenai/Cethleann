@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using System;
 
 namespace Cethleann.ManagedFS.Support
 {
@@ -11,12 +12,12 @@ namespace Cethleann.ManagedFS.Support
         /// <summary>
         ///     ID Table name
         /// </summary>
-        public string[] TableNames { get; set; } = new string[0];
+        public string[] TableNames { get; set; } = Array.Empty<string>();
 
         /// <summary>
         ///     Key truth
         /// </summary>
-        public byte[] XorTruth { get; set; } = new byte[0];
+        public byte[] XorTruth { get; set; } = Array.Empty<byte>();
 
         /// <summary>
         ///     Key multiplier constant

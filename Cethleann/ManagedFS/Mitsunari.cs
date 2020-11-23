@@ -46,7 +46,7 @@ namespace Cethleann.ManagedFS
         public int EntryCount { get; private set; }
 
         /// <inheritdoc />
-        public DataGame GameId { get; private set; }
+        public string GameId { get; private set; } = "";
 
         /// <inheritdoc />
         public Memory<byte> ReadEntry(int index)
@@ -62,7 +62,7 @@ namespace Cethleann.ManagedFS
         }
 
         /// <inheritdoc />
-        public Dictionary<string, string> LoadFileList(string? filename = null, DataGame? game = null)
+        public Dictionary<string, string> LoadFileList(string? filename = null, string? game = null)
         {
             FileList = ManagedFSHelper.GetNamedFileList(filename, game ?? GameId, "archive");
             return FileList;

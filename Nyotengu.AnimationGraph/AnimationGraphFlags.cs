@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Cethleann.Structure;
 using DragonLib.CLI;
 using JetBrains.Annotations;
 
@@ -34,7 +33,7 @@ namespace Nyotengu.AnimationGraph
         [CLIFlag("dirs", Aliases = new[] { "dir", "d" }, Help = "Directory to find animations from", Category = "Animation Graph Options")]
         public HashSet<string?>? AnimationDirectories { get; set; } = new HashSet<string?>();
 
-        [CLIFlag("game", Default = DataGame.None, Aliases = new[] { "g" }, Help = "Game being loaded", Category = "Animation Graph Options")]
-        public DataGame GameId { get; set; }
+        [CLIFlag("game", Default = "", Aliases = new[] { "g" }, Help = "Game being loaded", Category = "Animation Graph Options")]
+        public string GameId { get; set; } = "";
     }
 }

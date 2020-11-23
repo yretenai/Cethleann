@@ -2,8 +2,6 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.InteropServices;
-using System.Text;
-
 using DragonLib;
 using DragonLib.IO;
 

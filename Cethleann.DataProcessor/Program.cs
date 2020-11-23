@@ -10,7 +10,7 @@ using Newtonsoft.Json.Converters;
 
 namespace Cethleann.DataProcessor
 {
-    internal class Program
+    internal static class Program
     {
         private static void Main(string[] args)
         {
@@ -19,34 +19,34 @@ namespace Cethleann.DataProcessor
             if (flags == null) return;
 
 
-            var typeName = $"{typeof(DataGame).Namespace}.DataStructs.{flags.GameId:G}.{flags.StructName ?? "__UNDEFINED__"}";
-            var t = typeof(DataGame).Assembly.GetType(typeName);
-            if (t == null || flags.StructName == null)
+            var typeName = $"{typeof(DataType).Namespace}.DataStructs.{flags.GameId}.{flags.StructName}";
+            var t = typeof(DataType).Assembly.GetType(typeName);
+            if (t == null)
             {
                 if (t == null)
                 {
                     Logger.Error("Cethleann", $"Cannot find type {typeName}");
                 }
-                var ns = $"{typeof(DataGame).Namespace}.DataStructs.{flags.GameId:G}";
-                var types = string.Join("\n\t", typeof(DataGame).Assembly.GetTypes().Where(x => x.Namespace == ns).Select(x => x.Name));
-                Logger.Info("Cethleann", $"Available types for {flags.GameId:G}:\n\t{types}");
+                var ns = $"{typeof(DataType).Namespace}.DataStructs.{flags.GameId}";
+                var types = string.Join("\n\t", typeof(DataType).Assembly.GetTypes().Where(x => x.Namespace == ns).Select(x => x.Name));
+                Logger.Info("Cethleann", $"Available types for {flags.GameId}:\n\t{types}");
                 return;
             }
 
             // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
             switch (flags.GameId)
             {
-                case DataGame.DissidiaNT:
+                case "DissidiaNT":
                     ProcessECB(flags, t);
                     break;
-                case DataGame.DissidiaOO:
+                case "DissidiaOO":
                     ProcessXL20(flags, t);
                     break;
-                case DataGame.ThreeHouses:
+                case "ThreeHouses":
                     ProcessStruct(flags, t);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(args));
             }
         }
 

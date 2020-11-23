@@ -3,24 +3,23 @@ using System.Globalization;
 
 namespace Cethleann.Structure.KTID
 {
-    public struct KTIDReference : IComparable, IConvertible, IFormattable, IComparable<uint>, IEquatable<uint>, IComparable<KTIDReference>, IEquatable<KTIDReference>
+    public readonly struct KTIDReference : IComparable, IConvertible, IFormattable, IComparable<uint>, IEquatable<uint>, IComparable<KTIDReference>, IEquatable<KTIDReference>
     {
-        public uint KTID { get; set; }
+        public override int GetHashCode() => (int) KTID;
+
+        public uint KTID { get; }
 
         public static implicit operator uint(KTIDReference reference) => reference.KTID;
 
         public static implicit operator KTIDReference(uint reference) =>
-            new KTIDReference
-            {
-                KTID = reference
-            };
+            new KTIDReference(reference);
 
         public KTIDReference(uint ktid) => KTID = ktid;
 
         public KTIDReference(object? obj)
         {
             KTID = 0;
-            if (obj != null && obj is uint ktid) KTID = ktid;
+            if (obj is uint ktid) KTID = ktid;
         }
 
         public string ToString(string? format, IFormatProvider? formatProvider) => KTID.ToString(format, formatProvider);
@@ -98,5 +97,20 @@ namespace Cethleann.Structure.KTID
         public static KTIDReference Parse(string value, NumberStyles style, IFormatProvider? provider = null) => uint.Parse(value, style, provider);
 
         public static KTIDReference Parse(string value) => uint.Parse(value);
+
+        public override bool Equals(object? obj)
+        {
+            return obj is KTIDReference reference && Equals(reference);
+        }
+
+        public static bool operator ==(KTIDReference left, KTIDReference right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(KTIDReference left, KTIDReference right)
+        {
+            return !(left == right);
+        }
     }
 }

@@ -86,7 +86,7 @@ namespace Cethleann.Compression
                             break;
                         }
                         default:
-                            throw new ArgumentOutOfRangeException(nameof(options.Type), options.Type, null);
+                            throw new ArgumentOutOfRangeException(nameof(options));
                     }
 
                     comPtr += chunkSize;

@@ -43,10 +43,18 @@ namespace Cethleann.Archive
         /// </summary>
         public Stream DataStream { get; set; }
 
-        /// <summary>
-        ///     Dispose <see cref="DataStream" />
-        /// </summary>
-        public void Dispose() => DataStream?.Dispose();
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            Dispose(false);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            DataStream.Dispose();
+        }
 
         /// <summary>
         ///     Read an entry from the data stream

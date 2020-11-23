@@ -1,5 +1,8 @@
-﻿namespace Cethleann.Structure.KTID
+﻿using System;
+
+namespace Cethleann.Structure.KTID
 {
+    [Flags]
     public enum RDBFlags
     {
         External = 0x00010000,

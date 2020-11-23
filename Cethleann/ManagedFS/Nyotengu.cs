@@ -58,7 +58,7 @@ namespace Cethleann.ManagedFS
         public int EntryCount { get; set; }
 
         /// <inheritdoc />
-        public DataGame GameId { get; }
+        public string GameId { get; } = "";
 
         /// <inheritdoc />
         public Memory<byte> ReadEntry(int index)
@@ -83,14 +83,14 @@ namespace Cethleann.ManagedFS
         {
             Logger.Success("Nyotengu", $"Loading {Path.GetFileName(path)}...");
             var rdb = new RDB(File.ReadAllBytes(path), Path.GetFileNameWithoutExtension(path), Path.GetDirectoryName(path) ?? string.Empty);
-            foreach (var file in Directory.GetFiles(Path.GetDirectoryName(path), rdb.Name + "*.info"))
+            foreach (var file in Directory.GetFiles(Path.GetDirectoryName(path) ?? "./", rdb.Name + "*.info"))
                 rdb.NameDatabase.Union(new RDBINFO(File.ReadAllBytes(file)));
             EntryCount += rdb.Entries.Count;
             RDBs.Add(rdb);
         }
 
         /// <inheritdoc />
-        public Dictionary<string, string> LoadFileList(string? filename = null, DataGame? game = null)
+        public Dictionary<string, string> LoadFileList(string? filename = null, string? game = null)
         {
             FileList = LoadKTIDFileListShared(filename, game ?? GameId);
             return FileList.ToDictionary(x => x.Key.ToString(CultureInfo.InvariantCulture), y => y.Value);
@@ -116,23 +116,15 @@ namespace Cethleann.ManagedFS
         }
 
         /// <summary>
-        ///     Read a KTID File list
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="game"></param>
-        /// <returns></returns>
-        public static Dictionary<KTIDReference, string> LoadKTIDFileList(string? filename = null, DataGame game = DataGame.None) => LoadKTIDFileList(filename, game.ToString());
-
-        /// <summary>
         ///     Read a KTID File list with RDBShared
         /// </summary>
         /// <param name="filename"></param>
         /// <param name="game"></param>
         /// <returns></returns>
-        public static Dictionary<KTIDReference, string> LoadKTIDFileListShared(string? filename = null, DataGame game = DataGame.None)
+        public static Dictionary<KTIDReference, string> LoadKTIDFileListShared(string? filename = null, string game = "")
         {
             Dictionary<KTIDReference, string> dictionary = new Dictionary<KTIDReference, string>();
-            foreach (var (key, value) in LoadKTIDFileList(filename, game.ToString()).Concat(LoadKTIDFileList(filename, "RDBShared"))) dictionary[key] = value;
+            foreach (var (key, value) in LoadKTIDFileList(filename, game).Concat(LoadKTIDFileList(filename, "RDBShared"))) dictionary[key] = value;
             return dictionary;
         }
 
@@ -142,7 +134,7 @@ namespace Cethleann.ManagedFS
         /// <param name="filename"></param>
         /// <param name="game"></param>
         /// <returns></returns>
-        public static Dictionary<KTIDReference, string> LoadKTIDFileList(string? filename = null, string game = "None")
+        public static Dictionary<KTIDReference, string> LoadKTIDFileList(string? filename = null, string game = "")
         {
             var loc = ManagedFSHelper.GetFileListLocation(filename, game, "rdb");
             var csv = ManagedFSHelper.GetFileList(loc, 3);
@@ -158,7 +150,7 @@ namespace Cethleann.ManagedFS
         /// <param name="filename"></param>
         /// <param name="game"></param>
         /// <returns></returns>
-        public static Dictionary<KTIDReference, (string, string)> LoadKTIDFileListEx(string? filename = null, string game = "None")
+        public static Dictionary<KTIDReference, (string, string)> LoadKTIDFileListEx(string? filename = null, string game = "")
         {
             var loc = ManagedFSHelper.GetFileListLocation(filename, game, "rdb");
             var csv = ManagedFSHelper.GetFileList(loc, 3);
@@ -214,7 +206,7 @@ namespace Cethleann.ManagedFS
         ///     Load typeid extension list
         /// </summary>
         /// <param name="filename"></param>
-        public void LoadExtList(string? filename = null) => ExtList = ManagedFSHelper.GetSimpleFileList(ManagedFSHelper.GetFileListLocation(filename, "RDBExt", "rdb"), DataGame.None, "rdb").ToDictionary(x => KTIDReference.Parse(x.Key, NumberStyles.HexNumber), y => y.Value);
+        public void LoadExtList(string? filename = null) => ExtList = ManagedFSHelper.GetSimpleFileList(ManagedFSHelper.GetFileListLocation(filename, "RDBExt", "rdb"), "", "rdb").ToDictionary(x => KTIDReference.Parse(x.Key, NumberStyles.HexNumber), y => y.Value);
 
         /// <summary>
         ///     Disposes
@@ -234,10 +226,9 @@ namespace Cethleann.ManagedFS
         /// </summary>
         /// <param name="filename"></param>
         /// <param name="game"></param>
-        public void SaveGeneratedFileList(string? filename = null, DataGame? game = null)
+        public void SaveGeneratedFileList(string? filename = null, string? game = null)
         {
-            var filelist = LoadKTIDFileListEx(filename, (game ?? GameId).ToString("G"));
-            if (filelist == null) return;
+            var filelist = LoadKTIDFileListEx(filename, game ?? GameId);
             foreach (var rdb in RDBs)
             foreach (var (hash, name) in rdb.NameDatabase.NameMap)
                 filelist[hash] = (rdb.Name, name);
@@ -251,7 +242,7 @@ namespace Cethleann.ManagedFS
         /// <param name="filelist"></param>
         /// <param name="filename"></param>
         /// <param name="game"></param>
-        public static void SaveGeneratedFileList(Dictionary<KTIDReference, (string, string)> filelist, string? filename = null, DataGame game = DataGame.None)
+        public static void SaveGeneratedFileList(Dictionary<KTIDReference, (string, string)> filelist, string? filename = null, string game = "")
         {
             Logger.Debug("Nyotengu", $"Filelist saved to {ManagedFSHelper.GetFileListLocation(filename, game, "rdb-generated")}");
             File.WriteAllText(ManagedFSHelper.GetFileListLocation(filename, game, "rdb-generated"), string.Join("\n", filelist.OrderBy(x => $"{x.Value.Item1}{x.Key:x8}").Select(x => $"{x.Value.Item1},{x.Key:x8},{x.Value.Item2}")));

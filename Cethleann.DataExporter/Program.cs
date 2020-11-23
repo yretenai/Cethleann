@@ -52,8 +52,8 @@ namespace Cethleann.DataExporter
             {
                 YshtolaSettings? settings = flags.GameId switch
                 {
-                    DataGame.DissidiaNT => new YshtolaDissidiaSettings(),
-                    DataGame.VenusVacation => new YshtolaVenusVacationSettings(),
+                    "DissidiaNT" => new YshtolaDissidiaSettings(),
+                    "VenusVacation" => new YshtolaVenusVacationSettings(),
                     _ => default
                 };
                 if (settings == default)
@@ -71,7 +71,7 @@ namespace Cethleann.DataExporter
                 {
                     var table = yshtola.Tables[index];
                     var type = Path.GetDirectoryName(yshtola.Settings.TableNames[index]);
-                    var name = $"manifest-{type ?? "COMMON"}.{flags.GameId.ToString("G").ToLower()}";
+                    var name = $"manifest-{type ?? "COMMON"}.{flags.GameId.ToLower()}";
                     File.WriteAllBytes(Path.Combine(flags.OutputDirectory, name), table.Buffer.ToArray());
                 }
 

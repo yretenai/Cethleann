@@ -17,7 +17,7 @@ namespace Cethleann.ManagedFS
         /// <summary>
         ///     Game ID of the game.
         /// </summary>
-        DataGame GameId { get; }
+        string GameId { get; }
 
         /// <summary>
         ///     Reads an entry from the first valid (non-zero) storage.
@@ -32,7 +32,7 @@ namespace Cethleann.ManagedFS
         /// <param name="filename"></param>
         /// <param name="game"></param>
         /// <returns></returns>
-        Dictionary<string, string>? LoadFileList(string? filename = null, DataGame? game = null);
+        Dictionary<string, string>? LoadFileList(string? filename = null, string? game = null);
 
         /// <summary>
         ///     Attempts to get a valid filename/filepath.

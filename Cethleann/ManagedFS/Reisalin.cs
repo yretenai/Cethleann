@@ -47,7 +47,7 @@ namespace Cethleann.ManagedFS
         public int EntryCount { get; private set; }
 
         /// <inheritdoc />
-        public DataGame GameId { get; }
+        public string GameId { get; } = "";
 
         /// <inheritdoc />
         public Memory<byte> ReadEntry(int index)
@@ -62,7 +62,7 @@ namespace Cethleann.ManagedFS
         }
 
         /// <inheritdoc />
-        public Dictionary<string, string>? LoadFileList(string? filename = null, DataGame? game = null) => null;
+        public Dictionary<string, string>? LoadFileList(string? filename = null, string? game = null) => null;
 
         /// <inheritdoc />
         public string? GetFilename(int index, string ext = "bin", DataType dataType = DataType.None)

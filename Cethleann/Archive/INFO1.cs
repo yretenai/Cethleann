@@ -82,10 +82,10 @@ namespace Cethleann.Archive
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public string? GetPath(int index)
+        public string GetPath(int index)
         {
             var (_, path) = Entries.ElementAtOrDefault(index);
-            return path?.Substring(12, path.Length - 12 - (path.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase) ? 3 : 0));
+            return path.Substring(12, path.Length - 12 - (path.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase) ? 3 : 0));
         }
 
         /// <summary>

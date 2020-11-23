@@ -18,6 +18,6 @@ namespace Cethleann.Audio.WBH
         /// <summary>
         ///     Get audio stream names
         /// </summary>
-        public List<string> Names { get; }
+        public List<string?> Names { get; }
     }
 }

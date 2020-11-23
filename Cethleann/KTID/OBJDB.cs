@@ -30,7 +30,7 @@ namespace Cethleann.KTID
         /// <summary>
         ///     Property Loaders
         /// </summary>
-        public static Dictionary<OBJDBPropertyType, (int size, PropertyCallbackDelegate processor)> PropertyTypeMap = new Dictionary<OBJDBPropertyType, (int, PropertyCallbackDelegate)>
+        public static Dictionary<OBJDBPropertyType, (int size, PropertyCallbackDelegate processor)> PropertyTypeMap { get; } = new Dictionary<OBJDBPropertyType, (int, PropertyCallbackDelegate)>
         {
             { OBJDBPropertyType.Bool, CreateDelegate<bool>() },
             { OBJDBPropertyType.Byte, CreateDelegate<byte>() },
@@ -106,7 +106,7 @@ namespace Cethleann.KTID
                             var (propertySize, processor) = tuple;
 
                             if (property.Count == 0)
-                                propertyMap[property] = new object?[0];
+                                propertyMap[property] = Array.Empty<object?>();
                             else
                                 propertyMap[property] = processor(kodBuffer.Slice(kodOffset), property.Count);
 

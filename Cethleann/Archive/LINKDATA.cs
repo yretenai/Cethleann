@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using Cethleann.Compression;
-using Cethleann.Structure;
 using Cethleann.Structure.Archive;
 using DragonLib;
 using JetBrains.Annotations;
@@ -45,10 +44,17 @@ namespace Cethleann.Archive
         /// </summary>
         public LINKDATAHeader Header { get; set; }
 
-        /// <summary>
-        ///     Dispose of <seealso cref="DataStream" />
-        /// </summary>
-        public void Dispose() => DataStream.Dispose();
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            Dispose(false);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            DataStream.Dispose();
+        }
 
         /// <summary>
         ///     Read file entry

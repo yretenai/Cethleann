@@ -1,5 +1,4 @@
 ﻿using Cethleann.ManagedFS.Options;
-using Cethleann.Structure;
 using DragonLib.CLI;
 using JetBrains.Annotations;
 
@@ -14,8 +13,8 @@ namespace Nyotengu.Filelist
         [CLIFlag("filelist", Help = "File List to load. Unspecified is automatically determined based on GameId", Category = "Database Options")]
         public string? FileList { get; set; }
 
-        [CLIFlag("game", Default = DataGame.None, Aliases = new[] { "g" }, Help = "Game being loaded", Category = "Database Options")]
-        public DataGame GameId { get; set; }
+        [CLIFlag("game", Default = "", Aliases = new[] { "g" }, Help = "Game being loaded", Category = "Database Options")]
+        public string GameId { get; set; } = "";
 
         public bool NyotenguPrefixFilenames { get; set; }
     }
