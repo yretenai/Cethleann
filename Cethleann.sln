@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.29209.152
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cethleann", "Cethleann\Cethleann.csproj", "{D30484B3-3BAF-496E-80FA-E63D5DB723C5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonLib", "DragonLib\DragonLib.csproj", "{DFB760A9-0BF2-4C75-A015-BA4787B0E20E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cethleann.Unbundler", "Cethleann.Unbundler\Cethleann.Unbundler.csproj", "{F37C7661-1B73-487D-9FBB-6421968949E7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tool", "Tool", "{388956EC-D30E-4FF6-85E9-460C20EA944C}"
@@ -49,10 +47,6 @@ Global
 		{D30484B3-3BAF-496E-80FA-E63D5DB723C5}.Debug|x64.Build.0 = Debug|x64
 		{D30484B3-3BAF-496E-80FA-E63D5DB723C5}.Release|x64.ActiveCfg = Release|x64
 		{D30484B3-3BAF-496E-80FA-E63D5DB723C5}.Release|x64.Build.0 = Release|x64
-		{DFB760A9-0BF2-4C75-A015-BA4787B0E20E}.Debug|x64.ActiveCfg = Debug|x64
-		{DFB760A9-0BF2-4C75-A015-BA4787B0E20E}.Debug|x64.Build.0 = Debug|x64
-		{DFB760A9-0BF2-4C75-A015-BA4787B0E20E}.Release|x64.ActiveCfg = Release|x64
-		{DFB760A9-0BF2-4C75-A015-BA4787B0E20E}.Release|x64.Build.0 = Release|x64
 		{F37C7661-1B73-487D-9FBB-6421968949E7}.Debug|x64.ActiveCfg = Debug|x64
 		{F37C7661-1B73-487D-9FBB-6421968949E7}.Debug|x64.Build.0 = Debug|x64
 		{F37C7661-1B73-487D-9FBB-6421968949E7}.Release|x64.ActiveCfg = Release|x64

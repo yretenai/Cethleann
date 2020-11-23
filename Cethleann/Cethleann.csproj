@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <Platforms>x64</Platforms>
         <RuntimeIdentifiers>win10-x64;osx-x64;linux-x64</RuntimeIdentifiers>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -25,7 +25,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Cethleann.Structure\Cethleann.Structure.csproj" />
-        <ProjectReference Include="..\DragonLib\DragonLib.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -65,7 +64,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="System.Text.Encoding.CodePages" Version="4.7.0" />
+      <PackageReference Include="DragonLib" Version="1.0.11" />
+      <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
     </ItemGroup>
 
 </Project>

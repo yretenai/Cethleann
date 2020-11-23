@@ -1,4 +1,4 @@
-version: '1.0.{build}'
+version: '1.1.{build}'
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
@@ -11,23 +11,22 @@ branches:
   only:
   - main
 before_build:
-  - cmd: git submodule update --init --recursive
   - cmd: dotnet --version
   - cmd: dotnet restore Cethleann.sln --verbosity m
 build_script:
-#  - cmd: dotnet publish --configuration Release --self-contained -r win10-x64 -o dist/CethleannStandalone
-  - cmd: dotnet publish --configuration Release /p:PublishTrimmed=false -o dist/CethleannRuntime
-  - cmd: dotnet publish --configuration Debug /p:PublishTrimmed=false -o dist/CethleannDebug
+  - cmd: dotnet publish --configuration Release --self-contained -r win10-x64 -o dist/Standalone
+  - cmd: dotnet publish --configuration Release /p:PublishTrimmed=false -o dist/Runtime
+  - cmd: dotnet publish --configuration Debug /p:PublishTrimmed=false -o dist/Debug
 on_success:
-#  - cmd: del dist\CethleannStandalone\*.json
-  - cmd: del dist\CethleannRuntime\*.json
-  - cmd: del dist\CethleannDebug\*.json
+  - cmd: del dist\Standalone\*.json
+  - cmd: del dist\Cethleann\*.json
+  - cmd: del dist\Debug\*.json
 clone_depth: 3
-deploy: off
+deploy: false
 artifacts:
-# - path: dist/CethleannStandalone
-#   name: CethleannStandalone_netcore30
-- path: dist/CethleannRuntime
-  name: CethleannRuntime_netcore30
-- path: dist/CethleannDebug
-  name: CethleannDebug_netcore30
+- path: dist/Standalone
+  name: CethleannStandalone
+- path: dist/Cethleann
+  name: Cethleann
+- path: dist/Debug
+  name: CethleannDebug

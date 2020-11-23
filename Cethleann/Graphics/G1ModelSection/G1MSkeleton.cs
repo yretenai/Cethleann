@@ -5,8 +5,6 @@ using Cethleann.Structure.Resource;
 using Cethleann.Structure.Resource.Model;
 using DragonLib;
 using JetBrains.Annotations;
-using OpenTK;
-using Vector3 = DragonLib.Numerics.Vector3;
 
 namespace Cethleann.Graphics.G1ModelSection
 {
@@ -32,30 +30,6 @@ namespace Cethleann.Graphics.G1ModelSection
             Header = MemoryMarshal.Read<ModelSkeletonHeader>(data);
             BoneIndices = MemoryMarshal.Cast<byte, short>(data.Slice(SizeHelper.SizeOf<ModelSkeletonHeader>(), Header.BoneTableCount)).ToArray();
             Bones = MemoryMarshal.Cast<byte, ModelSkeletonBone>(data.Slice(Header.DataOffset - SizeHelper.SizeOf<ResourceSectionHeader>(), Header.BoneCount * SizeHelper.SizeOf<ModelSkeletonBone>())).ToArray();
-
-            WorldBones = new ModelSkeletonBone[Bones.Length];
-            for (var index = 0; index < Bones.Length; index++)
-            {
-                var bone = Bones[index];
-                if (!bone.HasParent())
-                {
-                    WorldBones[index] = bone;
-                    continue;
-                }
-
-                if (bone.Parent > index) throw new InvalidOperationException("Bone calculated before parent bone");
-
-                var parentBone = WorldBones[bone.Parent];
-                WorldBones[index] = new ModelSkeletonBone
-                {
-                    Length = bone.Length,
-                    Parent = bone.Parent,
-                    Scale = (parentBone.Scale.ToOpenTK() * bone.Scale.ToOpenTK()).ToDragon(),
-                    Rotation = (parentBone.Rotation.ToOpenTK() * bone.Rotation.ToOpenTK()).ToDragon()
-                };
-                var local = parentBone.Rotation.ToOpenTK() * new Quaternion(bone.Position.ToOpenTK(), 0f) * new Quaternion(-parentBone.Rotation.X, -parentBone.Rotation.Y, -parentBone.Rotation.Z, parentBone.Rotation.W);
-                WorldBones[index].Position = new Vector3(local.X + parentBone.Position.X, local.Y + parentBone.Position.Y, local.Z + parentBone.Position.Z);
-            }
         }
 
         /// <summary>
@@ -72,12 +46,7 @@ namespace Cethleann.Graphics.G1ModelSection
         ///     lsof bones
         /// </summary>
         public ModelSkeletonBone[] Bones { get; }
-
-        /// <summary>
-        ///     lsof world bones
-        /// </summary>
-        public ModelSkeletonBone[] WorldBones { get; }
-
+        
         /// <inheritdoc />
         public int SupportedVersion { get; } = 32;
 

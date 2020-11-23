@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <Platforms>x64</Platforms>
         <RuntimeIdentifiers>win10-x64;osx-x64;linux-x64</RuntimeIdentifiers>
         <Version>1.0.0</Version>
@@ -17,7 +17,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DragonLib\DragonLib.csproj" />
+      <PackageReference Include="DragonLib" Version="1.0.11" />
+      <PackageReference Include="OpenTK.Mathematics" Version="4.3.0" />
     </ItemGroup>
 
 </Project>
