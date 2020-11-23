@@ -15,7 +15,7 @@ before_build:
   - cmd: dotnet restore Cethleann.sln --verbosity m
 build_script:
   - cmd: dotnet publish --configuration Release --self-contained -r win10-x64 -o dist/Standalone
-  - cmd: dotnet publish --configuration Release /p:PublishTrimmed=false -o dist/Runtime
+  - cmd: dotnet publish --configuration Release /p:PublishTrimmed=false -o dist/Cethleann
   - cmd: dotnet publish --configuration Debug /p:PublishTrimmed=false -o dist/Debug
 on_success:
   - cmd: del dist\Standalone\*.json
