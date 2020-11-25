@@ -64,7 +64,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="DragonLib" Version="1.0.11" />
+      <PackageReference Include="DragonLib" Version="1.0.12" />
       <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
     </ItemGroup>
 
