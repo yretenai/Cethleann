@@ -62,7 +62,7 @@ namespace Cethleann.Unbundler
 
             var dataType = datablob.GetDataType();
 
-            if (allTypes || flags.Recursive && flags.Depth > 0)
+            if (allTypes || flags.DeepRecursive && flags.Depth > 0)
             {
                 var recursionLevel = flags.Depth--;
                 try
@@ -93,7 +93,7 @@ namespace Cethleann.Unbundler
                         case DataType.MDLK when TryExtractMDLK(blobBase, datablob, flags):
                         case DataType.KTSR when TryExtractKTSR(blobBase, datablob, flags):
                         case DataType.KTSC when TryExtractKTSC(blobBase, datablob, flags):
-                        case DataType.Model when !flags.Recursive && TryExtractG1M(blobBase, datablob, flags):
+                        case DataType.Model when !flags.DeepRecursive && TryExtractG1M(blobBase, datablob, flags):
                         case DataType.XL when TryExtractXL(blobBase, datablob):
                         case DataType.GAPK when TryExtractGAPK(blobBase, datablob, flags, false):
                         case DataType.GEPK when TryExtractGAPK(blobBase, datablob, flags, true):

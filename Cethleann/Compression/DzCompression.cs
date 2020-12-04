@@ -85,7 +85,7 @@ namespace Cethleann.Compression
                 var chunk = data.Slice(encPtr, Math.Min(options.BlockSize, data.Length - encPtr));
                 encPtr += chunk.Length;
 
-                var comBuffer = CompressionEncryption.CompressDEFLATEIonic(chunk, options.CompressionLevel);
+                var comBuffer = CompressionEncryption.CompressDEFLATE(chunk, options.CompressionLevel);
                 var size = comBuffer.Length + 2;
 
                 if (chunk.Length < options.BlockSize && size >= chunk.Length && !options.ForceLastBlock)

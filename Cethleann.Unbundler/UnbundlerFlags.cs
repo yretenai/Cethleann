@@ -6,8 +6,11 @@ namespace Cethleann.Unbundler
 {
     public class UnbundlerFlags : ICLIFlags, IManagedFSOptions
     {
-        [CLIFlag("recursive", Aliases = new[] { "R" }, Help = "Recursively parse and unbundle files", Category = "Unbundler Options")]
+        [CLIFlag("recursive", Aliases = new[] { "R" }, Help = "Recursively unbundle files", Category = "Unbundler Options")]
         public bool Recursive { get; set; }
+        
+        [CLIFlag("deep-recursive", Aliases = new[] { "r" }, Help = "Unbundle files from unbundled files", Category = "Unbundler Options")]
+        public bool DeepRecursive { get; set; }
 
         [CLIFlag("depth", Aliases = new[] { "D" }, Default = uint.MaxValue, Help = "Recursion Depth", Category = "Unbundler Options")]
         public uint Depth { get; set; }
