@@ -1,13 +1,13 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using Cethleann.Compression;
+﻿using Cethleann.Compression;
 using Cethleann.ManagedFS;
 using Cethleann.ManagedFS.Support;
 using Cethleann.Structure;
 using Cethleann.Unbundler;
 using DragonLib.CLI;
 using DragonLib.IO;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace Cethleann.DataExporter
 {
@@ -42,6 +42,13 @@ namespace Cethleann.DataExporter
                 foreach (var rdb in flags.GameDirs.SelectMany(gamedir => Directory.GetFiles(gamedir, "*.rdb"))) fs.AddDataFS(rdb);
 
                 ((Nyotengu) fs).LoadExtList();
+            }
+            else if (flags.Zhao)
+            {
+                fs = new Zhao(flags);
+                foreach (var rdb in flags.GameDirs.SelectMany(gamedir => Directory.GetFiles(gamedir, "*.fdata.*"))) fs.AddDataFS(rdb);
+
+                ((Zhao) fs).LoadExtList();
             }
             else if (flags.Reisalin)
             {
@@ -102,7 +109,12 @@ namespace Cethleann.DataExporter
                     while (filepath.StartsWith("\\") || filepath.StartsWith("/")) filepath = filepath.Substring(1);
                     if (flags.Reisalin && filepath.EndsWith(".gz", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        if (data[4] == 0x78) data = StreamCompression.Decompress(data, new CompressionOptions { Length = -1, Type = DataCompression.Deflate });
+                        if (data[4] == 0x78)
+                            data = StreamCompression.Decompress(data, new CompressionOptions
+                            {
+                                Length = -1,
+                                Type = DataCompression.Deflate
+                            });
                         filepath = filepath.Substring(0, filepath.Length - 3);
                     }
 
