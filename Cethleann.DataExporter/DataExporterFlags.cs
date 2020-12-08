@@ -33,7 +33,7 @@ namespace Cethleann.DataExporter
         [CLIFlag("nyotengu", Aliases = new[] { "rdb" }, Help = "Game is contained in RDB containers", Category = "ManagedFS Options")]
         public bool Nyotengu { get; set; }
 
-        [CLIFlag("zhao", Aliases = new[] { "prdb" }, Help = "Game is contained in PRDB containers", Category = "ManagedFS Options")]
+        [CLIFlag("zhao", Aliases = new[] { "prdb", "fdata" }, Help = "Game is contained in PRDB/FDATA containers", Category = "ManagedFS Options")]
         public bool Zhao { get; set; }
 
         [CLIFlag("reisalin", Aliases = new[] { "pak" }, Help = "Game is contained in PAK containers", Category = "ManagedFS Options")]

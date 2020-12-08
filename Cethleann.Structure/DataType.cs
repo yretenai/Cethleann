@@ -450,19 +450,19 @@ namespace Cethleann.Structure
         WBD = 'W' << 24 | 'B' << 16 | 'D' << 8 | '_' << 0,
 
         /// <summary>
-        ///     Koei Readable Database File
+        ///     Koei Resource Database File
         /// </summary>
         [FileExtension("rdb")]
         RDB = 'K' << 24 | 'R' << 16 | 'D' << 8 | '_' << 0,
 
         /// <summary>
-        ///     Koei Readable Database Index
+        ///     Koei Resource Database Index
         /// </summary>
         [FileExtension("rdb.bin")]
         RDBIndex = 'K' << 24 | 'R' << 16 | 'D' << 8 | 'I' << 0,
 
         /// <summary>
-        ///     Portable Koei Readable Database
+        ///     Portable Koei Resource Database
         /// </summary>
         [FileExtension("fdata")]
         PortableRDB = 'K' << 24 | 'R' << 16 | 'D' << 8 | 'P' << 0,

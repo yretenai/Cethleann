@@ -43,12 +43,13 @@ namespace Cethleann.DataExporter
 
                 ((Nyotengu) fs).LoadExtList();
             }
-            else if (flags.Zhao)
+            else if (flags.Zhao) // yep it's identical, but filenames are suffixed with .hash
+                // so it would try to load RDB BINs in normal installs since those are named .rdb.bin 
             {
-                fs = new Zhao(flags);
-                foreach (var rdb in flags.GameDirs.SelectMany(gamedir => Directory.GetFiles(gamedir, "*.fdata.*"))) fs.AddDataFS(rdb);
+                fs = new Nyotengu(flags);
+                foreach (var rdb in flags.GameDirs.SelectMany(gamedir => Directory.GetFiles(gamedir, "*.rdb.*"))) fs.AddDataFS(rdb);
 
-                ((Zhao) fs).LoadExtList();
+                ((Nyotengu) fs).LoadExtList();
             }
             else if (flags.Reisalin)
             {

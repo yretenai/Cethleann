@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using Cethleann.Compression;
+﻿using Cethleann.Compression;
 using Cethleann.KTID;
 using Cethleann.Structure;
 using Cethleann.Structure.KTID;
 using DragonLib;
 using DragonLib.IO;
 using JetBrains.Annotations;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Cethleann.Archive
 {
@@ -23,7 +23,7 @@ namespace Cethleann.Archive
     public class RDB : IDisposable
     {
         private const byte HASH_KEY = 0x1F;
-        private static readonly Regex ADDRESS_REGEX = new Regex("([a-fA-F0-9]*)@([a-fA-F0-9]*)(?:#([a-fA-F0-9]*))?(?:\\&([a-fA-F0-9])*)?");
+        private static readonly Regex ADDRESS_REGEX = new Regex(@"([a-fA-F0-9]*)@([a-fA-F0-9]*)(?:#([a-fA-F0-9]*))?(?:\&([a-fA-F0-9]*))?(?:\?(.*))?");
         private static byte[] HASH_PREFIX = { 0xEF, 0xBC, 0xBB };
         private static byte[] HASH_SUFFIX = { 0xEF, 0xBC, 0xBD };
         internal static readonly string HASH_PREFIX_STR = Encoding.UTF8.GetString(HASH_PREFIX);
@@ -40,7 +40,8 @@ namespace Cethleann.Archive
             Name = name;
             Header = MemoryMarshal.Read<RDBHeader>(buffer);
             RDBDirectory = directory;
-            Directory = Path.Combine(directory, buffer.Slice(SizeHelper.SizeOf<RDBHeader>(), Header.HeaderSize - SizeHelper.SizeOf<RDBHeader>()).ReadString() ?? string.Empty);
+            DataDirectory = buffer.Slice(SizeHelper.SizeOf<RDBHeader>(), Header.HeaderSize - SizeHelper.SizeOf<RDBHeader>()).ReadString() ?? string.Empty;
+            Directory = Path.Combine(directory, DataDirectory);
 
             var offset = Header.HeaderSize;
             for (var i = 0; i < Header.Count; ++i)
@@ -66,12 +67,17 @@ namespace Cethleann.Archive
         public string RDBDirectory { get; set; }
 
         /// <summary>
-        ///     External data directory
+        ///     Absolute path to external data directory
         /// </summary>
         public string Directory { get; set; }
 
         /// <summary>
-        ///     Name of this RDB archive
+        ///     External data directory
+        /// </summary>
+        public string DataDirectory { get; set; }
+
+        /// <summary>
+        ///     Name of this  archive
         /// </summary>
         public string Name { get; set; }
 
@@ -83,7 +89,7 @@ namespace Cethleann.Archive
         /// <summary>
         ///     List of RDB entries found in this file
         /// </summary>
-        public List<(RDBEntry entry, byte[]? typeBuffer, (long offset, long size, int binId, int binSubId))> Entries { get; set; } = new List<(RDBEntry, byte[]?, (long, long, int, int))>();
+        public List<(RDBEntry entry, byte[]? typeBuffer, (long offset, long size, int binId, int binSubId, string? filePath))> Entries { get; set; } = new List<(RDBEntry, byte[]?, (long, long, int, int, string?))>();
 
         /// <summary>
         ///     KTID to Entry ID map
@@ -127,19 +133,48 @@ namespace Cethleann.Archive
         {
             if (index >= Entries.Count) throw new IndexOutOfRangeException();
 
-            var (_, _, (_, _, binId, binSub)) = Entries[index];
+            var (_, _, (_, _, binId, binSub, _)) = Entries[index];
             var binPath = Path.Combine(RDBDirectory, Name + ".rdb.bin");
             if (binId > -1) binPath += binId.ToString();
             if (binSub > -1) binPath += $"_{binSub}";
             return binPath;
         }
 
+        private static bool CheckFileExistsHashed(ref string path)
+        {
+            if (File.Exists(path)) return true;
+            var dir = Path.GetDirectoryName(path) ?? "";
+            var files = System.IO.Directory.GetFiles(dir, Path.GetFileName(path) + ".*", SearchOption.TopDirectoryOnly);
+            if (files.Length <= 0) return false;
+            path = files[0];
+            return true;
+        }
+
         /// <summary>
         ///     Gets an external file path for a given index
         /// </summary>
         /// <param name="fileId"></param>
+        /// <param name="filePath"></param>
         /// <returns></returns>
-        public string GetExternalPath(KTIDReference fileId) => Path.Combine(Directory, $"0x{fileId:x8}.file");
+        public string GetExternalPath(KTIDReference fileId, string? filePath = null)
+        {
+            while (true)
+            {
+                if (filePath == null)
+                {
+                    var fileId1 = fileId;
+                    filePath = $"0x{fileId1:x8}.file";
+                    continue;
+                }
+
+                var test = Path.Combine(Directory, filePath);
+                if (System.IO.Directory.Exists(Directory) && CheckFileExistsHashed(ref test)) return test;
+                test = Path.Combine(RDBDirectory, filePath);
+                if (CheckFileExistsHashed(ref test)) return test;
+                test = Path.Combine(RDBDirectory, $"{DataDirectory.Replace('/', '_')}{filePath}");
+                return CheckFileExistsHashed(ref test) ? test : Path.Combine(Directory, filePath);
+            }
+        }
 
         /// <summary>
         ///     Reads a file by the given index
@@ -150,12 +185,18 @@ namespace Cethleann.Archive
         {
             if (index < 0) return Memory<byte>.Empty;
 
-            var (entry, _, (offset, size, _, _)) = Entries[index];
+            var (entry, _, (offset, size, binId, binSub, filePath)) = Entries[index];
 
             Span<byte> blob;
-            if (entry.Flags.HasFlag(RDBFlags.External))
+            if (entry.Flags.HasFlag(RDBFlags.External) || !string.IsNullOrEmpty(filePath))
             {
-                var path = GetExternalPath(entry.FileKTID);
+                if (filePath != null) // not checked or used, but just in case they decide to :-)
+                {
+                    if (binId > -1) filePath += binId.ToString();
+                    if (binSub > -1) filePath += $"_{binSub}";
+                }
+
+                var path = GetExternalPath(entry.FileKTID, filePath);
                 if (!File.Exists(path))
                 {
                     Logger.Error("RDB", $"Cannot find external RDB file {Path.GetFileName(path)}");
@@ -203,7 +244,7 @@ namespace Cethleann.Archive
             if (entry.Flags.HasFlag(RDBFlags.ZlibCompressed) || entry.Flags.HasFlag(RDBFlags.Lz4Compressed))
                 return StreamCompression.Decompress(buffer, new CompressionOptions
                 {
-                    Length =  (int) fileEntryA.Size, 
+                    Length = (int) fileEntryA.Size,
                     Type = (DataCompression) ((int) entry.Flags >> 20 & 0xF)
                 }).ToArray();
             return buffer;
@@ -219,17 +260,18 @@ namespace Cethleann.Archive
             return (entry, unknowns, data);
         }
 
-        private static (long offset, long size, int binId, int binSubId) DecodeOffset(string packed)
+        private static (long offset, long size, int binId, int binSubId, string? filePath) DecodeOffset(string packed)
         {
             var regex = ADDRESS_REGEX.Match(packed);
-            if (!regex.Success) return (-1, -1, -1, -1);
+            if (!regex.Success) return (-1, -1, -1, -1, null);
 
             var groups = regex.Groups;
             var offset = long.Parse(groups[1].Value, NumberStyles.HexNumber);
             var size = long.Parse(groups[2].Value, NumberStyles.HexNumber);
             var binId = groups[3].Value != string.Empty ? int.Parse(groups[3].Value, NumberStyles.HexNumber) : -1;
             var binSubId = groups[4].Value != string.Empty ? int.Parse(groups[4].Value, NumberStyles.HexNumber) : -1;
-            return (offset, size, binId, binSubId);
+            var filePath = groups[5].Value != string.Empty ? groups[5].Value : null;
+            return (offset, size, binId, binSubId, filePath);
         }
 
         /// <summary>
