@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Cethleann.Compression;
+using Cethleann.Structure.Archive;
+using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Cethleann.Compression;
-using Cethleann.Structure.Archive;
-using JetBrains.Annotations;
 
 namespace Cethleann.Archive
 {
@@ -15,6 +15,8 @@ namespace Cethleann.Archive
     [PublicAPI]
     public class DATA0
     {
+        public DATA0() => Entries = new List<DATA0Entry>();
+
         /// <summary>
         ///     Reads a DATA0 file list from a path
         /// </summary>
@@ -34,11 +36,9 @@ namespace Cethleann.Archive
             {
                 if (!stream.CanRead) throw new InvalidOperationException("Cannot read from stream!");
 
-                Span<byte> buffer = stackalloc byte[32];
-                var entries = new DATA0Entry[stream.Length / 32];
-                var i = 0;
-                while (stream.Read(buffer) == 32) entries[i++] = MemoryMarshal.Read<DATA0Entry>(buffer);
-                Entries = entries.ToList();
+                var buffer = new Span<byte>(new byte[stream.Length]);
+                stream.Read(buffer);
+                Entries = MemoryMarshal.Cast<byte, DATA0Entry>(buffer).ToArray().ToList();
             }
             finally
             {
@@ -53,7 +53,7 @@ namespace Cethleann.Archive
         /// <summary>
         ///     lsof <seealso cref="DATA0Entry" />
         /// </summary>
-        public List<DATA0Entry> Entries { get; }
+        public List<DATA0Entry> Entries { get; protected set; }
 
         /// <summary>
         ///     Reads a file index from DATA1
@@ -83,7 +83,11 @@ namespace Cethleann.Archive
 
             data1.Position = entry.Offset;
 
-            if (entry.IsCompressed) return TableCompression.Decompress(data1, new CompressionOptions { Length = entry.CompressedSize });
+            if (entry.IsCompressed)
+                return TableCompression.Decompress(data1, new CompressionOptions
+                {
+                    Length = entry.CompressedSize
+                });
 
             var buffer = new Memory<byte>(new byte[entry.UncompressedSize]);
             data1.Read(buffer.Span);

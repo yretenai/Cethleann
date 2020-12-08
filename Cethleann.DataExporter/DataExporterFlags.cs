@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Cethleann.DataExporter
 {
-    public class DataExporterFlags : UnbundlerFlags, IReisalinOptions, INyotenguOptions
+    public class DataExporterFlags : UnbundlerFlags, IReisalinOptions, INyotenguOptions, IFlaynOptions
     {
         [CLIFlag("out-dir", Positional = 0, Help = "Extraction Directory", IsRequired = true, Category = "DataExporter Options")]
         public string OutputDirectory { get; set; } = string.Empty;
@@ -52,6 +52,7 @@ namespace Cethleann.DataExporter
 
         public bool ReisalinA17 { get; set; }
         public bool NyotenguPrefixFilenames { get; set; }
+        public bool TinyFlayn { get; set; }
 
         #endregion
     }

@@ -1,12 +1,13 @@
+using Cethleann.Archive;
+using Cethleann.ManagedFS.Options;
+using Cethleann.ManagedFS.Options.Default;
+using Cethleann.Structure;
+using DragonLib.IO;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Cethleann.Archive;
-using Cethleann.ManagedFS.Options;
-using Cethleann.Structure;
-using DragonLib.IO;
-using JetBrains.Annotations;
 
 namespace Cethleann.ManagedFS
 {
@@ -23,7 +24,13 @@ namespace Cethleann.ManagedFS
         public Flayn(IManagedFSOptionsBase options)
         {
             if (options is IManagedFSOptions optionsLayer) GameId = optionsLayer.GameId;
+            if (options is IFlaynOptions flaynOptions) Options = flaynOptions;
         }
+
+        /// <summary>
+        ///     Nyotengu specific Options
+        /// </summary>
+        public IFlaynOptions Options { get; set; } = new FlaynOptions();
 
         /// <summary>
         ///     Game data
@@ -59,11 +66,6 @@ namespace Cethleann.ManagedFS
         ///     Maximum number of entries found in the latest patch container.
         /// </summary>
         public int PatchEntryCount { get; private set; }
-
-        /// <summary>
-        ///     Prefix LINKDATA archive name to files
-        /// </summary>
-        public bool PrefixLinkData { get; set; }
 
         /// <summary>
         ///     Loaded FileList.csv
@@ -244,7 +246,7 @@ namespace Cethleann.ManagedFS
 
             var fullPath = Path.GetFullPath(Path.GetDirectoryName(idxPath) ?? string.Empty);
             if (Data.Any(x => x.romfs == fullPath)) return;
-            var set = (new DATA0(idxPath), File.OpenRead(binPath), fullPath, Path.GetFileNameWithoutExtension(idxPath));
+            var set = (Options.TinyFlayn ? new TinyDATA0(idxPath) : new DATA0(idxPath), File.OpenRead(binPath), fullPath, Path.GetFileNameWithoutExtension(idxPath));
             Data.Add(set);
             if (Data.Count == 1)
                 RootEntryCount = set.Item1.Entries.Count + 1; // thanks Koei.
