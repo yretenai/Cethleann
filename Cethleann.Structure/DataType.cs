@@ -246,7 +246,7 @@ namespace Cethleann.Structure
         ///     KTGL Wrapped File
         /// </summary>
         [FileExtension("g1l")]
-        Lazy = 'G' << 24 | '1' << 16 | 'L' << 8 | '_' << 0,
+        Large = 'G' << 24 | '1' << 16 | 'L' << 8 | '_' << 0,
 
         /// <summary>
         ///     KTGL Font
@@ -412,6 +412,13 @@ namespace Cethleann.Structure
         /// </summary>
         [FileExtension("gepk")]
         GEPK = 'G' << 0 | 'E' << 8 | 'P' << 16 | 'K' << 24,
+
+
+        /// <summary>
+        ///     Bundled Pack
+        /// </summary>
+        [FileExtension("bpk")]
+        BPK = 'B' << 0 | 'P' << 8 | 'K' << 16 | '0' << 24,
 
 
         /// <summary>

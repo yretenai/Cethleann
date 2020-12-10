@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using Cethleann.Audio;
 using Cethleann.Graphics;
 using Cethleann.Pack;
@@ -13,6 +8,11 @@ using DragonLib.IO;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Cethleann.Unbundler
 {
@@ -98,7 +98,7 @@ namespace Cethleann.Unbundler
                         case DataType.GAPK when TryExtractGAPK(blobBase, datablob, flags, false):
                         case DataType.GEPK when TryExtractGAPK(blobBase, datablob, flags, true):
                         case DataType.GMPK when TryExtractGMPK(blobBase, datablob, flags):
-                        case DataType.Lazy when TryExtractG1L(blobBase, datablob, flags):
+                        case DataType.Large when TryExtractG1L(blobBase, datablob, flags):
                         case DataType.KOVS when TryExtractKOVS(blobBase, datablob, flags):
                         case DataType.ElixirArchive when TryExtractElixir(blobBase, datablob, flags):
                         case DataType.RTRPK when TryExtractRESPACK(blobBase, datablob, flags):
@@ -115,6 +115,7 @@ namespace Cethleann.Unbundler
                         case DataType.G2A_PACK when TryExtractRESPACK(blobBase, datablob, flags):
                         case DataType.HEADPACK when TryExtractRESPACK(blobBase, datablob, flags):
                         case DataType.G1COPACK when TryExtractRESPACK(blobBase, datablob, flags):
+                        case DataType.BPK when TryExtractBPK(blobBase, datablob, flags):
                         case DataType.WHD when TryExtractWHD(blobBase, datablob, flags):
                             return 1;
                     }
@@ -204,7 +205,26 @@ namespace Cethleann.Unbundler
             }
             catch (Exception e)
             {
-                Logger.Error("RESPACK", "Failed unpacking RTRPK", e);
+                Logger.Error("RESPACK", "Failed unpacking RESPACK", e);
+                if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool TryExtractBPK(string pathBase, Span<byte> data, UnbundlerFlags flags)
+        {
+            try
+            {
+                var blobs = new BPK(data);
+                if (blobs.Entries.Count == 0) return true;
+                TryExtractBlobs(pathBase, blobs.Entries, false, null, false, false, false, null, flags);
+            }
+            catch (Exception e)
+            {
+                Logger.Error("BPK", "Failed unpacking BPK", e);
                 if (Directory.Exists(pathBase)) Directory.Delete(pathBase, true);
 
                 return false;
