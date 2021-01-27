@@ -7,6 +7,7 @@ using Cethleann.Structure.Archive;
 using DragonLib;
 using DragonLib.IO;
 using JetBrains.Annotations;
+using System.Diagnostics;
 
 namespace Cethleann.Archive
 {
@@ -63,9 +64,11 @@ namespace Cethleann.Archive
                 var size = MemoryMarshal.Read<int>(entryBlob.Slice(0x80));
                 var key = entryBlob.Slice(0x84, keySize).ToArray();
                 var infoBlob = entryBlob.Slice(0x84 + keySize);
-                var info = Is64Bit ? MemoryMarshal.Cast<byte, ulong>(infoBlob).ToArray() : MemoryMarshal.Cast<byte, uint>(infoBlob).ToArray().Select(x => (ulong) x).ToArray();
+                var info = Is64Bit ? MemoryMarshal.Cast<byte, long>(infoBlob).ToArray() : MemoryMarshal.Cast<byte, uint>(infoBlob).ToArray().Select(x => (long) x).ToArray();
                 var encrypted = key.Any(x => x != 0);
                 if (encrypted) Recode(filenameBlob, key);
+
+                if (info[0] < 0) Debugger.Break();
 
                 var filename = filenameBlob.ReadStringNonNull();
 
@@ -142,7 +145,7 @@ namespace Cethleann.Archive
             if (entry.Size == 0) return new Memory<byte>();
             EnsureCanRead();
             var blob = new Memory<byte>(new byte[entry.Size]);
-            BaseStream.Position = DataStart + (long) entry.Offset;
+            BaseStream.Position = DataStart + entry.Offset;
             BaseStream.Read(blob.Span);
             if (entry.IsEncrypted) Recode(blob.Span, entry.Key);
 
