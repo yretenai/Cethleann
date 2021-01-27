@@ -21,14 +21,14 @@ namespace Cethleann.Archive
         /// </summary>
         /// <param name="path"></param>
         /// <param name="a18">set to true if the PAKs are from Atelier Sophie or a newer Atelier</param>
-        public PAK(string path, bool a18 = true) : this(File.OpenRead(path), a18) { }
+        public PAK(string path, bool a18 = true, bool keyFix = false) : this(File.OpenRead(path), a18, keyFix) { }
 
         /// <summary>
         ///     Initialize with a stream
         /// </summary>
         /// <param name="stream"></param>
         /// <param name="a18">set to true if the PAKs are from Atelier Sophie or a newer Atelier</param>
-        public PAK(Stream stream, bool a18 = true)
+        public PAK(Stream stream, bool a18 = true, bool keyFix = false)
         {
             Is64Bit = a18;
             BaseStream = stream;
@@ -45,7 +45,10 @@ namespace Cethleann.Archive
 
             Entries = new List<PAKEntry>(Header.FileCount);
 
-            var entrySize = Is64Bit ? 0xA8 : 0xA0;
+            var entrySize = Is64Bit ? 0x94 : 0x8C;
+            var keySize = keyFix ? 0x20 : 20;
+            if (keyFix) entrySize += 4;
+            entrySize += keySize;
             blob = new Span<byte>(new byte[entrySize * Header.FileCount]);
             BaseStream.Read(blob);
             DataStart = BaseStream.Position;
@@ -58,9 +61,9 @@ namespace Cethleann.Archive
 
                 var filenameBlob = entryBlob.Slice(0, 0x80);
                 var size = MemoryMarshal.Read<int>(entryBlob.Slice(0x80));
-                var key = entryBlob.Slice(0x84, 20).ToArray();
-                var infoBlob = entryBlob.Slice(0x98);
-                var info = Is64Bit ? MemoryMarshal.Cast<byte, long>(infoBlob).ToArray() : MemoryMarshal.Cast<byte, uint>(infoBlob).ToArray().Select(x => (long) x).ToArray();
+                var key = entryBlob.Slice(0x84, keySize).ToArray();
+                var infoBlob = entryBlob.Slice(0x84 + keySize);
+                var info = Is64Bit ? MemoryMarshal.Cast<byte, ulong>(infoBlob).ToArray() : MemoryMarshal.Cast<byte, uint>(infoBlob).ToArray().Select(x => (ulong) x).ToArray();
                 var encrypted = key.Any(x => x != 0);
                 if (encrypted) Recode(filenameBlob, key);
 
@@ -139,7 +142,7 @@ namespace Cethleann.Archive
             if (entry.Size == 0) return new Memory<byte>();
             EnsureCanRead();
             var blob = new Memory<byte>(new byte[entry.Size]);
-            BaseStream.Position = DataStart + entry.Offset;
+            BaseStream.Position = DataStart + (long) entry.Offset;
             BaseStream.Read(blob.Span);
             if (entry.IsEncrypted) Recode(blob.Span, entry.Key);
 

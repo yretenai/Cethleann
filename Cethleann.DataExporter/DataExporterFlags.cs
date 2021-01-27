@@ -51,6 +51,8 @@ namespace Cethleann.DataExporter
         #region IManagedFSOptions
 
         public bool ReisalinA17 { get; set; }
+
+        public bool ReisalinKeyFix { get; set; }
         public bool NyotenguPrefixFilenames { get; set; }
         public bool TinyFlayn { get; set; }
 

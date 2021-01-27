@@ -7,5 +7,7 @@
     {
         /// <inheritdoc />
         public bool ReisalinA17 { get; set; }
+        /// <inheritdoc />
+        public bool ReisalinKeyFix { get; set; }
     }
 }
