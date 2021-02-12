@@ -30,7 +30,7 @@ namespace Cethleann.Audio
 
             unsafe
             {
-                var sz = (byte) Math.Min(0x100, blob.Length);
+                var sz = Math.Min(0x100, blob.Length);
                 fixed (byte* ptr = &blob.GetPinnableReference())
                 {
                     for (byte i = 0; i < sz; ++i)
