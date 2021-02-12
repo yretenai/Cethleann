@@ -33,7 +33,7 @@ namespace Cethleann.Audio
                 var sz = (byte) Math.Min(0x100, blob.Length);
                 fixed (byte* ptr = &blob.GetPinnableReference())
                 {
-                    for (var i = 0; i < sz; ++i)
+                    for (byte i = 0; i < sz; ++i)
                         *(ptr + i) ^= i;
                 }
             }
