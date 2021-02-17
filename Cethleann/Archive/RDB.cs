@@ -1,4 +1,5 @@
 ﻿using Cethleann.Compression;
+using Cethleann.Compression.P5SPC;
 using Cethleann.KTID;
 using Cethleann.Structure;
 using Cethleann.Structure.KTID;
@@ -241,6 +242,20 @@ namespace Cethleann.Archive
             var (fileEntry, _, buffer) = ReadRDBEntry(blob);
             var fileEntryA = fileEntry.GetValueOrDefault();
             if (fileEntryA.Size == 0) return Memory<byte>.Empty;
+
+            // srst external files might be encrypted, as seen on p5s pc
+            if (entry.Flags.HasFlag(RDBFlags.External) && MemoryMarshal.Read<uint>(buffer) == 0x53525354)
+            {
+                SRSTEncryption.Decrypt(buffer);
+            }
+            // rdb entries might be encrypted, as seen on p5s pc
+            else if (entry.Flags.HasFlag(RDBFlags.ZlibCompressed) && entry.Flags.HasFlag(RDBFlags.Encrypted))
+            {
+                RDBEncryption.Decrypt(buffer, entry.FileKTID.KTID);
+
+                entry.Flags ^= RDBFlags.Encrypted;
+            }
+
             if (entry.Flags.HasFlag(RDBFlags.ZlibCompressed) || entry.Flags.HasFlag(RDBFlags.Lz4Compressed))
                 return StreamCompression.Decompress(buffer, new CompressionOptions
                 {
