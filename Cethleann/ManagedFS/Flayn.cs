@@ -1,4 +1,5 @@
 using Cethleann.Archive;
+using Cethleann.Compression.P5SPC;
 using Cethleann.ManagedFS.Options;
 using Cethleann.ManagedFS.Options.Default;
 using Cethleann.Structure;
@@ -120,6 +121,11 @@ namespace Cethleann.ManagedFS
                 {
                     var buffer = data.ReadEntry(stream, localId);
                     if (GameId == "ThreeHouses" && i > 0 && buffer.Length == 0) continue;
+
+                    // for p5s pc, all non-compressed entries are encrypted
+                    // conversly, if an entry is compressed, it can't also be encrypted
+                    if (GameId == "P5SPC" && localId < data.Entries.Count && !data.Entries[localId].IsCompressed)
+                        LINKDATAEncryption.Decrypt(buffer.Span, (uint) localId);
                     return buffer;
                 }
 
