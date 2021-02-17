@@ -248,6 +248,13 @@ namespace Cethleann.Archive
             {
                 SRSTEncryption.Decrypt(buffer);
             }
+            // rdb entries might be encrypted, as seen on p5s pc
+            else if (entry.Flags.HasFlag(RDBFlags.ZlibCompressed) && entry.Flags.HasFlag(RDBFlags.Encrypted))
+            {
+                RDBEncryption.Decrypt(buffer, entry.FileKTID.KTID);
+
+                entry.Flags ^= RDBFlags.Encrypted;
+            }
 
             if (entry.Flags.HasFlag(RDBFlags.ZlibCompressed) || entry.Flags.HasFlag(RDBFlags.Lz4Compressed))
                 return StreamCompression.Decompress(buffer, new CompressionOptions
