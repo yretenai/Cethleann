@@ -28,6 +28,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <None Update="filelist-P5SPC-link.csv">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
         <None Update="TXTH\.ktgcadpcm.txth">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>

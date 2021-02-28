@@ -190,6 +190,7 @@ namespace Cethleann.ManagedFS
                 id = GameId switch
                 {
                     "ThreeHouses" => $"{(i == 0 ? string.Empty : "DLC_")}{localId}",
+                    "P5SPC" => $"{localId}",
                     _ => $"{linkname}_{localId}"
                 };
                 prefix = GameId switch
@@ -200,8 +201,19 @@ namespace Cethleann.ManagedFS
                 break;
             }
 
-            if (!FileList.TryGetValue(id, out var path)) path = ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{generatedPrefix}{localId}.{ext}" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{generatedPrefix}{localId}.{ext}";
-            else path = Path.Combine(Path.GetDirectoryName(path) ?? string.Empty, Path.GetFileNameWithoutExtension(path) + $".{ext}");
+            if (!FileList.TryGetValue(id, out var path))
+            {
+                path = ext == "bin" || ext == "bin.gz" ? $"misc/unknown/{generatedPrefix}{localId}.{ext}" : $"misc/formats/{ext.ToUpper().Replace('.', '_')}/{generatedPrefix}{localId}.{ext}";
+            }
+            else
+            {
+                ext = GameId switch
+                {
+                    "P5SPC" => Path.GetExtension(path) ?? ext,
+                    _ => $".{ext}"
+                };
+                path = Path.Combine(Path.GetDirectoryName(path) ?? string.Empty, Path.GetFileNameWithoutExtension(path) + $"{ext}");
+            }
             if (ext.EndsWith(".gz") && !path.EndsWith(".gz")) path += ".gz";
             return $@"{prefix}\{path}";
         }
