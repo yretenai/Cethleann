@@ -15,7 +15,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="DragonLib" Version="1.1.2.1" />
+      <PackageReference Include="DragonLib" Version="1.1.5" />
     </ItemGroup>
 
 </Project>
