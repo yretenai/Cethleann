@@ -17,7 +17,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="DragonLib" Version="1.1.2.1" />
+      <PackageReference Include="DragonLib" Version="1.1.6" />
       <PackageReference Include="OpenTK.Mathematics" Version="4.4.0" />
     </ItemGroup>
 
