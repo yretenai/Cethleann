@@ -80,7 +80,7 @@ namespace Cethleann.ManagedFS
         public void AddDataFS(string path)
         {
             Logger.Success("Reisalin", $"Loading {Path.GetFileName(path)}...");
-            var pak = new PAK(path, !Options.ReisalinA17, Options.ReisalinKeyFix);
+            var pak = new PAK(path, !Options.PAKA17, Options.PAKKeyFix);
             EntryCount += pak.Entries.Count;
             PAKs.Add(pak);
         }

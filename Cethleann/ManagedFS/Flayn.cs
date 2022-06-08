@@ -264,7 +264,7 @@ namespace Cethleann.ManagedFS
 
             var fullPath = Path.GetFullPath(Path.GetDirectoryName(idxPath) ?? string.Empty);
             if (Data.Any(x => x.romfs == fullPath)) return;
-            var set = (Options.TinyFlayn ? new TinyDATA0(idxPath) : new DATA0(idxPath), File.OpenRead(binPath), fullPath, Path.GetFileNameWithoutExtension(idxPath));
+            var set = (Options.TinyLINKDATA ? new TinyDATA0(idxPath) : new DATA0(idxPath), File.OpenRead(binPath), fullPath, Path.GetFileNameWithoutExtension(idxPath));
             Data.Add(set);
             if (Data.Count == 1)
                 RootEntryCount = set.Item1.Entries.Count + 1; // thanks Koei.

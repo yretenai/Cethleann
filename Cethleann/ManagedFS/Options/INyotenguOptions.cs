@@ -10,7 +10,7 @@ namespace Cethleann.ManagedFS.Options
         /// <summary>
         ///     Debug Filenames
         /// </summary>
-        [CLIFlag("nyotengu-prefix-id", Help = "Debug Filenames", Hidden = true, Category = "Nyotengu Options")]
-        public bool NyotenguPrefixFilenames { get; set; }
+        [CLIFlag("rdb-prefix-id", Help = "Debug Filenames", Hidden = true, Category = "Nyotengu Options")]
+        public bool RDBPrefixFilenames { get; set; }
     }
 }

@@ -6,8 +6,8 @@
     public class ReisalinOptions : IReisalinOptions
     {
         /// <inheritdoc />
-        public bool ReisalinA17 { get; set; }
+        public bool PAKA17 { get; set; }
         /// <inheritdoc />
-        public bool ReisalinKeyFix { get; set; }
+        public bool PAKKeyFix { get; set; }
     }
 }

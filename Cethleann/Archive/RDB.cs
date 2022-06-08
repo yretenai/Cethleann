@@ -47,7 +47,7 @@ namespace Cethleann.Archive
             var offset = Header.HeaderSize;
             for (var i = 0; i < Header.Count; ++i)
             {
-                var (entry, typeblob, data) = ReadRDBEntry(buffer.Slice(offset));
+                var (entry, typeblob, data) = ReadRDBEntry(buffer.Slice(offset), true);
                 var fileEntry = entry.GetValueOrDefault();
                 offset += (int) fileEntry.EntrySize.Align(4);
                 Entries.Add((fileEntry, typeblob, DecodeOffset(((Span<byte>) data).ReadString() ?? "0")));
@@ -239,7 +239,7 @@ namespace Cethleann.Archive
 
             if (blob.Length < SizeHelper.SizeOf<RDBEntry>()) return Memory<byte>.Empty;
 
-            var (fileEntry, _, buffer) = ReadRDBEntry(blob);
+            var (fileEntry, _, buffer) = ReadRDBEntry(blob, true);
             var fileEntryA = fileEntry.GetValueOrDefault();
             if (fileEntryA.Size == 0) return Memory<byte>.Empty;
 
@@ -265,13 +265,13 @@ namespace Cethleann.Archive
             return buffer;
         }
 
-        private static (RDBEntry? entry, byte[]? typeblob, byte[]? data) ReadRDBEntry(Span<byte> buffer)
+        internal static (RDBEntry? entry, byte[]? typeblob, byte[]? data) ReadRDBEntry(Span<byte> buffer, bool readData)
         {
             var entry = MemoryMarshal.Read<RDBEntry>(buffer);
             if (entry.Magic != DataType.RDBIndex) return (null, null, null);
             var unknownsSize = entry.EntrySize - SizeHelper.SizeOf<RDBEntry>() - entry.ContentSize;
             var unknowns = unknownsSize < 1 ? Array.Empty<byte>() : buffer.Slice(SizeHelper.SizeOf<RDBEntry>(), (int) unknownsSize).ToArray();
-            var data = buffer.Slice((int) (entry.EntrySize - entry.ContentSize), (int) entry.ContentSize).ToArray();
+            var data = readData ? buffer.Slice((int) (entry.EntrySize - entry.ContentSize), (int) entry.ContentSize).ToArray() : Array.Empty<byte>();
             return (entry, unknowns, data);
         }
 

@@ -21,40 +21,43 @@ namespace Cethleann.DataExporter
         [CLIFlag("no-filelist", Help = "Don't use a filelist", Category = "DataExporter Options")]
         public bool NoFilelist { get; set; }
 
-        [CLIFlag("flayn", Aliases = new[] { "linkdata" }, Help = "Game is contained in LINKDATA containers", Category = "ManagedFS Options")]
-        public bool Flayn { get; set; }
+        [CLIFlag("linkdata", Help = "Game is contained in LINKDATA containers", Category = "ManagedFS Options")]
+        public bool LINKDATA { get; set; }
 
-        [CLIFlag("leonhart", Aliases = new[] { "linkarchive" }, Help = "Game is contained in LINKARCHIVE containers", Category = "ManagedFS Options")]
-        public bool Leonhart { get; set; }
+        [CLIFlag("linkarchive", Help = "Game is contained in LINKARCHIVE containers", Category = "ManagedFS Options")]
+        public bool LINKARCHIVE { get; set; }
 
-        [CLIFlag("mitsunari", Aliases = new[] { "linkbin", "lnk" }, Help = "Game is contained in LNK containers", Category = "ManagedFS Options")]
-        public bool Mitsunari { get; set; }
+        [CLIFlag("lnk", Aliases = new[] { "linkbin" }, Help = "Game is contained in LNK containers", Category = "ManagedFS Options")]
+        public bool LNK { get; set; }
 
-        [CLIFlag("nyotengu", Aliases = new[] { "rdb" }, Help = "Game is contained in RDB containers", Category = "ManagedFS Options")]
-        public bool Nyotengu { get; set; }
+        [CLIFlag("rdb", Help = "Game is contained in RDB containers", Category = "ManagedFS Options")]
+        public bool RDB { get; set; }
 
-        [CLIFlag("zhao", Aliases = new[] { "prdb", "fdata" }, Help = "Game is contained in PRDB/FDATA containers", Category = "ManagedFS Options")]
-        public bool Zhao { get; set; }
+        [CLIFlag("prdb", Help = "Game is contained in PRDB containers that end with .hash", Category = "ManagedFS Options")]
+        public bool PRDB { get; set; }
 
-        [CLIFlag("reisalin", Aliases = new[] { "pak" }, Help = "Game is contained in PAK containers", Category = "ManagedFS Options")]
-        public bool Reisalin { get; set; }
+        [CLIFlag("rdx", Help = "Game is contained in RDX containers", Category = "ManagedFS Options")]
+        public bool RDX { get; set; }
 
-        [CLIFlag("yshtola", Aliases = new[] { "pkg", "common" }, Help = "Game is contained in PKG containers (COMMON directory)", Category = "ManagedFS Options")]
-        public bool Yshtola { get; set; }
+        [CLIFlag("pak", Help = "Game is contained in PAK containers", Category = "ManagedFS Options")]
+        public bool PAK { get; set; }
 
-        [CLIFlag("yshtola-manifest-only", Help = "Only dump package manifest", Category = "Y'shtola Options")]
-        public bool YshtolaManifestOnly { get; set; }
+        [CLIFlag("pkg", Help = "Game is contained in PKG containers (COMMON directory)", Category = "ManagedFS Options")]
+        public bool PKG { get; set; }
 
-        [CLIFlag("nyotengu-generate-filelist", Help = "Generate CSV filelist", Hidden = true, Category = "Nyotengu Options")]
-        public bool NyotenguGeneratedFileList { get; set; }
+        [CLIFlag("pkg-manifest-only", Help = "Only dump package manifest", Category = "Y'shtola Options")]
+        public bool PKGManifestOnly { get; set; }
+
+        [CLIFlag("rdb-generate-filelist", Help = "Generate CSV filelist", Hidden = true, Category = "Nyotengu Options")]
+        public bool RDBGeneratedFileList { get; set; }
 
         #region IManagedFSOptions
 
-        public bool ReisalinA17 { get; set; }
+        public bool PAKA17 { get; set; }
 
-        public bool ReisalinKeyFix { get; set; }
-        public bool NyotenguPrefixFilenames { get; set; }
-        public bool TinyFlayn { get; set; }
+        public bool PAKKeyFix { get; set; }
+        public bool RDBPrefixFilenames { get; set; }
+        public bool TinyLINKDATA { get; set; }
 
         #endregion
     }

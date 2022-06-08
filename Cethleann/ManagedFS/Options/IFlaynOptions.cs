@@ -10,7 +10,7 @@ namespace Cethleann.ManagedFS.Options
         /// <summary>
         ///     Alternate format
         /// </summary>
-        [CLIFlag("flayn-tiny", Help = "Tiny Index Format (HWL)", Category = "Flayn Options")]
-        public bool TinyFlayn { get; set; }
+        [CLIFlag("tiny-linkdata", Help = "Tiny Index Format (HWL)", Category = "Flayn Options")]
+        public bool TinyLINKDATA { get; set; }
     }
 }

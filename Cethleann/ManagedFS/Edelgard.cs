@@ -4,7 +4,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Cethleann.Archive;
-using Cethleann.KTID;
 using Cethleann.ManagedFS.Options;
 using Cethleann.ManagedFS.Options.Default;
 using Cethleann.Structure;
@@ -14,98 +13,62 @@ using JetBrains.Annotations;
 
 namespace Cethleann.ManagedFS
 {
-    /// <summary>
-    ///     RDB Manager
-    /// </summary>
     [PublicAPI]
-    public class Nyotengu : IManagedFS
+    public sealed class Edelgard : IManagedFS
     {
-        /// <summary>
-        ///     Loads data
-        /// </summary>
-        /// <param name="options"></param>
-        public Nyotengu(IManagedFSOptionsBase options)
+        public Edelgard(IManagedFSOptionsBase options)
         {
             if (options is IManagedFSOptions optionsLayer) GameId = optionsLayer.GameId;
             if (options is INyotenguOptions nyotenguOptions) Options = nyotenguOptions;
         }
 
-        /// <summary>
-        ///     Nyotengu specific Options
-        /// </summary>
         public INyotenguOptions Options { get; set; } = new NyotenguOptions();
-
         private Dictionary<KTIDReference, string> ExtList { get; set; } = new Dictionary<KTIDReference, string>();
 
-        /// <summary>
-        ///     List of RDBs loaded
-        /// </summary>
-        public List<RDB> RDBs { get; set; } = new List<RDB>();
+        public List<RDX> RDXs { get; set; } = new List<RDX>();
 
-        /// <summary>
-        ///     Loaded FileList.csv
-        /// </summary>
         public Dictionary<KTIDReference, string> FileList { get; set; } = new Dictionary<KTIDReference, string>();
 
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <inheritdoc />
         public int EntryCount { get; set; }
 
-        /// <inheritdoc />
         public string GameId { get; } = "";
 
-        /// <inheritdoc />
         public Memory<byte> ReadEntry(int index)
         {
             if (index < 0) return Memory<byte>.Empty;
 
-            foreach (var rdb in RDBs)
+            foreach (var rdx in RDXs)
             {
-                if (index < rdb.Entries.Count) return rdb.ReadEntry(index);
+                if (index < rdx.Entries.Count) 
+                    return rdx.ReadEntry(index);
 
-                index -= rdb.Entries.Count;
+                index -= rdx.Entries.Count;
             }
 
             return Memory<byte>.Empty;
         }
 
-        /// <inheritdoc />
         public string? GetFilename(int index, string ext = "bin", DataType dataType = DataType.None) => GetFilenameInternal(index);
 
-        /// <inheritdoc />
         public void AddDataFS(string path)
         {
-            Logger.Success("Nyotengu", $"Loading {Path.GetFileName(path)}...");
-            var rdb = new RDB(File.ReadAllBytes(path), Path.GetFileNameWithoutExtension(path), Path.GetDirectoryName(path) ?? string.Empty);
-            foreach (var file in Directory.GetFiles(Path.GetDirectoryName(path) ?? "./", rdb.Name + "*.info"))
-                rdb.NameDatabase.Union(new RDBINFO(File.ReadAllBytes(file)));
-            EntryCount += rdb.Entries.Count;
-            RDBs.Add(rdb);
+            Logger.Success("Edelgard", $"Loading {Path.GetFileName(path)}...");
+            var rdx = new RDX(File.ReadAllBytes(path), Path.GetFileNameWithoutExtension(path), Path.GetDirectoryName(path) ?? string.Empty);
+            EntryCount += rdx.Entries.Count;
+            RDXs.Add(rdx);
         }
 
-        /// <inheritdoc />
         public Dictionary<string, string> LoadFileList(string? filename = null, string? game = null)
         {
             FileList = LoadKTIDFileListShared(filename, game ?? GameId);
             return FileList.ToDictionary(x => x.Key.ToString(CultureInfo.InvariantCulture), y => y.Value);
         }
 
-        /// <summary>
-        ///     Read entry via KTID
-        /// </summary>
-        /// <param name="ktid"></param>
-        /// <returns></returns>
         public Memory<byte> ReadEntry(KTIDReference ktid)
         {
-            foreach (var rdb in RDBs)
+            foreach (var rdx in RDXs)
             {
-                if (rdb.KTIDToEntryId.TryGetValue(ktid, out var index))
+                if (rdx.KTIDToEntryId.TryGetValue(ktid, out var index))
                 {
                     return ReadEntry(index);
                 }
@@ -114,25 +77,13 @@ namespace Cethleann.ManagedFS
             return Memory<byte>.Empty;
         }
 
-        /// <summary>
-        ///     Read a KTID File list with RDBShared
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="game"></param>
-        /// <returns></returns>
         public static Dictionary<KTIDReference, string> LoadKTIDFileListShared(string? filename = null, string game = "")
         {
             Dictionary<KTIDReference, string> dictionary = new Dictionary<KTIDReference, string>();
-            foreach (var (key, value) in LoadKTIDFileList(filename, game).Concat(LoadKTIDFileList(filename, "RDBShared"))) dictionary[key] = value;
+            foreach (var (key, value) in LoadKTIDFileList(filename, game).Concat(LoadKTIDFileList(filename, "RDXShared"))) dictionary[key] = value;
             return dictionary;
         }
 
-        /// <summary>
-        ///     Read a KTID File list
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="game"></param>
-        /// <returns></returns>
         public static Dictionary<KTIDReference, string> LoadKTIDFileList(string? filename = null, string game = "")
         {
             var loc = ManagedFSHelper.GetFileListLocation(filename, game, "rdb");
@@ -143,12 +94,6 @@ namespace Cethleann.ManagedFS
             return fileList;
         }
 
-        /// <summary>
-        ///     Read a KTID file list preserving the namespace
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="game"></param>
-        /// <returns></returns>
         public static Dictionary<KTIDReference, (string, string)> LoadKTIDFileListEx(string? filename = null, string game = "")
         {
             var loc = ManagedFSHelper.GetFileListLocation(filename, game, "rdb");
@@ -167,28 +112,28 @@ namespace Cethleann.ManagedFS
         {
             var prefix = string.Empty;
             var entry = default(RDBEntry);
-            var selectedRdb = default(RDB);
-            foreach (var rdb in RDBs)
+            var selectedRdx = default(RDX);
+            foreach (var rdx in RDXs)
             {
-                if (index >= rdb.Entries.Count)
+                if (index >= rdx.Entries.Count)
                 {
-                    index -= rdb.Entries.Count;
+                    index -= rdx.Entries.Count;
                     continue;
                 }
 
-                prefix = rdb.Name;
-                entry = rdb.GetEntry(index);
-                selectedRdb = rdb;
+                prefix = rdx.Name;
+                entry = rdx.Entries[index];
+                selectedRdx = rdx;
                 break;
             }
 
-            if (selectedRdb == null) return null;
+            if (selectedRdx == null) return null;
 
-            if (!selectedRdb.NameDatabase.ExtMap.TryGetValue(entry.TypeInfoKTID, out var ext) && (!ExtList.TryGetValue(entry.TypeInfoKTID, out ext) || string.IsNullOrEmpty(ext))) ext = selectedRdb.NameDatabase.HashMap.TryGetValue(entry.TypeInfoKTID, out ext) ? ext.Split(':').Last() : entry.TypeInfoKTID.ToString("x8");
+            if (!selectedRdx.NameDatabase.ExtMap.TryGetValue(entry.TypeInfoKTID, out var ext) && (!ExtList.TryGetValue(entry.TypeInfoKTID, out ext) || string.IsNullOrEmpty(ext))) ext = selectedRdx.NameDatabase.HashMap.TryGetValue(entry.TypeInfoKTID, out ext) ? ext.Split(':').Last() : entry.TypeInfoKTID.ToString("x8");
 
             prefix += $@"\{ext}";
 
-            if ((!selectedRdb.NameDatabase.NameMap.TryGetValue(entry.FileKTID, out var path) || string.IsNullOrWhiteSpace(path)) && (!FileList.TryGetValue(entry.FileKTID, out path) || string.IsNullOrWhiteSpace(path)))
+            if ((!selectedRdx.NameDatabase.NameMap.TryGetValue(entry.FileKTID, out var path) || string.IsNullOrWhiteSpace(path)) && (!FileList.TryGetValue(entry.FileKTID, out path) || string.IsNullOrWhiteSpace(path)))
             {
                 path = $"{entry.FileKTID:x8}.{ext}";
             }
@@ -200,47 +145,26 @@ namespace Cethleann.ManagedFS
 
             return $@"{prefix}\{path}";
         }
-
-        /// <summary>
-        ///     Load typeid extension list
-        /// </summary>
-        /// <param name="filename"></param>
+        
         public void LoadExtList(string? filename = null) => ExtList = ManagedFSHelper.GetSimpleFileList(ManagedFSHelper.GetFileListLocation(filename, "RDBExt", "rdb"), "", "rdb").ToDictionary(x => KTIDReference.Parse(x.Key, NumberStyles.HexNumber), y => y.Value);
 
-        /// <summary>
-        ///     Disposes
-        /// </summary>
-        ~Nyotengu() => Dispose(false);
 
-        private void Dispose(bool disposing)
+        public void Dispose()
         {
-            foreach (var rdb in RDBs) rdb.Dispose();
-            if (!disposing) return;
-            RDBs.Clear();
+            RDXs.Clear();
             EntryCount = 0;
         }
 
-        /// <summary>
-        ///     Save filelist to disk
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="game"></param>
         public void SaveGeneratedFileList(string? filename = null, string? game = null)
         {
             var filelist = LoadKTIDFileListEx(filename, game ?? GameId);
-            foreach (var rdb in RDBs)
+            foreach (var rdb in RDXs)
             foreach (var (hash, name) in rdb.NameDatabase.NameMap)
                 filelist[hash] = (rdb.Name, name);
 
             SaveGeneratedFileList(filelist, filename, game ?? GameId);
         }
 
-        /// <summary>
-        ///     Save filelist to disk
-        /// </summary>
-        /// <param name="filelist"></param>
-        /// <param name="filename"></param>
-        /// <param name="game"></param>
         public static void SaveGeneratedFileList(Dictionary<KTIDReference, (string, string)> filelist, string? filename = null, string game = "")
         {
             Logger.Debug("Nyotengu", $"Filelist saved to {ManagedFSHelper.GetFileListLocation(filename, game, "rdb-generated")}");

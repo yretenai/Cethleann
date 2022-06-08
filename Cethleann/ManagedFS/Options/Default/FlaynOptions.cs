@@ -6,6 +6,6 @@
     public class FlaynOptions : IFlaynOptions
     {
         /// <inheritdoc />
-        public bool TinyFlayn { get; set; }
+        public bool TinyLINKDATA { get; set; }
     }
 }

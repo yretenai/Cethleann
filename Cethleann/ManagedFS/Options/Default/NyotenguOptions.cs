@@ -6,6 +6,6 @@
     public class NyotenguOptions : INyotenguOptions
     {
         /// <inheritdoc />
-        public bool NyotenguPrefixFilenames { get; set; }
+        public bool RDBPrefixFilenames { get; set; }
     }
 }

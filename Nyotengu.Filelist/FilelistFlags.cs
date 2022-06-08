@@ -16,6 +16,6 @@ namespace Nyotengu.Filelist
         [CLIFlag("game", Default = "", Aliases = new[] { "g" }, Help = "Game being loaded", Category = "Database Options")]
         public string GameId { get; set; } = "";
 
-        public bool NyotenguPrefixFilenames { get; set; }
+        public bool RDBPrefixFilenames { get; set; }
     }
 }
