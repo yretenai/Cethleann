@@ -1,0 +1,38 @@
+name: Cethleann
+on:
+    push:
+        branches: [ develop ]
+    pull_request:
+        branches: [ develop ]
+env:
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+jobs:
+    build:
+        runs-on: windows-latest
+        steps:
+            - name: Cache
+              uses: actions/cache@v2
+              with:
+                path: ${{ github.workspace }}/.nuget/packages
+                key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+                restore-keys: |
+                  ${{ runner.os }}-nuget-
+            -   name: Checkout
+                uses: actions/checkout@v2
+                with:
+                    fetch-depth: 0
+                    submodules: 'recursive'
+            -   name: Install .NET Core 7
+                uses: actions/setup-dotnet@v1
+                with:
+                    dotnet-version: 7.0.x
+                    include-prerelease: true
+            -   name: Restore project
+                run: dotnet restore
+            -   name: Build Release
+                run: dotnet build -c Release -o dist/release
+            -   name: Upload Release
+                uses: actions/upload-artifact@v2
+                with:
+                    name: cethleann-net7-win-x86-64-rel
+                    path: dist/release
