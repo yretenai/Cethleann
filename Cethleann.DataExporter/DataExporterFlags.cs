@@ -33,12 +33,6 @@ namespace Cethleann.DataExporter
         [CLIFlag("rdb", Help = "Game is contained in RDB containers", Category = "ManagedFS Options")]
         public bool RDB { get; set; }
 
-        [CLIFlag("prdb", Help = "Game is contained in PRDB containers that end with .hash", Category = "ManagedFS Options")]
-        public bool PRDB { get; set; }
-
-        [CLIFlag("rdx", Help = "Game is contained in RDX containers", Category = "ManagedFS Options")]
-        public bool RDX { get; set; }
-
         [CLIFlag("pak", Help = "Game is contained in PAK containers", Category = "ManagedFS Options")]
         public bool PAK { get; set; }
 

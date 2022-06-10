@@ -7,7 +7,6 @@ using Cethleann.Structure.Archive;
 using DragonLib;
 using DragonLib.IO;
 using JetBrains.Annotations;
-using System.Diagnostics;
 
 namespace Cethleann.Archive
 {

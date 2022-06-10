@@ -39,6 +39,10 @@ namespace Cethleann.Archive
         public RDB(Span<byte> buffer, string name, string directory)
         {
             Name = name;
+
+            if(File.Exists(Path.Combine(directory, name + ".rdx")))
+                External = new RDX(File.ReadAllBytes(Path.Combine(directory, name + ".rdx")), directory);
+
             Header = MemoryMarshal.Read<RDBHeader>(buffer);
             RDBDirectory = directory;
             DataDirectory = buffer.Slice(SizeHelper.SizeOf<RDBHeader>(), Header.HeaderSize - SizeHelper.SizeOf<RDBHeader>()).ReadString() ?? string.Empty;
@@ -50,7 +54,7 @@ namespace Cethleann.Archive
                 var (entry, typeblob, data) = ReadRDBEntry(buffer.Slice(offset), true);
                 var fileEntry = entry.GetValueOrDefault();
                 offset += (int) fileEntry.EntrySize.Align(4);
-                Entries.Add((fileEntry, typeblob, DecodeOffset(((Span<byte>) data).ReadString() ?? "0")));
+                Entries.Add(External?.KTIDToEntryId.ContainsKey(fileEntry.FileKTID) == true ? (fileEntry, typeblob, (-1, -1, -1, -1, null)) : (fileEntry, typeblob, DecodeOffset(((Span<byte>) data).ReadString() ?? "0")));
                 KTIDToEntryId[fileEntry.FileKTID] = i;
             }
 
@@ -101,6 +105,11 @@ namespace Cethleann.Archive
         ///     Name Database for this RDB
         /// </summary>
         public RDBINFO NameDatabase { get; set; } = new NDB();
+        
+        /// <summary>
+        ///     External PRDBs 
+        /// </summary>
+        public RDX? External { get; set; }
 
         /// <summary>
         ///     Clean up streams
@@ -189,7 +198,11 @@ namespace Cethleann.Archive
             var (entry, _, (offset, size, binId, binSub, filePath)) = Entries[index];
 
             Span<byte> blob;
-            if (entry.Flags.HasFlag(RDBFlags.External) || !string.IsNullOrEmpty(filePath))
+            if (External != null && External.KTIDToEntryId.TryGetValue(entry.FileKTID, out var eId))
+            {
+                blob = External.ReadEntry(eId).Span;
+            }
+            else if (entry.Flags.HasFlag(RDBFlags.External) || !string.IsNullOrEmpty(filePath))
             {
                 if (filePath != null) // not checked or used, but just in case they decide to :-)
                 {
@@ -243,13 +256,11 @@ namespace Cethleann.Archive
             var fileEntryA = fileEntry.GetValueOrDefault();
             if (fileEntryA.Size == 0) return Memory<byte>.Empty;
 
-            // srst external files might be encrypted, as seen on p5s pc
             if (entry.Flags.HasFlag(RDBFlags.External) && MemoryMarshal.Read<uint>(buffer) == 0x53525354)
             {
                 SRSTEncryption.Decrypt(buffer);
             }
-            // rdb entries might be encrypted, as seen on p5s pc
-            else if (entry.Flags.HasFlag(RDBFlags.ZlibCompressed) && entry.Flags.HasFlag(RDBFlags.Encrypted))
+            else if (entry.Flags.HasFlag(RDBFlags.Encrypted))
             {
                 RDBEncryption.Decrypt(buffer, entry.FileKTID.KTID);
 
@@ -277,16 +288,23 @@ namespace Cethleann.Archive
 
         private static (long offset, long size, int binId, int binSubId, string? filePath) DecodeOffset(string packed)
         {
-            var regex = ADDRESS_REGEX.Match(packed);
-            if (!regex.Success) return (-1, -1, -1, -1, null);
+            try
+            {
+                var regex = ADDRESS_REGEX.Match(packed);
+                if (!regex.Success) return (-1, -1, -1, -1, null);
 
-            var groups = regex.Groups;
-            var offset = long.Parse(groups[1].Value, NumberStyles.HexNumber);
-            var size = long.Parse(groups[2].Value, NumberStyles.HexNumber);
-            var binId = groups[3].Value != string.Empty ? int.Parse(groups[3].Value, NumberStyles.HexNumber) : -1;
-            var binSubId = groups[4].Value != string.Empty ? int.Parse(groups[4].Value, NumberStyles.HexNumber) : -1;
-            var filePath = groups[5].Value != string.Empty ? groups[5].Value : null;
-            return (offset, size, binId, binSubId, filePath);
+                var groups = regex.Groups;
+                var offset = long.Parse(groups[1].Value, NumberStyles.HexNumber);
+                var size = long.Parse(groups[2].Value, NumberStyles.HexNumber);
+                var binId = groups[3].Value != string.Empty ? int.Parse(groups[3].Value, NumberStyles.HexNumber) : -1;
+                var binSubId = groups[4].Value != string.Empty ? int.Parse(groups[4].Value, NumberStyles.HexNumber) : -1;
+                var filePath = groups[5].Value != string.Empty ? groups[5].Value : null;
+                return (offset, size, binId, binSubId, filePath);
+            }
+            catch
+            {
+                return (-1, -1, -1, -1, null);
+            }
         }
 
         /// <summary>

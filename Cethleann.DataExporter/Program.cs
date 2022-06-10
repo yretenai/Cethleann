@@ -40,23 +40,9 @@ namespace Cethleann.DataExporter
             {
                 fs = new Nyotengu(flags);
                 foreach (var rdb in flags.GameDirs.SelectMany(gamedir => Directory.GetFiles(gamedir, "*.rdb"))) fs.AddDataFS(rdb);
+                foreach (var rdb in flags.GameDirs.SelectMany(gamedir => Directory.GetFiles(gamedir, "*.rdb.hash"))) fs.AddDataFS(rdb);
 
                 ((Nyotengu) fs).LoadExtList();
-            }
-            else if (flags.PRDB) // yep it's identical, but filenames are suffixed with .hash
-                // so it would try to load RDB BINs in normal installs since those are named .rdb.bin 
-            {
-                fs = new Nyotengu(flags);
-                foreach (var rdb in flags.GameDirs.SelectMany(gamedir => Directory.GetFiles(gamedir, "*.rdb.*"))) fs.AddDataFS(rdb);
-
-                ((Nyotengu) fs).LoadExtList();
-            }
-            else if (flags.RDX)
-            {
-                fs = new Edelgard(flags);
-                foreach (var rdb in flags.GameDirs.SelectMany(gamedir => Directory.GetFiles(gamedir, "*.rdx"))) fs.AddDataFS(rdb);
-
-                ((Edelgard) fs).LoadExtList();
             }
             else if (flags.PAK)
             {
