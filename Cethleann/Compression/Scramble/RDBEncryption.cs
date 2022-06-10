@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Cethleann.Compression.P5SPC
+namespace Cethleann.Compression.Scramble
 {
     /// <summary>
-    /// Implements P5S PC RDB encryption/decryption.
+    /// Implements Scramble RDB encryption/decryption.
     /// Only used on ZLib compressed data.
     /// </summary>
     public static class RDBEncryption
     {
         /// <summary>
-        /// Encrypts a P5S PC RDB ZLib compressed file.
+        /// Encrypts a Scramble RDB ZLib compressed file.
         /// </summary>
         /// <param name="data">The compressed data to encrypt.</param>
         /// <param name="ktid">The KTID of the RDB file.</param>
@@ -18,7 +18,7 @@ namespace Cethleann.Compression.P5SPC
             => Decrypt(data, ktid);
 
         /// <summary>
-        /// Decrypts a P5S PC RDB ZLib compressed file.
+        /// Decrypts a Scramble RDB ZLib compressed file.
         /// </summary>
         /// <param name="data">The compressed data to decrypt.</param>
         /// <param name="ktid">The KTID of the RDB file.</param>

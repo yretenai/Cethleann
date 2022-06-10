@@ -82,7 +82,7 @@ namespace Cethleann.ManagedFS
         public void AddDataFS(string path)
         {
             Logger.Success("Nyotengu", $"Loading {Path.GetFileName(path)}...");
-            var rdb = new RDB(File.ReadAllBytes(path), Path.GetFileNameWithoutExtension(path), Path.GetDirectoryName(path) ?? string.Empty);
+            var rdb = new RDB(File.ReadAllBytes(path), Path.GetFileNameWithoutExtension(path), Path.GetDirectoryName(path) ?? string.Empty, GameId);
             foreach (var file in Directory.GetFiles(Path.GetDirectoryName(path) ?? "./", rdb.Name + "*.info"))
                 rdb.NameDatabase.Union(new RDBINFO(File.ReadAllBytes(file)));
             EntryCount += rdb.Entries.Count;

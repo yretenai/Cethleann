@@ -9,6 +9,6 @@ namespace Cethleann.Structure.KTID
         Internal = 0x00020000,
         ZlibCompressed = 0x00100000,
         Lz4Compressed = 0x00200000,
-        Encrypted = 0x00200000, // reused in p5s pc
+        Encrypted = 0x00200000, // reused in Scramble
     }
 }

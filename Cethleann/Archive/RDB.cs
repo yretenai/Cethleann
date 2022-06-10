@@ -1,5 +1,4 @@
 ﻿using Cethleann.Compression;
-using Cethleann.Compression.P5SPC;
 using Cethleann.KTID;
 using Cethleann.Structure;
 using Cethleann.Structure.KTID;
@@ -13,6 +12,8 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using ScrambleRDBEncryption = Cethleann.Compression.Scramble.RDBEncryption;
+using ScrambleSRSTEncryption = Cethleann.Compression.Scramble.SRSTEncryption;
 
 namespace Cethleann.Archive
 {
@@ -36,9 +37,11 @@ namespace Cethleann.Archive
         /// <param name="buffer"></param>
         /// <param name="name"></param>
         /// <param name="directory"></param>
-        public RDB(Span<byte> buffer, string name, string directory)
+        /// <param name="game"></param>
+        public RDB(Span<byte> buffer, string name, string directory, string game)
         {
             Name = name;
+            Game = game;
 
             if(File.Exists(Path.Combine(directory, name + ".rdx")))
                 External = new RDX(File.ReadAllBytes(Path.Combine(directory, name + ".rdx")), directory);
@@ -82,9 +85,14 @@ namespace Cethleann.Archive
         public string DataDirectory { get; set; }
 
         /// <summary>
-        ///     Name of this  archive
+        ///     Name of this archive
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        ///     Name of this game
+        /// </summary>
+        public string Game { get; set; }
 
         /// <summary>
         ///     RDB Header
@@ -256,15 +264,18 @@ namespace Cethleann.Archive
             var fileEntryA = fileEntry.GetValueOrDefault();
             if (fileEntryA.Size == 0) return Memory<byte>.Empty;
 
-            if (entry.Flags.HasFlag(RDBFlags.External) && MemoryMarshal.Read<uint>(buffer) == 0x53525354)
+            if (Game == "Scramble")
             {
-                SRSTEncryption.Decrypt(buffer);
-            }
-            else if (entry.Flags.HasFlag(RDBFlags.Encrypted))
-            {
-                RDBEncryption.Decrypt(buffer, entry.FileKTID.KTID);
-
-                entry.Flags ^= RDBFlags.Encrypted;
+                // todo: check KTID Type.
+                if (MemoryMarshal.Read<uint>(buffer) == 0x53525354)
+                {
+                    ScrambleSRSTEncryption.Decrypt(buffer);
+                }
+                else if (entry.Flags.HasFlag(RDBFlags.ZlibCompressed) && entry.Flags.HasFlag(RDBFlags.Encrypted))
+                {
+                    ScrambleRDBEncryption.Decrypt(buffer, entry.FileKTID.KTID);
+                    entry.Flags ^= RDBFlags.Encrypted;
+                }
             }
 
             if (entry.Flags.HasFlag(RDBFlags.ZlibCompressed) || entry.Flags.HasFlag(RDBFlags.Lz4Compressed))

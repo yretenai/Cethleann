@@ -28,7 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="filelist-P5SPC-link.csv">
+        <None Update="filelist-Scramble-link.csv">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="TXTH\.ktgcadpcm.txth">

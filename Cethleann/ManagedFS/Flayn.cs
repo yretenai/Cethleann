@@ -1,5 +1,4 @@
 using Cethleann.Archive;
-using Cethleann.Compression.P5SPC;
 using Cethleann.ManagedFS.Options;
 using Cethleann.ManagedFS.Options.Default;
 using Cethleann.Structure;
@@ -9,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ScrambleLinkEncryption = Cethleann.Compression.Scramble.LinkEncryption;
 
 namespace Cethleann.ManagedFS
 {
@@ -122,10 +122,10 @@ namespace Cethleann.ManagedFS
                     var buffer = data.ReadEntry(stream, localId);
                     if (GameId == "ThreeHouses" && i > 0 && buffer.Length == 0) continue;
 
-                    // for p5s pc, all non-compressed entries are encrypted
+                    // for Scramble, all non-compressed entries are encrypted
                     // conversly, if an entry is compressed, it can't also be encrypted
-                    if (GameId == "P5SPC" && localId < data.Entries.Count && !data.Entries[localId].IsCompressed)
-                        LINKDATAEncryption.Decrypt(buffer.Span, (uint) localId);
+                    if (GameId == "Scramble" && localId < data.Entries.Count && !data.Entries[localId].IsCompressed)
+                        ScrambleLinkEncryption.Decrypt(buffer.Span, (uint) localId);
                     return buffer;
                 }
 
@@ -190,7 +190,7 @@ namespace Cethleann.ManagedFS
                 id = GameId switch
                 {
                     "ThreeHouses" => $"{(i == 0 ? string.Empty : "DLC_")}{localId}",
-                    "P5SPC" => $"{localId}",
+                    "Scramble" => $"{localId}",
                     _ => $"{linkname}_{localId}"
                 };
                 prefix = GameId switch
@@ -209,7 +209,7 @@ namespace Cethleann.ManagedFS
             {
                 ext = GameId switch
                 {
-                    "P5SPC" => Path.GetExtension(path) ?? ext,
+                    "Scramble" => Path.GetExtension(path) ?? ext,
                     _ => $".{ext}"
                 };
                 path = Path.Combine(Path.GetDirectoryName(path) ?? string.Empty, Path.GetFileNameWithoutExtension(path) + $"{ext}");
