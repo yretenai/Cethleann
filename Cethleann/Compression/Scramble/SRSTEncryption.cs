@@ -2,15 +2,15 @@
 using System.Buffers.Binary;
 using System.Runtime.InteropServices;
 
-namespace Cethleann.Compression.P5SPC
+namespace Cethleann.Compression.Scramble
 {
     /// <summary>
-    /// Implements P5S PC SRST file encryption/decryption.
+    /// Implements Scramble SRST file encryption/decryption.
     /// </summary>
     public static class SRSTEncryption
     {
         /// <summary>
-        /// Encrypts a P5S PC SRST file.
+        /// Encrypts a Scramble SRST file.
         /// The key length should be at offset 0x30 (relative to SRST header).
         /// The key itself should follow from offset 0x31 and on.
         /// If the key isn't present, no encryption is performed.
@@ -21,7 +21,7 @@ namespace Cethleann.Compression.P5SPC
             => Crypt(data, false);
         
         /// <summary>
-        /// Decrypts a P5S PC SRST file.
+        /// Decrypts a Scramble SRST file.
         /// The key length should be at offset 0x30 (relative to SRST header).
         /// The key itself should follow from offset 0x31 and on.
         /// If the key isn't present, no decryption is performed.
@@ -32,7 +32,7 @@ namespace Cethleann.Compression.P5SPC
             => Crypt(data, true);
 
         /// <summary>
-        /// (En/De)crypts a P5S PC SRST file.
+        /// (En/De)crypts a Scramble SRST file.
         /// </summary>
         /// <param name="data">The SRST file to decrypt.</param>
         /// <param name="decrypt">True to decrypt, otherwise encrypt.</param>
@@ -69,6 +69,10 @@ namespace Cethleann.Compression.P5SPC
         }
     }
 
+    //Blowfish encryption (ECB, CBC and CTR mode) as defined by Bruce Schneier here: http://www.schneier.com/paper-blowfish-fse.html
+    //Complies with test vectors found here: http://www.schneier.com/code/vectors.txt
+    //non-standard mode provided to be usable with the javascript crypto library found here: http://etherhack.co.uk/symmetric/blowfish/blowfish.html
+    //By Taylor Hornby, 1/7/1010
     /// <summary>
     /// Implements a basic Blowfish cipher.
     /// Only ECB mode is supported.

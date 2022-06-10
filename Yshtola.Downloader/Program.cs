@@ -7,6 +7,7 @@ using Cethleann.ManagedFS.Support;
 using DragonLib;
 using DragonLib.CLI;
 using DragonLib.IO;
+using System.Net.Http;
 
 namespace Yshtola.Downloader
 {
@@ -65,10 +66,17 @@ namespace Yshtola.Downloader
                 var (url, dest, size) = pair;
                 Logger.Info("Yshtola", url);
                 if (flags.Dry) return;
-                using var http = new WebClient();
+                using var http = new HttpClient();
                 try
                 {
-                    http.DownloadFile(url, dest);
+                    var folder = Path.GetDirectoryName(dest);
+                    if (!string.IsNullOrEmpty(folder) && !Directory.Exists(folder))
+                    {
+                        Directory.CreateDirectory(folder);
+                    }
+
+                    using var stream = http.GetStreamAsync(url);
+                    using var destStream = File.OpenWrite(dest);
                     Logger.Info("Yshtola", $"Downloaded {size} to {dest}");
                 }
                 catch (Exception e)

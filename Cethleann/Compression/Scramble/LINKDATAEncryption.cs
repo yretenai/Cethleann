@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace Cethleann.Compression.P5SPC
+namespace Cethleann.Compression.Scramble
 {
     /// <summary>
-    /// Implements P5S PC LINKDATA file encryption/decryption.
+    /// Implements Scramble LINKDATA file encryption/decryption.
     /// </summary>
-    public static class LINKDATAEncryption
+    public static class LinkEncryption
     {
         /// <summary>
-        /// Encrypts a P5S PC LINKDATA file.
+        /// Encrypts a Scramble LINKDATA file.
         /// </summary>
         /// <param name="data">The data to encrypt.</param>
         /// <param name="id">The ID of the LINKDATA file.</param>
@@ -16,7 +16,7 @@ namespace Cethleann.Compression.P5SPC
             => Decrypt(data, id);
 
         /// <summary>
-        /// Decrypts a P5S PC LINKDATA file.
+        /// Decrypts a Scramble LINKDATA file.
         /// </summary>
         /// <param name="data">The data to decrypt.</param>
         /// <param name="id">The ID of the LINKDATA file.</param>
@@ -42,7 +42,7 @@ namespace Cethleann.Compression.P5SPC
     /// </summary>
     public class Mersenne
     {
-        readonly uint[] _state = new uint[4];
+        readonly uint[] State = new uint[4];
 
         /// <summary>
         /// Initializes a generator object using the provided seed value.
@@ -59,10 +59,10 @@ namespace Cethleann.Compression.P5SPC
         /// <param name="seed">Value to initialize with.</param>
         public void Init(uint seed)
         {
-            _state[0] = 0x6C078965 * (seed ^ (seed >> 30));
+            State[0] = 0x6C078965 * (seed ^ (seed >> 30));
 
             for (int i = 1; i < 4; i++)
-                _state[i] = (uint) (0x6C078965 * (_state[i - 1] ^ (_state[i - 1] >> 30)) + i);
+                State[i] = (uint) (0x6C078965 * (State[i - 1] ^ (State[i - 1] >> 30)) + i);
         }
 
         /// <summary>
@@ -71,13 +71,13 @@ namespace Cethleann.Compression.P5SPC
         /// <returns>Next generator state.</returns>
         public uint Next()
         {
-            var temp = _state[0] ^ (_state[0] << 11);
-            _state[0] = _state[1];
-            _state[1] = _state[2];
-            _state[2] = _state[3];
-            _state[3] ^= temp ^ ((temp ^ (_state[3] >> 11)) >> 8);
+            var temp = State[0] ^ (State[0] << 11);
+            State[0] = State[1];
+            State[1] = State[2];
+            State[2] = State[3];
+            State[3] ^= temp ^ ((temp ^ (State[3] >> 11)) >> 8);
 
-            return _state[3];
+            return State[3];
         }
     }
 }
