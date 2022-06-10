@@ -172,7 +172,7 @@ namespace Cethleann.Identify
                         break;
                     case DataType.RDBIndex:
                         break;
-                    case DataType.PortableRDB:
+                    case DataType.RDBPackage:
                         break;
                     case DataType.NDB:
                         break;

@@ -4,6 +4,6 @@
     {
         public short Id { get; set; }
         public short Parent { get; set; }
-        public KTIDReference PortableId { get; set; }
+        public KTIDReference PackageId { get; set; }
     }
 }

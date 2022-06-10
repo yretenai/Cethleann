@@ -13,20 +13,20 @@ namespace Cethleann.Archive
     // why
     public class RDX
     {
-        public RDXEntry[] PortableEntries { get; }
+        public RDXEntry[] Packages { get; }
         public List<(RDBEntry, KTIDReference fdata, int offset)> Entries { get; } = new List<(RDBEntry, KTIDReference fdata, int offset)>();
         public Dictionary<KTIDReference, int> KTIDToEntryId { get; set; } = new Dictionary<KTIDReference, int>();
 
         public RDX(Span<byte> buffer, string directory)
         {;
             Directory = directory;
-            PortableEntries = MemoryMarshal.Cast<byte, RDXEntry>(buffer).ToArray();
+            Packages = MemoryMarshal.Cast<byte, RDXEntry>(buffer).ToArray();
 
             var entryBuffer = new RDBEntry[1].AsSpan();
-            foreach (var entry in PortableEntries)
+            foreach (var entry in Packages)
             {
-                var path = Path.Combine(directory, $"0x{entry.PortableId.KTID:x8}.fdata");
-                Logger.Info("RDX", $"Loading {entry.PortableId.KTID:x8}");
+                var path = Path.Combine(directory, $"0x{entry.PackageId.KTID:x8}.fdata");
+                Logger.Info("RDX", $"Loading {entry.PackageId.KTID:x8}");
                 if (!File.Exists(path))
                 {
                     continue; // rip lol
@@ -37,7 +37,7 @@ namespace Cethleann.Archive
                     using var stream = File.OpenRead(path);
                     var fdata = new byte[0x10].AsSpan();
                     stream.Read(fdata);
-                    if (fdata.GetDataType() != DataType.PortableRDB)
+                    if (fdata.GetDataType() != DataType.RDBPackage)
                     {
                         continue;
                     }
@@ -54,7 +54,7 @@ namespace Cethleann.Archive
                         }
 
                         KTIDToEntryId[entryBuffer[0].FileKTID] = Entries.Count;
-                        Entries.Add((entryBuffer[0], entry.PortableId, (int) pos));
+                        Entries.Add((entryBuffer[0], entry.PackageId, (int) pos));
                         stream.Position = (pos + entryBuffer[0].EntrySize).Align(16);
                     }
                 }

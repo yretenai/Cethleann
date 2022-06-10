@@ -469,10 +469,10 @@ namespace Cethleann.Structure
         RDBIndex = 'K' << 24 | 'R' << 16 | 'D' << 8 | 'I' << 0,
 
         /// <summary>
-        ///     Portable Koei Resource Database
+        ///     Koei Resource Database Package
         /// </summary>
         [FileExtension("fdata")]
-        PortableRDB = 'K' << 24 | 'R' << 16 | 'D' << 8 | 'P' << 0,
+        RDBPackage = 'K' << 24 | 'R' << 16 | 'D' << 8 | 'P' << 0,
 
         /// <summary>
         ///     Koei Name Database File
